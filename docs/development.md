@@ -51,3 +51,17 @@ Verification: four core checks pass (overlapping revisions, recorded response re
 Local evidence: work/replay-core.log, work/replay-focused.log, work/replay-test.log, work/replay-phone.log, and exported screenshots in work/replay-mac-screenshots and work/replay-phone-screenshots. The earlier full Mac log contains the diagnosed UI-test failure; the focused log records its passing correction. Result bundles are in the respective DerivedData Logs/Test directories.
 
 UI tests use a separate VoiceCompanion-QA storage directory via --ui-testing; normal sessions use VoiceCompanion in Application Support. Minimum-OS coverage, microphone capture, provider relay, realistic quality evaluation, and cross-device sync remain outside this checkpoint.
+
+## Mac live development checkpoint — September 24, 2026
+
+Implemented microphone permission, AVAudioEngine capture, PCM16/16 kHz conversion, bounded streaming through an authenticated loopback relay, live transcript updates, stop/finalization, and saved-session reopening. Raw audio is not retained. See Backend/README.md for configuration and limits. iPhone live capture is not enabled yet.
+
+Real behavioral QA: started recording in the signed Mac app, played the synthetic single-voice fixture through the computer's audio output, observed its complete expected text through the microphone/provider path with Speaker 1, stopped to Saved, quit/relaunched, and reopened the same text. The successful session sent 24.09775 seconds of audio with estimated audio cost $0.00133876. A preceding attempt crashed before sending audio; provider connection overhead, if billed, is not included in the estimate. Prior probes plus this successful run total about $0.00243 estimated audio cost, not a verified bill.
+
+The crash was a MainActor assertion in the audio tap callback. Constructing the callback outside MainActor fixed it. A five-second local capture then returned 159,986 PCM bytes and stopped without uploading. An opt-in hardware UI regression check now exercises that actual callback and requires nonzero PCM output, clean completion, and no upload. It passed.
+
+Default Mac regression: four core tests and two replay UI tests passed with the live changes. Relay authentication/forwarding/quota test passed entirely locally. Evidence: work/live-regression.log, work/microphone-regression.log, work/relay-usage.jsonl, local Xcode result bundles, and UI inspection in the working task. The provider key and client token are excluded from commits.
+
+Hardware regression command (permission must already be granted): run xcodebuild with scheme Mac, your development signing team/identity, and `-only-testing:MacUITests/MicrophoneUITests test`. The default check script excludes this opt-in microphone test. Launching with `--microphone-check` also runs a five-second local-only diagnostic.
+
+Known limits: this is a bounded Mac development integration; natural multi-speaker quality, hardware route changes, full interruption behavior, longer sessions, iPhone transport, and production relay deployment are not yet verified. It does not complete V0.

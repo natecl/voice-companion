@@ -9,6 +9,7 @@ settings:
     SWIFT_VERSION: '6.0'
     GENERATE_INFOPLIST_FILE: YES
     CODE_SIGN_STYLE: Automatic
+    INFOPLIST_KEY_NSMicrophoneUsageDescription: "Capture speech for the transcript when you start a recording session."
 targets:
   VoiceCompanionMac:
     type: application
@@ -37,7 +38,7 @@ targets:
   CoreTests:
     type: bundle.unit-test
     platform: macOS
-    sources: [UnitTests, App/Transcription, App/Sessions/SessionStore.swift]
+    sources: [UnitTests, App/Transcription/Transcript.swift, App/Sessions/SessionStore.swift]
   MacUITests:
     type: bundle.ui-testing
     platform: macOS
