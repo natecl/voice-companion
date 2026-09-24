@@ -10,7 +10,9 @@ import websockets
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument('--directory', type=Path, default=ROOT / 'work/transcription')
-OUT = parser.parse_args().directory
+parser.add_argument('--max-seconds', type=int, choices=[30, 60], default=30)
+ARGS = parser.parse_args()
+OUT = ARGS.directory
 
 async def main():
     values = dict(line.split('=', 1) for line in (ROOT / '.env').read_text().splitlines()
@@ -21,7 +23,7 @@ async def main():
     with wave.open(str(OUT / 'voice.wav')) as audio:
         assert (audio.getnchannels(), audio.getsampwidth(), audio.getframerate()) == (1, 2, 16000)
         duration = audio.getnframes() / 16000
-        assert 0 < duration <= 30, 'Probe capped at 30 seconds'
+        assert 0 < duration <= ARGS.max_seconds, 'Audio exceeds explicit probe cap'
         pcm = audio.readframes(audio.getnframes())
     started = time.monotonic()
     events = []
@@ -32,7 +34,7 @@ async def main():
     url = ('wss://api.x.ai/v1/stt?model=grok-voice-transcribe-2.0&sample_rate=16000'
            '&encoding=pcm&interim_results=true&diarize=true&language=en')
     try:
-        async with asyncio.timeout(50):
+        async with asyncio.timeout(ARGS.max_seconds + 20):
             async with websockets.connect(url, additional_headers={'Authorization': f'Bearer {key}'},
                                           open_timeout=10, close_timeout=3) as ws:
                 ready = json.loads(await ws.recv())
@@ -40,18 +42,23 @@ async def main():
                 if ready.get('type') != 'transcript.created':
                     raise RuntimeError('Expected transcript.created')
                 async def send():
+                    summary['audio_started_elapsed'] = time.monotonic() - started
                     for offset in range(0, len(pcm), 3200):
                         await ws.send(pcm[offset:offset+3200])
                         await asyncio.sleep(.1)
+                    summary['audio_done_sent_elapsed'] = time.monotonic() - started
                     await ws.send(json.dumps({'type': 'audio.done'}))
                 sender = asyncio.create_task(send())
                 try:
                     async for raw in ws:
                         event = json.loads(raw)
                         events.append({'elapsed': time.monotonic()-started, 'event': event})
+                        if event.get('type') == 'transcript.partial' and event.get('text') and 'first_text_elapsed' not in summary:
+                            summary['first_text_elapsed'] = time.monotonic() - started
                         if event.get('type') == 'error':
                             raise RuntimeError('Provider error; inspect saved event')
                         if event.get('type') == 'transcript.done':
+                            summary['completion_elapsed'] = time.monotonic() - started
                             summary['status'] = 'completed'
                             break
                     if summary['status'] != 'completed':

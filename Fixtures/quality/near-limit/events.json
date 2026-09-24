@@ -1,0 +1,2065 @@
+[
+  {
+    "elapsed": 1.4626579999458045,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 0.899
+    }
+  },
+  {
+    "elapsed": 2.4749433749821037,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardi-.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 1.899
+    }
+  },
+  {
+    "elapsed": 3.5231222909642383,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 2.899
+    }
+  },
+  {
+    "elapsed": 4.480041415954474,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 3.899
+    }
+  },
+  {
+    "elapsed": 5.489960332983173,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccine.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 4.799
+    }
+  },
+  {
+    "elapsed": 6.509257957979571,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 5.799
+    }
+  },
+  {
+    "elapsed": 7.479782207985409,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 6.799
+    }
+  },
+  {
+    "elapsed": 9.492072165943682,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 8.699
+    }
+  },
+  {
+    "elapsed": 10.488061165960971,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down. Should we ask about",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 9.799
+    }
+  },
+  {
+    "elapsed": 11.487182624987327,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down. Should we ask about the laboratory?",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 10.699
+    }
+  },
+  {
+    "elapsed": 12.477761707967147,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down. Should we ask about the laboratory's results before-",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 11.699
+    }
+  },
+  {
+    "elapsed": 13.48637829098152,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down. Should we ask about the laboratory's results before scheduling another visit?",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 12.699
+    }
+  },
+  {
+    "elapsed": 14.533645124989562,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down. Should we ask about the laboratory's results before scheduling another visit next Thursday?",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 13.699
+    }
+  },
+  {
+    "elapsed": 15.490652832959313,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down. Should we ask about the laboratory's results before scheduling another visit next Thursday? Yes.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 14.699
+    }
+  },
+  {
+    "elapsed": 16.479812624980696,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down. Should we ask about the laboratory's results before scheduling another visit next Thursday? Yes, let us confirm.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 15.699
+    }
+  },
+  {
+    "elapsed": 17.490673832944594,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down. Should we ask about the laboratory's results before scheduling another visit next Thursday? Yes, let us confirm the appointment time.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 16.699
+    }
+  },
+  {
+    "elapsed": 18.496344124956522,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down. Should we ask about the laboratory's results before scheduling another visit next Thursday? Yes, let us confirm the appointment time and write down any.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 17.599
+    }
+  },
+  {
+    "elapsed": 19.497957749990746,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down. Should we ask about the laboratory's results before scheduling another visit next Thursday? Yes, let us confirm the appointment time and write down any questions before-",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 18.499
+    }
+  },
+  {
+    "elapsed": 20.389888332982082,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down. Should we ask about the laboratory's results before scheduling another visit next Thursday? Yes, let us confirm the appointment time and write down any questions before we leave.",
+      "words": [
+        {
+          "text": "The",
+          "start": 0.021,
+          "end": 0.081,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "specialist",
+          "start": 0.141,
+          "end": 0.721,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "mentioned",
+          "start": 0.781,
+          "end": 1.162,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "echocardiography",
+          "start": 1.222,
+          "end": 2.243,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "and",
+          "start": 2.323,
+          "end": 2.403,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "a",
+          "start": 2.443,
+          "end": 2.463,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "follow-up",
+          "start": 2.563,
+          "end": 3.044,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "appointment.",
+          "start": 3.104,
+          "end": 3.684,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "Please",
+          "start": 3.925,
+          "end": 4.225,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "bring",
+          "start": 4.265,
+          "end": 4.465,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "the",
+          "start": 4.485,
+          "end": 4.565,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "vaccination",
+          "start": 4.585,
+          "end": 5.246,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "history",
+          "start": 5.306,
+          "end": 5.626,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "and",
+          "start": 5.706,
+          "end": 5.786,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "the",
+          "start": 5.786,
+          "end": 5.866,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "medication",
+          "start": 5.907,
+          "end": 6.527,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "list.",
+          "start": 6.607,
+          "end": 6.928,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "I",
+          "start": 7.528,
+          "end": 7.548,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "wrote",
+          "start": 7.588,
+          "end": 7.848,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "those",
+          "start": 7.868,
+          "end": 8.109,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "down.",
+          "start": 8.149,
+          "end": 8.449,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "Should",
+          "start": 8.869,
+          "end": 9.05,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "we",
+          "start": 9.07,
+          "end": 9.13,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "ask",
+          "start": 9.27,
+          "end": 9.47,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "about",
+          "start": 9.53,
+          "end": 9.79,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "the",
+          "start": 9.83,
+          "end": 9.911,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "laboratory's",
+          "start": 9.931,
+          "end": 10.591,
+          "speaker": 1,
+          "speaker_confidence": 0.8761
+        },
+        {
+          "text": "results",
+          "start": 10.651,
+          "end": 11.072,
+          "speaker": 1,
+          "speaker_confidence": 0.765
+        },
+        {
+          "text": "before",
+          "start": 11.132,
+          "end": 11.472,
+          "speaker": 1,
+          "speaker_confidence": 0.6836
+        },
+        {
+          "text": "scheduling",
+          "start": 11.532,
+          "end": 12.013,
+          "speaker": 1,
+          "speaker_confidence": 0.5966
+        },
+        {
+          "text": "another",
+          "start": 12.053,
+          "end": 12.353,
+          "speaker": 1,
+          "speaker_confidence": 0.5171
+        },
+        {
+          "text": "visit",
+          "start": 12.413,
+          "end": 12.713,
+          "speaker": 1,
+          "speaker_confidence": 0.4505
+        },
+        {
+          "text": "next",
+          "start": 12.793,
+          "end": 13.074,
+          "speaker": 1,
+          "speaker_confidence": 0.382
+        },
+        {
+          "text": "Thursday?",
+          "start": 13.174,
+          "end": 13.654,
+          "speaker": 1,
+          "speaker_confidence": 0.2932
+        },
+        {
+          "text": "Yes,",
+          "start": 14.235,
+          "end": 14.535,
+          "speaker": 1,
+          "speaker_confidence": 0.1137
+        },
+        {
+          "text": "let",
+          "start": 14.895,
+          "end": 15.036,
+          "speaker": 1,
+          "speaker_confidence": 0.0064
+        },
+        {
+          "text": "us",
+          "start": 15.076,
+          "end": 15.176
+        },
+        {
+          "text": "confirm",
+          "start": 15.236,
+          "end": 15.636
+        },
+        {
+          "text": "the",
+          "start": 15.676,
+          "end": 15.756
+        },
+        {
+          "text": "appointment",
+          "start": 15.816,
+          "end": 16.317
+        },
+        {
+          "text": "time",
+          "start": 16.377,
+          "end": 16.617
+        },
+        {
+          "text": "and",
+          "start": 16.657,
+          "end": 16.737
+        },
+        {
+          "text": "write",
+          "start": 16.757,
+          "end": 17.018
+        },
+        {
+          "text": "down",
+          "start": 17.058,
+          "end": 17.238
+        },
+        {
+          "text": "any",
+          "start": 17.298,
+          "end": 17.438
+        },
+        {
+          "text": "questions",
+          "start": 17.518,
+          "end": 18.059
+        },
+        {
+          "text": "before",
+          "start": 18.119,
+          "end": 18.479
+        },
+        {
+          "text": "we",
+          "start": 18.499,
+          "end": 18.579
+        },
+        {
+          "text": "leave.",
+          "start": 18.659,
+          "end": 18.96
+        }
+      ],
+      "is_final": true,
+      "start": 0.001,
+      "duration": 19.419
+    }
+  },
+  {
+    "elapsed": 21.624426665948704,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 1.18
+    }
+  },
+  {
+    "elapsed": 22.48802391596837,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 2.08
+    }
+  },
+  {
+    "elapsed": 23.476779499964323,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 3.08
+    }
+  },
+  {
+    "elapsed": 24.496689124964178,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 4.08
+    }
+  },
+  {
+    "elapsed": 25.545135458000004,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked-",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 5.08
+    }
+  },
+  {
+    "elapsed": 26.502218040986918,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 5.98
+    }
+  },
+  {
+    "elapsed": 27.51439408294391,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 6.98
+    }
+  },
+  {
+    "elapsed": 28.497583832999226,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 7.98
+    }
+  },
+  {
+    "elapsed": 29.503018540970515,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 8.98
+    }
+  },
+  {
+    "elapsed": 30.504501624964178,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the defini-",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 9.88
+    }
+  },
+  {
+    "elapsed": 31.491802165983245,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 10.88
+    }
+  },
+  {
+    "elapsed": 32.50523820798844,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 11.88
+    }
+  },
+  {
+    "elapsed": 33.48603954096325,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I-",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 12.88
+    }
+  },
+  {
+    "elapsed": 34.515812832978554,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the-",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 13.88
+    }
+  },
+  {
+    "elapsed": 35.504836624953896,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 14.88
+    }
+  },
+  {
+    "elapsed": 36.554757290985435,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the second slide.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 15.78
+    }
+  },
+  {
+    "elapsed": 37.60376070794882,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the second slide. We can study",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 16.78
+    }
+  },
+  {
+    "elapsed": 38.50515037495643,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the second slide. We can study together tomorrow.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 17.78
+    }
+  },
+  {
+    "elapsed": 39.5019127499545,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the second slide. We can study together tomorrow. First we should",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 18.78
+    }
+  },
+  {
+    "elapsed": 40.51204008294735,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the second slide. We can study together tomorrow. First we should list the terms.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 19.68
+    }
+  },
+  {
+    "elapsed": 41.49166412494378,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the second slide. We can study together tomorrow. First we should list the terms we understand.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 20.68
+    }
+  },
+  {
+    "elapsed": 42.48907979094656,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the second slide. We can study together tomorrow. First we should list the terms we understand, then identify",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 21.68
+    }
+  },
+  {
+    "elapsed": 43.49971141596325,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the second slide. We can study together tomorrow. First we should list the terms we understand, then identify the questions that",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 22.68
+    }
+  },
+  {
+    "elapsed": 44.490414165949915,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the second slide. We can study together tomorrow. First we should list the terms we understand, then identify the questions that remain unanswered.",
+      "words": [],
+      "is_final": false,
+      "start": 19.42,
+      "duration": 23.654
+    }
+  },
+  {
+    "elapsed": 44.720191499975044,
+    "event": {
+      "type": "transcript.partial",
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the second slide. We can study together tomorrow. First we should list the terms we understand, then identify the questions that remain unanswered.",
+      "words": [
+        {
+          "text": "At",
+          "start": 19.401,
+          "end": 19.481,
+          "speaker": 1,
+          "speaker_confidence": 0.9909
+        },
+        {
+          "text": "the",
+          "start": 19.521,
+          "end": 19.601,
+          "speaker": 1,
+          "speaker_confidence": 0.9909
+        },
+        {
+          "text": "lecture",
+          "start": 19.661,
+          "end": 20.001,
+          "speaker": 1,
+          "speaker_confidence": 0.9909
+        },
+        {
+          "text": "we",
+          "start": 20.041,
+          "end": 20.101,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "compared",
+          "start": 20.181,
+          "end": 20.602,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "photosynthesis",
+          "start": 20.662,
+          "end": 21.702,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "with",
+          "start": 21.762,
+          "end": 21.902,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "cellular",
+          "start": 21.942,
+          "end": 22.363,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "respiration.",
+          "start": 22.423,
+          "end": 23.183,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "The",
+          "start": 23.543,
+          "end": 23.623,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "professor",
+          "start": 23.663,
+          "end": 24.184,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "asked",
+          "start": 24.304,
+          "end": 24.584,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "us",
+          "start": 24.644,
+          "end": 24.744,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "to",
+          "start": 24.784,
+          "end": 24.844,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "explain",
+          "start": 24.944,
+          "end": 25.404,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "how",
+          "start": 25.484,
+          "end": 25.644,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "energy",
+          "start": 25.704,
+          "end": 25.965,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "moves",
+          "start": 26.065,
+          "end": 26.305,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "through",
+          "start": 26.345,
+          "end": 26.525,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "each",
+          "start": 26.565,
+          "end": 26.745,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "process.",
+          "start": 26.805,
+          "end": 27.365,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "My",
+          "start": 27.926,
+          "end": 28.066,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "notes",
+          "start": 28.126,
+          "end": 28.386,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "include",
+          "start": 28.426,
+          "end": 28.786,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "the",
+          "start": 28.806,
+          "end": 28.886,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "definition",
+          "start": 28.926,
+          "end": 29.487,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "of",
+          "start": 29.527,
+          "end": 29.607,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "chlorophyll",
+          "start": 29.667,
+          "end": 30.247,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "and",
+          "start": 30.287,
+          "end": 30.367,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "the",
+          "start": 30.387,
+          "end": 30.447,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "role",
+          "start": 30.507,
+          "end": 30.727,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "of",
+          "start": 30.747,
+          "end": 30.827,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "mitochondria.",
+          "start": 30.887,
+          "end": 31.668,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "I",
+          "start": 32.088,
+          "end": 32.108,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "still",
+          "start": 32.168,
+          "end": 32.388,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "need",
+          "start": 32.428,
+          "end": 32.608,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "to",
+          "start": 32.648,
+          "end": 32.708,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "review",
+          "start": 32.768,
+          "end": 33.069,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "the",
+          "start": 33.149,
+          "end": 33.229,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "diagram",
+          "start": 33.289,
+          "end": 33.809,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "from",
+          "start": 33.869,
+          "end": 34.009,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "the",
+          "start": 34.029,
+          "end": 34.109,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "second",
+          "start": 34.189,
+          "end": 34.529,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "slide.",
+          "start": 34.569,
+          "end": 35.01,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "We",
+          "start": 35.47,
+          "end": 35.55,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "can",
+          "start": 35.61,
+          "end": 35.79,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "study",
+          "start": 35.89,
+          "end": 36.19,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "together",
+          "start": 36.29,
+          "end": 36.671,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "tomorrow.",
+          "start": 36.711,
+          "end": 37.111,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "First",
+          "start": 37.571,
+          "end": 37.871,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "we",
+          "start": 37.931,
+          "end": 37.991,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "should",
+          "start": 38.071,
+          "end": 38.272,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "list",
+          "start": 38.312,
+          "end": 38.512,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "the",
+          "start": 38.532,
+          "end": 38.632,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "terms",
+          "start": 38.672,
+          "end": 39.012,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "we",
+          "start": 39.052,
+          "end": 39.132,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "understand,",
+          "start": 39.212,
+          "end": 39.932,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "then",
+          "start": 40.213,
+          "end": 40.353,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        },
+        {
+          "text": "identify",
+          "start": 40.513,
+          "end": 41.073,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        },
+        {
+          "text": "the",
+          "start": 41.133,
+          "end": 41.213,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        },
+        {
+          "text": "questions",
+          "start": 41.253,
+          "end": 41.794,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        },
+        {
+          "text": "that",
+          "start": 41.834,
+          "end": 41.994,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        },
+        {
+          "text": "remain",
+          "start": 42.034,
+          "end": 42.334,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        },
+        {
+          "text": "unanswered.",
+          "start": 42.394,
+          "end": 43.014,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        }
+      ],
+      "is_final": true,
+      "start": 0.001,
+      "duration": 43.074
+    }
+  },
+  {
+    "elapsed": 44.72035908297403,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and a follow-up appointment. Please bring the vaccination history and the medication list. I wrote those down. Should we ask about the laboratory's results before scheduling another visit next Thursday? Yes, let us confirm the appointment time and write down any questions before we leave. At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process. My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the second slide. We can study together tomorrow. First we should list the terms we understand, then identify the questions that remain unanswered.",
+      "words": [
+        {
+          "text": "The",
+          "start": 0.021,
+          "end": 0.081,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "specialist",
+          "start": 0.141,
+          "end": 0.721,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "mentioned",
+          "start": 0.781,
+          "end": 1.162,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "echocardiography",
+          "start": 1.222,
+          "end": 2.243,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "and",
+          "start": 2.323,
+          "end": 2.403,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "a",
+          "start": 2.443,
+          "end": 2.463,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "follow-up",
+          "start": 2.563,
+          "end": 3.044,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "appointment.",
+          "start": 3.104,
+          "end": 3.684,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "Please",
+          "start": 3.925,
+          "end": 4.225,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "bring",
+          "start": 4.265,
+          "end": 4.465,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "the",
+          "start": 4.485,
+          "end": 4.565,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "vaccination",
+          "start": 4.585,
+          "end": 5.246,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "history",
+          "start": 5.306,
+          "end": 5.626,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "and",
+          "start": 5.706,
+          "end": 5.786,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "the",
+          "start": 5.786,
+          "end": 5.866,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "medication",
+          "start": 5.907,
+          "end": 6.527,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "list.",
+          "start": 6.607,
+          "end": 6.928,
+          "speaker": 0,
+          "speaker_confidence": 0.9622
+        },
+        {
+          "text": "I",
+          "start": 7.528,
+          "end": 7.548,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "wrote",
+          "start": 7.588,
+          "end": 7.848,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "those",
+          "start": 7.868,
+          "end": 8.109,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "down.",
+          "start": 8.149,
+          "end": 8.449,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "Should",
+          "start": 8.869,
+          "end": 9.05,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "we",
+          "start": 9.07,
+          "end": 9.13,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "ask",
+          "start": 9.27,
+          "end": 9.47,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "about",
+          "start": 9.53,
+          "end": 9.79,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "the",
+          "start": 9.83,
+          "end": 9.911,
+          "speaker": 1,
+          "speaker_confidence": 0.9243
+        },
+        {
+          "text": "laboratory's",
+          "start": 9.931,
+          "end": 10.591,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "results",
+          "start": 10.651,
+          "end": 11.072,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "before",
+          "start": 11.132,
+          "end": 11.472,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "scheduling",
+          "start": 11.532,
+          "end": 12.013,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "another",
+          "start": 12.053,
+          "end": 12.353,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "visit",
+          "start": 12.413,
+          "end": 12.713,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "next",
+          "start": 12.793,
+          "end": 13.074,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "Thursday?",
+          "start": 13.174,
+          "end": 13.654,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "Yes,",
+          "start": 14.235,
+          "end": 14.535,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "let",
+          "start": 14.895,
+          "end": 15.036,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "us",
+          "start": 15.076,
+          "end": 15.176,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "confirm",
+          "start": 15.236,
+          "end": 15.636,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "the",
+          "start": 15.676,
+          "end": 15.756,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "appointment",
+          "start": 15.816,
+          "end": 16.317,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "time",
+          "start": 16.377,
+          "end": 16.617,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "and",
+          "start": 16.657,
+          "end": 16.737,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "write",
+          "start": 16.757,
+          "end": 17.018,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "down",
+          "start": 17.058,
+          "end": 17.238,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "any",
+          "start": 17.298,
+          "end": 17.438,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "questions",
+          "start": 17.518,
+          "end": 18.059,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "before",
+          "start": 18.119,
+          "end": 18.479,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "we",
+          "start": 18.499,
+          "end": 18.579,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "leave.",
+          "start": 18.659,
+          "end": 18.96,
+          "speaker": 0,
+          "speaker_confidence": 0.9769
+        },
+        {
+          "text": "At",
+          "start": 19.401,
+          "end": 19.481,
+          "speaker": 1,
+          "speaker_confidence": 0.9909
+        },
+        {
+          "text": "the",
+          "start": 19.521,
+          "end": 19.601,
+          "speaker": 1,
+          "speaker_confidence": 0.9909
+        },
+        {
+          "text": "lecture",
+          "start": 19.661,
+          "end": 20.001,
+          "speaker": 1,
+          "speaker_confidence": 0.9909
+        },
+        {
+          "text": "we",
+          "start": 20.041,
+          "end": 20.101,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "compared",
+          "start": 20.181,
+          "end": 20.602,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "photosynthesis",
+          "start": 20.662,
+          "end": 21.702,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "with",
+          "start": 21.762,
+          "end": 21.902,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "cellular",
+          "start": 21.942,
+          "end": 22.363,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "respiration.",
+          "start": 22.423,
+          "end": 23.183,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "The",
+          "start": 23.543,
+          "end": 23.623,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "professor",
+          "start": 23.663,
+          "end": 24.184,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "asked",
+          "start": 24.304,
+          "end": 24.584,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "us",
+          "start": 24.644,
+          "end": 24.744,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "to",
+          "start": 24.784,
+          "end": 24.844,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "explain",
+          "start": 24.944,
+          "end": 25.404,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "how",
+          "start": 25.484,
+          "end": 25.644,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "energy",
+          "start": 25.704,
+          "end": 25.965,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "moves",
+          "start": 26.065,
+          "end": 26.305,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "through",
+          "start": 26.345,
+          "end": 26.525,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "each",
+          "start": 26.565,
+          "end": 26.745,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "process.",
+          "start": 26.805,
+          "end": 27.365,
+          "speaker": 1,
+          "speaker_confidence": 0.9957
+        },
+        {
+          "text": "My",
+          "start": 27.926,
+          "end": 28.066,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "notes",
+          "start": 28.126,
+          "end": 28.386,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "include",
+          "start": 28.426,
+          "end": 28.786,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "the",
+          "start": 28.806,
+          "end": 28.886,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "definition",
+          "start": 28.926,
+          "end": 29.487,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "of",
+          "start": 29.527,
+          "end": 29.607,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "chlorophyll",
+          "start": 29.667,
+          "end": 30.247,
+          "speaker": 0,
+          "speaker_confidence": 0.9917
+        },
+        {
+          "text": "and",
+          "start": 30.287,
+          "end": 30.367,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "the",
+          "start": 30.387,
+          "end": 30.447,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "role",
+          "start": 30.507,
+          "end": 30.727,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "of",
+          "start": 30.747,
+          "end": 30.827,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "mitochondria.",
+          "start": 30.887,
+          "end": 31.668,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "I",
+          "start": 32.088,
+          "end": 32.108,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "still",
+          "start": 32.168,
+          "end": 32.388,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "need",
+          "start": 32.428,
+          "end": 32.608,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "to",
+          "start": 32.648,
+          "end": 32.708,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "review",
+          "start": 32.768,
+          "end": 33.069,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "the",
+          "start": 33.149,
+          "end": 33.229,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "diagram",
+          "start": 33.289,
+          "end": 33.809,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "from",
+          "start": 33.869,
+          "end": 34.009,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "the",
+          "start": 34.029,
+          "end": 34.109,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "second",
+          "start": 34.189,
+          "end": 34.529,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "slide.",
+          "start": 34.569,
+          "end": 35.01,
+          "speaker": 0,
+          "speaker_confidence": 0.9931
+        },
+        {
+          "text": "We",
+          "start": 35.47,
+          "end": 35.55,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "can",
+          "start": 35.61,
+          "end": 35.79,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "study",
+          "start": 35.89,
+          "end": 36.19,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "together",
+          "start": 36.29,
+          "end": 36.671,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "tomorrow.",
+          "start": 36.711,
+          "end": 37.111,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "First",
+          "start": 37.571,
+          "end": 37.871,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "we",
+          "start": 37.931,
+          "end": 37.991,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "should",
+          "start": 38.071,
+          "end": 38.272,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "list",
+          "start": 38.312,
+          "end": 38.512,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "the",
+          "start": 38.532,
+          "end": 38.632,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "terms",
+          "start": 38.672,
+          "end": 39.012,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "we",
+          "start": 39.052,
+          "end": 39.132,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "understand,",
+          "start": 39.212,
+          "end": 39.932,
+          "speaker": 1,
+          "speaker_confidence": 0.9891
+        },
+        {
+          "text": "then",
+          "start": 40.213,
+          "end": 40.353,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        },
+        {
+          "text": "identify",
+          "start": 40.513,
+          "end": 41.073,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        },
+        {
+          "text": "the",
+          "start": 41.133,
+          "end": 41.213,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        },
+        {
+          "text": "questions",
+          "start": 41.253,
+          "end": 41.794,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        },
+        {
+          "text": "that",
+          "start": 41.834,
+          "end": 41.994,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        },
+        {
+          "text": "remain",
+          "start": 42.034,
+          "end": 42.334,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        },
+        {
+          "text": "unanswered.",
+          "start": 42.394,
+          "end": 43.014,
+          "speaker": 1,
+          "speaker_confidence": 0.987
+        }
+      ],
+      "is_final": true,
+      "start": 0.001,
+      "duration": 43.074
+    }
+  },
+  {
+    "elapsed": 44.72036837495398,
+    "event": {
+      "type": "transcript.done",
+      "text": "",
+      "words": [],
+      "duration": 43.074
+    }
+  }
+]

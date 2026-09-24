@@ -1,0 +1,42 @@
+{
+  "name": "near-limit",
+  "turns": [
+    {
+      "speaker": 0,
+      "text": "The specialist mentioned echocardiography and a follow up appointment. Please bring the vaccination history and the medication list.",
+      "start": 0.0,
+      "end": 7.0013125
+    },
+    {
+      "speaker": 1,
+      "text": "I wrote those down. Should we ask about the laboratory results before scheduling another visit next Thursday?",
+      "start": 7.4013125,
+      "end": 13.7584375
+    },
+    {
+      "speaker": 0,
+      "text": "Yes. Let us confirm the appointment time and write down any questions before we leave.",
+      "start": 14.1584375,
+      "end": 18.9695625
+    },
+    {
+      "speaker": 1,
+      "text": "At the lecture we compared photosynthesis with cellular respiration. The professor asked us to explain how energy moves through each process.",
+      "start": 19.3695625,
+      "end": 27.511375
+    },
+    {
+      "speaker": 0,
+      "text": "My notes include the definition of chlorophyll and the role of mitochondria. I still need to review the diagram from the second slide.",
+      "start": 27.911375,
+      "end": 35.0325625
+    },
+    {
+      "speaker": 1,
+      "text": "We can study together tomorrow. First we should list the terms we understand, then identify the questions that remain unanswered.",
+      "start": 35.4325625,
+      "end": 43.07425
+    }
+  ],
+  "noise_db": null
+}
