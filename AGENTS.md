@@ -25,3 +25,7 @@ Read README.md, docs/product-source-of-truth.md, docs/v0-scope.md, and docs/engi
 - Move fast through small, complete, verified slices. Do not compound unexplained failures or weaken acceptance criteria to merge. Preserve a known working baseline, diagnose regressions with reproducible evidence, and scale checks to actual risk and impact. Follow the canonical fast-iteration principles.
 
 - When blocked on founder permission, access, approval, or a required decision, stop and wait. Explain the exact action needed; do not bypass, brute-force, substitute a workaround, or move on to other work. Resume only after the founder responds and the prerequisite is satisfied. Routine engineering failures remain agent-owned.
+
+- Bound and track paid provider runs; use short fixtures and cached responses for local iteration, no automatic paid retries, and repeat live calls only when they add necessary evidence.
+
+- Use targeted QA: reproduce at the affected layer with saved events/fixtures, test the fix and impacted contracts, and broaden only when justified. UI transcript bugs should not trigger paid transcription runs unless that integration is implicated.

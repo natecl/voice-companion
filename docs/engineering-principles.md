@@ -123,3 +123,15 @@ Explicit founder instruction: when progress requires the founder's permission, a
 Examples include granting microphone permission, providing provider credentials, authorizing device/signing access, or resolving a material product decision. Computer/screen-audio permission is relevant only to later authorized computer-audio work, not microphone-only V0. Do not request permissions that the current slice does not need.
 
 Distinguish founder-dependent blockers from ordinary engineering failures: agents should still diagnose and fix routine code, build, and test failures autonomously within existing authorization. The checkpoint merge authorization remains in force after the required QA and review; it does not authorize bypassing OS permission prompts or other founder-dependent gates.
+
+## Cost-efficient validation
+
+Founder instruction: keep paid API runs purposeful and bounded. Use short fixtures, explicit duration caps and timeouts, no automatic paid retries, and record run counts and estimated usage. Reuse captured synthetic-fixture responses for local development. Repeat paid calls only to answer an unresolved integration or quality question or verify a relevant change. Cost controls must not replace required real-path QA with mocked evidence. Estimates are not invoices; distinguish estimated cost from verified billing.
+
+## Targeted QA and debugging
+
+Founder instruction: isolate the affected layer and use the narrowest realistic input that reproduces the problem. For transcript rendering or revision bugs, replay saved transcript events through the actual UI; do not call speech-to-text again when that boundary is unchanged. For parsing bugs, replay recorded provider payloads. Exercise the real microphone or paid provider when the changed behavior or unresolved question requires that path.
+
+First reproduce the failure, then run focused verification of the fix and relevant neighboring contracts. Broaden checks based on changed interfaces, shared state, failure risk, or evidence of wider impact, not habit. Reuse prior evidence only where its code, configuration, and dependencies remain applicable. A local fix does not require rerunning every paid end-to-end scenario; a new or changed integration still requires real-path evidence before its checkpoint is complete.
+
+Record what was checked, why those checks cover the change, and which existing evidence remains valid. Optimize time, cost, and feedback speed while retaining meaningful acceptance criteria.
