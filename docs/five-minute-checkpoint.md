@@ -1,6 +1,6 @@
 # Five-minute recording checkpoint
 
-Status: five-minute physical-iPhone microphone recording, automatic stop, save, and independent relaunch verification passed. Mac five-minute real-audio acceptance remains pending; keep the PR in draft until that separate check is complete. The founder clarified that every manual test they have performed so far was on iPhone. Those results do not establish Mac manual acceptance.
+Status: five-minute microphone playback recording, automatic stop, save, and independent relaunch verification passed separately on physical iPhone and Mac. All founder-performed manual checks before this checkpoint’s Mac run were on iPhone; the later Mac run supplies separate evidence. This checkpoint does not complete broader V0 quality acceptance.
 
 ## Behavior and bounds
 
@@ -38,4 +38,26 @@ One provider word timestamp goes backwards: “you” begins at 250.165 seconds 
 
 `PhoneUITests/SavedRecordingUITests/testLatestFiveMinuteRecordingSurvivesRelaunch` passed on the physical phone: opened the latest normal-storage session, checked Saved, the 300-second explanation, five-minute duration, speaker text and substantial transcript content, terminated/relaunched, and verified all exposed transcript text remained identical. It did not record, delete, or make another provider call.
 
-Local evidence (ignored, not uploaded): `work/five-minute-latest-session.json`, `work/five-minute-live-result.png`, `work/five-minute-live-reopen.log`, `work/relay-five-minute.log`; Xcode result `Test-Phone-2026.09.24_05-37-55--0400.xcresult`. CPU/memory trace analysis follows separately. This result establishes a single five-minute iPhone playback capture, not a lecture-length session, battery-life benchmark, natural multi-person room conversation, or Mac five-minute capture.
+Local evidence (ignored, not uploaded): `work/five-minute-latest-session.json`, `work/five-minute-live-result.png`, `work/five-minute-live-reopen.log`, `work/relay-five-minute.log`; Xcode result `Test-Phone-2026.09.24_05-37-55--0400.xcresult`. CPU/memory observations are recorded below. This result establishes a single five-minute iPhone playback capture, not a lecture-length session, battery-life benchmark, natural multi-person room conversation, or Mac five-minute capture.
+
+
+## Separate Mac result — September 24, 2026
+
+After explicit readiness, the founder played the same source from the phone speaker into the Mac microphone. App code was unchanged from `096cc0d`. One fresh relay process/attempt completed: 301.3868125 audio seconds, 304.428 seconds connected, $0.0167437 estimated (billing unverified). The app stored 301.4946 elapsed seconds, completed=true, the automatic-stop explanation, 893 timestamped words, two stitched segments, and three speaker labels. Beginning/middle/end text matches the expected source topics; no exact duplicate word/text/timestamp entries were found. Four word timestamps move backwards; as on iPhone, the app preserves provider word order. These observations do not establish quantitative speaker accuracy or exact timestamp alignment.
+
+The 300-second app deadline is nominal: this run stopped approximately 1.5 seconds later, within the independent 310-audio-second relay ceiling. Combined relay setup/completion overhead above submitted audio was approximately 3.04 seconds; finalization latency alone was not measured. Do not advertise a sample-exact five-minute cutoff.
+
+The independent Mac saved-session test passed after adapting its text extraction to macOS accessibility values when labels are empty. It verified Saved, five-minute duration, automatic-stop notice, substantial speaker-labeled content, and identical exposed transcript text after app relaunch. This test-only correction required no additional provider run. Screenshots were inspected. Local evidence: `work/relay-five-minute-mac.log`, `work/five-minute-mac-latest-session.json`, `work/five-minute-mac-live-reopen-final.log`, `work/five-minute-mac-live-reopen-shots`; result `Test-Mac-2026.09.24_05-51-11--0400.xcresult`.
+
+Total paid usage for the two successful platform checks: 601.9743125 audio seconds, estimated $0.0334430. No paid retries.
+
+## Resource observations and limits
+
+The iPhone’s Instruments app-only attachment failed even while paired-device commands worked. After reconnecting and completing Xcode setup, device-wide Activity Monitor recording succeeded. The exported table was filtered to the VoiceCompanion process and approximate capture window; unrelated process data remains in ignored local artifacts only. Trace finalization was unusually slow but eventually completed successfully.
+
+- iPhone: 292 samples, physical footprint approximately 14.1 MiB initially / 22.8 MiB finally / 23.3 MiB peak; peak resident memory 56.4 MiB. Mean sampled CPU 3.74%, peak 17.35%.
+- Mac: 150 process samples at roughly two-second intervals; resident memory approximately 99.4 MiB initially / 104.5 MiB finally and peak. Mean sampled CPU 3.52%, peak 22.9%.
+
+Phone physical footprint and Mac resident memory are different metrics and should not be directly compared. Sampling windows use saved session creation time and elapsed duration, so setup and endpoint alignment are approximate. CPU values are arithmetic means of tool samples, not normalized cross-device benchmarks. Memory grew with transcript content; these short observations cannot rule out leaks or predict lecture-length behavior. No battery-life claim is made.
+
+Local evidence: `work/five-minute-live-resources.trace`, `work/five-minute-live-resource-processes.xml`, `work/five-minute-iphone-resource-samples.json`, and `work/five-minute-mac-resources.jsonl`. No raw microphone audio, private transcript, or resource trace is committed.

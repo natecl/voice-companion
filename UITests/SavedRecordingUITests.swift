@@ -4,6 +4,10 @@ import XCTest
 /// Reads existing data only; never records, uploads, or deletes a session.
 @MainActor
 final class SavedRecordingUITests: XCTestCase {
+    private func displayedText(_ element: XCUIElement) -> String {
+        element.label.isEmpty ? (element.value as? String ?? "") : element.label
+    }
+
     func testLatestFiveMinuteRecordingSurvivesRelaunch() {
         let app = XCUIApplication()
         app.launch()
@@ -12,10 +16,10 @@ final class SavedRecordingUITests: XCTestCase {
             let latest = app.buttons.matching(identifier: "savedSession").firstMatch
             XCTAssertTrue(latest.waitForExistence(timeout: 5))
             latest.tap()
-            XCTAssertEqual(app.staticTexts["sessionStatus"].label, "Saved")
-            XCTAssertTrue(app.staticTexts["stopNotice"].label.contains("300 seconds"))
-            XCTAssertTrue(app.staticTexts["recordingElapsed"].label.hasPrefix("5:"))
-            let text = app.staticTexts.allElementsBoundByIndex.map(\.label)
+            XCTAssertEqual(displayedText(app.staticTexts["sessionStatus"]), "Saved")
+            XCTAssertTrue(displayedText(app.staticTexts["stopNotice"]).contains("300 seconds"))
+            XCTAssertTrue(displayedText(app.staticTexts["recordingElapsed"]).hasPrefix("5:"))
+            let text = app.staticTexts.allElementsBoundByIndex.map(displayedText)
             XCTAssertTrue(text.contains { $0.contains("Speaker 1") })
             XCTAssertGreaterThan(text.joined(separator: " ").split(separator: " ").count, 300)
             if attempt == 0 { originalText = text } else { XCTAssertEqual(text, originalText) }
