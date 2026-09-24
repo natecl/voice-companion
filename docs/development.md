@@ -41,3 +41,13 @@ Apple documents command-line testing and result bundles in [Running tests and in
 ## Remaining work
 
 Provider validation, simulated transcription, microphone capture, transcript persistence, interruptions, and quality evaluation remain unimplemented. This checkpoint is evidence of the native engineering workflow, not completion of V0 or validation of transcription accuracy.
+
+## Replay checkpoint — September 24, 2026
+
+The app now replays the captured synthetic provider events with no API calls. Shared transcript reduction replaces overlapping interim/chunk text, and the stitched final result contains one segment with 30 words. Speaker labels preserve the provider's one known boundary attribution error. Sessions are saved atomically after updates; stopping preserves an incomplete session; completed and incomplete sessions can be reopened and deleted. Replay is clearly labeled and does not activate the microphone.
+
+Verification: four core checks pass (overlapping revisions, recorded response reduction, persistence/delete, corrupt-file error). Mac UI checks pass for complete replay/relaunch/delete and early stop/reopen; physical iPhone 16 Pro checks pass for both flows. Screenshots from both platforms were inspected. The Mac replay check was rerun in isolation after correcting an accessibility element-type assumption; unchanged core/stop evidence was retained. No paid provider calls were made for this checkpoint.
+
+Local evidence: work/replay-core.log, work/replay-focused.log, work/replay-test.log, work/replay-phone.log, and exported screenshots in work/replay-mac-screenshots and work/replay-phone-screenshots. The earlier full Mac log contains the diagnosed UI-test failure; the focused log records its passing correction. Result bundles are in the respective DerivedData Logs/Test directories.
+
+UI tests use a separate VoiceCompanion-QA storage directory via --ui-testing; normal sessions use VoiceCompanion in Application Support. Minimum-OS coverage, microphone capture, provider relay, realistic quality evaluation, and cross-device sync remain outside this checkpoint.

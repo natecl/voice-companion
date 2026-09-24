@@ -29,3 +29,7 @@ Read README.md, docs/product-source-of-truth.md, docs/v0-scope.md, and docs/engi
 - Bound and track paid provider runs; use short fixtures and cached responses for local iteration, no automatic paid retries, and repeat live calls only when they add necessary evidence.
 
 - Use targeted QA: reproduce at the affected layer with saved events/fixtures, test the fix and impacted contracts, and broaden only when justified. UI transcript bugs should not trigger paid transcription runs unless that integration is implicated.
+
+- Work purposefully: tie architecture, code, debugging, and QA to an explicit outcome or unresolved question, use the smallest sufficient action, and verify the result. Avoid activity that adds neither product value nor useful evidence.
+
+- Keep implementation simple and neat: clear names, focused responsibilities, consistent structure, minimal necessary dependencies and abstractions, and cleanup scoped to the current change. Preserve explicit error handling and observability.

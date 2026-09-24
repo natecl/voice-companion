@@ -7,9 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00480DDADC596747CA403994 /* TranscriptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BE8F0D1257314F735205AE /* TranscriptTests.swift */; };
+		03FA4ADC9F69442A9E86ACB3 /* Transcript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103C8B997E39422BEEFF5D9B /* Transcript.swift */; };
+		084498F3AD0D23225AE9A03A /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FC567691D4C18C5E45FD1B /* SessionStore.swift */; };
 		09C3FEC872A11562F65FECB0 /* FoundationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */; };
+		105580703745D8D72AE902D5 /* Transcript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103C8B997E39422BEEFF5D9B /* Transcript.swift */; };
 		2A78082185EA9D9B00BD1443 /* FoundationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */; };
+		53310A770E4BFFE5496267F2 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FC567691D4C18C5E45FD1B /* SessionStore.swift */; };
+		777B22E0271AEF80B05980A4 /* transcript-events.json in Resources */ = {isa = PBXBuildFile; fileRef = F68208B8B28B93C1AEA78F78 /* transcript-events.json */; };
 		7911F5804A05B3A6601398CB /* VoiceCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */; };
+		80C8FD2119A42FB8F5D4D98C /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FC567691D4C18C5E45FD1B /* SessionStore.swift */; };
+		8836E3F7E0505521F061DE2E /* Transcript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103C8B997E39422BEEFF5D9B /* Transcript.swift */; };
+		953786CBFDF701A69F732EE8 /* transcript-events.json in Resources */ = {isa = PBXBuildFile; fileRef = F68208B8B28B93C1AEA78F78 /* transcript-events.json */; };
+		96A1D7506C6172D690F2E072 /* SessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07AC85400C84CD8C0027 /* SessionController.swift */; };
+		B54FED4EC807E73BC6E8B91B /* SessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07AC85400C84CD8C0027 /* SessionController.swift */; };
 		ECC6B084E812475E28D85CB7 /* VoiceCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,12 +42,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		103C8B997E39422BEEFF5D9B /* Transcript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcript.swift; sourceTree = "<group>"; };
 		43354958B88D6E1A544B8D70 /* PhoneUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PhoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		58FC567691D4C18C5E45FD1B /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 		6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationUITests.swift; sourceTree = "<group>"; };
+		96BE8F0D1257314F735205AE /* TranscriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptTests.swift; sourceTree = "<group>"; };
 		9C4855C4A183DFEC64AE93D8 /* MacUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B67E07AC85400C84CD8C0027 /* SessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionController.swift; sourceTree = "<group>"; };
 		B83EFEE7FF59EDB9FBAE4641 /* VoiceCompanionPhone.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = VoiceCompanionPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEFC5F2B0D93A2378C2D5CB5 /* VoiceCompanionMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceCompanionMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCompanionApp.swift; sourceTree = "<group>"; };
+		EE3F8A7C9C6A23D538E310C0 /* CoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F68208B8B28B93C1AEA78F78 /* transcript-events.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "transcript-events.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -48,9 +65,18 @@
 			path = UITests;
 			sourceTree = "<group>";
 		};
+		2503C54AD3A6DCF18CA982A0 /* Transcription */ = {
+			isa = PBXGroup;
+			children = (
+				103C8B997E39422BEEFF5D9B /* Transcript.swift */,
+			);
+			path = Transcription;
+			sourceTree = "<group>";
+		};
 		2D698A5695319162027842B1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				EE3F8A7C9C6A23D538E310C0 /* CoreTests.xctest */,
 				9C4855C4A183DFEC64AE93D8 /* MacUITests.xctest */,
 				43354958B88D6E1A544B8D70 /* PhoneUITests.xctest */,
 				CEFC5F2B0D93A2378C2D5CB5 /* VoiceCompanionMac.app */,
@@ -59,11 +85,30 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		57FE2BAC747E388B097B5379 /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				F68208B8B28B93C1AEA78F78 /* transcript-events.json */,
+			);
+			path = Fixtures;
+			sourceTree = "<group>";
+		};
+		58064927FE946C80A4E07806 /* Sessions */ = {
+			isa = PBXGroup;
+			children = (
+				B67E07AC85400C84CD8C0027 /* SessionController.swift */,
+				58FC567691D4C18C5E45FD1B /* SessionStore.swift */,
+			);
+			path = Sessions;
+			sourceTree = "<group>";
+		};
 		8A7194F3E0C0307E8F85FAAF = {
 			isa = PBXGroup;
 			children = (
 				E65D87751E2FBF6633A37121 /* App */,
+				57FE2BAC747E388B097B5379 /* Fixtures */,
 				230BF478748988B20CF4FF95 /* UITests */,
+				F4BE10863EB69BB2CAA33D41 /* UnitTests */,
 				2D698A5695319162027842B1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -72,8 +117,18 @@
 			isa = PBXGroup;
 			children = (
 				D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */,
+				58064927FE946C80A4E07806 /* Sessions */,
+				2503C54AD3A6DCF18CA982A0 /* Transcription */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		F4BE10863EB69BB2CAA33D41 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				96BE8F0D1257314F735205AE /* TranscriptTests.swift */,
+			);
+			path = UnitTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -96,6 +151,23 @@
 			productName = PhoneUITests;
 			productReference = 43354958B88D6E1A544B8D70 /* PhoneUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		4AD0E96F79F792F8F63DCABD /* CoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3155039D24DBF3D1C02E2343 /* Build configuration list for PBXNativeTarget "CoreTests" */;
+			buildPhases = (
+				65AEDF4941B4FBD689958EFA /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CoreTests;
+			packageProductDependencies = (
+			);
+			productName = CoreTests;
+			productReference = EE3F8A7C9C6A23D538E310C0 /* CoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		4AD5DD33F1FD1FF28470C125 /* MacUITests */ = {
 			isa = PBXNativeTarget;
@@ -120,6 +192,7 @@
 			buildConfigurationList = BB9173278961B2F845ECEBC8 /* Build configuration list for PBXNativeTarget "VoiceCompanionPhone" */;
 			buildPhases = (
 				4977CE8F760C1F7BD72ED91E /* Sources */,
+				3FC797357C1968FCB7A5C659 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -137,6 +210,7 @@
 			buildConfigurationList = 2B2DDEDA9C46EC72FAC6BB7E /* Build configuration list for PBXNativeTarget "VoiceCompanionMac" */;
 			buildPhases = (
 				7E95B40B30A7B6EB7F8B1C16 /* Sources */,
+				61A74B897A209D23B3740042 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -161,6 +235,9 @@
 					27713824169427F33376B791 = {
 						ProvisioningStyle = Automatic;
 						TestTargetID = 9768E529F357D558E48A341F;
+					};
+					4AD0E96F79F792F8F63DCABD = {
+						ProvisioningStyle = Automatic;
 					};
 					4AD5DD33F1FD1FF28470C125 = {
 						ProvisioningStyle = Automatic;
@@ -190,11 +267,31 @@
 			targets = (
 				B6D33AEB9FD71AC7F7EBD434 /* VoiceCompanionMac */,
 				9768E529F357D558E48A341F /* VoiceCompanionPhone */,
+				4AD0E96F79F792F8F63DCABD /* CoreTests */,
 				4AD5DD33F1FD1FF28470C125 /* MacUITests */,
 				27713824169427F33376B791 /* PhoneUITests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3FC797357C1968FCB7A5C659 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				777B22E0271AEF80B05980A4 /* transcript-events.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61A74B897A209D23B3740042 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				953786CBFDF701A69F732EE8 /* transcript-events.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0FD171447D79E454C1EEB4A4 /* Sources */ = {
@@ -209,7 +306,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B54FED4EC807E73BC6E8B91B /* SessionController.swift in Sources */,
+				084498F3AD0D23225AE9A03A /* SessionStore.swift in Sources */,
+				03FA4ADC9F69442A9E86ACB3 /* Transcript.swift in Sources */,
 				7911F5804A05B3A6601398CB /* VoiceCompanionApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		65AEDF4941B4FBD689958EFA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80C8FD2119A42FB8F5D4D98C /* SessionStore.swift in Sources */,
+				105580703745D8D72AE902D5 /* Transcript.swift in Sources */,
+				00480DDADC596747CA403994 /* TranscriptTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +327,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96A1D7506C6172D690F2E072 /* SessionController.swift in Sources */,
+				53310A770E4BFFE5496267F2 /* SessionStore.swift in Sources */,
+				8836E3F7E0505521F061DE2E /* Transcript.swift in Sources */,
 				ECC6B084E812475E28D85CB7 /* VoiceCompanionApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -245,6 +358,21 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		1C01AB228D5DF0DF1A1C22A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.voicecompanion.CoreTests;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
 		2B30F763434A3BB858357C2D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -256,6 +384,21 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ai.voicecompanion.mac;
 				PRODUCT_NAME = VoiceCompanion;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		4D41958984109545E427B64E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.voicecompanion.CoreTests;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -504,6 +647,15 @@
 			buildConfigurations = (
 				8D5AB97AF3F8D9F7B19027B5 /* Debug */,
 				2B30F763434A3BB858357C2D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3155039D24DBF3D1C02E2343 /* Build configuration list for PBXNativeTarget "CoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C01AB228D5DF0DF1A1C22A7 /* Debug */,
+				4D41958984109545E427B64E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

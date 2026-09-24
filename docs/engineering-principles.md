@@ -135,3 +135,17 @@ Founder instruction: isolate the affected layer and use the narrowest realistic 
 First reproduce the failure, then run focused verification of the fix and relevant neighboring contracts. Broaden checks based on changed interfaces, shared state, failure risk, or evidence of wider impact, not habit. Reuse prior evidence only where its code, configuration, and dependencies remain applicable. A local fix does not require rerunning every paid end-to-end scenario; a new or changed integration still requires real-path evidence before its checkpoint is complete.
 
 Record what was checked, why those checks cover the change, and which existing evidence remains valid. Optimize time, cost, and feedback speed while retaining meaningful acceptance criteria.
+
+## Purposeful, outcome-driven work
+
+Founder instruction: move as fast as possible in the right direction. Keep engineering, architecture, coding, debugging, and QA purposeful and goal-oriented. Before a meaningful action, identify the outcome it advances, the uncertainty it resolves, and the evidence that will establish success. Choose the smallest action that meaningfully advances that outcome without weakening quality.
+
+Avoid speculative abstractions, unrelated cleanup, repeated investigations, and checks that add no evidence. During debugging, state the failure and a testable hypothesis, isolate its cause, and verify the correction. Record consequential decisions and their rationale; do not turn routine work into documentation overhead. Reassess scope when new evidence changes the best next step. Efficiency means useful progress toward a verified product, not merely more code or more tool calls.
+
+## Simple, clear, and orderly implementation
+
+Founder instruction: keep code, architecture, tooling, and documentation simple and neat. Prefer the smallest understandable solution that meets the requirement, with clear names, focused responsibilities, consistent formatting, and a predictable file structure. Keep module boundaries explicit without introducing unnecessary layers or abstractions.
+
+Avoid duplicated logic, dead code, speculative configuration, and unnecessary dependencies. Clean up artifacts introduced by the current change; do not mix unrelated refactors into a focused slice. Keep errors and state transitions explicit rather than hiding complexity behind clever code. Simplicity must preserve correctness, observability, and necessary failure handling.
+
+Review each checkpoint for readability and maintainability as well as behavior. The next engineer or agent should be able to understand what the code does, why it exists, and how to verify it without reconstructing the conversation.
