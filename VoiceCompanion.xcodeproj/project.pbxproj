@@ -1,0 +1,550 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		09C3FEC872A11562F65FECB0 /* FoundationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */; };
+		2A78082185EA9D9B00BD1443 /* FoundationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */; };
+		7911F5804A05B3A6601398CB /* VoiceCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */; };
+		ECC6B084E812475E28D85CB7 /* VoiceCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5DD7578CA61ABA4EDE130311 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FBB5C5C798C5B8C054621E4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B6D33AEB9FD71AC7F7EBD434;
+			remoteInfo = VoiceCompanionMac;
+		};
+		CEE7E66FE6C54FB8E01A09BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FBB5C5C798C5B8C054621E4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9768E529F357D558E48A341F;
+			remoteInfo = VoiceCompanionPhone;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		43354958B88D6E1A544B8D70 /* PhoneUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PhoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationUITests.swift; sourceTree = "<group>"; };
+		9C4855C4A183DFEC64AE93D8 /* MacUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B83EFEE7FF59EDB9FBAE4641 /* VoiceCompanionPhone.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = VoiceCompanionPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEFC5F2B0D93A2378C2D5CB5 /* VoiceCompanionMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceCompanionMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCompanionApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		230BF478748988B20CF4FF95 /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */,
+			);
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		2D698A5695319162027842B1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C4855C4A183DFEC64AE93D8 /* MacUITests.xctest */,
+				43354958B88D6E1A544B8D70 /* PhoneUITests.xctest */,
+				CEFC5F2B0D93A2378C2D5CB5 /* VoiceCompanionMac.app */,
+				B83EFEE7FF59EDB9FBAE4641 /* VoiceCompanionPhone.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8A7194F3E0C0307E8F85FAAF = {
+			isa = PBXGroup;
+			children = (
+				E65D87751E2FBF6633A37121 /* App */,
+				230BF478748988B20CF4FF95 /* UITests */,
+				2D698A5695319162027842B1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E65D87751E2FBF6633A37121 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		27713824169427F33376B791 /* PhoneUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DEC382A79D070444B8387713 /* Build configuration list for PBXNativeTarget "PhoneUITests" */;
+			buildPhases = (
+				8C784A0E22E88B4A901D69C5 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9393F7F41E724530F159421C /* PBXTargetDependency */,
+			);
+			name = PhoneUITests;
+			packageProductDependencies = (
+			);
+			productName = PhoneUITests;
+			productReference = 43354958B88D6E1A544B8D70 /* PhoneUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		4AD5DD33F1FD1FF28470C125 /* MacUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5C9A3EDC7CEAF1ABB18AC4E /* Build configuration list for PBXNativeTarget "MacUITests" */;
+			buildPhases = (
+				0FD171447D79E454C1EEB4A4 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				575EBF61DDF76A7006DA2C0D /* PBXTargetDependency */,
+			);
+			name = MacUITests;
+			packageProductDependencies = (
+			);
+			productName = MacUITests;
+			productReference = 9C4855C4A183DFEC64AE93D8 /* MacUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		9768E529F357D558E48A341F /* VoiceCompanionPhone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB9173278961B2F845ECEBC8 /* Build configuration list for PBXNativeTarget "VoiceCompanionPhone" */;
+			buildPhases = (
+				4977CE8F760C1F7BD72ED91E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VoiceCompanionPhone;
+			packageProductDependencies = (
+			);
+			productName = VoiceCompanionPhone;
+			productReference = B83EFEE7FF59EDB9FBAE4641 /* VoiceCompanionPhone.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B6D33AEB9FD71AC7F7EBD434 /* VoiceCompanionMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B2DDEDA9C46EC72FAC6BB7E /* Build configuration list for PBXNativeTarget "VoiceCompanionMac" */;
+			buildPhases = (
+				7E95B40B30A7B6EB7F8B1C16 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VoiceCompanionMac;
+			packageProductDependencies = (
+			);
+			productName = VoiceCompanionMac;
+			productReference = CEFC5F2B0D93A2378C2D5CB5 /* VoiceCompanionMac.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5FBB5C5C798C5B8C054621E4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					27713824169427F33376B791 = {
+						ProvisioningStyle = Automatic;
+						TestTargetID = 9768E529F357D558E48A341F;
+					};
+					4AD5DD33F1FD1FF28470C125 = {
+						ProvisioningStyle = Automatic;
+						TestTargetID = B6D33AEB9FD71AC7F7EBD434;
+					};
+					9768E529F357D558E48A341F = {
+						ProvisioningStyle = Automatic;
+					};
+					B6D33AEB9FD71AC7F7EBD434 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = DF6F81866D817B7A26FD3F4A /* Build configuration list for PBXProject "VoiceCompanion" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 8A7194F3E0C0307E8F85FAAF;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 2D698A5695319162027842B1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B6D33AEB9FD71AC7F7EBD434 /* VoiceCompanionMac */,
+				9768E529F357D558E48A341F /* VoiceCompanionPhone */,
+				4AD5DD33F1FD1FF28470C125 /* MacUITests */,
+				27713824169427F33376B791 /* PhoneUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0FD171447D79E454C1EEB4A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09C3FEC872A11562F65FECB0 /* FoundationUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4977CE8F760C1F7BD72ED91E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7911F5804A05B3A6601398CB /* VoiceCompanionApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E95B40B30A7B6EB7F8B1C16 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ECC6B084E812475E28D85CB7 /* VoiceCompanionApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C784A0E22E88B4A901D69C5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A78082185EA9D9B00BD1443 /* FoundationUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		575EBF61DDF76A7006DA2C0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B6D33AEB9FD71AC7F7EBD434 /* VoiceCompanionMac */;
+			targetProxy = 5DD7578CA61ABA4EDE130311 /* PBXContainerItemProxy */;
+		};
+		9393F7F41E724530F159421C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9768E529F357D558E48A341F /* VoiceCompanionPhone */;
+			targetProxy = CEE7E66FE6C54FB8E01A09BE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2B30F763434A3BB858357C2D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.voicecompanion.mac;
+				PRODUCT_NAME = VoiceCompanion;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		58EBA0B3F07099FE40A5C350 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		86CC104E18C12CFB68E07DAC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.voicecompanion.phone;
+				PRODUCT_NAME = VoiceCompanion;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		8748483F24FD1716972C492D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.voicecompanion.phone;
+				PRODUCT_NAME = VoiceCompanion;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		8C54B6850FE63735DD8E29B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.voicecompanion.MacUITests;
+				SDKROOT = macosx;
+				TEST_TARGET_NAME = VoiceCompanionMac;
+			};
+			name = Debug;
+		};
+		8D5AB97AF3F8D9F7B19027B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.voicecompanion.mac;
+				PRODUCT_NAME = VoiceCompanion;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		9E141887930B3AC68841F03E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		C73FA834E93737933451FA61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.voicecompanion.PhoneUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = VoiceCompanionPhone;
+			};
+			name = Release;
+		};
+		D639D85ECE927681C30721D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.voicecompanion.MacUITests;
+				SDKROOT = macosx;
+				TEST_TARGET_NAME = VoiceCompanionMac;
+			};
+			name = Release;
+		};
+		FC85A891AD4E283A035422F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.voicecompanion.PhoneUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = VoiceCompanionPhone;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2B2DDEDA9C46EC72FAC6BB7E /* Build configuration list for PBXNativeTarget "VoiceCompanionMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D5AB97AF3F8D9F7B19027B5 /* Debug */,
+				2B30F763434A3BB858357C2D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BB9173278961B2F845ECEBC8 /* Build configuration list for PBXNativeTarget "VoiceCompanionPhone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8748483F24FD1716972C492D /* Debug */,
+				86CC104E18C12CFB68E07DAC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DEC382A79D070444B8387713 /* Build configuration list for PBXNativeTarget "PhoneUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC85A891AD4E283A035422F0 /* Debug */,
+				C73FA834E93737933451FA61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DF6F81866D817B7A26FD3F4A /* Build configuration list for PBXProject "VoiceCompanion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9E141887930B3AC68841F03E /* Debug */,
+				58EBA0B3F07099FE40A5C350 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E5C9A3EDC7CEAF1ABB18AC4E /* Build configuration list for PBXNativeTarget "MacUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C54B6850FE63735DD8E29B7 /* Debug */,
+				D639D85ECE927681C30721D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5FBB5C5C798C5B8C054621E4 /* Project object */;
+}

@@ -31,3 +31,7 @@ Those interactions may describe use cases, but they do not replace the agreed fr
 - 15:06–16:34: Response latency, listening/responding, and the possibility that a novel feature attracts trial without retaining users.
 
 The discussion includes uncertainty about what will work. Preserve that distinction: the vision is agreed; product-market fit and individual features are not proven.
+
+## Delivery guidance
+
+Build Proven, then Better, then New. The [V0 scope](v0-scope.md) defines the first narrow implementation slice; it does not redefine Granola as the Proven. [Engineering principles](engineering-principles.md) govern implementation choices and agent verification workflows.
