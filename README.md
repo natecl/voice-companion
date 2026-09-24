@@ -18,6 +18,7 @@ An iPhone-first companion for everyday conversations, with Mac support. Working 
 - [Founder context and examples](docs/founder-context.md)
 - [V0 scope and delivery sequence](docs/v0-scope.md)
 - [V0 implementation plan](docs/v0-implementation-plan.md)
+- [V1 companion-on-tap plan](docs/v1-implementation-plan.md)
 - [Engineering principles and agent feedback loop](docs/engineering-principles.md)
 - [Transcription direction and unresolved selection](docs/transcription-direction.md)
 - [Synthetic quality screen and remaining acceptance](docs/quality-evaluation.md)
