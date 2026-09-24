@@ -1,0 +1,600 @@
+[
+  {
+    "elapsed": 1.5011106250458397,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The appointment is",
+      "words": [],
+      "is_final": false,
+      "speech_final": false,
+      "start": 0.001,
+      "duration": 0.999,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 2.5099443329963833,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The appointment is tomorrow morning.",
+      "words": [],
+      "is_final": false,
+      "speech_final": false,
+      "start": 0.001,
+      "duration": 1.899,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 3.5309722080128267,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The appointment is tomorrow morning, please bring the",
+      "words": [],
+      "is_final": false,
+      "speech_final": false,
+      "start": 0.001,
+      "duration": 2.899,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 4.5733045420493,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The appointment is tomorrow morning, please bring the vaccination reco-",
+      "words": [],
+      "is_final": false,
+      "speech_final": false,
+      "start": 0.001,
+      "duration": 3.899,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 5.379795957996976,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The appointment is tomorrow morning, please bring the vaccination record.",
+      "words": [
+        {
+          "text": "The",
+          "start": 0.021,
+          "end": 0.101
+        },
+        {
+          "text": "appointment",
+          "start": 0.161,
+          "end": 0.724
+        },
+        {
+          "text": "is",
+          "start": 0.784,
+          "end": 0.864
+        },
+        {
+          "text": "tomorrow",
+          "start": 0.924,
+          "end": 1.346
+        },
+        {
+          "text": "morning,",
+          "start": 1.467,
+          "end": 1.848
+        },
+        {
+          "text": "please",
+          "start": 2.169,
+          "end": 2.491
+        },
+        {
+          "text": "bring",
+          "start": 2.531,
+          "end": 2.752
+        },
+        {
+          "text": "the",
+          "start": 2.792,
+          "end": 2.872
+        },
+        {
+          "text": "vaccination",
+          "start": 2.892,
+          "end": 3.615
+        },
+        {
+          "text": "record.",
+          "start": 3.676,
+          "end": 4.238
+        }
+      ],
+      "is_final": true,
+      "speech_final": false,
+      "start": 0.001,
+      "duration": 4.739,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 6.479197083041072,
+    "event": {
+      "type": "transcript.partial",
+      "text": "Thank you.",
+      "words": [],
+      "is_final": false,
+      "speech_final": false,
+      "start": 4.74,
+      "duration": 1.16,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 7.507489917043131,
+    "event": {
+      "type": "transcript.partial",
+      "text": "Thank you, should I bring the",
+      "words": [],
+      "is_final": false,
+      "speech_final": false,
+      "start": 4.74,
+      "duration": 2.16,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 8.54129320802167,
+    "event": {
+      "type": "transcript.partial",
+      "text": "Thank you. Should I bring the medication list?",
+      "words": [],
+      "is_final": false,
+      "speech_final": false,
+      "start": 4.74,
+      "duration": 3.16,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 9.539269792032428,
+    "event": {
+      "type": "transcript.partial",
+      "text": "Thank you. Should I bring the medication list as well?",
+      "words": [],
+      "is_final": false,
+      "speech_final": false,
+      "start": 4.74,
+      "duration": 4.06,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 10.565680792031344,
+    "event": {
+      "type": "transcript.partial",
+      "text": "Thank you. Should I bring the medication list as well? The appointment is",
+      "words": [],
+      "is_final": false,
+      "speech_final": false,
+      "start": 4.74,
+      "duration": 5.06,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 11.616154208022635,
+    "event": {
+      "type": "transcript.partial",
+      "text": "Thank you. Should I bring the medication list as well? The appointment is tomorrow morning.",
+      "words": [],
+      "is_final": false,
+      "speech_final": false,
+      "start": 4.74,
+      "duration": 6.06,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 12.535912458028179,
+    "event": {
+      "type": "transcript.partial",
+      "text": "Thank you. Should I bring the medication list as well? The appointment is tomorrow morning, please bring the",
+      "words": [],
+      "is_final": false,
+      "speech_final": false,
+      "start": 4.74,
+      "duration": 7.06,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 13.531722875020932,
+    "event": {
+      "type": "transcript.partial",
+      "text": "Thank you. Should I bring the medication list as well? The appointment is tomorrow morning, please bring the vaccination record.",
+      "words": [],
+      "is_final": false,
+      "speech_final": false,
+      "start": 4.74,
+      "duration": 8.06,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 14.543234292010311,
+    "event": {
+      "type": "transcript.partial",
+      "text": "Thank you. Should I bring the medication list as well? The appointment is tomorrow morning, please bring the vaccination record.",
+      "words": [
+        {
+          "text": "Thank",
+          "start": 4.883,
+          "end": 5.144,
+          "speaker": 1,
+          "speaker_confidence": 0.6704
+        },
+        {
+          "text": "you.",
+          "start": 5.264,
+          "end": 5.405,
+          "speaker": 1,
+          "speaker_confidence": 0.6704
+        },
+        {
+          "text": "Should",
+          "start": 5.926,
+          "end": 6.106,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "I",
+          "start": 6.246,
+          "end": 6.266,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "bring",
+          "start": 6.347,
+          "end": 6.567,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "the",
+          "start": 6.627,
+          "end": 6.707,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "medication",
+          "start": 6.747,
+          "end": 7.409,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "list",
+          "start": 7.509,
+          "end": 7.75,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "as",
+          "start": 7.83,
+          "end": 7.93,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "well?",
+          "start": 7.99,
+          "end": 8.331,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "The",
+          "start": 8.912,
+          "end": 9.012,
+          "speaker": 1,
+          "speaker_confidence": 0.6365
+        },
+        {
+          "text": "appointment",
+          "start": 9.072,
+          "end": 9.634,
+          "speaker": 1,
+          "speaker_confidence": 0.5805
+        },
+        {
+          "text": "is",
+          "start": 9.694,
+          "end": 9.794,
+          "speaker": 1,
+          "speaker_confidence": 0.5244
+        },
+        {
+          "text": "tomorrow",
+          "start": 9.854,
+          "end": 10.275,
+          "speaker": 1,
+          "speaker_confidence": 0.4784
+        },
+        {
+          "text": "morning,",
+          "start": 10.375,
+          "end": 10.776,
+          "speaker": 1,
+          "speaker_confidence": 0.4051
+        },
+        {
+          "text": "please",
+          "start": 11.097,
+          "end": 11.417,
+          "speaker": 1,
+          "speaker_confidence": 0.3074
+        },
+        {
+          "text": "bring",
+          "start": 11.457,
+          "end": 11.678,
+          "speaker": 1,
+          "speaker_confidence": 0.2628
+        },
+        {
+          "text": "the",
+          "start": 11.698,
+          "end": 11.778,
+          "speaker": 1,
+          "speaker_confidence": 0.2384
+        },
+        {
+          "text": "vaccination",
+          "start": 11.818,
+          "end": 12.52,
+          "speaker": 1,
+          "speaker_confidence": 0.1766
+        },
+        {
+          "text": "record.",
+          "start": 12.58,
+          "end": 13.141,
+          "speaker": 1,
+          "speaker_confidence": 0.0774
+        }
+      ],
+      "is_final": true,
+      "speech_final": false,
+      "start": 0.001,
+      "duration": 13.702,
+      "language": "en"
+    }
+  },
+  {
+    "elapsed": 14.646713333029766,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The appointment is tomorrow morning, please bring the vaccination record. Thank you. Should I bring the medication list as well? The appointment is tomorrow morning, please bring the vaccination record.",
+      "words": [
+        {
+          "text": "The",
+          "start": 0.021,
+          "end": 0.101,
+          "speaker": 0,
+          "speaker_confidence": 0.3293
+        },
+        {
+          "text": "appointment",
+          "start": 0.161,
+          "end": 0.724,
+          "speaker": 0,
+          "speaker_confidence": 0.3694
+        },
+        {
+          "text": "is",
+          "start": 0.784,
+          "end": 0.864,
+          "speaker": 0,
+          "speaker_confidence": 0.4094
+        },
+        {
+          "text": "tomorrow",
+          "start": 0.924,
+          "end": 1.346,
+          "speaker": 0,
+          "speaker_confidence": 0.442
+        },
+        {
+          "text": "morning,",
+          "start": 1.467,
+          "end": 1.848,
+          "speaker": 0,
+          "speaker_confidence": 0.4968
+        },
+        {
+          "text": "please",
+          "start": 2.169,
+          "end": 2.491,
+          "speaker": 0,
+          "speaker_confidence": 0.4966
+        },
+        {
+          "text": "bring",
+          "start": 2.531,
+          "end": 2.752,
+          "speaker": 0,
+          "speaker_confidence": 0.4972
+        },
+        {
+          "text": "the",
+          "start": 2.792,
+          "end": 2.872,
+          "speaker": 0,
+          "speaker_confidence": 0.5175
+        },
+        {
+          "text": "vaccination",
+          "start": 2.892,
+          "end": 3.615,
+          "speaker": 0,
+          "speaker_confidence": 0.5083
+        },
+        {
+          "text": "record.",
+          "start": 3.676,
+          "end": 4.238,
+          "speaker": 0,
+          "speaker_confidence": 0.5215
+        },
+        {
+          "text": "Thank",
+          "start": 4.883,
+          "end": 5.144,
+          "speaker": 1,
+          "speaker_confidence": 0.6704
+        },
+        {
+          "text": "you.",
+          "start": 5.264,
+          "end": 5.405,
+          "speaker": 1,
+          "speaker_confidence": 0.6704
+        },
+        {
+          "text": "Should",
+          "start": 5.926,
+          "end": 6.106,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "I",
+          "start": 6.246,
+          "end": 6.266,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "bring",
+          "start": 6.347,
+          "end": 6.567,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "the",
+          "start": 6.627,
+          "end": 6.707,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "medication",
+          "start": 6.747,
+          "end": 7.409,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "list",
+          "start": 7.509,
+          "end": 7.75,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "as",
+          "start": 7.83,
+          "end": 7.93,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "well?",
+          "start": 7.99,
+          "end": 8.331,
+          "speaker": 1,
+          "speaker_confidence": 0.7171
+        },
+        {
+          "text": "The",
+          "start": 8.912,
+          "end": 9.012,
+          "speaker": 1,
+          "speaker_confidence": 0.6365
+        },
+        {
+          "text": "appointment",
+          "start": 9.072,
+          "end": 9.634,
+          "speaker": 0,
+          "speaker_confidence": 0.854
+        },
+        {
+          "text": "is",
+          "start": 9.694,
+          "end": 9.794,
+          "speaker": 0,
+          "speaker_confidence": 0.9307
+        },
+        {
+          "text": "tomorrow",
+          "start": 9.854,
+          "end": 10.275,
+          "speaker": 0,
+          "speaker_confidence": 0.981
+        },
+        {
+          "text": "morning,",
+          "start": 10.375,
+          "end": 10.776,
+          "speaker": 0,
+          "speaker_confidence": 0.981
+        },
+        {
+          "text": "please",
+          "start": 11.097,
+          "end": 11.417,
+          "speaker": 0,
+          "speaker_confidence": 0.981
+        },
+        {
+          "text": "bring",
+          "start": 11.457,
+          "end": 11.678,
+          "speaker": 0,
+          "speaker_confidence": 0.981
+        },
+        {
+          "text": "the",
+          "start": 11.698,
+          "end": 11.778,
+          "speaker": 0,
+          "speaker_confidence": 0.981
+        },
+        {
+          "text": "vaccination",
+          "start": 11.818,
+          "end": 12.52,
+          "speaker": 0,
+          "speaker_confidence": 0.981
+        },
+        {
+          "text": "record.",
+          "start": 12.58,
+          "end": 13.141,
+          "speaker": 0,
+          "speaker_confidence": 0.981
+        }
+      ],
+      "is_final": true,
+      "speech_final": true,
+      "start": 0.001,
+      "duration": 13.702,
+      "language": "en"
+    }
+  }
+]
