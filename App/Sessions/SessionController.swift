@@ -36,12 +36,12 @@ final class SessionController {
     init(store: SessionStore? = nil,
          makeConnection: @escaping () -> any RecordingConnection = { LiveTranscriber() },
          prepareRecording: @escaping () async throws -> Void = {
-             _ = try RelayConfiguration.load()
              let access = MicrophoneAccess()
              await access.request()
              guard access.state == .allowed else {
-                 throw NSError(domain: "Microphone", code: 1, userInfo: [NSLocalizedDescriptionKey: "Microphone permission is required. Enable it in system settings."])
+                 throw CaptureFailure.permissionDenied
              }
+             _ = try RelayConfiguration.load()
          }) {
         self.makeConnection = makeConnection
         self.prepareRecording = prepareRecording

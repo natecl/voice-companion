@@ -97,6 +97,28 @@ final class FoundationUITests: XCTestCase {
         XCTAssertTrue(app.buttons["replaySample"].exists)
     }
 
+    func testEmptyRecordingSavesAndReopensWithoutText() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--empty-recording-ui-fixture"]
+        app.launch()
+        app.buttons["startRecording"].tap()
+        XCTAssertTrue(app.buttons["stopRecording"].waitForExistence(timeout: 3))
+        app.buttons["stopRecording"].tap()
+        let saved = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label == %@ OR value == %@", "Saved", "Saved"), object: app.staticTexts["sessionStatus"])
+        XCTAssertEqual(XCTWaiter.wait(for: [saved], timeout: 5), .completed)
+        app.terminate()
+        app.launch()
+        app.buttons.matching(identifier: "savedSession").firstMatch.tap()
+        XCTAssertEqual(app.descendants(matching: .any).matching(identifier: "transcriptSegment").count, 0)
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label == %@ OR value == %@", "No transcript was received.", "No transcript was received.")).firstMatch.exists)
+        let shot = XCTAttachment(screenshot: app.screenshot())
+        shot.name = "Empty saved session"
+        shot.lifetime = .keepAlways
+        add(shot)
+        app.buttons["deleteSession"].tap()
+        app.windows.buttons["confirmDeleteSession"].firstMatch.tap()
+    }
+
     func testStopPreservesIncompleteSession() {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing"]

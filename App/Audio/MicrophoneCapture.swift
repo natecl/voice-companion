@@ -33,9 +33,15 @@ private final class PCMEncoder: @unchecked Sendable {
 }
 
 enum CaptureFailure: LocalizedError {
-    case unavailable, overflow, noRelay, connectionEnded, interrupted, connectionTimedOut, finalizationTimedOut
+    case permissionDenied, unavailable, overflow, noRelay, connectionEnded, interrupted, connectionTimedOut, finalizationTimedOut
     var errorDescription: String? {
         switch self {
+        case .permissionDenied:
+            #if os(macOS)
+            "Microphone access is off. Enable VoiceCompanion in System Settings > Privacy & Security > Microphone, then try again."
+            #else
+            "Microphone access is off. Enable VoiceCompanion in Settings > Privacy & Security > Microphone, then try again."
+            #endif
         case .connectionTimedOut: "The transcription service did not become ready in time. Recording did not start."
         case .finalizationTimedOut: "Final transcription results did not arrive in time. Received text is saved; the transcript may be incomplete."
         case .interrupted: "Audio capture was interrupted or its input changed. Received text is saved; start a new recording to continue."
@@ -59,7 +65,7 @@ final class MicrophoneCapture: AudioCapture {
         defer { if !started { stop() } }
         #if os(iOS)
         let session = AVAudioSession.sharedInstance()
-        try session.setCategory(.record, mode: .measurement)
+        try session.setCategory(.record, mode: .measurement, options: [.allowBluetoothHFP])
         try session.setActive(true)
         #endif
         let input = engine.inputNode
