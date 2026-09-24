@@ -1,6 +1,6 @@
 # V0 implementation plan
 
-Status: Implementation authorized September 24, 2026. Foundation build, launch, and navigation verified on Mac, iPhone Simulator, and a physical iPhone. See development.md for evidence; transcription work remains pending.
+Status: Implementation authorized September 24, 2026. Foundation build, launch, and navigation verified on Mac, iPhone Simulator, and a physical iPhone. See development.md for evidence; the replay/transcript/storage slice is verified on Mac and physical iPhone. Two short live provider probes are documented separately; microphone integration and broader quality evaluation remain pending.
 
 Authority: [product source of truth](product-source-of-truth.md), [V0 scope](v0-scope.md), and [canonical engineering principles](engineering-principles.md). This plan implements those decisions without replacing them. Proven remains Granola.
 

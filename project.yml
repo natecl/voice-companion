@@ -13,7 +13,10 @@ targets:
   VoiceCompanionMac:
     type: application
     platform: macOS
-    sources: [App]
+    sources:
+      - App
+      - path: Fixtures/transcript-events.json
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: ai.voicecompanion.mac
@@ -21,13 +24,20 @@ targets:
   VoiceCompanionPhone:
     type: application
     platform: iOS
-    sources: [App]
+    sources:
+      - App
+      - path: Fixtures/transcript-events.json
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: ai.voicecompanion.phone
         PRODUCT_NAME: VoiceCompanion
         TARGETED_DEVICE_FAMILY: '1'
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
+  CoreTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [UnitTests, App/Transcription, App/Sessions/SessionStore.swift]
   MacUITests:
     type: bundle.ui-testing
     platform: macOS
@@ -46,7 +56,7 @@ schemes:
       targets:
         VoiceCompanionMac: all
     test:
-      targets: [MacUITests]
+      targets: [CoreTests, MacUITests]
   Phone:
     build:
       targets:

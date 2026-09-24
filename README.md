@@ -2,7 +2,7 @@
 
 > Granola with an AI that listens alongside you and can join the conversation.
 
-A private product knowledge repository. Working name: Voice Companion. The native Mac/iPhone foundation is implemented; recording and transcription are not yet available.
+A private product knowledge repository. Working name: Voice Companion. Mac and iPhone apps can replay a sample transcript, show speaker labels, and save/reopen sessions. Live microphone transcription is not yet available.
 
 ## Product source of truth
 
