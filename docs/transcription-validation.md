@@ -20,4 +20,4 @@ Local input and evidence are retained in work/transcription-single and work/tran
 
 ## Scope still pending
 
-Natural speech, noise, overlap, representative quality targets, retention review, secure app relay, microphone capture, and final provider choice remain pending. These short probes establish protocol behavior only. The foundation app has not yet consumed these events.
+Subsequent checkpoints integrated these events, microphone capture, local persistence, and the authenticated development relay on Mac/iPhone. See development.md and quality-evaluation.md for current evidence. Natural speech, overlap, representative quality acceptance, retention review, and final provider choice remain pending. These original probes establish protocol behavior only.

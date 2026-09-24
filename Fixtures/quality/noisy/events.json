@@ -1,0 +1,909 @@
+[
+  {
+    "elapsed": 1.4387155420263298,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 0.899
+    }
+  },
+  {
+    "elapsed": 2.455165416991804,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardi.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 1.899
+    }
+  },
+  {
+    "elapsed": 3.4598774170153774,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned echocardiography and the follow",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 2.899
+    }
+  },
+  {
+    "elapsed": 4.464627000037581,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned a cardiography and a follow up appointment.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 3.899
+    }
+  },
+  {
+    "elapsed": 5.504289583011996,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned a cardiography and a follow-up appointment, please bring the vaccine.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 4.899
+    }
+  },
+  {
+    "elapsed": 6.462404499994591,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned a cardiography and a follow-up appointment, please bring the vaccination history and the.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 5.899
+    }
+  },
+  {
+    "elapsed": 7.458359999989625,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned a cardiography and a follow-up appointment, please bring the vaccination history and the medication list.",
+      "words": [],
+      "is_final": false,
+      "start": 0.001,
+      "duration": 6.899
+    }
+  },
+  {
+    "elapsed": 8.125845417031087,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned a cardiography and a follow-up appointment, please bring the vaccination history and the medication list.",
+      "words": [
+        {
+          "text": "The",
+          "start": 0.021,
+          "end": 0.081
+        },
+        {
+          "text": "specialist",
+          "start": 0.141,
+          "end": 0.723
+        },
+        {
+          "text": "mentioned",
+          "start": 0.783,
+          "end": 1.164
+        },
+        {
+          "text": "a",
+          "start": 1.224,
+          "end": 1.244
+        },
+        {
+          "text": "cardiography",
+          "start": 1.505,
+          "end": 2.247
+        },
+        {
+          "text": "and",
+          "start": 2.327,
+          "end": 2.407
+        },
+        {
+          "text": "a",
+          "start": 2.447,
+          "end": 2.467
+        },
+        {
+          "text": "follow-up",
+          "start": 2.547,
+          "end": 3.069
+        },
+        {
+          "text": "appointment,",
+          "start": 3.129,
+          "end": 3.67
+        },
+        {
+          "text": "please",
+          "start": 3.931,
+          "end": 4.212
+        },
+        {
+          "text": "bring",
+          "start": 4.272,
+          "end": 4.472
+        },
+        {
+          "text": "the",
+          "start": 4.493,
+          "end": 4.573
+        },
+        {
+          "text": "vaccination",
+          "start": 4.593,
+          "end": 5.255
+        },
+        {
+          "text": "history",
+          "start": 5.315,
+          "end": 5.656
+        },
+        {
+          "text": "and",
+          "start": 5.716,
+          "end": 5.796
+        },
+        {
+          "text": "the",
+          "start": 5.796,
+          "end": 5.876
+        },
+        {
+          "text": "medication",
+          "start": 5.916,
+          "end": 6.538
+        },
+        {
+          "text": "list.",
+          "start": 6.618,
+          "end": 6.919
+        }
+      ],
+      "is_final": true,
+      "start": 0.001,
+      "duration": 7.299
+    }
+  },
+  {
+    "elapsed": 9.444268583029043,
+    "event": {
+      "type": "transcript.partial",
+      "text": "I wrote those down.",
+      "words": [],
+      "is_final": false,
+      "start": 7.3,
+      "duration": 1.5
+    }
+  },
+  {
+    "elapsed": 10.410238625016063,
+    "event": {
+      "type": "transcript.partial",
+      "text": "",
+      "words": [],
+      "is_final": false,
+      "start": 7.3,
+      "duration": 2.5
+    }
+  },
+  {
+    "elapsed": 11.497564250021242,
+    "event": {
+      "type": "transcript.partial",
+      "text": "I wrote those down, should we ask about the laboratory results?",
+      "words": [],
+      "is_final": false,
+      "start": 7.3,
+      "duration": 3.5
+    }
+  },
+  {
+    "elapsed": 12.459508416999597,
+    "event": {
+      "type": "transcript.partial",
+      "text": "I wrote those down, should we ask about the laboratory's results before?",
+      "words": [],
+      "is_final": false,
+      "start": 7.3,
+      "duration": 4.5
+    }
+  },
+  {
+    "elapsed": 13.467637374997139,
+    "event": {
+      "type": "transcript.partial",
+      "text": "I wrote those down, should we ask about the laboratory's results before scheduling another visit?",
+      "words": [],
+      "is_final": false,
+      "start": 7.3,
+      "duration": 5.5
+    }
+  },
+  {
+    "elapsed": 14.46129954198841,
+    "event": {
+      "type": "transcript.partial",
+      "text": "I wrote those down, should we ask about the laboratory's results before scheduling another visit next Thursday?",
+      "words": [],
+      "is_final": false,
+      "start": 7.3,
+      "duration": 6.5
+    }
+  },
+  {
+    "elapsed": 15.466646292014048,
+    "event": {
+      "type": "transcript.partial",
+      "text": "I wrote those down, should we ask about the laboratory's results before scheduling another visit next Thursday? Yes.",
+      "words": [],
+      "is_final": false,
+      "start": 7.3,
+      "duration": 7.4
+    }
+  },
+  {
+    "elapsed": 16.513551832991652,
+    "event": {
+      "type": "transcript.partial",
+      "text": "I wrote those down, should we ask about the laboratory's results before scheduling another visit next Thursday? Yes, let us confirm.",
+      "words": [],
+      "is_final": false,
+      "start": 7.3,
+      "duration": 8.4
+    }
+  },
+  {
+    "elapsed": 17.471625833015423,
+    "event": {
+      "type": "transcript.partial",
+      "text": "I wrote those down, should we ask about the laboratory's results before scheduling another visit next Thursday? Yes, let us confirm the appointment timing.",
+      "words": [],
+      "is_final": false,
+      "start": 7.3,
+      "duration": 9.4
+    }
+  },
+  {
+    "elapsed": 18.479616625001654,
+    "event": {
+      "type": "transcript.partial",
+      "text": "I wrote those down, should we ask about the laboratory's results before scheduling another visit next Thursday? Yes, let us confirm the appointment time and write down any-",
+      "words": [],
+      "is_final": false,
+      "start": 7.3,
+      "duration": 10.4
+    }
+  },
+  {
+    "elapsed": 19.47189533303026,
+    "event": {
+      "type": "transcript.partial",
+      "text": "I wrote those down, should we ask about the laboratory's results before scheduling another visit next Thursday? Yes, let us confirm the appointment time and write down any questions before we-",
+      "words": [],
+      "is_final": false,
+      "start": 7.3,
+      "duration": 11.4
+    }
+  },
+  {
+    "elapsed": 19.93213441700209,
+    "event": {
+      "type": "transcript.partial",
+      "text": "I wrote those down, should we ask about the laboratory's results before scheduling another visit next Thursday? Yes, let us confirm the appointment time and write down any questions before we leave.",
+      "words": [
+        {
+          "text": "I",
+          "start": 7.521,
+          "end": 7.541,
+          "speaker": 1,
+          "speaker_confidence": 0.8795
+        },
+        {
+          "text": "wrote",
+          "start": 7.581,
+          "end": 7.841,
+          "speaker": 1,
+          "speaker_confidence": 0.8795
+        },
+        {
+          "text": "those",
+          "start": 7.862,
+          "end": 8.102,
+          "speaker": 1,
+          "speaker_confidence": 0.8795
+        },
+        {
+          "text": "down,",
+          "start": 8.122,
+          "end": 8.442,
+          "speaker": 1,
+          "speaker_confidence": 0.8795
+        },
+        {
+          "text": "should",
+          "start": 8.862,
+          "end": 9.042,
+          "speaker": 1,
+          "speaker_confidence": 0.9413
+        },
+        {
+          "text": "we",
+          "start": 9.062,
+          "end": 9.142,
+          "speaker": 1,
+          "speaker_confidence": 0.9413
+        },
+        {
+          "text": "ask",
+          "start": 9.263,
+          "end": 9.463,
+          "speaker": 1,
+          "speaker_confidence": 0.9413
+        },
+        {
+          "text": "about",
+          "start": 9.543,
+          "end": 9.783,
+          "speaker": 1,
+          "speaker_confidence": 0.9413
+        },
+        {
+          "text": "the",
+          "start": 9.823,
+          "end": 9.883,
+          "speaker": 1,
+          "speaker_confidence": 0.9413
+        },
+        {
+          "text": "laboratory's",
+          "start": 9.923,
+          "end": 10.583,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "results",
+          "start": 10.644,
+          "end": 11.064,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "before",
+          "start": 11.124,
+          "end": 11.464,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "scheduling",
+          "start": 11.504,
+          "end": 12.005,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "another",
+          "start": 12.045,
+          "end": 12.345,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "visit",
+          "start": 12.405,
+          "end": 12.705,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "next",
+          "start": 12.765,
+          "end": 13.065,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "Thursday?",
+          "start": 13.165,
+          "end": 13.666,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "Yes,",
+          "start": 14.226,
+          "end": 14.486,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "let",
+          "start": 14.887,
+          "end": 15.027,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "us",
+          "start": 15.067,
+          "end": 15.167,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "confirm",
+          "start": 15.227,
+          "end": 15.627,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "the",
+          "start": 15.667,
+          "end": 15.747,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "appointment",
+          "start": 15.807,
+          "end": 16.308,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "time",
+          "start": 16.368,
+          "end": 16.608,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "and",
+          "start": 16.648,
+          "end": 16.728,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "write",
+          "start": 16.748,
+          "end": 17.008,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "down",
+          "start": 17.028,
+          "end": 17.228,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "any",
+          "start": 17.288,
+          "end": 17.428,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "questions",
+          "start": 17.509,
+          "end": 18.049,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "before",
+          "start": 18.109,
+          "end": 18.469,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "we",
+          "start": 18.509,
+          "end": 18.569,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "leave.",
+          "start": 18.649,
+          "end": 18.91,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        }
+      ],
+      "is_final": true,
+      "start": 0.001,
+      "duration": 18.969
+    }
+  },
+  {
+    "elapsed": 19.93231858301442,
+    "event": {
+      "type": "transcript.partial",
+      "text": "The specialist mentioned a cardiography and a follow-up appointment, please bring the vaccination history and the medication list. I wrote those down, should we ask about the laboratory's results before scheduling another visit next Thursday? Yes, let us confirm the appointment time and write down any questions before we leave.",
+      "words": [
+        {
+          "text": "The",
+          "start": 0.021,
+          "end": 0.081,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "specialist",
+          "start": 0.141,
+          "end": 0.723,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "mentioned",
+          "start": 0.783,
+          "end": 1.164,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "a",
+          "start": 1.224,
+          "end": 1.244,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "cardiography",
+          "start": 1.505,
+          "end": 2.247,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "and",
+          "start": 2.327,
+          "end": 2.407,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "a",
+          "start": 2.447,
+          "end": 2.467,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "follow-up",
+          "start": 2.547,
+          "end": 3.069,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "appointment,",
+          "start": 3.129,
+          "end": 3.67,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "please",
+          "start": 3.931,
+          "end": 4.212,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "bring",
+          "start": 4.272,
+          "end": 4.472,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "the",
+          "start": 4.493,
+          "end": 4.573,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "vaccination",
+          "start": 4.593,
+          "end": 5.255,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "history",
+          "start": 5.315,
+          "end": 5.656,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "and",
+          "start": 5.716,
+          "end": 5.796,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "the",
+          "start": 5.796,
+          "end": 5.876,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "medication",
+          "start": 5.916,
+          "end": 6.538,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "list.",
+          "start": 6.618,
+          "end": 6.919,
+          "speaker": 0,
+          "speaker_confidence": 0.9852
+        },
+        {
+          "text": "I",
+          "start": 7.521,
+          "end": 7.541,
+          "speaker": 1,
+          "speaker_confidence": 0.8795
+        },
+        {
+          "text": "wrote",
+          "start": 7.581,
+          "end": 7.841,
+          "speaker": 1,
+          "speaker_confidence": 0.8795
+        },
+        {
+          "text": "those",
+          "start": 7.862,
+          "end": 8.102,
+          "speaker": 1,
+          "speaker_confidence": 0.8795
+        },
+        {
+          "text": "down,",
+          "start": 8.122,
+          "end": 8.442,
+          "speaker": 1,
+          "speaker_confidence": 0.8795
+        },
+        {
+          "text": "should",
+          "start": 8.862,
+          "end": 9.042,
+          "speaker": 1,
+          "speaker_confidence": 0.9413
+        },
+        {
+          "text": "we",
+          "start": 9.062,
+          "end": 9.142,
+          "speaker": 1,
+          "speaker_confidence": 0.9413
+        },
+        {
+          "text": "ask",
+          "start": 9.263,
+          "end": 9.463,
+          "speaker": 1,
+          "speaker_confidence": 0.9413
+        },
+        {
+          "text": "about",
+          "start": 9.543,
+          "end": 9.783,
+          "speaker": 1,
+          "speaker_confidence": 0.9413
+        },
+        {
+          "text": "the",
+          "start": 9.823,
+          "end": 9.883,
+          "speaker": 1,
+          "speaker_confidence": 0.9413
+        },
+        {
+          "text": "laboratory's",
+          "start": 9.923,
+          "end": 10.583,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "results",
+          "start": 10.644,
+          "end": 11.064,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "before",
+          "start": 11.124,
+          "end": 11.464,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "scheduling",
+          "start": 11.504,
+          "end": 12.005,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "another",
+          "start": 12.045,
+          "end": 12.345,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "visit",
+          "start": 12.405,
+          "end": 12.705,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "next",
+          "start": 12.765,
+          "end": 13.065,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "Thursday?",
+          "start": 13.165,
+          "end": 13.666,
+          "speaker": 1,
+          "speaker_confidence": 0.989
+        },
+        {
+          "text": "Yes,",
+          "start": 14.226,
+          "end": 14.486,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "let",
+          "start": 14.887,
+          "end": 15.027,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "us",
+          "start": 15.067,
+          "end": 15.167,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "confirm",
+          "start": 15.227,
+          "end": 15.627,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "the",
+          "start": 15.667,
+          "end": 15.747,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "appointment",
+          "start": 15.807,
+          "end": 16.308,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "time",
+          "start": 16.368,
+          "end": 16.608,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "and",
+          "start": 16.648,
+          "end": 16.728,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "write",
+          "start": 16.748,
+          "end": 17.008,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "down",
+          "start": 17.028,
+          "end": 17.228,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "any",
+          "start": 17.288,
+          "end": 17.428,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "questions",
+          "start": 17.509,
+          "end": 18.049,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "before",
+          "start": 18.109,
+          "end": 18.469,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "we",
+          "start": 18.509,
+          "end": 18.569,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        },
+        {
+          "text": "leave.",
+          "start": 18.649,
+          "end": 18.91,
+          "speaker": 0,
+          "speaker_confidence": 0.9661
+        }
+      ],
+      "is_final": true,
+      "start": 0.001,
+      "duration": 18.969
+    }
+  },
+  {
+    "elapsed": 19.932350833027158,
+    "event": {
+      "type": "transcript.done",
+      "text": "",
+      "words": [],
+      "duration": 18.97
+    }
+  }
+]

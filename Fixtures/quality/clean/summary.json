@@ -1,0 +1,12 @@
+{
+  "audio_seconds": 18.9695625,
+  "estimated_audio_cost_usd": 0.0010538645833333333,
+  "billing_verified": false,
+  "automatic_retries": 0,
+  "status": "completed",
+  "audio_started_elapsed": 0.4945211669546552,
+  "first_text_elapsed": 1.6221184589667246,
+  "audio_done_sent_elapsed": 19.806560208962765,
+  "completion_elapsed": 20.153500374988653,
+  "elapsed_seconds": 22.264202499995008
+}

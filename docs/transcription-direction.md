@@ -1,6 +1,6 @@
 # Transcription direction
 
-Status: Conversation research recap, September 24, 2026. No provider has been benchmarked or integrated. Recheck current official documentation before implementation; this document records the direction discussed, not a completed selection.
+Status: Conversation research recap, September 24, 2026. Grok Voice Transcribe 2.0 is integrated in the internal Mac/iPhone builds and has passed a bounded synthetic screen (see quality-evaluation.md). Representative natural-conversation quality and final provider selection remain unresolved; the candidate discussion below is historical research, not a completed comparison.
 
 ## Requirements
 
