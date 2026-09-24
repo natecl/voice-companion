@@ -8,14 +8,14 @@ Build Proven, then Better, then New. **Proven remains Granola**, as defined in t
 
 ## V0: voice in, transcript out
 
-Ship on **Mac and iPhone**. The user starts a microphone recording session, sees a live transcript with speaker diarization, stops recording, and can revisit the saved transcript.
+Ship on **Mac and iPhone**. The user starts a microphone recording session, sees a live transcript with best-effort speaker labels, stops recording, and can revisit the saved transcript.
 
 ```text
 Start recording
       |
 Microphone audio (Mac or iPhone)
       |
-Transcription + speaker diarization
+Transcription + best-effort speaker labels
       |
 Live transcript with timestamps and speaker labels
       |
@@ -39,3 +39,9 @@ The founder revised the initial free-product premise to **freemium plus subscrip
 ## Completion expectations
 
 The same basic flow must work on Mac and a physical iPhone: start, stream microphone audio, display and revise speaker-labeled text, stop, finalize, and reopen the saved transcript. Verify failure and interruption handling as well as the successful flow. Exact quality thresholds and supported OS versions remain to be established.
+
+## Accepted internal-trial boundary (September 24, 2026)
+
+The founder explicitly accepts best-effort diarization for V0. Prioritize immediate display of received text, reliable capture, stopping/finalization, and saved reopening. Speaker labels can arrive later, change, or be wrong; these limitations do not block this narrow internal trial. Preserve the failed strict speaker evaluation as evidence rather than changing it into a passing result. Formal natural-speech word-accuracy benchmarking is also deferred by founder decision.
+
+This is a foreground, five-minute, local-storage development build using a bounded relay on the Mac. It is not the always-on companion or a public subscription release. No cross-device synchronization is provided. Stronger attribution becomes necessary before features rely on identifying the user, assigning memories, or deciding whom an AI response addresses. Best-effort numeric speaker labels do not establish personal identity. See the [internal V0 runbook](v0-runbook.md) for use, evidence, and remaining limits.

@@ -63,3 +63,11 @@ The text follows the supplied passage about physical infrastructure and technica
 Local evidence: work/reference-playback-session.json, work/reference-playback-result.png, work/playback-review-sessions, and work/relay-playback.log. These stay uncommitted. Earlier attempts completed but were unsuitable for scoring: one was deleted by the founder and another included a mid-clip seek. They are not counted as independent passing quality samples. No extra paid transcription was used for the saved-data inspection.
 
 The app's nominal 55-second auto-stop resulted in approximately 56 seconds of transmitted audio here. The UI should make the development limit more visible before recording; current evidence does not establish an exact wall-clock cutoff. The relay's separate 60-audio-second cap remains in force.
+
+## Founder revision: focused human speaker-label acceptance
+
+The founder accepts speech transcription quality for the internal V0 trial and defers formal natural-speech WER benchmarking. The supplied YouTube captions are approximate, not a verified word reference. The next check evaluates stable speaker assignments across four founder-labeled turns, not word accuracy. See [human speaker-label evaluation](human-speaker-evaluation.md) for the source, predeclared acceptance, bounded run, and results. This is an explicit scope decision, not a measured word-accuracy pass. Physical permission denial and input loss are now verified separately in [reliability edge cases](reliability-edge-cases.md), superseding those pending entries above.
+
+## Current internal V0 acceptance
+
+The founder subsequently accepted speaker labels as best-effort. The strict human-speech check remains failed and its errors are retained in [the evaluation record](human-speaker-evaluation.md), but it no longer blocks the internal V0 slice. Formal label-latency guarantees and broad acoustic accuracy remain unproven. The app must display received text before labels become available; the closeout check replays cached provider events through the real UI on both platforms. The [runbook](v0-runbook.md) is the current acceptance and usage summary; earlier pending-work lists above are historical checkpoints.

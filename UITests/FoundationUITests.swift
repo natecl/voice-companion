@@ -8,10 +8,26 @@ final class FoundationUITests: XCTestCase {
         app.launch()
         app.buttons["replaySample"].tap()
         XCTAssertTrue(app.staticTexts["sessionStatus"].waitForExistence(timeout: 5))
+        // Cached real provider events contain text before any speaker IDs arrive.
+        let earlyText = app.staticTexts.containing(NSPredicate(format:
+            "label CONTAINS %@ OR value CONTAINS %@", "The appointment is", "The appointment is")).firstMatch
+        XCTAssertTrue(earlyText.waitForExistence(timeout: 4))
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format:
+            "label CONTAINS %@ OR value CONTAINS %@", "Speaker pending", "Speaker pending")).firstMatch.exists)
+        XCTAssertFalse(app.staticTexts.containing(NSPredicate(format:
+            "label CONTAINS %@ OR value CONTAINS %@", "Speaker 1", "Speaker 1")).firstMatch.exists)
+        let earlyShot = XCTAttachment(screenshot: app.screenshot())
+        earlyShot.name = "Text visible before speaker labels (cached provider events)"
+        earlyShot.lifetime = .keepAlways
+        add(earlyShot)
         let saved = NSPredicate(format: "label == %@ OR value == %@", "Saved", "Saved")
         let completion = XCTNSPredicateExpectation(predicate: saved, object: app.staticTexts["sessionStatus"])
         XCTAssertEqual(XCTWaiter.wait(for: [completion], timeout: 25), .completed)
         XCTAssertEqual(app.descendants(matching: .any).matching(identifier: "transcriptSegment").count, 1)
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format:
+            "label CONTAINS %@ OR value CONTAINS %@", "Speaker 1", "Speaker 1")).firstMatch.exists)
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format:
+            "label CONTAINS %@ OR value CONTAINS %@", "Speaker 2", "Speaker 2")).firstMatch.exists)
         let shot = XCTAttachment(screenshot: app.screenshot())
         shot.name = "Final replay transcript"
         shot.lifetime = .keepAlways

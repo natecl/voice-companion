@@ -1,5 +1,7 @@
 # Development and foundation QA
 
+For current operation and accepted limits, use the [V0 runbook](v0-runbook.md). Sections below preserve chronological checkpoint evidence; earlier pending-work lists and recording limits are superseded by later checkpoints.
+
 ## Setup and commands
 
 Validated September 24, 2026 with Xcode 27.0, Swift 6.4, and XcodeGen 2.46.0. Install Xcode and XcodeGen, select Xcode as the developer directory, and install an iPhone simulator runtime. The project specification is the source for generated Xcode configuration; regenerate after changing it. XcodeGen keeps the two targets and shared UI-test source easy to review; there are no third-party app runtime dependencies.

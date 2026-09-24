@@ -35,3 +35,7 @@ The discussion includes uncertainty about what will work. Preserve that distinct
 ## Delivery guidance
 
 Build Proven, then Better, then New. The [V0 scope](v0-scope.md) defines the first narrow implementation slice; it does not redefine Granola as the Proven. [Engineering principles](engineering-principles.md) govern implementation choices and agent verification workflows.
+
+## V0 acceptance clarification
+
+Founder decision, September 24, 2026: speaker diarization is best-effort for the internal voice-in/transcript-out slice and is not a strict completion gate. Text must display without waiting for speaker identity. This does not change Granola as the Proven or the one-liner. Attribution-dependent memories and proactive companion participation require separate validation later; V0 does not establish who the user is from anonymous speaker labels.
