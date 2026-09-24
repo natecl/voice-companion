@@ -12,7 +12,7 @@ Read README.md, docs/product-source-of-truth.md, docs/v0-scope.md, and docs/engi
 - Jev findings are dated research, not tested performance guarantees. Verify current documentation before implementation.
 - Keep this repository private unless the founder explicitly requests a visibility change.
 
-- Deliver Proven, then Better, then New. V0 is microphone to live speaker-labeled transcript on Mac and iPhone, with saved transcripts. Mac computer audio comes later.
+- Deliver Proven, then Better, then New. V0 is microphone to live transcript on Mac and iPhone, with saved transcripts. Speaker labels are best-effort: missing, delayed, or incorrect labels must not block text display or V0 acceptance. Preserve known attribution errors; do not treat labels as verified identity. Mac computer audio comes later.
 - The business model is freemium plus subscription; zero inference cost is not a requirement.
 - Keep audio capture, provider adapters, shared transcript data, presentation, and storage modular. Avoid speculative infrastructure.
 - Prefer tools and workflows that let agents build, run, observe, reproduce, and verify changes. Use meaningful fixtures and regression checks; preserve human judgment for decisions that require it.

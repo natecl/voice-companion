@@ -1,6 +1,6 @@
 # Human-speech speaker-label check
 
-Status: first recorded attempt fails the strict speaker-label check against the supplied turn labels. V0 speaker-quality acceptance remains unresolved. September 24, 2026.
+Status: first recorded attempt fails the strict speaker-label check against the supplied turn labels. The founder subsequently accepted these limitations for internal V0; the strict evaluation itself remains failed. September 24, 2026.
 
 ## Decision and reference
 
@@ -50,4 +50,6 @@ Read-only diagnosis: `GrokEvent` decodes speaker IDs directly into `TranscriptWo
 
 Local evidence: `work/human-speaker-session.json`, `work/human-speaker-review.json`, and `work/relay-human-speakers.log`. Full transcript remains local. No new calls were used for analysis. An initial Start attempt targeted an old app instance without relay configuration; it failed before creating a recording or upstream call. The configured instance was then selected and Recording verified before cueing playback.
 
-Next: investigate provider-supported diarization controls and validation options before any additional paid run. Do not hand-correct labels or add unvalidated smoothing that could erase real short turns. A future comparison needs a fixed, reproducible input and an explicit new run budget. Quality acceptance remains open; do not merge this as a passing V0 quality checkpoint.
+Next: investigate provider-supported diarization controls and validation options before any additional paid run. Do not hand-correct labels or add unvalidated smoothing that could erase real short turns. A future comparison needs a fixed, reproducible input and an explicit new run budget. The founder subsequently made diarization best-effort for internal V0. Merge this as an honest record of known limitations and the explicit acceptance decision, not as a passing strict speaker-quality result. Further paid diarization comparisons are deferred.
+
+The founder confirmed starting and stopping playback late. This explains the extended captured material but does not invalidate the four identifiable turns or explain away their label errors.
