@@ -21,7 +21,7 @@ if [[ "$action" == test ]]; then
   if [[ "$platform" == mac ]]; then
     signing+=(-skip-testing:MacUITests/MicrophoneUITests -skip-testing:MacUITests/SavedRecordingUITests)
   else
-    signing+=(-skip-testing:PhoneUITests/MicrophoneUITests -skip-testing:PhoneUITests/SavedRecordingUITests)
+    signing+=(-skip-testing:PhoneUITests/MicrophoneUITests -skip-testing:PhoneUITests/SavedRecordingUITests -skip-testing:PhoneUITests/RecordingInterruptionUITests)
   fi
 fi
 xcodegen generate

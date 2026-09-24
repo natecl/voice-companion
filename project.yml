@@ -39,7 +39,7 @@ targets:
   CoreTests:
     type: bundle.unit-test
     platform: macOS
-    sources: [UnitTests, App/Transcription/Transcript.swift, App/Sessions/SessionStore.swift]
+    sources: [UnitTests, App/Transcription, App/Sessions, App/Audio]
   MacUITests:
     type: bundle.ui-testing
     platform: macOS

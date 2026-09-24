@@ -15,7 +15,7 @@ struct SessionsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 Label("Voice Companion", systemImage: "waveform").font(.title.bold())
-                Text(controller.current?.source == "microphone" ? "Microphone session" : "Sample replay · microphone off").foregroundStyle(.secondary)
+                Text(controller.current == nil ? "Ready to record" : controller.current?.source == "microphone" ? "Microphone session" : "Sample replay · microphone off").foregroundStyle(.secondary)
                 if ProcessInfo.processInfo.arguments.contains("--request-microphone") {
                     Text(microphone.state == .allowed ? "Microphone permission granted. Recording has not started." :
                          microphone.state == .denied ? "Microphone access is denied. Enable it in System Settings to record." :
@@ -27,9 +27,12 @@ struct SessionsView: View {
                     Text(error).foregroundStyle(.red).accessibilityIdentifier("sessionError")
                 }
                 if let session = controller.current {
+                    if let reason = session.endReason, reason != controller.errorMessage { Text(reason).foregroundStyle(.secondary) }
                     Text(controller.liveStatus ?? (controller.isReplaying ? "Replaying sample…" : (session.completed ? "Saved" : "Incomplete · saved")))
                         .accessibilityIdentifier("sessionStatus")
-                    if session.transcript.segments.isEmpty { Text("Waiting for transcript…") }
+                    if session.transcript.segments.isEmpty {
+                        Text(controller.isActive ? "Waiting for transcript…" : "No transcript was received.")
+                    }
                     ForEach(session.transcript.segments) { segment in
                         VStack(alignment: .leading, spacing: 8) {
                             Text(String(format: "%.1fs", segment.start)).font(.caption).foregroundStyle(.secondary)
@@ -58,7 +61,10 @@ struct SessionsView: View {
                 } else {
                     Button("Start recording") { controller.startRecording() }
                         .disabled(controller.isActive).accessibilityIdentifier("startRecording")
-                    if let status = controller.liveStatus { Text(status) }
+                    if let status = controller.liveStatus {
+                        Text(status)
+                        Button("Stop recording") { controller.stop() }.accessibilityIdentifier("stopRecording")
+                    }
                     Button("Replay sample") { controller.startReplay() }
                         .buttonStyle(.borderedProminent).disabled(controller.isActive).accessibilityIdentifier("replaySample")
                     if controller.sessions.isEmpty { Text("No saved sessions yet.") }
@@ -90,12 +96,13 @@ struct SessionsView: View {
                     microphoneCheck = "Relay connection verified. No microphone capture or provider call."
                 } catch { microphoneCheck = "Relay check failed: \(error.localizedDescription)" }
             }
-            if ProcessInfo.processInfo.arguments.contains("--microphone-check") {
+            if ProcessInfo.processInfo.arguments.contains("--microphone-check") || ProcessInfo.processInfo.arguments.contains("--microphone-interruption-check") {
                 microphoneCheck = "Checking microphone locally…"
                 do {
                     let capture = MicrophoneCapture()
                     let stream = try capture.start()
-                    let stopTask = Task { try? await Task.sleep(for: .seconds(5)); capture.stop() }
+                    let duration = ProcessInfo.processInfo.arguments.contains("--microphone-interruption-check") ? 120 : 5
+                    let stopTask = Task { try? await Task.sleep(for: .seconds(duration)); capture.stop() }
                     defer { stopTask.cancel(); capture.stop() }
                     var bytes = 0
                     var peak = 0
@@ -113,7 +120,9 @@ struct SessionsView: View {
             }
         }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .background && controller.isActive { controller.stop() }
+            if phase == .background && controller.isActive {
+                controller.interrupt(reason: "Recording stopped because the app left the foreground. Received text is saved; the transcript may be incomplete.")
+            }
         }
     }
 

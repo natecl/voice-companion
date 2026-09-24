@@ -1,7 +1,7 @@
 import Foundation
 
 @MainActor
-final class LiveTranscriber {
+final class LiveTranscriber: RecordingConnection {
     private var socket: URLSessionWebSocketTask?
     private var session: URLSession?
     private let microphone = MicrophoneCapture()
@@ -9,8 +9,12 @@ final class LiveTranscriber {
     private var deadline: Task<Void, Never>?
     private var stopped = false
     private var stopRequested = false
+    private var onFinishing: (() -> Void)?
+    private var sendingError: Error?
 
-    func run(onReady: () -> Void, onEvent: (GrokEvent) throws -> Void) async throws {
+    func run(onReady: () -> Void, onFinishing: @escaping () -> Void, onEvent: (GrokEvent) throws -> Void) async throws {
+        self.onFinishing = onFinishing
+        defer { cleanup() }
         let config = try RelayConfiguration.load()
         var request = URLRequest(url: config.url)
         request.setValue("Bearer " + config.token, forHTTPHeaderField: "Authorization")
@@ -21,7 +25,6 @@ final class LiveTranscriber {
         self.socket = socket
         socket.resume()
         deadline = Task { try? await Task.sleep(for: .seconds(10)); if !Task.isCancelled { socket.cancel() } }
-        defer { cleanup() }
         let ready = try await receive(socket)
         guard ready.type == "transcript.created", !stopRequested else { throw CaptureFailure.connectionEnded }
         deadline?.cancel()
@@ -35,6 +38,8 @@ final class LiveTranscriber {
                 }
                 try await socket.send(.string("{\"type\":\"audio.done\"}"))
             } catch {
+                self.sendingError = error
+                self.microphone.stop()
                 socket.cancel()
                 throw error
             }
@@ -45,9 +50,12 @@ final class LiveTranscriber {
             if !Task.isCancelled { stop() }
         }
         while true {
-            let event = try await receive(socket)
+            let event: GrokEvent
+            do { event = try await receive(socket) }
+            catch { throw sendingError ?? error }
             if event.type == "error" { throw CaptureFailure.connectionEnded }
             if event.type == "transcript.done" {
+                guard stopRequested else { throw CaptureFailure.connectionEnded }
                 try await sender?.value
                 return
             }
@@ -58,6 +66,7 @@ final class LiveTranscriber {
     func stop() {
         guard !stopped else { return }
         stopped = true
+        onFinishing?()
         stopRequested = true
         microphone.stop()
         if sender == nil { socket?.cancel(); return }
@@ -66,6 +75,12 @@ final class LiveTranscriber {
             try? await Task.sleep(for: .seconds(12))
             if !Task.isCancelled { socket?.cancel() }
         }
+    }
+
+    func cancel() {
+        stopRequested = true
+        stopped = true
+        cleanup()
     }
 
     private func receive(_ socket: URLSessionWebSocketTask) async throws -> GrokEvent {
@@ -87,5 +102,6 @@ final class LiveTranscriber {
         socket = nil
         session?.invalidateAndCancel()
         session = nil
+        onFinishing = nil
     }
 }
