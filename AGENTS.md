@@ -4,6 +4,7 @@ Read README.md, docs/product-source-of-truth.md, docs/v0-scope.md, and docs/engi
 
 - Treat docs/engineering-principles.md as the canonical engineering source of truth for all engineering work, including stack selection, architecture, implementation, debugging, testing, review, and delivery. Supporting research cannot override it. Record explicit founder revisions there and keep dependent guidance aligned.
 - Preserve the exact agreed one-liner.
+- Product direction is iPhone-first: an everyday consumer companion is the refined New in Proven, Better, New. Let iPhone use cases lead priorities and design; retain Mac support and shared modules. Do not reinterpret this as feature parity at every checkpoint, continuous recording authorization, or implemented background capture.
 - Granola is the Proven. Do not replace the accepted framework with a newly invented feature breakdown.
 - The center is context capture: user-started listening sessions, transcripts, notes, and interaction with the captured conversation. Do not reposition it as a general thought partner or autonomous work agent.
 - Distinguish founder decisions, source statements, and implementation hypotheses.

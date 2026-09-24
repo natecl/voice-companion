@@ -8,7 +8,7 @@ Build Proven, then Better, then New. **Proven remains Granola**, as defined in t
 
 ## V0: voice in, transcript out
 
-Ship on **Mac and iPhone**. The user starts a microphone recording session, sees a live transcript with best-effort speaker labels, stops recording, and can revisit the saved transcript.
+Support **Mac and iPhone**, with iPhone now leading subsequent product priorities. The user starts a microphone recording session, sees a live transcript with best-effort speaker labels, stops recording, and can revisit the saved transcript.
 
 ```text
 Start recording

@@ -8,13 +8,23 @@ Status: Agreed with the founder on September 24, 2026.
 
 ## Proven, Better, New
 
-Use the breakdown discussed by Mark Pincus and Garry Tan in the first source video, as agreed in this product conversation. The wording below is our accepted paraphrase, not a verbatim quotation.
+Use the breakdown discussed by Mark Pincus and Garry Tan in the first source video, as agreed in this product conversation. The framework starts from our accepted paraphrase, not a verbatim quotation. The iPhone-first formulation of New is the founder’s subsequent refinement, not a claim about what the video speakers explicitly prescribed.
 
 - **Proven:** Granola.
 - **Better:** Faster responses, lower latency, lower price—the improvements existing users would clearly recognize.
-- **New:** The AI listens along with the conversation and can respond when you turn to it, potentially contributing on its own. That’s the hypothesis to test.
+- **New:** An iPhone-first AI companion that listens alongside you in everyday conversations and can join in when you turn to it.
 
 This is the product source of truth. Everyday capture scenarios are applications of this vision, and Jev is a potential way to implement it.
+
+## iPhone-first consumer direction
+
+Explicit founder decision, September 24, 2026: make this a true mobile consumer product, with iPhone use cases leading feature priorities, interaction design, and engineering effort. The Mac app and desktop meeting capabilities remain supported; simultaneous feature parity is not required at every checkpoint.
+
+The intended differentiation is the everyday companion experience and its usefulness with captured personal context, not merely having an iPhone app. Conversations with friends, lectures, and appointments such as a vet visit are central use cases alongside meetings. The phone makes the companion accessible throughout the day. Whether this experience creates a durable consumer habit remains a hypothesis to validate.
+
+“Always-on” remains the long-term listening-companion vision. The practical starting experience is deliberate capture: start listening, put the phone away, stay present, then revisit or ask about the conversation. This decision does not authorize silent continuous recording, presume the AI knows everything about the user, or claim that locked-screen/background recording already exists in V0. Proactive participation remains a later hypothesis beyond responding when explicitly addressed.
+
+Roadmap implications: prioritize independent iPhone use without a Mac relay, practical capture while the phone is put away, and useful recall/questions about captured conversations. Define and verify each as a separate slice. Stronger attribution is needed before memories or responses depend on who said something. Preserve the shared native foundation and the Proven → Better → New delivery discipline; this direction does not add all companion features to V0.
 
 ## Clarification: Granola is the Proven
 
