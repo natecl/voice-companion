@@ -33,3 +33,5 @@ Read README.md, docs/product-source-of-truth.md, docs/v0-scope.md, and docs/engi
 - Work purposefully: tie architecture, code, debugging, and QA to an explicit outcome or unresolved question, use the smallest sufficient action, and verify the result. Avoid activity that adds neither product value nor useful evidence.
 
 - Keep implementation simple and neat: clear names, focused responsibilities, consistent structure, minimal necessary dependencies and abstractions, and cleanup scoped to the current change. Preserve explicit error handling and observability.
+
+- Before manual QA that needs the founder, explain the steps and wait for their explicit readiness before starting the check.

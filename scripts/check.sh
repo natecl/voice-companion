@@ -24,6 +24,9 @@ if [[ "$action" == test ]]; then
     signing+=(-skip-testing:PhoneUITests/MicrophoneUITests -skip-testing:PhoneUITests/SavedRecordingUITests -skip-testing:PhoneUITests/RecordingInterruptionUITests)
   fi
 fi
+if [[ "$platform" == mac && "$action" == test ]]; then
+  export TEST_RUNNER_VOICE_TEST_PYTHON="${VOICE_TEST_PYTHON:-$(command -v python3)}"
+fi
 xcodegen generate
 xcodebuild -project VoiceCompanion.xcodeproj -scheme "$scheme" \
   -destination "$destination" \
