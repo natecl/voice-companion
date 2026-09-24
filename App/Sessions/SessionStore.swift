@@ -6,6 +6,7 @@ struct CaptureSession: Codable, Identifiable {
     var transcript = Transcript()
     var completed = false
     var source: String? = nil
+    var endReason: String? = nil
 }
 
 struct SessionStore {

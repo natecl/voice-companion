@@ -33,9 +33,10 @@ private final class PCMEncoder: @unchecked Sendable {
 }
 
 enum CaptureFailure: LocalizedError {
-    case unavailable, overflow, noRelay, connectionEnded
+    case unavailable, overflow, noRelay, connectionEnded, interrupted
     var errorDescription: String? {
         switch self {
+        case .interrupted: "Audio capture was interrupted or its input changed. Received text is saved; start a new recording to continue."
         case .unavailable: "The microphone audio format is unavailable."
         case .overflow: "Audio could not be sent quickly enough. Recording stopped to avoid missing speech."
         case .noRelay: "Start the development relay and launch the app with its configuration."
@@ -49,8 +50,11 @@ final class MicrophoneCapture {
     private let engine = AVAudioEngine()
     private var continuation: AsyncThrowingStream<Data, Error>.Continuation?
     private var hasTap = false
+    private var observers: [NSObjectProtocol] = []
 
     func start() throws -> AsyncThrowingStream<Data, Error> {
+        var started = false
+        defer { if !started { stop() } }
         #if os(iOS)
         let session = AVAudioSession.sharedInstance()
         try session.setCategory(.record, mode: .measurement)
@@ -67,6 +71,8 @@ final class MicrophoneCapture {
         hasTap = true
         do { try engine.start() }
         catch { stop(); throw error }
+        observeInterruptions()
+        started = true
         return stream
     }
 
@@ -83,7 +89,37 @@ final class MicrophoneCapture {
         }
     }
 
+    private func observeInterruptions() {
+        let center = NotificationCenter.default
+        observers.append(center.addObserver(forName: .AVAudioEngineConfigurationChange, object: engine, queue: nil) { [weak self] _ in
+            Task { @MainActor [weak self] in self?.interrupt() }
+        })
+        #if os(iOS)
+        observers.append(center.addObserver(forName: AVAudioSession.interruptionNotification, object: nil, queue: nil) { [weak self] note in
+            guard let raw = note.userInfo?[AVAudioSessionInterruptionTypeKey] as? UInt,
+                  raw == AVAudioSession.InterruptionType.began.rawValue else { return }
+            Task { @MainActor [weak self] in self?.interrupt() }
+        })
+        observers.append(center.addObserver(forName: AVAudioSession.mediaServicesWereLostNotification, object: nil, queue: nil) { [weak self] _ in
+            Task { @MainActor [weak self] in self?.interrupt() }
+        })
+        observers.append(center.addObserver(forName: AVAudioSession.routeChangeNotification, object: nil, queue: nil) { [weak self] note in
+            guard let raw = note.userInfo?[AVAudioSessionRouteChangeReasonKey] as? UInt,
+                  raw != AVAudioSession.RouteChangeReason.categoryChange.rawValue else { return }
+            Task { @MainActor [weak self] in self?.interrupt() }
+        })
+        #endif
+    }
+
+    private func interrupt() {
+        guard continuation != nil else { return }
+        continuation?.finish(throwing: CaptureFailure.interrupted)
+        stop()
+    }
+
     func stop() {
+        observers.forEach { NotificationCenter.default.removeObserver($0) }
+        observers.removeAll()
         engine.stop()
         if hasTap { engine.inputNode.removeTap(onBus: 0); hasTap = false }
         continuation?.finish()

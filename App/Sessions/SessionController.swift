@@ -9,16 +9,29 @@ final class SessionController {
     var isReplaying = false
     var liveStatus: String?
     var isActive: Bool { isReplaying || liveStatus != nil }
-    private var live: LiveTranscriber?
+    private var live: (any RecordingConnection)?
+    private let makeConnection: () -> any RecordingConnection
+    private let prepareRecording: () async throws -> Void
     var errorMessage: String?
     private var task: Task<Void, Never>?
     private let store: SessionStore
     private let logger = Logger(subsystem: "ai.voicecompanion.app", category: "session")
 
-    init() {
+    init(store: SessionStore? = nil,
+         makeConnection: @escaping () -> any RecordingConnection = { LiveTranscriber() },
+         prepareRecording: @escaping () async throws -> Void = {
+             _ = try RelayConfiguration.load()
+             let access = MicrophoneAccess()
+             await access.request()
+             guard access.state == .allowed else {
+                 throw NSError(domain: "Microphone", code: 1, userInfo: [NSLocalizedDescriptionKey: "Microphone permission is required. Enable it in system settings."])
+             }
+         }) {
+        self.makeConnection = makeConnection
+        self.prepareRecording = prepareRecording
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         let folder = ProcessInfo.processInfo.arguments.contains("--ui-testing") ? "VoiceCompanion-QA" : "VoiceCompanion"
-        store = SessionStore(directory: base.appendingPathComponent(folder).appendingPathComponent("sessions"))
+        self.store = store ?? SessionStore(directory: base.appendingPathComponent(folder).appendingPathComponent("sessions"))
         reload()
     }
 
@@ -70,32 +83,32 @@ final class SessionController {
         liveStatus = "Connecting…"
         task = Task {
             do {
-                _ = try RelayConfiguration.load()
-                let access = MicrophoneAccess()
-                await access.request()
-                guard access.state == .allowed else {
-                    throw NSError(domain: "Microphone", code: 1, userInfo: [NSLocalizedDescriptionKey: "Microphone permission is required. Enable it in system settings."])
-                }
+                try await prepareRecording()
                 try Task.checkCancellation()
                 current = CaptureSession(id: UUID(), createdAt: Date(), source: "microphone")
                 try persist()
-                let connection = LiveTranscriber()
+                let connection = makeConnection()
                 live = connection
                 try await connection.run(onReady: {
                     self.liveStatus = "Recording"
                     self.logger.info("microphone_recording_started")
+                }, onFinishing: {
+                    self.liveStatus = "Finishing…"
                 }, onEvent: { event in
                     if let segment = event.segment {
                         self.current?.transcript.apply(segment)
                         try self.persist()
                     }
                 })
-                current?.completed = true
+                let completed = current?.endReason == nil
+                current?.completed = completed
                 try persist()
                 logger.info("microphone_recording_completed")
             } catch {
                 current?.completed = false
-                errorMessage = "Recording ended: \(error.localizedDescription)"
+                let reason = current?.endReason ?? "Recording ended: \(error.localizedDescription)"
+                current?.endReason = reason
+                errorMessage = reason
                 do { try persist() }
                 catch { errorMessage = "Could not save received text: \(error.localizedDescription)" }
             }
@@ -118,6 +131,19 @@ final class SessionController {
         catch { errorMessage = "Could not save session: \(error.localizedDescription)" }
         reload()
         logger.info("replay_stopped")
+    }
+
+    func interrupt(reason: String) {
+        guard liveStatus != nil else { if isReplaying { stop() }; return }
+        current?.completed = false
+        current?.endReason = reason
+        errorMessage = reason
+        // Persist before suspension. Never depend on a final network event in the background.
+        do { try persist() }
+        catch { errorMessage = "Could not save received text: \(error.localizedDescription)" }
+        liveStatus = "Stopping…"
+        live?.cancel()
+        task?.cancel()
     }
 
     func close() { guard liveStatus == nil else { return }; if isReplaying { stop() }; current = nil; reload() }
