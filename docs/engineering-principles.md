@@ -118,7 +118,7 @@ Keep PRs small enough to understand and diagnose. Record decisions and verificat
 
 ## Stop for founder-dependent blockers
 
-Explicit founder instruction: when progress requires the founder's permission, access, approval, or decision, stop and wait for the founder to unblock it. State the exact blocker, the action needed, and why it is required. Do not continue into other work while waiting, bypass the gate, repeatedly retry it, or substitute a different implementation or mocked evidence to appear unblocked. Resume only after the founder responds and the required prerequisite is actually satisfied.
+Explicit founder instruction: when progress requires the founder's permission, access, approval, or decision, stop and wait for the founder to unblock it. State the exact blocker, the action needed, and why it is required. Do not continue into other work while waiting, bypass the gate, repeatedly retry it, or substitute a different implementation or mocked evidence to appear unblocked. Resume only after the founder responds and the required prerequisite is actually satisfied. For manual QA that needs the founder, describe the steps and wait for an explicit ready response before launching the timed check, starting recording, or triggering the event. Do not treat approval of the overall work as readiness for a live test.
 
 Examples include granting microphone permission, providing provider credentials, authorizing device/signing access, or resolving a material product decision. Computer/screen-audio permission is relevant only to later authorized computer-audio work, not microphone-only V0. Do not request permissions that the current slice does not need.
 

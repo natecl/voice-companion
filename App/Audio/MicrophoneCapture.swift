@@ -33,9 +33,11 @@ private final class PCMEncoder: @unchecked Sendable {
 }
 
 enum CaptureFailure: LocalizedError {
-    case unavailable, overflow, noRelay, connectionEnded, interrupted
+    case unavailable, overflow, noRelay, connectionEnded, interrupted, connectionTimedOut, finalizationTimedOut
     var errorDescription: String? {
         switch self {
+        case .connectionTimedOut: "The transcription service did not become ready in time. Recording did not start."
+        case .finalizationTimedOut: "Final transcription results did not arrive in time. Received text is saved; the transcript may be incomplete."
         case .interrupted: "Audio capture was interrupted or its input changed. Received text is saved; start a new recording to continue."
         case .unavailable: "The microphone audio format is unavailable."
         case .overflow: "Audio could not be sent quickly enough. Recording stopped to avoid missing speech."
@@ -46,7 +48,7 @@ enum CaptureFailure: LocalizedError {
 }
 
 @MainActor
-final class MicrophoneCapture {
+final class MicrophoneCapture: AudioCapture {
     private let engine = AVAudioEngine()
     private var continuation: AsyncThrowingStream<Data, Error>.Continuation?
     private var hasTap = false

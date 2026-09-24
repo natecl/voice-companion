@@ -27,3 +27,9 @@ The configuration contains a random relay token and the public certificate, neve
 Launch with `--relay-check` to verify TLS reachability using `/health`, without audio capture or a provider call. Allow iOS Local Network access if prompted. The diagnostic banner describes only that check; relaunch normally before using the app for recording. `/health` exposes only a static readiness response and consumes no transcription quota.
 
 This is a bounded internal development transport, not public hosting or production authentication. Do not expose the relay publicly.
+
+## Local transport fault checks
+
+`Backend/transport_fixture.py` is a test-only loopback server. It does not read `.env` or connect to xAI. Native `TransportFailureTests` launch it on an ephemeral port and exercise the production URLSession WebSocket adapter/controller/store using synthetic PCM and shortened timeout values. Scenarios cover abrupt socket loss, error events, rejected authorization, missing readiness/finalization, unexpected completion, capture-stream failure, cancellation, and normal explicit/automatic Stop. Server reports verify closure and whether any audio or audio.done arrived.
+
+The Mac check script selects the current `python3` for these tests; it must have Backend/requirements.txt installed. Override with `VOICE_TEST_PYTHON=/absolute/path/to/python`. For direct xcodebuild calls, use `TEST_RUNNER_VOICE_TEST_PYTHON=/absolute/path/to/python`. Default microphone and paid-provider checks remain excluded. These transport tests require neither credentials nor microphone permission.

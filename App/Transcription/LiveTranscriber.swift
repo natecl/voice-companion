@@ -4,18 +4,34 @@ import Foundation
 final class LiveTranscriber: RecordingConnection {
     private var socket: URLSessionWebSocketTask?
     private var session: URLSession?
-    private let microphone = MicrophoneCapture()
+    struct Timeouts {
+        var ready: Duration = .seconds(10)
+        var recording: Duration = .seconds(55)
+        var finalization: Duration = .seconds(12)
+    }
+    private let microphone: any AudioCapture
+    private let configuration: () throws -> RelayConfiguration
+    private let timeouts: Timeouts
     private var sender: Task<Void, Error>?
     private var deadline: Task<Void, Never>?
     private var stopped = false
     private var stopRequested = false
     private var onFinishing: (() -> Void)?
     private var sendingError: Error?
+    private var timeoutError: CaptureFailure?
+
+    init(microphone: any AudioCapture = MicrophoneCapture(),
+         configuration: @escaping () throws -> RelayConfiguration = { try RelayConfiguration.load() },
+         timeouts: Timeouts = Timeouts()) {
+        self.microphone = microphone
+        self.configuration = configuration
+        self.timeouts = timeouts
+    }
 
     func run(onReady: () -> Void, onFinishing: @escaping () -> Void, onEvent: (GrokEvent) throws -> Void) async throws {
         self.onFinishing = onFinishing
         defer { cleanup() }
-        let config = try RelayConfiguration.load()
+        let config = try configuration()
         var request = URLRequest(url: config.url)
         request.setValue("Bearer " + config.token, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = 10
@@ -24,7 +40,10 @@ final class LiveTranscriber: RecordingConnection {
         let socket = session.webSocketTask(with: request)
         self.socket = socket
         socket.resume()
-        deadline = Task { try? await Task.sleep(for: .seconds(10)); if !Task.isCancelled { socket.cancel() } }
+        deadline = Task {
+            try? await Task.sleep(for: timeouts.ready)
+            if !Task.isCancelled { timeoutError = .connectionTimedOut; socket.cancel() }
+        }
         let ready = try await receive(socket)
         guard ready.type == "transcript.created", !stopRequested else { throw CaptureFailure.connectionEnded }
         deadline?.cancel()
@@ -46,13 +65,11 @@ final class LiveTranscriber: RecordingConnection {
         }
         // Development sessions are bounded; auto-stop still flushes final text.
         deadline = Task {
-            try? await Task.sleep(for: .seconds(55))
+            try? await Task.sleep(for: timeouts.recording)
             if !Task.isCancelled { stop() }
         }
         while true {
-            let event: GrokEvent
-            do { event = try await receive(socket) }
-            catch { throw sendingError ?? error }
+            let event = try await receive(socket)
             if event.type == "error" { throw CaptureFailure.connectionEnded }
             if event.type == "transcript.done" {
                 guard stopRequested else { throw CaptureFailure.connectionEnded }
@@ -72,8 +89,8 @@ final class LiveTranscriber: RecordingConnection {
         if sender == nil { socket?.cancel(); return }
         deadline?.cancel()
         deadline = Task {
-            try? await Task.sleep(for: .seconds(12))
-            if !Task.isCancelled { socket?.cancel() }
+            try? await Task.sleep(for: timeouts.finalization)
+            if !Task.isCancelled { timeoutError = .finalizationTimedOut; socket?.cancel() }
         }
     }
 
@@ -84,7 +101,9 @@ final class LiveTranscriber: RecordingConnection {
     }
 
     private func receive(_ socket: URLSessionWebSocketTask) async throws -> GrokEvent {
-        let message = try await socket.receive()
+        let message: URLSessionWebSocketTask.Message
+        do { message = try await socket.receive() }
+        catch { throw (timeoutError as Error?) ?? sendingError ?? error }
         let data: Data
         switch message {
         case .data(let bytes): data = bytes
