@@ -6,19 +6,19 @@ private final class ControlledConnection: RecordingConnection {
     var stopped = false
     var cancelled = false
     var finish: CheckedContinuation<Void, Error>?
-    var finishing: (() -> Void)?
+    var finishing: ((RecordingStopReason) -> Void)?
 
-    func run(onReady: () -> Void, onFinishing: @escaping () -> Void,
+    func run(onReady: (Duration) -> Void, onFinishing: @escaping (RecordingStopReason) -> Void,
              onEvent: (GrokEvent) throws -> Void) async throws {
         started = true
-        onReady()
+        onReady(.seconds(55))
         // The fixture is delivered through the real controller reducer and disk store.
         try onEvent(JSONDecoder().decode(GrokEvent.self, from: Data(
             "{\"type\":\"transcript.partial\",\"text\":\"Received words\",\"start\":0,\"duration\":1}".utf8)))
         finishing = onFinishing
         try await withCheckedThrowingContinuation { finish = $0 }
     }
-    func stop() { stopped = true; finishing?(); finish?.resume(); finish = nil }
+    func stop() { stopped = true; finishing?(.user); finish?.resume(); finish = nil }
     func cancel() { cancelled = true; finish?.resume(throwing: CancellationError()); finish = nil }
     func fail() { finish?.resume(throwing: CaptureFailure.connectionEnded); finish = nil }
 }
@@ -74,7 +74,13 @@ final class RecordingLifecycleTests: XCTestCase {
             controller.stop()
             XCTAssertTrue(connection.stopped)
             await waitUntil { !controller.isActive }
-            XCTAssertTrue(try XCTUnwrap(store.load().first).completed)
+            let saved = try XCTUnwrap(store.load().first)
+            XCTAssertTrue(saved.completed)
+            XCTAssertNil(saved.stopNotice)
+            let elapsed = try XCTUnwrap(saved.recordingSeconds)
+            XCTAssertGreaterThan(elapsed, 0)
+            try await Task.sleep(for: .milliseconds(20))
+            XCTAssertEqual(controller.elapsedRecordingSeconds, elapsed)
         }
     }
     func testStopDuringPermissionWaitNeverCreatesConnection() async throws {

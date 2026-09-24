@@ -4,9 +4,11 @@ import Foundation
 final class LiveTranscriber: RecordingConnection {
     private var socket: URLSessionWebSocketTask?
     private var session: URLSession?
+    nonisolated static let recordingLimit: Duration = .seconds(55)
+
     struct Timeouts {
         var ready: Duration = .seconds(10)
-        var recording: Duration = .seconds(55)
+        var recording: Duration = LiveTranscriber.recordingLimit
         var finalization: Duration = .seconds(12)
     }
     private let microphone: any AudioCapture
@@ -16,7 +18,7 @@ final class LiveTranscriber: RecordingConnection {
     private var deadline: Task<Void, Never>?
     private var stopped = false
     private var stopRequested = false
-    private var onFinishing: (() -> Void)?
+    private var onFinishing: ((RecordingStopReason) -> Void)?
     private var sendingError: Error?
     private var timeoutError: CaptureFailure?
 
@@ -28,7 +30,7 @@ final class LiveTranscriber: RecordingConnection {
         self.timeouts = timeouts
     }
 
-    func run(onReady: () -> Void, onFinishing: @escaping () -> Void, onEvent: (GrokEvent) throws -> Void) async throws {
+    func run(onReady: (Duration) -> Void, onFinishing: @escaping (RecordingStopReason) -> Void, onEvent: (GrokEvent) throws -> Void) async throws {
         self.onFinishing = onFinishing
         defer { cleanup() }
         let config = try configuration()
@@ -48,7 +50,7 @@ final class LiveTranscriber: RecordingConnection {
         guard ready.type == "transcript.created", !stopRequested else { throw CaptureFailure.connectionEnded }
         deadline?.cancel()
         let audio = try microphone.start()
-        onReady()
+        onReady(timeouts.recording)
         sender = Task {
             do {
                 for try await frame in audio {
@@ -66,7 +68,7 @@ final class LiveTranscriber: RecordingConnection {
         // Development sessions are bounded; auto-stop still flushes final text.
         deadline = Task {
             try? await Task.sleep(for: timeouts.recording)
-            if !Task.isCancelled { stop() }
+            if !Task.isCancelled { finish(reason: .developmentLimit) }
         }
         while true {
             let event = try await receive(socket)
@@ -80,10 +82,12 @@ final class LiveTranscriber: RecordingConnection {
         }
     }
 
-    func stop() {
+    func stop() { finish(reason: .user) }
+
+    private func finish(reason: RecordingStopReason) {
         guard !stopped else { return }
         stopped = true
-        onFinishing?()
+        onFinishing?(reason)
         stopRequested = true
         microphone.stop()
         if sender == nil { socket?.cancel(); return }

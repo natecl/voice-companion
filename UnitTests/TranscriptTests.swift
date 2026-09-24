@@ -42,6 +42,17 @@ final class TranscriptTests: XCTestCase {
         XCTAssertTrue(try store.load().isEmpty)
     }
 
+    func testOlderSavedSessionLoadsWithoutRecordingMetadata() throws {
+        let data = Data("""
+        {"id":"11111111-1111-1111-1111-111111111111","createdAt":0,
+         "transcript":{"segments":[]},"completed":true,"source":"microphone"}
+        """.utf8)
+        let session = try JSONDecoder().decode(CaptureSession.self, from: data)
+        XCTAssertTrue(session.completed)
+        XCTAssertNil(session.stopNotice)
+        XCTAssertNil(session.recordingSeconds)
+    }
+
     func testCorruptSessionIsReported() throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)

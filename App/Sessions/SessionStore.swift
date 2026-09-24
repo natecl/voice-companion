@@ -7,6 +7,8 @@ struct CaptureSession: Codable, Identifiable {
     var completed = false
     var source: String? = nil
     var endReason: String? = nil
+    var stopNotice: String? = nil
+    var recordingSeconds: Double? = nil
 }
 
 struct SessionStore {

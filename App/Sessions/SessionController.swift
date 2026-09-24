@@ -9,6 +9,22 @@ final class SessionController {
     var isReplaying = false
     var liveStatus: String?
     var isActive: Bool { isReplaying || liveStatus != nil }
+    private var recordingStarted: ContinuousClock.Instant?
+    var recordingLimit = LiveTranscriber.recordingLimit
+
+    var elapsedRecordingSeconds: Double {
+        guard let recordingStarted else { return current?.recordingSeconds ?? 0 }
+        let parts = recordingStarted.duration(to: .now).components
+        return Double(parts.seconds) + Double(parts.attoseconds) / 1e18
+    }
+
+    private func freezeRecordingTime() {
+        guard recordingStarted != nil else { return }
+        let elapsed = elapsedRecordingSeconds
+        current?.recordingSeconds = elapsed
+        recordingStarted = nil
+    }
+
     private var live: (any RecordingConnection)?
     private let makeConnection: () -> any RecordingConnection
     private let prepareRecording: () async throws -> Void
@@ -89,10 +105,16 @@ final class SessionController {
                 try persist()
                 let connection = makeConnection()
                 live = connection
-                try await connection.run(onReady: {
+                try await connection.run(onReady: { limit in
+                    self.recordingLimit = limit
+                    self.recordingStarted = .now
                     self.liveStatus = "Recording"
                     self.logger.info("microphone_recording_started")
-                }, onFinishing: {
+                }, onFinishing: { reason in
+                    self.freezeRecordingTime()
+                    if reason == .developmentLimit {
+                        self.current?.stopNotice = "Stopped automatically at the development recording limit (\(self.recordingLimit.components.seconds) seconds)."
+                    }
                     self.liveStatus = "Finishing…"
                 }, onEvent: { event in
                     if let segment = event.segment {
@@ -105,6 +127,7 @@ final class SessionController {
                 try persist()
                 logger.info("microphone_recording_completed")
             } catch {
+                freezeRecordingTime()
                 current?.completed = false
                 let reason = current?.endReason ?? "Recording ended: \(error.localizedDescription)"
                 current?.endReason = reason
@@ -135,6 +158,7 @@ final class SessionController {
 
     func interrupt(reason: String) {
         guard liveStatus != nil else { if isReplaying { stop() }; return }
+        freezeRecordingTime()
         current?.completed = false
         current?.endReason = reason
         errorMessage = reason
