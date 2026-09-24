@@ -13,86 +13,93 @@ struct SessionsView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                Label("Voice Companion", systemImage: "waveform").font(.title.bold())
-                Text(controller.current == nil ? "Ready to record" : controller.current?.source == "microphone" ? "Microphone session" : "Sample replay · microphone off").foregroundStyle(.secondary)
-                if ProcessInfo.processInfo.arguments.contains("--request-microphone") {
-                    Text(microphone.state == .allowed ? "Microphone permission granted. Recording has not started." :
-                         microphone.state == .denied ? "Microphone access is denied. Enable it in System Settings to record." :
-                         "Waiting for microphone permission…")
-                        .accessibilityIdentifier("microphonePermission")
-                }
-                if let microphoneCheck { Text(microphoneCheck).accessibilityIdentifier("microphoneCheck") }
-                if let error = controller.errorMessage {
-                    Text(error).foregroundStyle(.red).accessibilityIdentifier("sessionError")
-                }
-                if let session = controller.current {
-                    if session.source == "microphone", controller.liveStatus != nil || session.recordingSeconds != nil {
-                        TimelineView(.periodic(from: .now, by: 1)) { _ in
-                            let seconds = Int(controller.elapsedRecordingSeconds)
-                            Text(String(format: "%d:%02d elapsed", seconds / 60, seconds % 60))
-                                .monospacedDigit().accessibilityIdentifier("recordingElapsed")
-                        }
-                        if controller.liveStatus != nil { recordingLimitNotice }
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    Label("Voice Companion", systemImage: "waveform").font(.title.bold())
+                    Text(controller.current == nil ? "Ready to record" : controller.current?.source == "microphone" ? "Microphone session" : "Sample replay · microphone off").foregroundStyle(.secondary)
+                    if ProcessInfo.processInfo.arguments.contains("--request-microphone") {
+                        Text(microphone.state == .allowed ? "Microphone permission granted. Recording has not started." :
+                             microphone.state == .denied ? "Microphone access is denied. Enable it in System Settings to record." :
+                             "Waiting for microphone permission…")
+                            .accessibilityIdentifier("microphonePermission")
                     }
-                    if let notice = session.stopNotice {
-                        Text(notice).foregroundStyle(.secondary).accessibilityIdentifier("stopNotice")
+                    if let microphoneCheck { Text(microphoneCheck).accessibilityIdentifier("microphoneCheck") }
+                    if let error = controller.errorMessage {
+                        Text(error).foregroundStyle(.red).accessibilityIdentifier("sessionError")
                     }
-                    if let reason = session.endReason, reason != controller.errorMessage { Text(reason).foregroundStyle(.secondary) }
-                    Text(controller.liveStatus ?? (controller.isReplaying ? "Replaying sample…" : (session.completed ? "Saved" : "Incomplete · saved")))
-                        .accessibilityIdentifier("sessionStatus")
-                    if session.transcript.segments.isEmpty {
-                        Text(controller.isActive ? "Waiting for transcript…" : "No transcript was received.")
-                    }
-                    ForEach(session.transcript.segments) { segment in
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(String(format: "%.1fs", segment.start)).font(.caption).foregroundStyle(.secondary)
-                            if segment.words.isEmpty {
-                                Text("Speaker pending").font(.caption)
-                                Text(segment.text)
-                            } else {
-                                // Keep word attribution visible without changing provider output.
-                                Text(attributedWords(segment.words))
+                    if let session = controller.current {
+                        if session.source == "microphone", controller.liveStatus != nil || session.recordingSeconds != nil {
+                            TimelineView(.periodic(from: .now, by: 1)) { _ in
+                                let seconds = Int(controller.elapsedRecordingSeconds)
+                                Text(String(format: "%d:%02d elapsed", seconds / 60, seconds % 60))
+                                    .monospacedDigit().accessibilityIdentifier("recordingElapsed")
                             }
+                            if controller.liveStatus != nil { recordingLimitNotice }
                         }
-                        .accessibilityElement(children: .contain)
-                        .accessibilityIdentifier("transcriptSegment")
-                    }
-                    if controller.liveStatus != nil {
-                        Button("Stop recording") { controller.stop() }
-                            .disabled(controller.liveStatus == "Finishing…")
-                            .accessibilityIdentifier("stopRecording")
-                    } else if controller.isReplaying {
-                        Button("Stop replay") { controller.stop() }.accessibilityIdentifier("stopReplay")
+                        if let notice = session.stopNotice {
+                            Text(notice).foregroundStyle(.secondary).accessibilityIdentifier("stopNotice")
+                        }
+                        if let reason = session.endReason, reason != controller.errorMessage { Text(reason).foregroundStyle(.secondary) }
+                        Text(controller.liveStatus ?? (controller.isReplaying ? "Replaying sample…" : (session.completed ? "Saved" : "Incomplete · saved")))
+                            .accessibilityIdentifier("sessionStatus")
+                        if session.transcript.segments.isEmpty {
+                            Text(controller.isActive ? "Waiting for transcript…" : "No transcript was received.")
+                        }
+                        ForEach(session.transcript.segments) { segment in
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(String(format: "%.1fs", segment.start)).font(.caption).foregroundStyle(.secondary)
+                                if segment.words.isEmpty {
+                                    Text("Speaker pending").font(.caption)
+                                    Text(segment.text)
+                                } else {
+                                    // Keep word attribution visible without changing provider output.
+                                    Text(attributedWords(segment.words))
+                                }
+                            }
+                            .accessibilityElement(children: .contain)
+                            .accessibilityIdentifier("transcriptSegment")
+                        }
+                        if controller.isReplaying {
+                            Button("Stop replay") { controller.stop() }.accessibilityIdentifier("stopReplay")
+                        } else if controller.liveStatus == nil {
+                            Button("Delete session", role: .destructive) { confirmingDeletion = true }
+                                .accessibilityIdentifier("deleteSession")
+                        }
+                        Button("Back to sessions") { controller.close() }.disabled(controller.liveStatus != nil).accessibilityIdentifier("closeSession")
                     } else {
-                        Button("Delete session", role: .destructive) { confirmingDeletion = true }
-                            .accessibilityIdentifier("deleteSession")
+                        recordingLimitNotice
+                        Button("Start recording") { controller.startRecording() }
+                            .disabled(controller.isActive).accessibilityIdentifier("startRecording")
+                        if let status = controller.liveStatus {
+                            Text(status)
+                        }
+                        Button("Replay sample") { controller.startReplay() }
+                            .buttonStyle(.borderedProminent).disabled(controller.isActive).accessibilityIdentifier("replaySample")
+                        if controller.sessions.isEmpty { Text("No saved sessions yet.") }
+                        ForEach(controller.sessions) { session in
+                            Button {
+                                controller.current = session
+                            } label: {
+                                VStack(alignment: .leading) {
+                                    Text(session.source == "microphone" ? "Recorded conversation" : "Sample conversation")
+                                    Text(session.createdAt.formatted()).font(.caption)
+                                }
+                            }.accessibilityIdentifier("savedSession")
+                        }
                     }
-                    Button("Back to sessions") { controller.close() }.disabled(controller.liveStatus != nil).accessibilityIdentifier("closeSession")
-                } else {
-                    recordingLimitNotice
-                    Button("Start recording") { controller.startRecording() }
-                        .disabled(controller.isActive).accessibilityIdentifier("startRecording")
-                    if let status = controller.liveStatus {
-                        Text(status)
-                        Button("Stop recording") { controller.stop() }.accessibilityIdentifier("stopRecording")
-                    }
-                    Button("Replay sample") { controller.startReplay() }
-                        .buttonStyle(.borderedProminent).disabled(controller.isActive).accessibilityIdentifier("replaySample")
-                    if controller.sessions.isEmpty { Text("No saved sessions yet.") }
-                    ForEach(controller.sessions) { session in
-                        Button {
-                            controller.current = session
-                        } label: {
-                            VStack(alignment: .leading) {
-                                Text(session.source == "microphone" ? "Recorded conversation" : "Sample conversation")
-                                Text(session.createdAt.formatted()).font(.caption)
-                            }
-                        }.accessibilityIdentifier("savedSession")
-                    }
+                }.accessibilityElement(children: .contain).padding(24).frame(maxWidth: .infinity, alignment: .leading)
+            }
+            if let status = controller.liveStatus {
+                HStack {
+                    Text(status)
+                    Spacer()
+                    Button("Stop recording") { controller.stop() }
+                        .disabled(status == "Finishing…" || status == "Stopping…")
+                        .accessibilityIdentifier("stopRecording")
                 }
-            }.accessibilityElement(children: .contain).padding(24).frame(maxWidth: .infinity, alignment: .leading)
+                .padding().background(.regularMaterial)
+            }
         }
         .alert("Delete this session?", isPresented: $confirmingDeletion) {
             Button("Cancel", role: .cancel) {}

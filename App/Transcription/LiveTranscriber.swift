@@ -4,7 +4,7 @@ import Foundation
 final class LiveTranscriber: RecordingConnection {
     private var socket: URLSessionWebSocketTask?
     private var session: URLSession?
-    nonisolated static let recordingLimit: Duration = .seconds(55)
+    nonisolated static let recordingLimit: Duration = .seconds(300)
 
     struct Timeouts {
         var ready: Duration = .seconds(10)

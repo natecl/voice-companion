@@ -30,7 +30,8 @@ struct RelayConfiguration: Decodable {
     func makeSession() throws -> URLSession {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.timeoutIntervalForRequest = 15
-        configuration.timeoutIntervalForResource = 75
+        // Longer than capture + readiness/finalization deadlines; those own user-facing errors.
+        configuration.timeoutIntervalForResource = Double(LiveTranscriber.recordingLimit.components.seconds) + 45
         if url.scheme == "wss" {
             guard let rootCertificate, let data = Data(base64Encoded: rootCertificate), let host = url.host,
                   SecCertificateCreateWithData(nil, data as CFData) != nil else { throw CaptureFailure.noRelay }
