@@ -16,6 +16,12 @@ Use the breakdown discussed by Mark Pincus and Garry Tan in the first source vid
 
 This is the product source of truth. Everyday capture scenarios are applications of this vision, and Jev is a potential way to implement it.
 
+## Clarification: Granola is the Proven
+
+The authoritative Proven entry is **Granola**, the reference product itself. The earlier proposed breakdown—start a recording session, capture a transcript, write your own notes, get organized AI notes, and revisit the conversation—is superseded and must not be used as the Proven definition.
+
+Those interactions may describe use cases, but they do not replace the agreed framework above.
+
 ## Source grounding
 
 [Mark Pincus and Garry Tan video](https://www.youtube.com/watch?v=oHwUD9b9_pg&t=591s)
