@@ -56,11 +56,9 @@ struct SessionsView: View {
                     }
                     Button("Back to sessions") { controller.close() }.disabled(controller.liveStatus != nil).accessibilityIdentifier("closeSession")
                 } else {
-                    #if os(macOS)
                     Button("Start recording") { controller.startRecording() }
                         .disabled(controller.isActive).accessibilityIdentifier("startRecording")
                     if let status = controller.liveStatus { Text(status) }
-                    #endif
                     Button("Replay sample") { controller.startReplay() }
                         .buttonStyle(.borderedProminent).disabled(controller.isActive).accessibilityIdentifier("replaySample")
                     if controller.sessions.isEmpty { Text("No saved sessions yet.") }
@@ -78,6 +76,20 @@ struct SessionsView: View {
             }.accessibilityElement(children: .contain).padding(24).frame(maxWidth: .infinity, alignment: .leading)
         }
         .task {
+            if ProcessInfo.processInfo.arguments.contains("--relay-check") {
+                microphoneCheck = "Checking encrypted relay connection…"
+                do {
+                    let config = try RelayConfiguration.load()
+                    let session = try config.makeSession()
+                    defer { session.invalidateAndCancel() }
+                    var components = URLComponents(url: config.url, resolvingAgainstBaseURL: false)!
+                    components.scheme = config.url.scheme == "wss" ? "https" : "http"
+                    components.path = "/health"
+                    let (_, response) = try await session.data(from: components.url!)
+                    guard (response as? HTTPURLResponse)?.statusCode == 200 else { throw CaptureFailure.connectionEnded }
+                    microphoneCheck = "Relay connection verified. No microphone capture or provider call."
+                } catch { microphoneCheck = "Relay check failed: \(error.localizedDescription)" }
+            }
             if ProcessInfo.processInfo.arguments.contains("--microphone-check") {
                 microphoneCheck = "Checking microphone locally…"
                 do {

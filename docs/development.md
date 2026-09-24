@@ -65,3 +65,24 @@ Default Mac regression: four core tests and two replay UI tests passed with the 
 Hardware regression command (permission must already be granted): run xcodebuild with scheme Mac, your development signing team/identity, and `-only-testing:MacUITests/MicrophoneUITests test`. The default check script excludes this opt-in microphone test. Launching with `--microphone-check` also runs a five-second local-only diagnostic.
 
 Known limits: this is a bounded Mac development integration; natural multi-speaker quality, hardware route changes, full interruption behavior, longer sessions, iPhone transport, and production relay deployment are not yet verified. It does not complete V0.
+
+
+## iPhone live development checkpoint — September 24, 2026
+
+Bounded acceptance: physical iPhone microphone -> encrypted development relay -> real provider -> speaker-labeled transcript -> Stop/Saved -> reopen, including after app relaunch. This checkpoint establishes the successful short-recording path; it does not complete phase 5 interruption/failure acceptance or all of V0.
+
+The iPhone reuses the shared capture, transcription, and persistence flow. Development configuration is copied over the paired-device connection. The relay adds optional LAN TLS with a seven-day certificate, random client authorization, and the existing shared usage limits. Native trust checks preserve expiry and hostname validation. No provider credential enters the app; release builds cannot load this development configuration. See Backend/README.md for reproduction.
+
+Behavioral evidence on iPhone 16 Pro / iOS 26.5.2:
+
+- Five-second local microphone hardware test passed with nonzero PCM and no upload: work/phone-microphone-check.log.
+- Signed TLS-enabled build passed: work/phone-lan-build.log. The phone's `/health` diagnostic displayed connection verified with no provider call. Local TLS validation accepted the development anchor and rejected a wrong hostname.
+- Founder tapped Start recording, spoke the supplied synthetic appointment sentence, and stopped. The completed relay ledger reports 10.79875 audio seconds, 13.713 seconds connection duration, estimated audio cost $0.00059993 (not verified billing). The UI showed the complete expected 18-word text with Speaker 1 across two segments; the agent visually inspected it via iPhone Mirroring.
+- Agent independently ran SavedRecordingUITests on the physical device: open the existing recording, verify Saved and expected text, return to sessions/reopen, terminate/relaunch/reopen, and verify the same text again. One test passed, zero failures. Three retained screenshots show the expected transcript; the final screenshot was visually inspected. No recording, provider calls, or data deletion occurred in this test.
+- Local relay real-socket authentication/forwarding/cleanup/quota regression passed using a fake upstream; no external requests. The signed Mac build also passed after extracting the shared relay configuration (work/iphone-checkpoint-mac-build.log).
+
+Saved-recording evidence: work/phone-saved-recording.log and work/phone-saved-screenshots; device result bundle Test-Phone-2026.09.24_04-01-45--0400.xcresult in DerivedData Logs/Test. Screenshots stay local. The opt-in `-only-testing:PhoneUITests/SavedRecordingUITests` test requires this consented fixture in normal app storage and is excluded from default checks. Default replay tests still use isolated QA storage. Microphone hardware checks are also opt-in on both platforms.
+
+Computer-use observation worked through iPhone Mirroring, but coordinate clicks repeatedly failed with `noWindowsAvailable`. A native Xcode UI test supplied independent interaction/relaunch evidence instead; manual user reports were not substituted for that verification. The check script also fixes Bash 3.2 empty-array expansion for build-only runs.
+
+Remaining acceptance: interruption/background behavior, permission denial and other failure paths, natural multi-speaker accuracy, longer recordings/resource usage, supported minimum OS coverage, production authentication/retention review. The development app still auto-stops at 55 seconds. No claim of full V0 completion or production readiness.

@@ -1,25 +1,9 @@
 import Foundation
 
-struct RelayConfiguration: Decodable {
-    let url: URL
-    let token: String
-    static func load() throws -> Self {
-        let arguments = ProcessInfo.processInfo.arguments
-        guard let index = arguments.firstIndex(of: "--relay-config"), index + 1 < arguments.count else {
-            throw CaptureFailure.noRelay
-        }
-        let config = try JSONDecoder().decode(Self.self, from: Data(contentsOf: URL(fileURLWithPath: arguments[index + 1])))
-        // Development transport is intentionally loopback-only until hosted TLS is configured.
-        guard config.url.scheme == "ws", config.url.host == "127.0.0.1", !config.token.isEmpty else {
-            throw CaptureFailure.noRelay
-        }
-        return config
-    }
-}
-
 @MainActor
 final class LiveTranscriber {
     private var socket: URLSessionWebSocketTask?
+    private var session: URLSession?
     private let microphone = MicrophoneCapture()
     private var sender: Task<Void, Error>?
     private var deadline: Task<Void, Never>?
@@ -31,7 +15,9 @@ final class LiveTranscriber {
         var request = URLRequest(url: config.url)
         request.setValue("Bearer " + config.token, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = 10
-        let socket = URLSession.shared.webSocketTask(with: request)
+        let session = try config.makeSession()
+        self.session = session
+        let socket = session.webSocketTask(with: request)
         self.socket = socket
         socket.resume()
         deadline = Task { try? await Task.sleep(for: .seconds(10)); if !Task.isCancelled { socket.cancel() } }
@@ -99,5 +85,7 @@ final class LiveTranscriber {
         deadline?.cancel()
         socket?.cancel(with: .normalClosure, reason: nil)
         socket = nil
+        session?.invalidateAndCancel()
+        session = nil
     }
 }

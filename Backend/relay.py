@@ -1,5 +1,8 @@
-"""Loopback-only development relay. Not a production deployment."""
+"""Bounded development relay with optional encrypted LAN access. Not a production deployment."""
+import argparse
 import asyncio
+from contextlib import AsyncExitStack
+import ssl
 import hmac
 import http
 import json
@@ -23,6 +26,8 @@ class Relay:
         self.sessions = 0
 
     def authorize(self, connection, request):
+        if request.path == '/health':
+            return connection.respond(http.HTTPStatus.OK, 'ready\n')
         if request.path != '/stt':
             return connection.respond(http.HTTPStatus.NOT_FOUND, 'Not found\n')
         supplied = request.headers.get('Authorization', '')
@@ -111,13 +116,30 @@ async def main():
     CONFIG.chmod(0o600)
     CONFIG.write_text(json.dumps({'url': 'ws://127.0.0.1:8766/stt', 'token': token}))
     relay = Relay(key, token)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--lan', action='store_true')
+    args = parser.parse_args()
+    phone_config = ROOT / 'work/relay-phone.json'
     try:
-        async with serve(relay.handle, '127.0.0.1', 8766, process_request=relay.authorize,
-                         max_size=64000, max_queue=8, close_timeout=2):
-            print('Development relay ready on loopback; 60-second sessions, 180-second process audio cap.', flush=True)
+        async with AsyncExitStack() as stack:
+            await stack.enter_async_context(serve(relay.handle, '127.0.0.1', 8766, process_request=relay.authorize,
+                                                 max_size=64000, max_queue=8, close_timeout=2))
+            if args.lan:
+                settings = json.loads((ROOT / 'work/lan-tls/settings.json').read_text())
+                context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+                context.minimum_version = ssl.TLSVersion.TLSv1_2
+                context.load_cert_chain(ROOT / 'work/lan-tls/server.pem', ROOT / 'work/lan-tls/server.key')
+                await stack.enter_async_context(serve(relay.handle, settings['host'], 8767, ssl=context,
+                    process_request=relay.authorize, max_size=64000, max_queue=8, close_timeout=2))
+                phone_config.touch(mode=0o600, exist_ok=True)
+                phone_config.chmod(0o600)
+                phone_config.write_text(json.dumps({'url': f"wss://{settings['host']}:8767/stt", 'token': token,
+                                                   'rootCertificate': settings['certificate']}))
+            print('Development relay ready; 60-second sessions, three-session / 180-second process cap.', flush=True)
             await asyncio.Future()
     finally:
         CONFIG.unlink(missing_ok=True)
+        phone_config.unlink(missing_ok=True)
 
 if __name__ == '__main__':
     asyncio.run(main())

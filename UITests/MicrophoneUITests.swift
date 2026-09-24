@@ -1,4 +1,3 @@
-#if os(macOS)
 import XCTest
 
 /// Opt-in hardware regression check. No relay or paid provider is involved.
@@ -18,4 +17,3 @@ final class MicrophoneUITests: XCTestCase {
         app.terminate()
     }
 }
-#endif

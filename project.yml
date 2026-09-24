@@ -35,6 +35,7 @@ targets:
         PRODUCT_NAME: VoiceCompanion
         TARGETED_DEVICE_FAMILY: '1'
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_NSLocalNetworkUsageDescription: "Connect to your Mac development relay for live transcription."
   CoreTests:
     type: bundle.unit-test
     platform: macOS
