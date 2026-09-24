@@ -1,6 +1,6 @@
 # Five-minute recording checkpoint
 
-Status: implementation in progress; real five-minute microphone/provider acceptance is pending. Do not mark this checkpoint complete or merge it until the live check passes.
+Status: five-minute physical-iPhone microphone recording, automatic stop, save, and independent relaunch verification passed. Mac five-minute real-audio acceptance remains pending; keep the PR in draft until that separate check is complete. The founder clarified that every manual test they have performed so far was on iPhone. Those results do not establish Mac manual acceptance.
 
 ## Behavior and bounds
 
@@ -26,3 +26,16 @@ Wait for explicit founder readiness. Use one continuous five-minute playback fro
 Retrieve the saved session, inspect timestamp continuity and speaker labels near the beginning/middle/end against the source, and independently verify reopen after relaunch. Confirm no duplicate chunks, no unexpected cutoff, received text retained, completion after automatic stop, and the relay closed within its limits. Record actual duration, finalization delay, resource observations, and limitations. If exact audio boundaries/reference speaker turns are unavailable, do not claim WER or diarization error rates.
 
 One live run is authorized for this checkpoint, with no automatic retry. A failed attempt remains failed and requires diagnosis before another paid run. The current development relay must be restarted explicitly for any additional attempt, with its new token copied to the phone.
+
+
+## Physical iPhone result — September 24, 2026
+
+Tested app source: `096cc0d`. After explicit readiness and successful profiling setup, the founder played the supplied video from 3:09 through computer speakers into the iPhone 16 Pro microphone. One provider request completed, sending 300.5875 audio seconds over a 303.938-second relay connection, estimated $0.0166993 (billing unverified). The app recorded 300.5903 elapsed seconds and displayed 5:00, its automatic-limit explanation, and Saved. No raw audio was retained.
+
+The retrieved JSON has completed=true, no endReason, 887 timestamped words, two non-overlapping stitched transcript segments, and speaker IDs 0, 1, 2. The final segment reaches 300.587 seconds. There are no exact duplicate word/text/timestamp entries. Beginning, middle, and ending text correspond to the expected source passages; this is a spot check against imperfect captions, not a word-error-rate measurement. Speaker count and retained labels are established; correct identity mapping and every speaker boundary are not independently established by this check.
+
+One provider word timestamp goes backwards: “you” begins at 250.165 seconds while the following “know,” begins at 249.145. The app preserves provider word order and does not use these word timestamps for playback. This is a recorded provider timing limitation, not evidence of a duplicate chunk. No timestamp correction or accuracy guarantee is claimed. Relay connection duration minus audio duration is approximately 3.35 seconds, combining setup and completion overhead; finalization latency alone was not instrumented.
+
+`PhoneUITests/SavedRecordingUITests/testLatestFiveMinuteRecordingSurvivesRelaunch` passed on the physical phone: opened the latest normal-storage session, checked Saved, the 300-second explanation, five-minute duration, speaker text and substantial transcript content, terminated/relaunched, and verified all exposed transcript text remained identical. It did not record, delete, or make another provider call.
+
+Local evidence (ignored, not uploaded): `work/five-minute-latest-session.json`, `work/five-minute-live-result.png`, `work/five-minute-live-reopen.log`, `work/relay-five-minute.log`; Xcode result `Test-Phone-2026.09.24_05-37-55--0400.xcresult`. CPU/memory trace analysis follows separately. This result establishes a single five-minute iPhone playback capture, not a lecture-length session, battery-life benchmark, natural multi-person room conversation, or Mac five-minute capture.
