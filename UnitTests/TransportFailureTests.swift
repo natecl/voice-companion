@@ -12,7 +12,7 @@ private final class FixtureAudio: AudioCapture {
         continuation.yield(Data(repeating: 0, count: 3200))
         return stream
     }
-    func fail() { continuation?.finish(throwing: CaptureFailure.overflow) }
+    func fail(_ error: CaptureFailure = .overflow) { continuation?.finish(throwing: error) }
     func stop() { stopped = true; continuation?.finish(); continuation = nil }
 }
 
@@ -63,6 +63,7 @@ final class TransportFailureTests: XCTestCase {
         } else if action != nil {
             try await waitUntil { controller.current?.transcript.segments.isEmpty == false }
             if action == "audio-failure" { audio.fail() }
+            else if action == "route-change" { audio.fail(.interrupted) }
             else if action == "cancel" { controller.interrupt(reason: "Fixture cancellation") }
             else { controller.stop() }
         }
@@ -74,18 +75,20 @@ final class TransportFailureTests: XCTestCase {
         XCTAssertTrue(audio.stopped)
         XCTAssertEqual(audio.started, !["ready-timeout", "stop-connecting", "reject"].contains(mode))
         let saved = try XCTUnwrap(store.load().first)
-        XCTAssertEqual(saved.completed, mode == "complete" && (action == "stop" || action == nil))
+        XCTAssertEqual(saved.completed, ["complete", "empty"].contains(mode) && (action == "stop" || action == nil))
         if ["drop", "error", "final-timeout", "complete"].contains(mode) {
             XCTAssertEqual(saved.transcript.segments.first?.text, "Preserved fixture words")
         }
         if mode == "ready-timeout" { XCTAssertTrue(saved.endReason?.contains("did not become ready") == true) }
         if mode == "final-timeout" { XCTAssertTrue(saved.endReason?.contains("Final transcription results") == true) }
         if action == "audio-failure" { XCTAssertTrue(saved.endReason?.contains("could not be sent quickly enough") == true) }
-        if mode == "complete", action == nil {
+        if ["complete", "empty"].contains(mode), action == nil {
             XCTAssertEqual(saved.stopNotice, "Stopped automatically at the development recording limit (\(recording.components.seconds) seconds).")
             XCTAssertGreaterThanOrEqual(try XCTUnwrap(saved.recordingSeconds), Double(recording.components.seconds))
             XCTAssertNil(saved.endReason)
         } else { XCTAssertNil(saved.stopNotice) }
+        if mode == "empty" { XCTAssertTrue(saved.transcript.segments.isEmpty) }
+        if action == "route-change" { XCTAssertTrue(saved.endReason?.contains("input changed") == true) }
         if !saved.completed { XCTAssertNotNil(saved.endReason) }
         func report() -> [String: Any] {
             guard let data = try? Data(contentsOf: reportFile),
@@ -93,7 +96,7 @@ final class TransportFailureTests: XCTestCase {
             return result
         }
         try await waitUntil { report()["closed"] as? Bool == true }
-        if action == "stop" || (mode == "complete" && action == nil) {
+        if action == "stop" || (["complete", "empty"].contains(mode) && action == nil) {
             XCTAssertEqual(report()["audio_done"] as? Bool, true)
         }
         if !audio.started { XCTAssertEqual(report()["audio_bytes"] as? Int, 0) }
@@ -103,6 +106,9 @@ final class TransportFailureTests: XCTestCase {
         try XCTSkipUnless(ProcessInfo.processInfo.environment["VOICE_LONG_SESSION_CHECK"] == "1", "Opt-in 90-second local socket check")
         try await exercise("complete", recording: .seconds(90))
     }
+
+    func testEmptyTranscriptFinalizesWithoutInventingText() async throws { try await exercise("empty") }
+    func testCaptureRouteFailurePreservesTextAndClosesConnection() async throws { try await exercise("complete", action: "route-change") }
 
     func testRejectedAuthorizationNeverStartsCapture() async throws { try await exercise("reject") }
     func testAudioStreamFailurePreservesItsReasonAndClosesSocket() async throws { try await exercise("complete", action: "audio-failure") }

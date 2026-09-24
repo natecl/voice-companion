@@ -21,6 +21,7 @@ A private product knowledge repository. Working name: Voice Companion. Mac and i
 - [Engineering principles and agent feedback loop](docs/engineering-principles.md)
 - [Transcription direction and unresolved selection](docs/transcription-direction.md)
 - [Synthetic quality screen and remaining acceptance](docs/quality-evaluation.md)
+- [Permission, empty-transcript, and microphone-disconnect QA](docs/reliability-edge-cases.md)
 - [Initial streaming validation evidence](docs/transcription-validation.md)
 - [Source index: videos and X posts](docs/sources/README.md)
 - [Video 1 transcript](docs/sources/transcripts/01-pincus-tan.txt)

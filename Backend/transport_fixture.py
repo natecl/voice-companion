@@ -29,8 +29,9 @@ async def main():
                 if isinstance(packet, bytes):
                     report['audio_bytes'] += len(packet)
                     save()
-                    await socket.send(json.dumps({'type': 'transcript.partial', 'text': 'Preserved fixture words',
-                                                  'start': 0, 'duration': 1}))
+                    if mode != '/empty':
+                        await socket.send(json.dumps({'type': 'transcript.partial', 'text': 'Preserved fixture words',
+                                                      'start': 0, 'duration': 1}))
                     if mode == '/drop':
                         socket.transport.abort()
                         return
@@ -42,7 +43,7 @@ async def main():
                     assert json.loads(packet) == {'type': 'audio.done'}
                     report['audio_done'] = True
                     save()
-                    if mode == '/complete':
+                    if mode in ('/complete', '/empty'):
                         await socket.send(json.dumps({'type': 'transcript.done'}))
                     await socket.wait_closed()
                     return

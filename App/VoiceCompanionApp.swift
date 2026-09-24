@@ -1,4 +1,5 @@
 import SwiftUI
+import AVFoundation
 
 @main
 struct VoiceCompanionApp: App {
@@ -12,12 +13,17 @@ struct SessionsView: View {
     @State private var microphoneCheck: String?
     @Environment(\.scenePhase) private var scenePhase
 
+    private var isMicrophoneCheck: Bool {
+        let arguments = ProcessInfo.processInfo.arguments
+        return arguments.contains("--microphone-check") || arguments.contains("--microphone-interruption-check")
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     Label("Voice Companion", systemImage: "waveform").font(.title.bold())
-                    Text(controller.current == nil ? "Ready to record" : controller.current?.source == "microphone" ? "Microphone session" : "Sample replay · microphone off").foregroundStyle(.secondary)
+                    Text(isMicrophoneCheck ? "Local microphone diagnostic · no upload" : controller.current == nil ? "Ready to record" : controller.current?.source == "microphone" ? "Microphone session" : "Sample replay · microphone off").foregroundStyle(.secondary)
                     if ProcessInfo.processInfo.arguments.contains("--request-microphone") {
                         Text(microphone.state == .allowed ? "Microphone permission granted. Recording has not started." :
                              microphone.state == .denied ? "Microphone access is denied. Enable it in System Settings to record." :
@@ -28,7 +34,9 @@ struct SessionsView: View {
                     if let error = controller.errorMessage {
                         Text(error).foregroundStyle(.red).accessibilityIdentifier("sessionError")
                     }
-                    if let session = controller.current {
+                    if isMicrophoneCheck {
+                        Text("Capture starts automatically. Normal recording controls are unavailable during this diagnostic.")
+                    } else if let session = controller.current {
                         if session.source == "microphone", controller.liveStatus != nil || session.recordingSeconds != nil {
                             TimelineView(.periodic(from: .now, by: 1)) { _ in
                                 let seconds = Int(controller.elapsedRecordingSeconds)
@@ -123,16 +131,22 @@ struct SessionsView: View {
                     microphoneCheck = "Relay connection verified. No microphone capture or provider call."
                 } catch { microphoneCheck = "Relay check failed: \(error.localizedDescription)" }
             }
-            if ProcessInfo.processInfo.arguments.contains("--microphone-check") || ProcessInfo.processInfo.arguments.contains("--microphone-interruption-check") {
-                microphoneCheck = "Checking microphone locally…"
+            if isMicrophoneCheck {
+                microphoneCheck = "Starting local capture…"
+                var bytes = 0
+                var peak = 0
+                var inputDescription = "system-selected microphone"
                 do {
                     let capture = MicrophoneCapture()
                     let stream = try capture.start()
+                    #if os(iOS)
+                    inputDescription = AVAudioSession.sharedInstance().currentRoute.inputs
+                        .map { "\($0.portName) [\($0.portType.rawValue)]" }.joined(separator: ", ")
+                    #endif
+                    microphoneCheck = "Capturing locally from \(inputDescription). No upload."
                     let duration = ProcessInfo.processInfo.arguments.contains("--microphone-interruption-check") ? 120 : 5
                     let stopTask = Task { try? await Task.sleep(for: .seconds(duration)); capture.stop() }
                     defer { stopTask.cancel(); capture.stop() }
-                    var bytes = 0
-                    var peak = 0
                     for try await frame in stream {
                         bytes += frame.count
                         frame.withUnsafeBytes { raw in
@@ -140,7 +154,12 @@ struct SessionsView: View {
                         }
                     }
                     microphoneCheck = "Local microphone check: \(bytes) PCM bytes; peak \(peak). Capture stopped. No upload."
-                } catch { microphoneCheck = "Microphone check failed: \(error.localizedDescription)" }
+                } catch {
+                    let reason = (error as? CaptureFailure) == .interrupted
+                        ? "Audio capture was interrupted or its input changed."
+                        : error.localizedDescription
+                    microphoneCheck = "Local capture stopped: \(reason) Input: \(inputDescription); \(bytes) PCM bytes; peak \(peak). No upload."
+                }
             }
             if ProcessInfo.processInfo.arguments.contains("--request-microphone") {
                 await microphone.request()

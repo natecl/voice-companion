@@ -4,9 +4,10 @@ extension SessionController {
     static func forApp() -> SessionController {
         #if DEBUG
         let arguments = ProcessInfo.processInfo.arguments
-        if arguments.contains("--ui-testing"), (arguments.contains("--recording-ui-fixture") || arguments.contains("--long-transcript-ui-fixture")) {
+        if arguments.contains("--ui-testing"), (arguments.contains("--recording-ui-fixture") || arguments.contains("--long-transcript-ui-fixture") || arguments.contains("--empty-recording-ui-fixture")) {
             let longTranscript = arguments.contains("--long-transcript-ui-fixture")
-            let controller = SessionController(makeConnection: { RecordingUIFixture(longTranscript: longTranscript) }, prepareRecording: {})
+            let emptyTranscript = arguments.contains("--empty-recording-ui-fixture")
+            let controller = SessionController(makeConnection: { RecordingUIFixture(longTranscript: longTranscript, emptyTranscript: emptyTranscript) }, prepareRecording: {})
             controller.recordingLimit = longTranscript ? LiveTranscriber.recordingLimit : .seconds(6)
             return controller
         }
@@ -20,7 +21,11 @@ extension SessionController {
 @MainActor
 private final class RecordingUIFixture: RecordingConnection {
     private let longTranscript: Bool
-    init(longTranscript: Bool) { self.longTranscript = longTranscript }
+    private let emptyTranscript: Bool
+    init(longTranscript: Bool, emptyTranscript: Bool) {
+        self.longTranscript = longTranscript
+        self.emptyTranscript = emptyTranscript
+    }
     private var stopped = false
     private var cancelled = false
 
@@ -40,7 +45,7 @@ private final class RecordingUIFixture: RecordingConnection {
                                      start: Double(turn * 5), duration: 5, is_final: true))
                 try await Task.sleep(for: .milliseconds(10))
             }
-        } else {
+        } else if !emptyTranscript {
             try onEvent(JSONDecoder().decode(GrokEvent.self, from: Data(
             "{\"type\":\"transcript.partial\",\"text\":\"Simulated recording for UI verification. Microphone off.\",\"start\":0,\"duration\":1}".utf8)))
         }
