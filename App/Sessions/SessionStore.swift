@@ -5,6 +5,7 @@ struct CaptureSession: Codable, Identifiable {
     let createdAt: Date
     var transcript = Transcript()
     var completed = false
+    var source: String? = nil
 }
 
 struct SessionStore {

@@ -7,18 +7,27 @@ struct VoiceCompanionApp: App {
 
 struct SessionsView: View {
     @State private var controller = SessionController()
+    @State private var microphone = MicrophoneAccess()
+    @State private var microphoneCheck: String?
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 Label("Voice Companion", systemImage: "waveform").font(.title.bold())
-                Text("Sample replay · microphone off").foregroundStyle(.secondary)
+                Text(controller.current?.source == "microphone" ? "Microphone session" : "Sample replay · microphone off").foregroundStyle(.secondary)
+                if ProcessInfo.processInfo.arguments.contains("--request-microphone") {
+                    Text(microphone.state == .allowed ? "Microphone permission granted. Recording has not started." :
+                         microphone.state == .denied ? "Microphone access is denied. Enable it in System Settings to record." :
+                         "Waiting for microphone permission…")
+                        .accessibilityIdentifier("microphonePermission")
+                }
+                if let microphoneCheck { Text(microphoneCheck).accessibilityIdentifier("microphoneCheck") }
                 if let error = controller.errorMessage {
                     Text(error).foregroundStyle(.red).accessibilityIdentifier("sessionError")
                 }
                 if let session = controller.current {
-                    Text(controller.isReplaying ? "Replaying sample…" : (session.completed ? "Saved" : "Incomplete · saved"))
+                    Text(controller.liveStatus ?? (controller.isReplaying ? "Replaying sample…" : (session.completed ? "Saved" : "Incomplete · saved")))
                         .accessibilityIdentifier("sessionStatus")
                     if session.transcript.segments.isEmpty { Text("Waiting for transcript…") }
                     ForEach(session.transcript.segments) { segment in
@@ -35,23 +44,32 @@ struct SessionsView: View {
                         .accessibilityElement(children: .contain)
                         .accessibilityIdentifier("transcriptSegment")
                     }
-                    if controller.isReplaying {
+                    if controller.liveStatus != nil {
+                        Button("Stop recording") { controller.stop() }
+                            .disabled(controller.liveStatus == "Finishing…")
+                            .accessibilityIdentifier("stopRecording")
+                    } else if controller.isReplaying {
                         Button("Stop replay") { controller.stop() }.accessibilityIdentifier("stopReplay")
                     } else {
                         Button("Delete session", role: .destructive) { controller.deleteCurrent() }
                             .accessibilityIdentifier("deleteSession")
                     }
-                    Button("Back to sessions") { controller.close() }.accessibilityIdentifier("closeSession")
+                    Button("Back to sessions") { controller.close() }.disabled(controller.liveStatus != nil).accessibilityIdentifier("closeSession")
                 } else {
+                    #if os(macOS)
+                    Button("Start recording") { controller.startRecording() }
+                        .disabled(controller.isActive).accessibilityIdentifier("startRecording")
+                    if let status = controller.liveStatus { Text(status) }
+                    #endif
                     Button("Replay sample") { controller.startReplay() }
-                        .buttonStyle(.borderedProminent).accessibilityIdentifier("replaySample")
+                        .buttonStyle(.borderedProminent).disabled(controller.isActive).accessibilityIdentifier("replaySample")
                     if controller.sessions.isEmpty { Text("No saved sessions yet.") }
                     ForEach(controller.sessions) { session in
                         Button {
                             controller.current = session
                         } label: {
                             VStack(alignment: .leading) {
-                                Text("Sample conversation")
+                                Text(session.source == "microphone" ? "Recorded conversation" : "Sample conversation")
                                 Text(session.createdAt.formatted()).font(.caption)
                             }
                         }.accessibilityIdentifier("savedSession")
@@ -59,8 +77,31 @@ struct SessionsView: View {
                 }
             }.accessibilityElement(children: .contain).padding(24).frame(maxWidth: .infinity, alignment: .leading)
         }
+        .task {
+            if ProcessInfo.processInfo.arguments.contains("--microphone-check") {
+                microphoneCheck = "Checking microphone locally…"
+                do {
+                    let capture = MicrophoneCapture()
+                    let stream = try capture.start()
+                    let stopTask = Task { try? await Task.sleep(for: .seconds(5)); capture.stop() }
+                    defer { stopTask.cancel(); capture.stop() }
+                    var bytes = 0
+                    var peak = 0
+                    for try await frame in stream {
+                        bytes += frame.count
+                        frame.withUnsafeBytes { raw in
+                            for sample in raw.bindMemory(to: Int16.self) { peak = max(peak, abs(Int(sample))) }
+                        }
+                    }
+                    microphoneCheck = "Local microphone check: \(bytes) PCM bytes; peak \(peak). Capture stopped. No upload."
+                } catch { microphoneCheck = "Microphone check failed: \(error.localizedDescription)" }
+            }
+            if ProcessInfo.processInfo.arguments.contains("--request-microphone") {
+                await microphone.request()
+            }
+        }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .background && controller.isReplaying { controller.stop() }
+            if phase == .background && controller.isActive { controller.stop() }
         }
     }
 

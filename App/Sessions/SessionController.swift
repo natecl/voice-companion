@@ -7,6 +7,9 @@ final class SessionController {
     var sessions: [CaptureSession] = []
     var current: CaptureSession?
     var isReplaying = false
+    var liveStatus: String?
+    var isActive: Bool { isReplaying || liveStatus != nil }
+    private var live: LiveTranscriber?
     var errorMessage: String?
     private var task: Task<Void, Never>?
     private let store: SessionStore
@@ -25,7 +28,7 @@ final class SessionController {
     }
 
     func startReplay() {
-        guard !isReplaying else { return }
+        guard !isActive else { return }
         errorMessage = nil
         current = CaptureSession(id: UUID(), createdAt: Date())
         isReplaying = true
@@ -61,7 +64,53 @@ final class SessionController {
         }
     }
 
+    func startRecording() {
+        guard !isActive else { return }
+        errorMessage = nil
+        liveStatus = "Connecting…"
+        task = Task {
+            do {
+                _ = try RelayConfiguration.load()
+                let access = MicrophoneAccess()
+                await access.request()
+                guard access.state == .allowed else {
+                    throw NSError(domain: "Microphone", code: 1, userInfo: [NSLocalizedDescriptionKey: "Microphone permission is required. Enable it in system settings."])
+                }
+                try Task.checkCancellation()
+                current = CaptureSession(id: UUID(), createdAt: Date(), source: "microphone")
+                try persist()
+                let connection = LiveTranscriber()
+                live = connection
+                try await connection.run(onReady: {
+                    self.liveStatus = "Recording"
+                    self.logger.info("microphone_recording_started")
+                }, onEvent: { event in
+                    if let segment = event.segment {
+                        self.current?.transcript.apply(segment)
+                        try self.persist()
+                    }
+                })
+                current?.completed = true
+                try persist()
+                logger.info("microphone_recording_completed")
+            } catch {
+                current?.completed = false
+                errorMessage = "Recording ended: \(error.localizedDescription)"
+                do { try persist() }
+                catch { errorMessage = "Could not save received text: \(error.localizedDescription)" }
+            }
+            live = nil
+            liveStatus = nil
+            reload()
+        }
+    }
+
     func stop() {
+        if liveStatus != nil {
+            liveStatus = "Finishing…"
+            if let live { live.stop() } else { task?.cancel() }
+            return
+        }
         task?.cancel()
         task = nil
         isReplaying = false
@@ -71,9 +120,9 @@ final class SessionController {
         logger.info("replay_stopped")
     }
 
-    func close() { if isReplaying { stop() }; current = nil; reload() }
+    func close() { guard liveStatus == nil else { return }; if isReplaying { stop() }; current = nil; reload() }
     func deleteCurrent() {
-        guard let current, !isReplaying else { return }
+        guard let current, !isActive else { return }
         do { try store.delete(current.id); self.current = nil; reload() }
         catch { errorMessage = "Could not delete session: \(error.localizedDescription)" }
     }
