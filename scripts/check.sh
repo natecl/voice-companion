@@ -17,12 +17,15 @@ case "$platform" in
   device) scheme=Phone; destination="id=${DEVICE_ID:?Set DEVICE_ID}"; signing=("DEVELOPMENT_TEAM=${DEVELOPMENT_TEAM:?Set DEVELOPMENT_TEAM}" -allowProvisioningUpdates) ;;
   *) echo 'Use mac, simulator, or device' >&2; exit 2 ;;
 esac
-testing=()
-if [[ "$action" == test && "$platform" == mac ]]; then
-  testing=(-skip-testing:MacUITests/MicrophoneUITests)
+if [[ "$action" == test ]]; then
+  if [[ "$platform" == mac ]]; then
+    signing+=(-skip-testing:MacUITests/MicrophoneUITests -skip-testing:MacUITests/SavedRecordingUITests)
+  else
+    signing+=(-skip-testing:PhoneUITests/MicrophoneUITests -skip-testing:PhoneUITests/SavedRecordingUITests)
+  fi
 fi
 xcodegen generate
 xcodebuild -project VoiceCompanion.xcodeproj -scheme "$scheme" \
   -destination "$destination" \
   -derivedDataPath "$HOME/Library/Developer/Xcode/DerivedData/VoiceCompanion-$platform" \
-  "${signing[@]}" "${testing[@]}" "$action"
+  "${signing[@]}" "$action"
