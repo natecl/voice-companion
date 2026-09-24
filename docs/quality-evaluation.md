@@ -53,3 +53,13 @@ Three scorer regression checks cover edit counts/alignment and normalization. Th
 To generate fresh synthetic audio, run scripts/build_quality_fixtures.py on macOS (Samantha/Daniel at rate 165). Voice versions may change across OS releases; hashes identify the exact tested audio. A fresh paid probe is explicit: scripts/probe_transcription.py --directory <fixture-folder>, adding --max-seconds 60 for the longer fixture. The default cap remains 30 seconds; no automatic retries. Do not rerun paid probes for scorer or UI changes.
 
 Natural human speech and representative multi-person conversation remain unverified by this screen. Grok remains a working integration, not a final provider-quality guarantee.
+
+## Physical iPhone playback check — September 24, 2026
+
+After explicitly confirming readiness, the founder played the supplied YouTube video (`yslXlV2BP_Y`, requested range 3:09–4:00) through computer speakers into the physical iPhone microphone. The relay completed with 55.9849375 audio seconds and estimated cost $0.00311027. The agent inspected the app's Saved screen and retrieved the saved JSON through the paired-device connection into ignored local QA storage. It contains completed=true, one stitched final segment, and three speaker IDs. The founder confirmed that three distinct speakers are present in the excerpt.
+
+The text follows the supplied passage about physical infrastructure and technical founders. However, it begins slightly before the requested caption boundary and continues beyond the 4:00 caption boundary. No word error rate is claimed: the exact captured audio boundaries were not retained, and the reference captions are themselves auto-generated. Three labels matching three people establishes the label count only; brief speaker switches and word-level attribution still need verification against the audio. This is speaker-playback evidence, not a live three-person room conversation or a completed diarization-quality acceptance test.
+
+Local evidence: work/reference-playback-session.json, work/reference-playback-result.png, work/playback-review-sessions, and work/relay-playback.log. These stay uncommitted. Earlier attempts completed but were unsuitable for scoring: one was deleted by the founder and another included a mid-clip seek. They are not counted as independent passing quality samples. No extra paid transcription was used for the saved-data inspection.
+
+The app's nominal 55-second auto-stop resulted in approximately 56 seconds of transmitted audio here. The UI should make the development limit more visible before recording; current evidence does not establish an exact wall-clock cutoff. The relay's separate 60-audio-second cap remains in force.
