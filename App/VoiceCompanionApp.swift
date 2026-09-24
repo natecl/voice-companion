@@ -6,7 +6,8 @@ struct VoiceCompanionApp: App {
 }
 
 struct SessionsView: View {
-    @State private var controller = SessionController()
+    @State private var controller = SessionController.forApp()
+    @State private var confirmingDeletion = false
     @State private var microphone = MicrophoneAccess()
     @State private var microphoneCheck: String?
     @Environment(\.scenePhase) private var scenePhase
@@ -27,6 +28,17 @@ struct SessionsView: View {
                     Text(error).foregroundStyle(.red).accessibilityIdentifier("sessionError")
                 }
                 if let session = controller.current {
+                    if session.source == "microphone", controller.liveStatus != nil || session.recordingSeconds != nil {
+                        TimelineView(.periodic(from: .now, by: 1)) { _ in
+                            let seconds = Int(controller.elapsedRecordingSeconds)
+                            Text(String(format: "%d:%02d elapsed", seconds / 60, seconds % 60))
+                                .monospacedDigit().accessibilityIdentifier("recordingElapsed")
+                        }
+                        if controller.liveStatus != nil { recordingLimitNotice }
+                    }
+                    if let notice = session.stopNotice {
+                        Text(notice).foregroundStyle(.secondary).accessibilityIdentifier("stopNotice")
+                    }
                     if let reason = session.endReason, reason != controller.errorMessage { Text(reason).foregroundStyle(.secondary) }
                     Text(controller.liveStatus ?? (controller.isReplaying ? "Replaying sample…" : (session.completed ? "Saved" : "Incomplete · saved")))
                         .accessibilityIdentifier("sessionStatus")
@@ -54,11 +66,12 @@ struct SessionsView: View {
                     } else if controller.isReplaying {
                         Button("Stop replay") { controller.stop() }.accessibilityIdentifier("stopReplay")
                     } else {
-                        Button("Delete session", role: .destructive) { controller.deleteCurrent() }
+                        Button("Delete session", role: .destructive) { confirmingDeletion = true }
                             .accessibilityIdentifier("deleteSession")
                     }
                     Button("Back to sessions") { controller.close() }.disabled(controller.liveStatus != nil).accessibilityIdentifier("closeSession")
                 } else {
+                    recordingLimitNotice
                     Button("Start recording") { controller.startRecording() }
                         .disabled(controller.isActive).accessibilityIdentifier("startRecording")
                     if let status = controller.liveStatus {
@@ -80,6 +93,13 @@ struct SessionsView: View {
                     }
                 }
             }.accessibilityElement(children: .contain).padding(24).frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .alert("Delete this session?", isPresented: $confirmingDeletion) {
+            Button("Cancel", role: .cancel) {}
+            Button("Delete", role: .destructive) { controller.deleteCurrent() }
+                .accessibilityIdentifier("confirmDeleteSession")
+        } message: {
+            Text("This permanently deletes the saved transcript. This cannot be undone.")
         }
         .task {
             if ProcessInfo.processInfo.arguments.contains("--relay-check") {
@@ -124,6 +144,11 @@ struct SessionsView: View {
                 controller.interrupt(reason: "Recording stopped because the app left the foreground. Received text is saved; the transcript may be incomplete.")
             }
         }
+    }
+
+    private var recordingLimitNotice: some View {
+        Text("Development build · recordings stop automatically after \(controller.recordingLimit.components.seconds) seconds.")
+            .font(.caption).foregroundStyle(.secondary).accessibilityIdentifier("recordingLimit")
     }
 
     private func attributedWords(_ words: [TranscriptWord]) -> String {

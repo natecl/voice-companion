@@ -120,3 +120,18 @@ Evidence: work/transport-failure-configured.log, work/transport-final-regression
 No provider calls or transcription charges occurred in this checkpoint. Manual QA readiness is now explicit in both AGENTS.md and the canonical engineering principles: explain the steps and wait for the founder to say they are ready before starting any test that needs them.
 
 Final result: all 20 core tests (11 transport, five controller lifecycle, four transcript/store) and both Mac replay UI tests passed in work/transport-final-regression.log; signed iPhone build passed in work/transport-phone-build.log. Review confirmed unchanged production timeout limits, loopback-only fixture networking, cleanup assertions, no fixture credentials or external provider access, and explicit rather than silently skipped dependency failures.
+
+## Recording feedback and deletion protection (September 24, 2026)
+
+The development build shows the 55-second microphone recording limit before starting and during capture. Elapsed time begins when capture becomes ready, excludes connection setup, and freezes when capture stops or fails. New saved recordings retain that duration; older sessions without duration metadata do not display an invented value. Automatic limit stops retain an explanation when reopened. A normal limit stop still finalizes the transcript; a finalization failure remains visibly incomplete with its error.
+
+Deleting a saved session now requires confirmation. Cancel leaves it available across app relaunch; confirming deletes it through the existing store.
+
+Targeted QA uses no microphone or paid provider requests:
+
+- `CoreTests/TransportFailureTests` exercises actual local WebSockets, including automatic stop, `audio.done`, successful finalization, and persisted stop reason with a shortened two-second limit.
+- `CoreTests/RecordingLifecycleTests` checks explicit stop, frozen elapsed time, errors, and interruptions. `TranscriptTests` checks older saved JSON without the new optional fields.
+- `FoundationUITests` runs the actual Mac and physical-iPhone UI: ticking elapsed time, automatic-stop explanation after relaunch, cancellation preserving a transcript across relaunch, confirmed deletion, and incomplete replay persistence.
+- The timer UI test uses `--ui-testing --recording-ui-fixture` in Debug builds only, a six-second simulated connection, and separate QA storage. It neither captures audio nor opens a network connection. Its transcript explicitly identifies simulated input. The normal development limit remains 55 seconds.
+
+Local evidence is under ignored `work/recording-feedback-*.log` and the Xcode test result attachments (recording timer, reopened automatic-stop explanation, and deletion confirmation). This verifies presentation and stop metadata; earlier real microphone/provider evidence remains the integration evidence. This checkpoint does not increase recording limits or establish long-session quality.

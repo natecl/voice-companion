@@ -77,6 +77,11 @@ final class TransportFailureTests: XCTestCase {
         if mode == "ready-timeout" { XCTAssertTrue(saved.endReason?.contains("did not become ready") == true) }
         if mode == "final-timeout" { XCTAssertTrue(saved.endReason?.contains("Final transcription results") == true) }
         if action == "audio-failure" { XCTAssertTrue(saved.endReason?.contains("could not be sent quickly enough") == true) }
+        if mode == "complete", action == nil {
+            XCTAssertEqual(saved.stopNotice, "Stopped automatically at the development recording limit (2 seconds).")
+            XCTAssertGreaterThanOrEqual(try XCTUnwrap(saved.recordingSeconds), 2)
+            XCTAssertNil(saved.endReason)
+        } else { XCTAssertNil(saved.stopNotice) }
         if !saved.completed { XCTAssertNotNil(saved.endReason) }
         func report() -> [String: Any] {
             guard let data = try? Data(contentsOf: reportFile),

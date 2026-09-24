@@ -44,6 +44,9 @@
 		AA863954E4E818D4E149270B /* LiveTranscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B8059B564CBD204AA70BA6 /* LiveTranscriber.swift */; };
 		B54FED4EC807E73BC6E8B91B /* SessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07AC85400C84CD8C0027 /* SessionController.swift */; };
 		C6134A9D853871047550EFB6 /* AudioCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB02BC305BA1F675947256B /* AudioCapture.swift */; };
+		C8B6EFC94F62E77302795F69 /* SessionController+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220AAC839C8995F4A61DD83B /* SessionController+App.swift */; };
+		CA45619E139BC346728FF250 /* SessionController+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220AAC839C8995F4A61DD83B /* SessionController+App.swift */; };
+		CF98D9F5C759893150FD81B1 /* SessionController+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220AAC839C8995F4A61DD83B /* SessionController+App.swift */; };
 		DAAA471E7FA8BEC2B00E4318 /* RecordingConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82134446B9A07E479203081 /* RecordingConnection.swift */; };
 		E64A2E54175D0F2712013043 /* LiveTranscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B8059B564CBD204AA70BA6 /* LiveTranscriber.swift */; };
 		ECC6B084E812475E28D85CB7 /* VoiceCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */; };
@@ -72,6 +75,7 @@
 		00BE8C55AFCE2A84D18222B0 /* MicrophoneCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneCapture.swift; sourceTree = "<group>"; };
 		0A9A8E1CB9DCDAF32438CC86 /* RecordingInterruptionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingInterruptionUITests.swift; sourceTree = "<group>"; };
 		103C8B997E39422BEEFF5D9B /* Transcript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcript.swift; sourceTree = "<group>"; };
+		220AAC839C8995F4A61DD83B /* SessionController+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionController+App.swift"; sourceTree = "<group>"; };
 		33B8059B564CBD204AA70BA6 /* LiveTranscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTranscriber.swift; sourceTree = "<group>"; };
 		43354958B88D6E1A544B8D70 /* PhoneUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PhoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		58FC567691D4C18C5E45FD1B /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
@@ -141,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				B67E07AC85400C84CD8C0027 /* SessionController.swift */,
+				220AAC839C8995F4A61DD83B /* SessionController+App.swift */,
 				58FC567691D4C18C5E45FD1B /* SessionStore.swift */,
 			);
 			path = Sessions;
@@ -372,6 +377,7 @@
 				13E4C484E4C4A7BE8E2890F0 /* MicrophoneCapture.swift in Sources */,
 				DAAA471E7FA8BEC2B00E4318 /* RecordingConnection.swift in Sources */,
 				04D9F0D8EED3EE48B71BB0C7 /* RelayConfiguration.swift in Sources */,
+				CA45619E139BC346728FF250 /* SessionController+App.swift in Sources */,
 				B54FED4EC807E73BC6E8B91B /* SessionController.swift in Sources */,
 				084498F3AD0D23225AE9A03A /* SessionStore.swift in Sources */,
 				03FA4ADC9F69442A9E86ACB3 /* Transcript.swift in Sources */,
@@ -390,6 +396,7 @@
 				5DAF13B17F8D7D03FDCEC42E /* RecordingConnection.swift in Sources */,
 				F673436CDE23257AD9A06DF8 /* RecordingLifecycleTests.swift in Sources */,
 				A25AE8D337A5078C2FE14E1D /* RelayConfiguration.swift in Sources */,
+				CF98D9F5C759893150FD81B1 /* SessionController+App.swift in Sources */,
 				7E26AEABAF030A58C7F6FC99 /* SessionController.swift in Sources */,
 				80C8FD2119A42FB8F5D4D98C /* SessionStore.swift in Sources */,
 				105580703745D8D72AE902D5 /* Transcript.swift in Sources */,
@@ -408,6 +415,7 @@
 				8984457B635643C510A1A579 /* MicrophoneCapture.swift in Sources */,
 				93B191BE382CDD95F0602F1A /* RecordingConnection.swift in Sources */,
 				2EB6B00CF0B59D267ECE26BA /* RelayConfiguration.swift in Sources */,
+				C8B6EFC94F62E77302795F69 /* SessionController+App.swift in Sources */,
 				96A1D7506C6172D690F2E072 /* SessionController.swift in Sources */,
 				53310A770E4BFFE5496267F2 /* SessionStore.swift in Sources */,
 				8836E3F7E0505521F061DE2E /* Transcript.swift in Sources */,
