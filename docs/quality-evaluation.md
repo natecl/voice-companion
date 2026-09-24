@@ -19,7 +19,7 @@ A failed screen stays failed and is investigated; do not move thresholds after s
 
 ## Remaining acceptance
 
-Natural single/multi-person conversation, realistic background noise and overlap, specialist vocabulary in spontaneous speech, physical input-route and permission-denial checks, battery/resource measurements, and sessions beyond the current development cap remain open. The near-limit clip tests continuity within that cap; it is not evidence that a lecture-length session works. Cross-device comparison and the final retention/provider decision remain separate.
+Natural single/multi-person conversation, realistic background noise and overlap, specialist vocabulary in spontaneous speech, physical input-route and permission-denial checks, battery/resource measurements, and lecture-length sessions beyond the five-minute development cap remain open. Separate five-minute Mac and iPhone playback recordings now pass the bounded functional check; see [five-minute evidence](five-minute-checkpoint.md). The near-limit clip tests continuity within that cap; it is not evidence that a lecture-length session works. Cross-device comparison and the final retention/provider decision remain separate.
 
 ## Observed first-screen results
 

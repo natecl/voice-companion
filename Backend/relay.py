@@ -16,7 +16,10 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / 'work/relay-client.json'
 URL = ('wss://api.x.ai/v1/stt?model=grok-voice-transcribe-2.0&sample_rate=16000'
        '&encoding=pcm&interim_results=true&diarize=true&language=en')
-MAX_BYTES = 60 * 32000
+MAX_AUDIO_SECONDS = 310  # App stops at 300; allow capture scheduling/queued frames.
+MAX_BYTES = MAX_AUDIO_SECONDS * 32000
+MAX_SESSIONS = 1
+SESSION_TIMEOUT = 330  # Connection setup + capture + bounded finalization.
 
 class Relay:
     def __init__(self, key, token):
@@ -33,12 +36,12 @@ class Relay:
         supplied = request.headers.get('Authorization', '')
         if not hmac.compare_digest(supplied, 'Bearer ' + self.token):
             return connection.respond(http.HTTPStatus.UNAUTHORIZED, 'Unauthorized\n')
-        if self.active or self.sessions >= 3 or self.total_bytes >= MAX_BYTES * 3:
+        if self.active or self.sessions >= MAX_SESSIONS or self.total_bytes >= MAX_BYTES:
             return connection.respond(http.HTTPStatus.TOO_MANY_REQUESTS, 'Development limit reached\n')
 
     async def handle(self, client):
         # Recheck after handshake to avoid two accepted clients racing.
-        if self.active or self.sessions >= 3 or self.total_bytes >= MAX_BYTES * 3:
+        if self.active or self.sessions >= MAX_SESSIONS or self.total_bytes >= MAX_BYTES:
             await client.close(1008, 'Development limit reached')
             return
         self.active = True
@@ -46,14 +49,14 @@ class Relay:
         started, sent = time.monotonic(), 0
         status = 'incomplete'
         try:
-            async with asyncio.timeout(70):
+            async with asyncio.timeout(SESSION_TIMEOUT):
                 async with connect(URL, additional_headers={'Authorization': 'Bearer ' + self.key},
                                    open_timeout=10, close_timeout=2, max_size=2**20) as upstream:
                     async def send_audio():
                         nonlocal sent
                         async for packet in client:
                             if isinstance(packet, bytes):
-                                if len(packet) % 2 or sent + len(packet) > MAX_BYTES or self.total_bytes + len(packet) > MAX_BYTES * 3:
+                                if len(packet) % 2 or sent + len(packet) > MAX_BYTES or self.total_bytes + len(packet) > MAX_BYTES:
                                     raise ValueError('Audio limit or format error')
                                 sent += len(packet)
                                 self.total_bytes += len(packet)
@@ -135,7 +138,7 @@ async def main():
                 phone_config.chmod(0o600)
                 phone_config.write_text(json.dumps({'url': f"wss://{settings['host']}:8767/stt", 'token': token,
                                                    'rootCertificate': settings['certificate']}))
-            print('Development relay ready; 60-second sessions, three-session / 180-second process cap.', flush=True)
+            print(f'Development relay ready; {MAX_AUDIO_SECONDS}-second audio cap, {MAX_SESSIONS} attempt per process, {SESSION_TIMEOUT}-second wall timeout.', flush=True)
             await asyncio.Future()
     finally:
         CONFIG.unlink(missing_ok=True)

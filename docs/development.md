@@ -135,3 +135,8 @@ Targeted QA uses no microphone or paid provider requests:
 - The timer UI test uses `--ui-testing --recording-ui-fixture` in Debug builds only, a six-second simulated connection, and separate QA storage. It neither captures audio nor opens a network connection. Its transcript explicitly identifies simulated input. The normal development limit remains 55 seconds.
 
 Local evidence is under ignored `work/recording-feedback-*.log` and the Xcode test result attachments (recording timer, reopened automatic-stop explanation, and deletion confirmation). This verifies presentation and stop metadata; earlier real microphone/provider evidence remains the integration evidence. This checkpoint does not increase recording limits or establish long-session quality.
+
+
+## Five-minute checkpoint (September 24, 2026)
+
+The current development limit is 300 seconds, superseding the 55-second cap described in earlier checkpoint records above. Stop remains visible below the scrolling transcript. Separate Mac and physical-iPhone five-minute microphone playback captures, automatic finalization, persistence, and independent relaunch verification passed. See [five-minute checkpoint evidence](five-minute-checkpoint.md) for exact durations, local/real QA, resource observations, cost controls, and provider timestamp limitations. This does not complete all V0 quality acceptance.

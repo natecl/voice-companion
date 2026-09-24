@@ -69,6 +69,34 @@ final class FoundationUITests: XCTestCase {
         XCTAssertTrue(app.buttons["replaySample"].exists)
     }
 
+    func testLongTranscriptKeepsStopVisibleAndReopensAllTurns() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--long-transcript-ui-fixture"]
+        app.launch()
+        app.buttons["startRecording"].tap()
+        let segments = app.descendants(matching: .any).matching(identifier: "transcriptSegment")
+        let populated = XCTNSPredicateExpectation(predicate: NSPredicate(format: "count == 60"), object: segments)
+        XCTAssertEqual(XCTWaiter.wait(for: [populated], timeout: 10), .completed)
+        XCTAssertTrue(app.buttons["stopRecording"].isHittable)
+        let shot = XCTAttachment(screenshot: app.screenshot())
+        shot.name = "Long transcript with visible Stop (accelerated fixture)"
+        shot.lifetime = .keepAlways
+        add(shot)
+        app.buttons["stopRecording"].tap()
+        let saved = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label == %@ OR value == %@", "Saved", "Saved"), object: app.staticTexts["sessionStatus"])
+        XCTAssertEqual(XCTWaiter.wait(for: [saved], timeout: 5), .completed)
+        app.terminate()
+        app.launch()
+        app.buttons.matching(identifier: "savedSession").firstMatch.tap()
+        XCTAssertEqual(segments.count, 60)
+        let lastTurn = app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@ OR value CONTAINS %@", "Simulated turn 60.", "Simulated turn 60.")).firstMatch
+        XCTAssertTrue(lastTurn.exists)
+        // XCTest scrolls the offscreen control into view; deletion touches only QA data.
+        app.buttons["deleteSession"].tap()
+        app.windows.buttons["confirmDeleteSession"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["replaySample"].exists)
+    }
+
     func testStopPreservesIncompleteSession() {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing"]
