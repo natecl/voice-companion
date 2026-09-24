@@ -1,0 +1,1027 @@
+YouTube transcript
+Video ID: yslXlV2BP_Y
+Language: en
+Captions: auto-generated
+
+[0:00] Frankly, some of the most powerful and
+[0:03] badass founders that we've been seeing
+[0:05] lately, there might be in their late
+[0:07] 30s, 40s, even 50s. I mean, there's a
+[0:10] sort of resurgence of the experienced
+[0:12] founder. A lot of people seem to say
+[0:15] that they want to be uh YC for solo
+[0:17] founders, but it turns out YC is the YC
+[0:20] for solo founders. What a weird moment
+[0:22] we are in history where you wake up in
+[0:25] the morning, you like wire up a new
+[0:27] model and then these things that even a
+[0:30] month ago you're just like why isn't it
+[0:32] working? It just starts working.
+[0:41] Welcome back to another episode of the
+[0:43] light cone. At YC, we work with
+[0:45] thousands of founders per year, which
+[0:47] means we start to see things before
+[0:50] they're obvious. So, we wanted to share
+[0:53] some of that with you today. What's the
+[0:55] state of the art and what's coming next?
+[0:58] What should you, the builder, know?
+[1:01] Let's get started. Diana, you have a few
+[1:04] things to share with us. So we did a bit
+[1:06] of an analysis for all the companies we
+[1:09] accepted in the last 18 12 months and we
+[1:13] have some pretty shocking stats to share
+[1:15] with everyone. So one of the big ones is
+[1:19] the number of heart tech companies that
+[1:21] are in the bat. It has gone from 8% to
+[1:25] 20%. There's a lot of uh underlying
+[1:28] reasons why that has happened. We we
+[1:30] will go deeper into that. The other one
+[1:32] is uh the rate of growth of companies
+[1:35] and what YC does to the companies has
+[1:37] accelerated. So the median YC company
+[1:40] when it gets accepted is at zero in
+[1:43] revenue is pre- revenue pre-product and
+[1:46] by the end of the batch in the past
+[1:48] companies would get to about 8K median
+[1:52] revenue and now the companies in median
+[1:54] are getting to 20,000
+[1:57] monthly revenue as opposed to 8K. So
+[1:59] those are the top two that we can dive
+[2:01] deeper into.
+[2:02] >> Yeah. Let's dig into hard tech first.
+[2:04] Like what are these hard tech companies
+[2:06] and what's what's driving this
+[2:08] >> things that actually touch atoms and not
+[2:10] just bits.
+[2:10] >> Yeah. And I I I think you have the the
+[2:13] the category breakdown of the heart tech
+[2:15] companies, right Diana?
+[2:16] >> Yeah. So specifically robotics has been
+[2:18] a big one. It has gone from 1% of the
+[2:20] batch to about six 7% of the batch.
+[2:24] Industrial manufacturing building things
+[2:26] back in the US has been a huge trend. It
+[2:28] has it has gone from about 4% to 10% of
+[2:31] the batch. The other one is defense is a
+[2:34] big one. We all have been working with a
+[2:36] lot of uh defense startup. It has gone
+[2:38] from about 1.5% to about 5% of the
+[2:40] batch. The [snorts] other big one is
+[2:43] there's this uh compute need that the
+[2:46] world is getting into with AI. So
+[2:48] there's a lot of companies building the
+[2:50] semiconductor stack or photonix. It has
+[2:53] gone from about 1% of the batch from a
+[2:56] year ago to about close to 4% of the
+[2:58] batch. And the other one even below the
+[3:00] stack of compute is power. So there's a
+[3:02] lot of power infrastructure as well has
+[3:04] gone from also 1% to about close to 3%
+[3:07] of the batch. So all these numbers
+[3:09] across the physical atom stacks have
+[3:12] somewhere triple or quintupled. Yeah,
+[3:15] this is the uh age of the machine, I
+[3:17] think. And that's I mean,
+[3:20] >> as the world goes, you know, our our
+[3:22] motto um the t-shirt says, "Make
+[3:25] something people want." And people sure
+[3:27] do want those things right now.
+[3:28] >> And the other interesting factor about
+[3:30] all these companies that are going deep
+[3:33] into Adams is that we've been funding
+[3:36] more technical founders and with more
+[3:39] expertise than ever. Right Jared? We
+[3:41] have this fun stat about the current
+[3:44] summer batch with
+[3:45] >> in the current summer batch, one in six
+[3:47] of the founders actually has a PhD. It's
+[3:49] way more than that's been historically
+[3:51] and it's because yeah, if you're doing,
+[3:53] you know, something with like silicon
+[3:55] photonics, you're probably going to need
+[3:56] a pretty strong research background in
+[3:58] that. And so we've been funding a lot
+[4:00] more of those founders and those
+[4:01] founders, I think, have
+[4:02] disproportionately been doing like
+[4:04] especially well. I think AGI compounds
+[4:06] this in a really fascinating and awesome
+[4:09] way in that like you might think in the
+[4:11] past you actually like hard techch was
+[4:13] hard because you had supply chains you
+[4:16] had uh an incredible software component
+[4:18] of often uh I think Palmer Lucky talked
+[4:20] about this a lot when it came to and
+[4:22] it's like having codegen means that
+[4:26] suddenly even all the things that they
+[4:27] do at Anderil uh can happen much much
+[4:30] faster right even three or four years
+[4:33] ago you would talk about software
+[4:35] engineering and like the top tier
+[4:37] software engineers as one of one of the
+[4:40] limiting reagents to being able to do
+[4:42] really really top tier full stack uh
+[4:46] hardware and that's less and less true.
+[4:49] I mean you still need one or two of them
+[4:51] or you need like a small team but you
+[4:53] don't need to hire a thousand great
+[4:55] engineers versus Google or Meta or
+[4:58] whoever else and that really changes the
+[5:00] economics.
+[5:01] >> I mean that's the that's the true
+[5:02] bullcase for heart. It's that it's not
+[5:05] just that people are shying away from
+[5:07] funding software businesses, but it's
+[5:09] actually that the super smart models
+[5:11] that we have now are actually
+[5:13] accelerating scientific research and
+[5:14] making it possible for startups to have
+[5:16] bigger research breakthroughs earlier
+[5:18] and that therefore these deep tech
+[5:20] companies will actually work better. I
+[5:21] think the other factor is um there's
+[5:23] basically three macro trends that are
+[5:24] also driving all this all this growth on
+[5:28] atoms and is seeing huge companies like
+[5:31] SpaceX have such a successful IPO has
+[5:34] created a generation of founders wanting
+[5:37] to build in space. There lots of these
+[5:40] companies that are building across the
+[5:41] whole stack. So there's been companies
+[5:43] uh in in the current batch in summer 26.
+[5:45] This is company that we work with called
+[5:47] Exosat that's trying to build basically
+[5:49] a sovereign Starlink solution. There's
+[5:52] other company that I work with uh in
+[5:54] winter 26 called Beyond Reach Labs
+[5:57] that's building solar panels for
+[5:59] satellites in space. If you imagine
+[6:02] companies like StarCloud wanting to have
+[6:04] all these data center in space, they
+[6:06] will need to have power. So this is a
+[6:07] obvious solution. Now the other macro
+[6:09] trend is um I think we have a generation
+[6:12] of current founders right now that have
+[6:14] uh grown with the war
+[6:18] that's been very front and center and
+[6:20] spoken a lot in social media and they
+[6:22] want to do something
+[6:23] >> like two two of the companies I'm most
+[6:24] excited about that I funded the last
+[6:26] couple batches one was Icarus last fall
+[6:29] and then nine mothers this last spring
+[6:31] and both of them were defense Icorus is
+[6:33] doing like a solarp powered U2 spy plane
+[6:36] that gives overwatch and can also do
+[6:38] comms, which is actually really
+[6:39] important. The future of drone war is
+[6:41] being able to actually communicate with
+[6:42] your drones on the ground and see what's
+[6:44] going on. They've been able to get to
+[6:46] seven figure contracts with the new
+[6:48] department of war. Um, and then likewise
+[6:50] with drone war, um, special forces has
+[6:53] been buying, uh, nine mothers anti-
+[6:56] drone defense. So, it's basically a
+[6:57] shotgun turret with CV. Uh, but it's
+[7:00] actually almost the only way that you
+[7:02] could protect special forces uh, deep
+[7:05] behind en enemy lines. I mean these are
+[7:07] people who have been training for years
+[7:09] and years uh you know in a very elite
+[7:12] special force that um you know America
+[7:15] doesn't have uh you know thousands of
+[7:17] these people you know we we have a very
+[7:20] very small set and so protecting them
+[7:21] from uh what could be like a commodity
+[7:24] drone attack is actually really
+[7:25] existential for the department of war.
+[7:27] So just really cool to see this new
+[7:30] administration actually uh approach
+[7:33] defense in a very different way. like
+[7:35] it, you know, classically there was just
+[7:36] a lot of frankly capture from the big
+[7:39] defense primes that are just doing sort
+[7:42] of um cost plus. They think of
+[7:44] themselves as consultants and you know
+[7:46] to be able to see new startups that can
+[7:49] actually take advantage of all of the
+[7:51] AI, all of the tech, all of the new ways
+[7:53] of building things to build things that
+[7:55] frankly uh the defense primes can't
+[7:58] build. You know, that's a really
+[7:59] powerful mega trend right now. Now the
+[8:01] thing about defense is not just those
+[8:04] full solutions that get sold to the
+[8:06] government. There's also a lot of
+[8:08] category of startups that are dual use
+[8:11] that they sell both to the private
+[8:13] sector and to the government and that
+[8:15] have to do with everything down the
+[8:18] supply chain. So things like
+[8:20] manufacturing things back in America,
+[8:23] building custom um I think you had this
+[8:26] company Nox Metal. Yeah, they're
+[8:28] bringing metal manufacturing back to
+[8:30] America. America has like largely lost
+[8:33] its metal industry. It got hollowed out
+[8:35] over the last few decades and can't
+[8:37] build stuff without metal. And so Knox
+[8:40] Metals is like rebuilding America's
+[8:42] metal supply chain. And they're doing it
+[8:43] in in the heartland of America in in in
+[8:46] Detroit where there's all these like
+[8:48] empty factories that have basically just
+[8:49] been like sitting there.
+[8:50] >> And they're an example of like the trend
+[8:52] where the it's not just people are doing
+[8:54] hardware companies, but the hardware
+[8:55] companies themselves are growing faster
+[8:56] than ever. Like I think I saw a PG tweet
+[8:58] that Nox Metals is growing like at
+[9:00] software growth rates. Do do you
+[9:02] understand that? Like kind of what how
+[9:03] are they growing so fast?
+[9:05] >> So one reason is that a lot of their
+[9:07] customers are these new defense tech
+[9:09] startups that have sprung up and need
+[9:12] metal to build all their all their stuff
+[9:14] and the existing suppliers that are
+[9:16] these sort of like sleepy old businesses
+[9:19] mostly run by old people just like can't
+[9:21] keep up with the pace that the new
+[9:23] defense tech startups want to build at.
+[9:25] And it reminds me a bit of like when the
+[9:28] web 2.0 boom happened early in in the YC
+[9:31] days. We would have these new startups,
+[9:32] but then they would prefer to buy from
+[9:35] new startups that could sort of like
+[9:36] move at their speed and like work well
+[9:38] with them. Like Stripe, for example, you
+[9:40] could use a legacy credit card vendor,
+[9:42] but like it's just like way better to
+[9:44] work with Stripe. And so I feel like
+[9:45] they're sort of becoming that for the
+[9:46] whole defense tech ecosystem. Now the
+[9:48] third trend is um basically compute is a
+[9:54] very heavy physical atoms
+[9:57] process to get all these data centers
+[9:59] live very quickly because a lot of the
+[10:01] demand for AI that we've been talking
+[10:03] has been skyrocketing and there's a very
+[10:05] interesting stat where GPUs from Nvidia
+[10:08] let's say like a A100 GPU per hour is
+[10:12] actually appreciating in cost which is
+[10:14] unusual in the past when you get a A100
+[10:17] by now sort of old.
+[10:18] >> They're pretty old. Yeah.
+[10:19] >> The price is going up because there's
+[10:21] just too much demand and not enough
+[10:22] supply and compute. So there's a lot of
+[10:24] uh startups that are now working on
+[10:27] bringing data centers live and you have
+[10:29] everything from the construction of the
+[10:32] sites to the software to planet to
+[10:33] actually doing the data center buildout
+[10:36] to interesting solutions that have to do
+[10:38] with how to power them and combination
+[10:41] of energy, battery. So there's all these
+[10:44] category of startups and even to the
+[10:47] point of uh going down to the core
+[10:49] compute silicons. There's a number of uh
+[10:52] startups that are building new new
+[10:54] silicon for an alternative to to to
+[10:57] Nvidia. There's this company that Tyler
+[11:00] worked with called Lamb Labs that's
+[11:02] building new processors for compute.
+[11:05] There's another one that I'm working on
+[11:07] this batch called bot that is trying to
+[11:10] build basically new custom hardware
+[11:13] architecture that's using turnary
+[11:15] representation for models because what
+[11:17] it turns out which is a funny trend
+[11:19] right now if you look at all the Nvidia
+[11:22] architectures from A100s to H100s and
+[11:25] now the B B300s each of these
+[11:28] generations they're actually going down
+[11:30] in floating point precision in terms of
+[11:33] uh what they were they're going from FP3
+[11:34] 32 168 etc. And it turns out that the
+[11:38] LLM architecture doesn't need the full
+[11:40] precision floating.
+[11:42] >> FP2 is even somewhat usable.
+[11:44] >> Right. So this is what bot is trying to
+[11:46] do. And I think you have an interesting
+[11:47] one that's doing um the interconnect
+[11:49] with uh with photonics.
+[11:51] >> Yeah, there's a company called Dipole
+[11:53] Labs in the current batch that is
+[11:55] replacing the switches that are in data
+[11:57] centers which are essentially the like
+[11:59] routing systems between different GPUs.
+[12:02] If like GPU want a wants to talk to GPU
+[12:05] B, they talk to each other through this
+[12:06] device. It's called a switch. And these
+[12:08] switches right now are electronic. And
+[12:10] so there's actually an issue which is
+[12:11] like the switches are not keeping up
+[12:13] with the GPUs. The the speed of the GPUs
+[12:15] keeps going up. And the switches are
+[12:17] actually the bottleneck for many data
+[12:18] centers in many different workloads. And
+[12:21] so Dipole Labs is building the first
+[12:23] fully optical switch where it's like all
+[12:25] photons from GPU A all the way to GPU B.
+[12:28] And so it will actually be much faster
+[12:30] than the electronic switches that we use
+[12:32] now. And
+[12:32] >> now the last one that's driving all this
+[12:35] move to atoms is this uh aspect where
+[12:39] robotics is going to happen. So there's
+[12:41] a lot of companies building the stack
+[12:43] around that and everything from vertical
+[12:47] robotics in specific industries to the
+[12:51] infrastructure to deploy robots to uh
+[12:55] data selling to the new robotics labs
+[12:59] because there's this moment that
+[13:00] everyone in in the industry is feeling
+[13:03] that we're going to get to the chat GBT
+[13:05] moment. just not quite there yet. And I
+[13:07] think we're figuring it out and new a
+[13:09] scaling law around it. So there's a lot
+[13:12] of that and we had Quan here uh a couple
+[13:15] episodes ago and we're believers that's
+[13:18] that's going to happen. I mean robotics
+[13:19] >> from Pi
+[13:20] >> from Pi, right? Half is AI and half is
+[13:22] uh hardware. I was hearing this reading
+[13:23] this morning that even Astra is like a
+[13:25] big leap forward for for robotics like
+[13:26] on I forget the benchmark but there's a
+[13:28] benchmark where like Fable was maybe at
+[13:30] 10% and um Astra is showing like you can
+[13:33] do like 60 to 70% of the tasks.
+[13:36] >> So data to just you know wake up in you
+[13:39] know another couple weeks and another
+[13:40] breakthrough happens and we're a little
+[13:42] bit closer.
+[13:43] >> It's been really cool for me to see the
+[13:44] resurgence of heart because you know YC
+[13:47] we've been funding hard companies since
+[13:48] 2014. That's really when we [snorts] we
+[13:51] started. But it was like pretty hard to
+[13:53] get these companies funded before. Like
+[13:55] I remember like pre pre this recent
+[13:57] resurgence, we would like fund awesome
+[14:00] stuff that we were super excited like
+[14:01] rockets and planes and chips and data
+[14:03] centers and stuff like that. And then
+[14:05] like VCs would just be like ah we only
+[14:07] do B2B SAS. Um [laughter]
+[14:10] and it's hard to bootstrap a company
+[14:12] like this. So you really do need like
+[14:13] downstream investors who can fund lots
+[14:15] of who who who can who can fund you know
+[14:18] a full a full capital buildout. And so
+[14:20] it's cool that like it seems like
+[14:22] Silicon Valley which historically like
+[14:24] venture was set up to fund hard techch
+[14:26] but it like drifted away from it for a
+[14:28] decade or two because it was so
+[14:29] profitable to just fund SAS companies
+[14:31] and so it's cool to have it coming back
+[14:32] to its roots.
+[14:33] >> Yeah. On the point about like the the
+[14:36] investors wanting to do hard tech again
+[14:37] it does seem like that I've never seen
+[14:39] that happen so quickly. I mean it seemed
+[14:41] like it happened pretty immediately when
+[14:43] like SAS stocks were down earlier this
+[14:45] year. Claude code was surging and that
+[14:47] just became like the the I mean I feel
+[14:49] like even at demo day it literally
+[14:51] happened I feel like that happened
+[14:52] probably mid the winter batch at the
+[14:54] start of this year and it seemed by even
+[14:56] demo day that investors were starting to
+[14:59] be a lot more interested in hard tech
+[15:01] companies and that's just extrapolated.
+[15:03] I mean it is worth knowing though on the
+[15:05] other side like since that a bunch of
+[15:08] the SAS stocks have actually recovered
+[15:09] and are doing better than ever. Like
+[15:11] Salesforce is like the prime example of
+[15:13] that. I think Snowflake recently had
+[15:15] like like two days ago had these like
+[15:17] blowout earnings and so it's possible
+[15:20] that
+[15:20] >> it all hits.
+[15:21] >> Yeah, maybe. I mean that would be the
+[15:22] dream [laughter] case. Um I mean I still
+[15:25] think we're seeing real stuff though.
+[15:26] Like it clearly the software that gets
+[15:28] built in the future and what's valuable
+[15:29] is different. like it just has to be.
+[15:32] And so partly it seems like what we're
+[15:33] seeing with Salesforce is the classic
+[15:35] the system of record argument is
+[15:37] actually playing out.
+[15:37] >> The Moes are intact for now.
+[15:39] >> Yeah. Like if you have a thing that
+[15:41] agents can use um that is actually
+[15:44] valuable and if anything you'll just
+[15:46] like agents will use software a lot more
+[15:48] than humans will and that seems to be
+[15:49] driving Salesforce growth. And so kind
+[15:51] of takes us back to the other trend that
+[15:53] we've talked a little bit about is if
+[15:55] you think of agents as your customers
+[15:57] and you make things that agents want and
+[15:59] your software as something that agents
+[16:00] want to use, then that seems like the
+[16:03] right type of software.
+[16:04] >> Yeah, Salesforce is super interesting
+[16:05] because uh I think they started
+[16:06] releasing their own Slack harness, Slack
+[16:09] AI harness. And so I think we're right
+[16:11] at the beginning of like the next AI
+[16:13] harness wars. It's like Codex wants to
+[16:15] be it, Cloud Code wants to be it. Um
+[16:17] Open Cloud could be it. Hermes, open
+[16:20] code. It seems like there are going to
+[16:21] be a bunch of them and it's not going to
+[16:23] be quite like the browser wars and that
+[16:25] the browser wars tend toward like one
+[16:26] winner, but you know, I guess it's
+[16:28] anyone's guess. And then um yeah, Ben
+[16:31] off has a pretty big advantage in that
+[16:34] you a lot of the most AI pill and
+[16:37] companies in the world still use Slack.
+[16:39] And you know, if the harness is in there
+[16:41] and it's your system of record for how
+[16:44] people collaborate, then you have like
+[16:46] this mega data mode. And then you know
+[16:49] SAS can still be as valuable as it's
+[16:52] ever been valued if those modes hold.
+[16:55] >> Yeah. I thought you had a really
+[16:56] interesting tweet maybe a week or so ago
+[16:58] about how the software or system of
+[16:59] record companies will have to become
+[17:00] like harnesses.
+[17:02] >> I mean and that's bas that was about
+[17:03] slack I would say. It's like basically
+[17:05] if you are a system of record you either
+[17:07] will be prayed upon like you'll release
+[17:09] an MCP and then maybe like the data you
+[17:12] know you lose your moat around the data
+[17:14] the data goes elsewhere like becomes
+[17:16] very trivial to switch or you kind of
+[17:18] have to be a harness you have to be the
+[17:20] way [clears throat] people not just read
+[17:22] and write but actually do their work
+[17:24] inside you know your system of record
+[17:27] >> and get the most value out of it I mean
+[17:29] it's a it's a little bit like the model
+[17:30] companies like was the um was it RKGI
+[17:33] was the benchmark Mark where there was a
+[17:34] benchmark where of the
+[17:36] >> RPGI V3.
+[17:37] >> Yeah. Where the pre or pre-Astra
+[17:39] ChachiBT model didn't do as well, but
+[17:42] then they said, "Well, that's just cuz
+[17:43] it was plugged into the wrong harness."
+[17:44] So, it's like the model plus the harness
+[17:46] gets you the output.
+[17:47] >> Oh, yeah. I mean, uh, with a custom
+[17:49] harness, they claim Astra got to n north
+[17:52] of 90% on RKGI 3.
+[17:54] >> Yes. I think a couple months ago, this
+[17:56] was in the low two digits, right? Which
+[17:58] is an impressive leap.
+[18:00] >> And I think you have a very good point
+[18:01] around software. It's not that software
+[18:03] and SAS is dead what people claim on the
+[18:06] internet. It's just that is has
+[18:09] transformed. We actually seen this in
+[18:10] the batch. The percentage of companies
+[18:12] we accepted that do sort of full stack
+[18:15] end to end work or a task has gone from
+[18:19] just 10% to over 25% of the batch. This
+[18:23] has to do with actually doing the job.
+[18:26] the agent does the job, not just like a
+[18:28] point solution, which old SAS in five,
+[18:33] eight years ago was just like a point
+[18:35] solution and you needed a you needed
+[18:37] someone to operate the SAS software.
+[18:40] Right now, it just runs by itself and
+[18:43] actually in the batch, this is where
+[18:45] we're seeing a lot of the growth in
+[18:47] revenue. I think I gave that stat of the
+[18:50] median uh startup when it gets into YC
+[18:53] is at zero in revenue and it has gone
+[18:57] from by the end of the batch it was
+[18:58] about 8K in MR now it's like about 20K
+[19:01] in MR and a lot of these
+[19:02] >> that's a huge jump that's like
+[19:04] non-trivially big jump for the median
+[19:06] right the average is even higher
+[19:08] >> and it has to do with doing the full end
+[19:10] toend job with for example doing
+[19:12] insurance broker actually doing the
+[19:14] clinical intake doing the full end to
+[19:16] end workflow of I don't know medical
+[19:19] billing etc and these are the ones that
+[19:23] are growing a lot and I think there's
+[19:25] another factor where that's happened I
+[19:27] think we talked about this in couple
+[19:28] episode ago we right now are about
+[19:32] almost a year since agentic coding
+[19:36] started to work since opus 4.5 that
+[19:39] we're seeing these workflows fully
+[19:43] blossom and the result are basically
+[19:46] people want their job just be done and
+[19:47] are willing to buy software that just
+[19:49] gets the job done.
+[19:50] >> I think when people hear these revenue
+[19:52] numbers growing so fast, an easy knock
+[19:55] on it is like maybe it's just AI hype
+[19:58] and these companies are just like
+[19:59] shelling out money for AI products
+[20:01] because it's like the cool thing to do.
+[20:04] And to be fair, that's probably some of
+[20:06] that. But I think like the bullcase is
+[20:08] actually something that we said in an
+[20:09] episode like 2 years ago when agents
+[20:11] were really just beginning to be a thing
+[20:14] where we were like actually the products
+[20:16] are just going to be more valuable. Like
+[20:18] if they automate the whole job, they
+[20:19] will actually just be more valuable than
+[20:21] some like system of record that tracks
+[20:23] the job but doesn't do the job and
+[20:24] therefore companies will just like pay
+[20:25] more money for the for for the product.
+[20:27] I definitely see that in companies that
+[20:30] I work with where yeah, they just go to
+[20:31] a company and like the value proposition
+[20:33] is so great that like large enterprises
+[20:35] are willing to write big checks very
+[20:37] very early.
+[20:38] >> Yeah. A company that I'm seeing um
+[20:39] having this effect is Juicebox, an AI
+[20:41] recruiting tool. Like it's been on
+[20:43] incredible growth rate for like the last
+[20:45] couple of years now, but they started
+[20:46] out as I mean I would say it was
+[20:48] essentially sort of LLM powered people
+[20:49] search. Like the thing that they did was
+[20:51] you could type in sort of the spec of
+[20:53] the type of person you wanted to hire
+[20:54] and it did a really good job of pulling
+[20:56] the um good profiles of people that you
+[20:59] may want to contact. Um but then you
+[21:01] still have to go and contact the people.
+[21:03] And recently they've launched an agent
+[21:04] product which is really taking off and
+[21:06] the agent like doesn't just search for
+[21:08] the people. It like contacts the people.
+[21:10] It'll be able to schedule the interview,
+[21:12] do a bunch of things. That's awesome.
+[21:13] >> Yeah. and they're seeing that that's
+[21:15] going to just on a like per account
+[21:17] basis I think is going to double or
+[21:19] triple like the revenue they make from a
+[21:20] single customer cuz customers want more
+[21:22] and more of these agents. I don't think
+[21:24] it's fair to say that it's like it's not
+[21:26] like it's like automating the job of the
+[21:28] recruiter at all. It's just that it's
+[21:29] just changing it like it like the
+[21:30] recruiters didn't necessarily want to be
+[21:32] doing like that sort of wrote reach out
+[21:35] to like 500 people anyway. Like the
+[21:37] thing that makes the recruiter job I
+[21:39] would say like more skilled and
+[21:40] interesting is like there's like culture
+[21:42] fit. that's just going to be really hard
+[21:43] for like an AI to do a phone screen that
+[21:46] assesses like how well someone's going
+[21:48] to be like a culture fit and um and the
+[21:50] human element of it. And so I think
+[21:51] they're finding that the recruiters
+[21:53] themselves are actually really excited
+[21:54] to use the agents because it frees them
+[21:56] up to do the work that they feel is like
+[21:59] unique and interesting.
+[22:00] >> The other shocking stat is that the
+[22:03] companies that really accelerate during
+[22:05] the batch, they really start taking off.
+[22:08] One of the things that we started
+[22:10] experiencing this year that we never
+[22:12] experienced in the past is we have
+[22:13] companies breaking from zero to seven
+[22:17] figures in revenue during the batch. And
+[22:20] that is in a span of 3 months.
+[22:22] And that's shocking. In the past, that
+[22:26] would have taken for a company to get to
+[22:28] that about 18 months or more. And
+[22:31] they're doing it in that amount of time.
+[22:33] Part of it is they're solving real
+[22:35] problems. And because of agentic coding,
+[22:38] they're actually building products that
+[22:39] are a lot more mature as well. And
+[22:42] they're able these founders that are
+[22:43] super AID run, I don't know, 20 coding
+[22:48] agent sessions to get to that product
+[22:50] maturity.
+[22:51] >> And there's another category of
+[22:52] companies that's also been growing super
+[22:54] fast recently, which is companies that
+[22:56] sell data or RL environments to the
+[22:58] labs.
+[22:59] >> This one might be interesting to talk
+[23:01] about because a lot of these companies
+[23:03] are pretty stealthy. they tend to have a
+[23:06] disincentive to talk about how well
+[23:07] they're doing instead, you know,
+[23:09] compared to most companies that like to
+[23:10] talk about how well they're doing. And
+[23:11] so I think people out there might not
+[23:13] realize how big a category this has
+[23:15] become. When YC funded scale back in
+[23:17] 2016, this was like a tiny little niche
+[23:20] thing. It wasn't even a category. There
+[23:21] was initially it was basically just
+[23:23] scale who was doing it and then Meror
+[23:25] began to do it and then like a couple
+[23:26] other companies, but the last couple
+[23:27] years has become a big category. We
+[23:29] pulled the data recently and um just in
+[23:32] the last two years, YC has funded more
+[23:35] than a dozen companies that are each
+[23:37] making more than $10 million a year
+[23:39] selling data or RL environments to the
+[23:41] labs
+[23:41] >> and in many cases hundreds of millions
+[23:43] of dollars.
+[23:43] >> It makes hundreds of millions of dollars
+[23:45] and these are companies that were just
+[23:46] just a couple of years old.
+[23:48] >> That's pretty fast to revenue honestly.
+[23:50] >> Yeah, it's like pretty bananas. Do you
+[23:52] want to talk about any of them Gary?
+[23:53] >> Uh I mean the big ones I mean I think
+[23:55] After Corey and data curve both really
+[23:57] really great. I mean there probably too
+[23:59] many to name that are honestly like
+[24:01] maybe don't even want to be mentioned
+[24:03] because well you know once you have
+[24:05] something that's working you almost
+[24:06] don't want people to know. I think that
+[24:09] it's kind of natural to understand this
+[24:11] though. I mean data is one of the legs
+[24:14] of the scaling law and you know much has
+[24:17] been made of compute but without the
+[24:19] data how are you going to make these
+[24:20] models that much better? Um the RL
+[24:23] environment thing is interesting. I mean
+[24:24] there's a lot there. I mean there's a
+[24:26] lot of like pure customization that's
+[24:28] happening for specific use cases like
+[24:31] you you'll have like RL environments for
+[24:34] finance for instance and someone can go
+[24:36] very very infinitely deep with that and
+[24:38] it's like a little bit of expertise it's
+[24:40] a bunch of computer science it's some
+[24:42] systems work but RL seems to be I mean
+[24:45] one of the big engines for how I mean
+[24:48] people are maybe bench benchmark maxing
+[24:50] a little bit more than they should but
+[24:52] uh it costs money to do it and it's
+[24:54] seemingly here to stay in terms of how
+[24:56] big model companies are going to
+[24:58] approach it.
+[24:59] >> Reportedly, the big labs are spending
+[25:02] about a billion dollars on this. It's
+[25:05] not a very known fact, but there's
+[25:06] there's actually a real business to be
+[25:08] built around this and a real environment
+[25:12] is the current flavor of it and there's
+[25:13] things with long-term horizon tasks that
+[25:15] are getting built up and I think that is
+[25:18] starting to also emerge in robotics. The
+[25:20] labs also want to solve the problem of
+[25:22] getting AI to work on the physical
+[25:24] world. So they need a lot of the
+[25:25] environments in the real world. So
+[25:27] things with egocentric data, tea optic
+[25:31] task starting to emerge as a big data
+[25:34] category where labs are spending eight
+[25:38] nine figure deals with these companies.
+[25:40] We had a number of companies in the
+[25:42] batch that work on that and been able to
+[25:44] close close revenues in that in that
+[25:48] space. companies like um in the current
+[25:50] bachelor of summer 26 there's practis
+[25:53] robotics there's one that I'm working
+[25:55] with that has like a network of places
+[25:58] across the world where industrial
+[26:00] moduction gets done they collect data
+[26:02] from that there's this other company
+[26:04] that Brad work with called deep reach
+[26:06] that also has data that local
+[26:09] entrepreneurs in across the world do
+[26:11] >> and human archive and winter 26 yeah
+[26:14] there have been a bunch of these
+[26:15] companies recently
+[26:16] >> right
+[26:17] >> I think like if I were going
+[26:18] prognosticate like one of the things
+[26:20] going back to the uh you know all
+[26:22] systems of record need to be AI
+[26:24] harnesses they might also need to start
+[26:26] training their own models and that's
+[26:27] where things like river AI or tinker
+[26:30] start becoming really interesting out of
+[26:33] the box like you can sit there in cloud
+[26:35] code or even open I use openclaw to
+[26:37] train my own models which is very fun
+[26:39] it'll do its own data cleaning and
+[26:41] everything but to date like that hasn't
+[26:43] been a huge factor but I can see that
+[26:45] becoming a much much bigger factor I And
+[26:48] when you have proprietary data and you
+[26:50] can train I mean the open open weight
+[26:53] models are uh really nearly frontier if
+[26:57] you can like sort of special purpose
+[26:59] train these things to do um even better
+[27:02] than what the frontier can do like that
+[27:04] that's going to be really really
+[27:06] powerful.
+[27:06] >> I think this is actually going to be
+[27:08] even bigger in robotics. I mean this is
+[27:10] a hypothesis is not proven yet but
+[27:12] robotic foundation models in robotics I
+[27:14] think uh have a very different
+[27:16] characteristics versus LLMs. LM is the
+[27:19] whole thing is you model reality as
+[27:20] language and for robotics you model
+[27:23] reality in the physical 3D space which
+[27:26] has way more degrees of freedom and
+[27:29] perhaps in order to get robots to work
+[27:31] in a specific vertical like let's say
+[27:34] robots that do operations in data
+[27:37] centers. I have this company called
+[27:38] Boost Robotic that build robots for data
+[27:40] centers like doing the cabling. It is
+[27:41] possible for these robots to work. It's
+[27:43] better to get a model that's fine-tuned
+[27:46] and trained on custom data that just
+[27:48] works on that environment because the
+[27:50] the thing that's also challenging for
+[27:51] robotics, they need to be in real time
+[27:52] and respond very quickly to to the
+[27:55] stimuli and have an action plan which is
+[27:58] different than LMS. LM you can have this
+[28:00] this feature where you can just let it
+[28:02] go and come back. But for Borax, you
+[28:04] can't be because if if I don't know,
+[28:06] let's say you connect a cable to the
+[28:09] data center and then someone comes in
+[28:11] and like knocks a robot out and things
+[28:13] could get connected to the wrong plug,
+[28:16] let's say.
+[28:17] >> Yeah. My understanding is that all the
+[28:19] YC companies that are using physical
+[28:20] intelligence as models to deploy
+[28:22] robotics, they're all fine-tuning the PI
+[28:24] models. I don't think any of them are
+[28:26] able to use the PI models out of the
+[28:27] box. Even though it's a great like
+[28:28] starting point, you have to actually
+[28:29] fine-tune it for like your specific case
+[28:32] like data center cables in order for it
+[28:33] to work.
+[28:34] >> Mhm. You work with this company uh
+[28:36] Ultra, right?
+[28:36] >> Yeah. You start with the PI model, but
+[28:38] then they have like thousands of hours
+[28:39] of footage of like putting things in
+[28:41] boxes that makes it really good at
+[28:43] putting things in boxes. I've heard the
+[28:44] argument basically that you know you
+[28:46] could look at claude code like claude
+[28:48] code can use its mo its uh code
+[28:51] transcripts to figure out who the top
+[28:54] coders are and you can take that and
+[28:56] turn it around and you know basically
+[28:58] train the next coding model to be even
+[29:00] better. If you happen to own Tik Tok you
+[29:02] happen to have all of the data on uh
+[29:05] what people watch and click on and
+[29:07] what's compelling and you can use that
+[29:08] to make much more compelling videos in
+[29:10] seed dance. So, you know, that's already
+[29:13] been happening. I just, you know, I
+[29:14] think that that that trend is going to
+[29:16] continue in a fairly spectacular way
+[29:18] from here. So, one of the things that
+[29:20] we've been noticing, I think all of us
+[29:22] have, is that frankly some of the most
+[29:24] powerful and badass founders that we've
+[29:28] been seeing lately, they're might be in
+[29:30] their late 30s, 40s, even 50s. I mean,
+[29:33] there's a sort of resurgence of the
+[29:35] experienced founder. A lot of people
+[29:37] seem to say that they want to be uh YC
+[29:40] for solo founders, but it turns out YC
+[29:42] is the YC for solo founders. Diana, you
+[29:45] have a few stats that uh you found
+[29:48] surprising.
+[29:49] >> One of the shocking stats from analyzing
+[29:51] the septic companies from a year ago, we
+[29:53] used to only have about 5% of the
+[29:56] companies accepted be solid founders and
+[29:58] now we're over 18 19%. Which is a huge
+[30:03] This is the highest spike that we've
+[30:04] seen
+[30:04] >> almost 1/5if of the batch. So, and it
+[30:06] seems like it's going to keep going. You
+[30:08] know, before you had you had to have
+[30:10] like, you know, so many different
+[30:12] skills. You had to be a great hustler.
+[30:14] You know, you had to be able to explain
+[30:16] and, you know, we would say like they
+[30:18] have to be good talkers, right? Like you
+[30:19] need someone who can, you know, uh be a
+[30:22] hot person. You need someone who can
+[30:24] actually come in and convince someone of
+[30:27] something. Uh and then if you paired
+[30:29] that with someone who is a world-class
+[30:30] technologist, that's sort of the combo
+[30:32] that is so ideal. Um, and so classically
+[30:35] you would need co-founders to do that.
+[30:37] Like you know any it you didn't
+[30:40] necessarily need one but like it would
+[30:42] increase your chances by so so much. I
+[30:44] feel like a lot of that is like changing
+[30:46] to this degree. It's becoming such that
+[30:48] like knowing what to prompt and knowing
+[30:51] what to build is so much more difficult
+[30:54] and valuable than just knowing you know
+[30:56] the CTO being able to code the thing. I
+[30:59] think what's going on is that we've
+[31:00] always actually had um hugely successful
+[31:05] single founders. I think people don't
+[31:06] realize this about YC. There's different
+[31:07] sort of definitions of it, but for all
+[31:09] intents and purposes, our Puver with
+[31:10] Instacart, Brian Armstrong with
+[31:12] Coinbase, at least when the batch
+[31:14] started, were single founders.
+[31:15] >> Yeah, Parker Conrad got into YC as a
+[31:17] single founder and then I uh interviewed
+[31:20] Lakshiny his who ended up being his CTO.
+[31:22] the bar for being able to like have the
+[31:25] idea, be able to sell it, and be able to
+[31:28] build it all by yourself was just
+[31:30] really, really high. Um, and
+[31:32] >> that's actually totally doable.
+[31:34] >> Yeah, I think that's what's going on
+[31:35] like in that case like those three are
+[31:36] just like incredibly exceptional people.
+[31:38] And so there's like very very few people
+[31:40] who are capable of that. And now you can
+[31:42] actually like get going and so I think
+[31:44] you just don't have to be quite that
+[31:45] like exceptional at least on one of
+[31:47] those dimensions, the building part to
+[31:48] be able to get going. But net net, it's
+[31:50] still valuable to have co-founders. It's
+[31:52] still a measure of like,
+[31:54] >> you know, if your co-founders are super
+[31:56] elite, like that means you're probably
+[31:57] super elite and it just increases the
+[31:59] chance of success by a lot. And
+[32:01] >> in each of those cases, they did bring
+[32:03] on co-founders. I think in each of those
+[32:05] cases, you just get going and they got
+[32:06] traction and they added on co-founders
+[32:08] sort of at a certain point. And so maybe
+[32:10] like the um the equity ownership is
+[32:13] different or maybe the dynamic is just
+[32:15] slightly different to the traditional
+[32:16] hey like you're you start out and like
+[32:18] the two of you in a room and uh and
+[32:20] you're completely 50/50. I don't know if
+[32:22] you want to put stuff in but
+[32:24] >> yeah I don't have the stats but I have
+[32:25] definitely seen a greater trend towards
+[32:27] that. People adding co-founders later in
+[32:29] the company life cycle after the thing
+[32:31] has already like gotten off the ground.
+[32:34] >> I think that will be the trend. I think
+[32:35] we'll see a like more single founders in
+[32:37] the batch which we're already seeing
+[32:39] like starting the batch but at least of
+[32:41] the things that succeed I still expect
+[32:43] that they're going to be adding
+[32:44] co-founders um as the company
+[32:46] progresses.
+[32:47] >> Gary, do you also want to talk about the
+[32:48] trend towards like more experienced
+[32:51] people starting companies?
+[32:53] >> So it does seem like uh people who have
+[32:56] been around the block a few times are
+[32:59] doing much much better. I think of Peter
+[33:01] Steinberger as like sort of the
+[33:02] canonical example like you know he's uh
+[33:05] I believe in his early 40s and he'd been
+[33:09] a dev manager. He'd worked on startups
+[33:11] before and then you know he sort of
+[33:13] uniquely got extremely AI pill with the
+[33:16] clankers early but then he just tried a
+[33:19] lot of stuff and then he knows what to
+[33:22] build and so that's one thing that I
+[33:24] think is actually really encouraging.
+[33:25] Like basically if you've been around the
+[33:28] block, you know where the you know where
+[33:30] the dragons are. You sort of uh have
+[33:33] taste and then those people in
+[33:35] particular are like unusually powerful
+[33:37] right now. Yeah. I mean there just so
+[33:39] many uh classic gatekept things that
+[33:41] happen. It's like oh you know you have
+[33:43] to have a co-founder, you need like a
+[33:45] certain set of you know cool investors
+[33:47] to be into you. And like now it's just
+[33:50] less and less true. It's actually like
+[33:51] you need to know what to build. That's
+[33:53] like the high order bit now is you need
+[33:55] to know what to build. And if you've
+[33:57] lived a little bit and you've been in
+[33:58] places and you're very opinionated, like
+[34:02] actually now you might not have an
+[34:04] excuse. Like what's your excuse? Like
+[34:06] you've been this loudmouth on the
+[34:08] internet for so long. Like you know, why
+[34:09] are you not building something? Like
+[34:11] just pop open open code and just go do
+[34:13] it. You know, like put your money where
+[34:15] your mouth is.
+[34:16] >> I also wonder if managing coding agents
+[34:19] is actually like in some ways not that
+[34:21] different from managing people. Oh yes.
+[34:23] >> And so like people like Peter or you or
+[34:26] or Boris Churnney and like Toby from
+[34:29] Shopify who who have had whole careers
+[34:31] like managing teams of engineers
+[34:33] actually like take to this super well
+[34:35] and can like spin up huge teams of
+[34:37] coding agents and manage them maybe more
+[34:39] effectively than even like a really
+[34:40] smart 19-year-old who hasn't had those
+[34:42] years of experience.
+[34:42] >> Yeah. We can be a little bit less
+[34:44] abusive to our agents,
+[34:46] try to understand where they're coming
+[34:48] from. uh you have to catch their
+[34:51] emotions like 99.9% less. [laughter]
+[34:55] >> So yeah, it's pretty helpful.
+[34:58] >> I wonder what's the concrete advice for
+[35:00] uh someone that wants to get started and
+[35:03] want to build a company like right now
+[35:05] in the current era.
+[35:06] >> I mean just start prompting. I mean
+[35:08] opening up GPT6 today was pretty wild. I
+[35:11] mean just that moment where your agents
+[35:14] are, you know, palpably smarter. they,
+[35:17] you know, a bunch of things that you've
+[35:19] been annoyed about, like these bugs
+[35:20] that, you know, you haven't had time to
+[35:23] deep deep dive yourself. You just be
+[35:25] like, "Actually, could you just go back
+[35:26] to the list of things that you couldn't
+[35:28] figure out?" Like, look at your, you
+[35:30] know, all of our last chats and, you
+[35:32] know, anything that looks like you
+[35:33] didn't figure out like try to figure it
+[35:35] out now and it'll do it like every
+[35:37] single time. Like you know it's what a
+[35:39] weird moment we are in history where
+[35:41] >> you wake up in the morning you like wire
+[35:44] up a new model
+[35:46] >> and then these things that even a month
+[35:47] ago you're just like why isn't it
+[35:50] working it just starts working and like
+[35:53] >> you know to think that that might be
+[35:55] this thing that we get to do for the
+[35:56] next 18 24 months 36 months like who you
+[35:59] know I don't know where when it ends but
+[36:02] um that's coding in the time of AGI I
+[36:05] guess. Well, that's all we have time for
+[36:07] for today, but um if you can't tell,
+[36:10] we're all pretty excited about what's
+[36:11] going on right now, and you should be,
+[36:13] too. So, we can't wait to see what you
+[36:15] build.
