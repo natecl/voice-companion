@@ -4,6 +4,10 @@ Status: Implementation authorized September 24, 2026. Foundation build, launch, 
 
 Authority: [product source of truth](product-source-of-truth.md), [V0 scope](v0-scope.md), and [canonical engineering principles](engineering-principles.md). This plan implements those decisions without replacing them. Proven remains Granola.
 
+## Subsequent product direction
+
+After internal V0, iPhone use cases lead feature priorities and design, with Mac support retained. The [product source of truth](product-source-of-truth.md#iphone-first-consumer-direction) records the founder’s refinement of New as an everyday mobile companion. This does not change what V0 has actually implemented or imply simultaneous feature parity for future slices.
+
 ## Outcome
 
 On Mac and iPhone: start microphone capture, see a live transcript with best-effort speaker labels, stop, and reopen the saved transcript.

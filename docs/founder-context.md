@@ -29,10 +29,10 @@ The founder strongly wants to explore TypeSafe AI's Jev for inexpensive, fast ca
 
 ## Open implementation questions
 
-Mac and iPhone are the initial platforms. V0 is microphone audio to live transcript with speaker diarization and saved transcripts. Mac computer audio is planned after V0. The business model is freemium plus subscription, superseding the earlier entirely-free premise.
+iPhone is the primary product experience; Mac remains supported. The founder’s iPhone-first everyday consumer-companion direction refines the New in Proven, Better, New; see the product source of truth. V0 is microphone audio to live transcript with best-effort speaker labels and saved transcripts. Mac computer audio is planned after V0. The business model is freemium plus subscription, superseding the earlier entirely-free premise.
 
 Swift/SwiftUI is the working engineering direction. The founder prioritizes modular boundaries and tools that let agents make changes, run the software, observe results, and verify outcomes with minimal unnecessary human intervention.
 
-The final transcription provider, generative model, memory representation, suggestion timing, final product name, pricing, and minimum OS versions remain open. Grok Voice Transcribe 2.0 is a provisional transcription candidate, not a tested selection.
+The final transcription provider, generative model, memory representation, suggestion timing, final product name, pricing, and minimum OS versions remain open. Grok Voice Transcribe 2.0 is the exercised internal V0 integration, with documented speaker-label limitations; broader provider selection remains open.
 
 See [V0 scope](v0-scope.md), [engineering principles](engineering-principles.md), and [transcription direction](transcription-direction.md) for the current delivery constraints. Start simply; do not treat every future possibility as a first-release requirement.
