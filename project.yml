@@ -1,0 +1,55 @@
+name: VoiceCompanion
+options:
+  bundleIdPrefix: ai.voicecompanion
+  deploymentTarget:
+    iOS: '18.0'
+    macOS: '15.0'
+settings:
+  base:
+    SWIFT_VERSION: '6.0'
+    GENERATE_INFOPLIST_FILE: YES
+    CODE_SIGN_STYLE: Automatic
+targets:
+  VoiceCompanionMac:
+    type: application
+    platform: macOS
+    sources: [App]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.voicecompanion.mac
+        PRODUCT_NAME: VoiceCompanion
+  VoiceCompanionPhone:
+    type: application
+    platform: iOS
+    sources: [App]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.voicecompanion.phone
+        PRODUCT_NAME: VoiceCompanion
+        TARGETED_DEVICE_FAMILY: '1'
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+  MacUITests:
+    type: bundle.ui-testing
+    platform: macOS
+    sources: [UITests]
+    dependencies:
+      - target: VoiceCompanionMac
+  PhoneUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: VoiceCompanionPhone
+schemes:
+  Mac:
+    build:
+      targets:
+        VoiceCompanionMac: all
+    test:
+      targets: [MacUITests]
+  Phone:
+    build:
+      targets:
+        VoiceCompanionPhone: all
+    test:
+      targets: [PhoneUITests]

@@ -6,7 +6,7 @@ These notes summarize the founder's clarification on September 24, 2026. They el
 
 The user turns voice capture on for a conversation with a friend, a lecture, a recorded lecture, or an everyday appointment such as a visit to their dog's vet.
 
-During capture:
+The broader intended experience during capture (not all in V0):
 
 - Text is transcribed in real time.
 - A notes view develops alongside the transcript.
@@ -29,4 +29,10 @@ The founder strongly wants to explore TypeSafe AI's Jev for inexpensive, fast ca
 
 ## Open implementation questions
 
-Platform, transcription provider, generative model, memory representation, suggestion timing, and final product name remain undecided. Start simply; do not treat every future possibility as a first-release requirement.
+Mac and iPhone are the initial platforms. V0 is microphone audio to live transcript with speaker diarization and saved transcripts. Mac computer audio is planned after V0. The business model is freemium plus subscription, superseding the earlier entirely-free premise.
+
+Swift/SwiftUI is the working engineering direction. The founder prioritizes modular boundaries and tools that let agents make changes, run the software, observe results, and verify outcomes with minimal unnecessary human intervention.
+
+The final transcription provider, generative model, memory representation, suggestion timing, final product name, pricing, and minimum OS versions remain open. Grok Voice Transcribe 2.0 is a provisional transcription candidate, not a tested selection.
+
+See [V0 scope](v0-scope.md), [engineering principles](engineering-principles.md), and [transcription direction](transcription-direction.md) for the current delivery constraints. Start simply; do not treat every future possibility as a first-release requirement.
