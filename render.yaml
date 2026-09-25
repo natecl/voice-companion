@@ -24,3 +24,9 @@ services:
         sync: false
       - key: VOICE_ENABLE_ASK
         value: "1"
+      - key: TYPESAFE_API_KEY
+        sync: false
+      - key: VOICE_JEV_LEDGER
+        value: "1"
+      - key: VOICE_ENABLE_JEV
+        value: "0"

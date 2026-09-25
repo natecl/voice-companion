@@ -113,3 +113,25 @@ semantic faithfulness; reviewed synthetic cases cover that separately.
 The native app permits Ask only when capture/replay is stopped. It saves question, answer,
 status and immutable source passages in the same session file. Backgrounding cancels Ask;
 partial results remain visibly incomplete. No background generation or cross-session memory.
+
+## Jev routing (disabled during checkpoint evaluation)
+
+`VOICE_JEV_LEDGER=1` adds the approved $0.50 allocation without resetting any existing
+requests or credentials. Keep this flag after migration, including when disabling routing;
+an older binary that does not understand the policy will refuse the ledger. The safe
+feature rollback is `VOICE_ENABLE_JEV=0`, which preserves direct Luna answers and accounting.
+
+`VOICE_ENABLE_JEV=1` additionally requires server-only `TYPESAFE_API_KEY` and enables one
+question-only judgment before each admitted Ask. Pin `jev-1.13.0` and the versioned rubric.
+No transcript is sent to Jev. At 750ms, an HTTP failure, malformed result, uncertain result,
+or unavailable Jev allowance, use the unchanged direct answer policy. Cancellation is not
+converted into fallback: it closes routing and prevents an unwanted answer request.
+A route only adds answer emphasis; Luna's grounding rules always apply. This does not
+establish speaker identity, retrieve memories, or prove answer correctness.
+
+`evaluate_jev.py` and `compare_jev_answers.py` are administrative synthetic QA commands,
+not endpoints. Run on the service against the persistent ledger; they reserve a bounded
+batch upfront and persist an exclusive output file before calling providers. They do not
+reset app quotas, retry paid calls, or refund unused attempts. Batch reservations are one
+ledger row holding multiple potential calls; use the QA manifest/output for actual counts.
+Keep routing disabled until the declared held-out and answer-benefit gates pass.
