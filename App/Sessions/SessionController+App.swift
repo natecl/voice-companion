@@ -5,7 +5,10 @@ extension SessionController {
         #if DEBUG
         let arguments = ProcessInfo.processInfo.arguments
         if arguments.contains("--ui-testing"), arguments.contains("--memory-ui-fixture") {
-            guard let config = try? RelayConfiguration.load(), config.url.host == "127.0.0.1",
+            // Test handoff must not read another app's private container.
+            let fixtureJSON = ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"] ?? ""
+            guard let config = try? JSONDecoder().decode(RelayConfiguration.self, from: Data(fixtureJSON.utf8)),
+                  config.url.scheme == "ws", config.url.host == "127.0.0.1", config.url.path == "/stt",
                   let owner = config.memoryOwnerID, UUID(uuidString: owner) != nil else {
                 let controller = SessionController(prepareRecording: { throw CaptureFailure.noRelay })
                 controller.errorMessage = "Local memory fixture configuration is unavailable."

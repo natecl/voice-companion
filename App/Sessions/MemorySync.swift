@@ -1,6 +1,7 @@
 import Foundation
 import OSLog
 import Network
+import Observation
 
 struct MemoryPassage: Codable, Equatable {
     let id: String
@@ -16,9 +17,11 @@ struct MemorySource: Codable, Equatable {
     let captured_at: Double
     let timezone: String
     let completed: Bool
+    let origin: String?
     let passages: [MemoryPassage]
 
     init(_ session: CaptureSession, revision: Int) {
+        origin = session.source == "personal_text" ? "personal_text" : nil
         session_id = session.id.uuidString
         self.revision = revision
         captured_at = session.createdAt.timeIntervalSince1970
@@ -77,7 +80,7 @@ struct MemoryOutbox {
         var source = MemorySource(session, revision: previous?.operation.source?.revision ?? 1)
         if previous?.operation.source == source { return }
         if previous != nil { source.revision += 1 }
-        try save(MemoryOutboxEntry(operation: MemoryOperation(owner: owner, operation: "upsert", source: source), acknowledged: false))
+        try save(MemoryOutboxEntry(operation: MemoryOperation(version: source.origin == nil ? 1 : 2, owner: owner, operation: "upsert", source: source), acknowledged: false))
     }
     func delete(_ id: UUID) throws {
         try save(MemoryOutboxEntry(operation: MemoryOperation(owner: owner, operation: "delete", session_id: id.uuidString), acknowledged: false))
@@ -146,7 +149,7 @@ struct MemorySocketTransport: MemoryTransport {
             let revision: Int?
         }
         let ack = try JSONDecoder().decode(Ack.self, from: bytes)
-        guard ack.type == "memory_ack", ack.version == 1, ack.owner == operation.owner else {
+        guard ack.type == "memory_ack", ack.version == operation.version, ack.owner == operation.owner else {
             throw MemorySyncFailure.invalidAcknowledgment
         }
         if operation.operation == "delete" {
@@ -160,12 +163,13 @@ struct MemorySocketTransport: MemoryTransport {
     }
 }
 
-@MainActor
+@MainActor @Observable
 final class MemorySync {
     let outbox: MemoryOutbox
     private let transport: any MemoryTransport
     private var task: Task<Void, Never>?
-    private var monitor: NWPathMonitor?
+    @ObservationIgnored private var monitor: NWPathMonitor?
+    private(set) var acknowledgmentCount = 0
     private(set) var lastError: String?
     private let logger = Logger(subsystem: "ai.voicecompanion.app", category: "memory")
     init(outbox: MemoryOutbox, transport: any MemoryTransport) { self.outbox = outbox; self.transport = transport }
@@ -217,6 +221,7 @@ final class MemorySync {
                     try Task.checkCancellation()
                     try await transport.send(entry.operation)
                     try outbox.acknowledge(entry.operation)
+                    acknowledgmentCount += 1
                     lastError = nil
                     logger.info("memory_sync_acknowledged")
                 }

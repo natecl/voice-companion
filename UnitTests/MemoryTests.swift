@@ -111,6 +111,34 @@ final class MemoryTests: XCTestCase {
         XCTAssertEqual(try box.entry(saved.id.uuidString)?.operation.source?.revision, 1)
         XCTAssertEqual(try store.load().first?.completed, true)
     }
+    func testPersonalNoteOfflineSaveRecoveryAndValidation() async throws {
+        let directory = try temporaryDirectory()
+        let store = SessionStore(directory: directory.appendingPathComponent("sessions"))
+        let box = MemoryOutbox(directory: directory.appendingPathComponent("outbox"), owner: "owner")
+        let transport = OfflineMemory()
+        let sync = MemorySync(outbox: box, transport: transport)
+        let controller = SessionController(store: store, memorySync: sync)
+        XCTAssertFalse(controller.savePersonalNote("   "))
+        XCTAssertFalse(controller.savePersonalNote(String(repeating: "a", count: 8001)))
+        XCTAssertTrue(controller.savePersonalNote("My daughter Maya enjoys swimming."))
+        let id = try XCTUnwrap(controller.current?.id)
+        try await waitUntil { sync.lastError != nil }
+        let entry = try XCTUnwrap(box.entry(id.uuidString))
+        XCTAssertEqual(entry.operation.version, 2)
+        XCTAssertEqual(entry.operation.source?.origin, "personal_text")
+        XCTAssertEqual(entry.operation.source?.passages.first?.speakers, [])
+        XCTAssertFalse(entry.acknowledged)
+        XCTAssertEqual(transport.calls, 1)
+        XCTAssertTrue(controller.personalNoteSyncStatus?.contains("Saved on this device") == true)
+        let next = SessionController(store: store, memorySync: MemorySync(outbox: box, transport: transport))
+        XCTAssertEqual(next.sessions.first?.source, "personal_text")
+        XCTAssertEqual(next.sessions.first?.transcript.segments.first?.text, "My daughter Maya enjoys swimming.")
+        next.current = next.sessions.first
+        next.deleteCurrent()
+        XCTAssertTrue(try store.load().isEmpty)
+        XCTAssertEqual(try box.entry(id.uuidString)?.operation.operation, "delete")
+    }
+
     func testRealSocketControllerSaveRestartAndDelete() async throws {
         let directory = try temporaryDirectory()
         let fixture = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Backend/memory_fixture.py")

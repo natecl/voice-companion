@@ -10,7 +10,7 @@ import uuid
 
 from admission import Rejected
 
-VERSION = 2
+VERSION = 3
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -29,7 +29,13 @@ def number(value):
 
 def validate_source(source):
     try:
-        if set(source) != {'session_id', 'revision', 'captured_at', 'timezone', 'completed', 'passages'}:
+        if not isinstance(source, dict):
+            raise ValueError()
+        if set(source) - {'origin'} != {'session_id', 'revision', 'captured_at', 'timezone', 'completed', 'passages'}:
+            raise ValueError()
+        if 'origin' in source and source['origin'] != 'personal_text':
+            raise ValueError()
+        if source.get('origin') == 'personal_text' and (not source['completed'] or len(source['passages']) != 1 or source['passages'][0]['speakers']):
             raise ValueError()
         identifier(source['session_id'])
         if type(source['revision']) is not int or not 1 <= source['revision'] <= 1_000_000:
@@ -54,7 +60,7 @@ def validate_source(source):
         if len(payload.encode()) > MAX_SOURCE_BYTES:
             raise Rejected('memory_source_too_large')
         return payload
-    except (ValueError, TypeError, KeyError):
+    except (ValueError, TypeError, KeyError, IndexError):
         raise Rejected('invalid_memory_request') from None
 
 
@@ -63,7 +69,7 @@ class MemoryStore:
         self.path, self.clock = Path(path), clock
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, VERSION):
+            if version not in (0, 1, 2, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -103,6 +109,13 @@ class MemoryStore:
                       PRIMARY KEY(job,stage,request_hash));
                     ALTER TABLE job ADD COLUMN error TEXT;
                     PRAGMA user_version=2;
+                    COMMIT;
+                ''')
+            if version < 3:
+                db.executescript('''
+                    BEGIN IMMEDIATE;
+                    ALTER TABLE claim ADD COLUMN profile_link INTEGER NOT NULL DEFAULT 0;
+                    PRAGMA user_version=3;
                     COMMIT;
                 ''')
         self.path.chmod(0o600)
@@ -163,6 +176,8 @@ class MemoryStore:
             if old:
                 if old['deleted']:
                     return {'status': 'deleted', 'revision': old['revision']}
+                if json.loads(old['payload']).get('origin') != source.get('origin'):
+                    raise Rejected('source_origin_conflict')
                 if revision < old['revision']:
                     return {'status': 'stale', 'revision': old['revision']}
                 if revision == old['revision']:
@@ -175,7 +190,7 @@ class MemoryStore:
                 if db.execute('SELECT count(*) FROM source WHERE owner=? AND deleted=0', (owner,)).fetchone()[0] >= 1000:
                     raise Rejected('memory_storage_limit')
                 db.execute('INSERT INTO source VALUES(?,?,?,?,?,0)', (owner, session, revision, digest, payload))
-            db.execute('INSERT INTO job(id,owner,session,revision,extractor,state,lease) VALUES(?,?,?,?,?,?,NULL)', (str(uuid.uuid4()), owner, session, revision, EXTRACTOR_VERSION, 'queued'))
+            db.execute('INSERT INTO job(id,owner,session,revision,extractor,state,lease) VALUES(?,?,?,?,?,?,NULL)', (str(uuid.uuid4()), owner, session, revision, EXTRACTOR_VERSION, 'profile_pending' if source.get('origin') == 'personal_text' else 'queued'))
             return {'status': 'stored', 'revision': revision}
 
     def delete_source(self, owner, session):
@@ -243,10 +258,15 @@ class MemoryStore:
             source = db.execute('SELECT * FROM source WHERE owner=? AND session=?', (owner, session)).fetchone()
             if source['deleted'] or source['revision'] != revision:
                 raise Rejected('stale_job')
-            passages = {p['id'] for p in json.loads(source['payload'])['passages']}
+            evidence = json.loads(source['payload'])
+            passages = {p['id'] for p in evidence['passages']}
             if db.execute("SELECT count(*) FROM claim WHERE owner=?", (owner,)).fetchone()[0] + len(candidates) > 5000:
                 raise Rejected('memory_storage_limit')
             for c in candidates:
+                if not isinstance(c, dict):
+                    raise Rejected('invalid_candidate')
+                if (c.get('subject') == 'user' or c.get('profile_link', False)) and evidence.get('origin') != 'personal_text':
+                    raise Rejected('unverified_personal_source')
                 self._write_claim(db, c, owner, session, revision, passages)
             db.execute("UPDATE job SET state='done',lease=NULL WHERE id=?", (live['id'],))
 
@@ -275,7 +295,12 @@ class MemoryStore:
             raise Rejected('invalid_sources')
         if c.get('basis') not in ('stated', 'inferred', 'tentative') or c.get('kind') not in ('event', 'preference', 'decision', 'fact'):
             raise Rejected('invalid_candidate')
+        profile_link = c.get('profile_link', False)
+        if type(profile_link) is not bool:
+            raise Rejected('invalid_candidate')
         subject = c.get('subject')
+        if profile_link and subject is None:
+            raise Rejected('invalid_candidate')
         if subject is not None:
             identifier(subject)
         for key in ('valid_from', 'valid_until'):
@@ -290,7 +315,7 @@ class MemoryStore:
         previous = None
         if relation != 'new':
             previous = db.execute("SELECT * FROM claim WHERE id=? AND owner=? AND state!='invalid'", (target, owner)).fetchone()
-            if subject is None or not previous or previous['subject'] != subject or previous['kind'] != c['kind']:
+            if subject is None or not previous or previous['subject'] != subject or previous['kind'] != c['kind'] or bool(previous['profile_link']) != profile_link:
                 raise Rejected('invalid_relation')
         if relation == 'duplicate':
             # Semantic equivalence is judged upstream; conservative field agreement protects lifecycle.
@@ -302,9 +327,9 @@ class MemoryStore:
                 raise Rejected('ambiguous_update')
             claim_id = str(uuid.uuid4())
             state = 'expired' if c.get('valid_until') is not None and c['valid_until'] <= self.clock() else 'active'
-            db.execute('INSERT INTO claim VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)',
+            db.execute('INSERT INTO claim VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                        (claim_id, owner, c['text'], subject, c['kind'], c['basis'], self.clock(),
-                        c.get('valid_from'), c.get('valid_until'), state, 'supported', target, version))
+                        c.get('valid_from'), c.get('valid_until'), state, 'supported', target, version, int(profile_link)))
             if relation == 'supersedes':
                 db.execute("UPDATE claim SET state='superseded',reason='corrected' WHERE id=?", (target,))
         for passage in set(refs):
@@ -314,7 +339,7 @@ class MemoryStore:
         with self.transaction() as db:
             db.execute("UPDATE claim SET state='expired',reason='validity_ended' WHERE state='active' AND valid_until<=?", (self.clock(),))
 
-    def search(self, owner, query='', *, historical=False, limit=20):
+    def search(self, owner, query='', *, historical=False, limit=20, profile_only=False):
         """Bounded lexical baseline. Result provenance/lifecycle is mandatory for downstream recall."""
         if not isinstance(query, str) or len(query) > 1000 or type(limit) is not int or not 1 <= limit <= 50:
             raise Rejected('invalid_query')
@@ -324,6 +349,8 @@ class MemoryStore:
             result = []
             for row in rows:
                 item = dict(row)
+                if profile_only and ((item['subject'] != 'user' and not item['profile_link']) or item['basis'] == 'inferred'):
+                    continue
                 if not historical and (item['state'] != 'active' or (item['valid_until'] is not None and item['valid_until'] <= self.clock()) or (item['valid_from'] is not None and item['valid_from'] > self.clock())):
                     continue
                 if terms and not any(t in item['text'].casefold() for t in terms):
@@ -356,6 +383,9 @@ class MemoryStore:
             rows = db.execute('SELECT session,revision,payload FROM source WHERE owner=? AND deleted=0 ORDER BY session', (owner,)).fetchall()
             for row in rows:
                 source = json.loads(row['payload'])
+                # Personal context is held until the independent learning/recall checkpoints pass.
+                if source.get('origin') == 'personal_text':
+                    continue
                 for passage in source['passages']:
                     claims = [dict(c) for c in db.execute("""SELECT c.id,c.state,c.valid_from,c.valid_until,c.replaces,c.basis,c.subject
                         FROM claim c JOIN support s ON s.claim=c.id
@@ -370,7 +400,7 @@ class MemoryStore:
 
     def profile(self, owner):
         # Derived on demand: no independent stale cache to invalidate in this foundation.
-        return [c for c in self.search(owner, limit=50) if c['subject'] == 'user' and c['kind'] == 'preference' and c['basis'] == 'stated'][:10]
+        return self.search(owner, limit=50, profile_only=True)
 
     def diagnostics(self, owner):
         with self.connect() as db:

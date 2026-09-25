@@ -92,6 +92,47 @@ final class SessionController {
         catch { errorMessage = "Could not load saved sessions: \(error.localizedDescription)" }
     }
 
+    var canSavePersonalNote: Bool { memorySync != nil && !isActive && !isAnswering }
+
+    var personalNoteSyncStatus: String? {
+        guard let current, current.source == "personal_text", let memorySync else { return nil }
+        _ = memorySync.acknowledgmentCount
+        do {
+            if try memorySync.outbox.entry(current.id.uuidString)?.acknowledged == true {
+                return "Saved and synced. Personal learning is not enabled yet."
+            }
+        } catch { return "Saved on this device. Could not read sync status." }
+        return memorySync.lastError == nil ? "Saved on this device. Sync pending…" : "Saved on this device. Sync unavailable; will try on reconnect."
+    }
+
+    @discardableResult
+    func savePersonalNote(_ text: String) -> Bool {
+        guard canSavePersonalNote, let memorySync else { return false }
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty, trimmed.utf8.count <= 8000 else {
+            errorMessage = "Enter a personal note of up to 8,000 UTF-8 bytes."
+            return false
+        }
+        var note = CaptureSession(id: UUID(), createdAt: Date(), source: "personal_text")
+        note.completed = true
+        note.memoryOwnerID = memorySync.outbox.owner
+        note.memoryTerminal = true
+        note.captureTimezone = TimeZone.current.identifier
+        note.transcript.segments = [TranscriptSegment(start: 0, duration: 0, text: trimmed, words: [], isFinal: true)]
+        do {
+            try store.save(note)
+            current = note
+            errorMessage = nil
+            answerErrorMessage = nil
+            memorySync.stage(note)
+            reload()
+            return true
+        } catch {
+            errorMessage = "Could not save your personal note. Your draft is still here."
+            return false
+        }
+    }
+
     func startReplay() {
         guard !isActive, !isAnswering else { return }
         errorMessage = nil

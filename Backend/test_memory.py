@@ -33,6 +33,10 @@ class MemoryTests(unittest.TestCase):
 
     def write(self, content, claims):
         self.store.put_source(self.owner, content)
+        if content.get('origin') == 'personal_text':
+            # Fixture-only admission; production personal learning remains held.
+            with self.store.connect() as db:
+                db.execute("UPDATE job SET state='queued' WHERE owner=? AND session=? AND state='profile_pending'", (self.owner, content['session_id']))
         job = self.store.claim_job(self.owner)
         self.store.commit_claims(job, claims)
         return job
@@ -146,16 +150,86 @@ class MemoryTests(unittest.TestCase):
 
     def test_stable_profile_revision_invalidation_and_old_update_rejection(self):
         pref = candidate('Prefers mornings'); pref.update(subject='user', kind='preference')
-        self.write(source(), [pref])
+        self.write(dict(source(), origin='personal_text'), [pref])
         self.now[0] = 10_000_000
         self.store.maintain()
         self.assertEqual(len(self.store.profile(self.owner)), 1)
         target = self.store.profile(self.owner)[0]['id']
         old = dict(pref, relation='supersedes', target=target, valid_from=1.)
-        self.store.put_source(self.owner, source('old-import'))
+        self.store.put_source(self.owner, dict(source('old-import'), origin='personal_text'))
+        with self.store.connect() as db:
+            db.execute("UPDATE job SET state='queued' WHERE session='old-import'")
         with self.assertRaisesRegex(Rejected, 'ambiguous_update'):
             self.store.commit_claims(self.store.claim_job(self.owner), [old])
-        self.store.put_source(self.owner, source(revision=2))
+        self.store.put_source(self.owner, dict(source(revision=2), origin='personal_text'))
+        self.assertEqual(self.store.profile(self.owner), [])
+
+    def test_profile_correction_expiry_and_stale_commit(self):
+        fact = dict(candidate(), subject='user', kind='fact', text='I am training for a race.')
+        self.write(dict(source('goal'), origin='personal_text'), [fact])
+        old = self.store.profile(self.owner)[0]['id']
+        self.write(dict(source('correction'), origin='personal_text'),
+                   [dict(fact, text='I am training for a swim.', relation='supersedes', target=old, valid_from=120.)])
+        self.assertEqual([c['text'] for c in self.store.profile(self.owner)], ['I am training for a swim.'])
+        self.write(dict(source('temporary'), origin='personal_text'),
+                   [dict(fact, text='I plan to travel this week.', basis='tentative', valid_until=200.)])
+        self.assertEqual(len(self.store.profile(self.owner)), 2)
+        self.now[0] = 201.
+        self.assertEqual(len(self.store.profile(self.owner)), 1)
+        self.store.put_source(self.owner, dict(source('pending'), origin='personal_text'))
+        with self.store.connect() as db:
+            db.execute("UPDATE job SET state='queued' WHERE session='pending'")
+        job = self.store.claim_job(self.owner)
+        self.store.delete_source(self.owner, 'pending')
+        with self.assertRaisesRegex(Rejected, 'stale_job'):
+            self.store.commit_claims(job, [fact])
+
+    def test_v2_migration_preserves_sources_and_does_not_invent_profile_links(self):
+        self.write(source(), [candidate()])
+        with self.store.connect() as db:
+            db.execute('ALTER TABLE claim DROP COLUMN profile_link')
+            db.execute('PRAGMA user_version=2')
+        migrated = MemoryStore(self.path, clock=lambda: self.now[0])
+        self.assertEqual(migrated.source(self.owner, 'session-a'), source())
+        self.assertEqual(len(migrated.search(self.owner)), 1)
+        self.assertEqual(migrated.profile(self.owner), [])
+        with migrated.connect() as db:
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 3)
+
+    def test_personal_sources_are_held_and_origin_cannot_be_rewritten(self):
+        note = dict(source(), origin='personal_text')
+        self.store.put_source(self.owner, note)
+        self.assertIsNone(self.store.claim_job(self.owner))
+        self.assertEqual(self.store.recall_snapshot(self.owner), [])
+        self.assertEqual(self.store.put_source(self.owner, note)['status'], 'unchanged')
+        with self.assertRaisesRegex(Rejected, 'source_origin_conflict'):
+            self.store.put_source(self.owner, source(revision=2))
+        self.store = MemoryStore(self.path)
+        self.assertEqual(self.store.source(self.owner, 'session-a')['origin'], 'personal_text')
+        self.store.delete_source(self.owner, 'session-a')
+        self.assertEqual(self.store.put_source(self.owner, note)['status'], 'deleted')
+
+    def test_profile_identity_guard_and_broad_relationship_lifecycle(self):
+        user = candidate('I enjoy swimming'); user.update(subject='user', kind='fact')
+        self.store.put_source(self.owner, source())
+        with self.assertRaisesRegex(Rejected, 'unverified_personal_source'):
+            self.store.commit_claims(self.store.claim_job(self.owner), [user])
+        self.store.delete_source(self.owner, 'session-a')
+        self.write(dict(source('personal'), origin='personal_text'), [user])
+        daughter = candidate('My daughter Maya enjoys swimming')
+        daughter.update(subject='maya-personal', kind='fact', profile_link=True)
+        self.write(dict(source('family'), origin='personal_text'), [daughter])
+        # Other conversations must not displace profile facts before profile filtering.
+        for index in range(55):
+            self.write(source(f'noise-{index}'), [candidate()])
+        profile = self.store.profile(self.owner)
+        self.assertEqual({c['subject'] for c in profile}, {'user', 'maya-personal'})
+        self.assertTrue(all(c['sources'] for c in profile))
+        other = self.store.owner_for('other')
+        self.assertEqual(self.store.profile(other), [])
+        self.store.delete_source(self.owner, 'family')
+        self.assertEqual([c['subject'] for c in self.store.profile(self.owner)], ['user'])
+        self.store.delete_source(self.owner, 'personal')
         self.assertEqual(self.store.profile(self.owner), [])
 
     def test_unknown_subject_cannot_merge_across_sessions(self):
@@ -201,6 +275,12 @@ class MemorySocketTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual((await request(envelope | {'owner': 'someone-else'}))['message'], 'memory_owner_mismatch')
                     self.assertEqual((await request(dict(version=1, owner=owner, operation='delete', session_id='session-a')))['status'], 'deleted')
                     self.assertEqual((await request(envelope))['status'], 'deleted')
+                    personal = dict(version=2, owner=owner, operation='upsert', source=dict(source('personal'), origin='personal_text'))
+                    self.assertEqual((await request(personal | {'version': 1}))['message'], 'invalid_memory_request')
+                    ack = await request(personal)
+                    self.assertEqual((ack['version'], ack['status']), (2, 'stored'))
+                    self.assertIsNone(store.claim_job(owner))
+                    self.assertEqual((await request(personal | {'owner': 'someone-else'}))['message'], 'memory_owner_mismatch')
                     ledger.revoke(credential)
                     with self.assertRaises(Exception): await request(envelope)
                 self.assertEqual(ledger.usage(), [])

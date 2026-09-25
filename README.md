@@ -34,6 +34,7 @@ An iPhone-first companion for everyday conversations, with Mac support. Working 
 - [Memory foundation contract and local QA](docs/memory-foundation.md)
 - [Automatic learning, provider QA and cost accounting](docs/memory-learning.md)
 - [Memory recall acceptance and rollout](docs/memory-recall.md)
+- [Personal companion profile plan](docs/personal-profile-plan.md)
 
 Sources and research inform the product; they do not silently change its definition. Implementation proposals remain hypotheses until accepted by the founder.
 
