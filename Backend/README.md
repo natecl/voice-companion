@@ -85,3 +85,31 @@ validation, with no certificate override. Release builds can read existing Keych
 configuration but have no enrollment/import flow yet; this is internal distribution only.
 Use `python Backend/admin.py usage` for content-free reserved totals. Health checks are
 unauthenticated liveness only: they do not prove enrollment or transcription.
+
+## Saved-conversation Ask
+
+`VOICE_ENABLE_ASK=1` and server-only `OPENAI_API_KEY` enable authenticated `/ask` WebSockets.
+The exclusive-lock startup migration adds the approved $2.50 Ask policy, $0.003 permanent
+reservation per request, and 20 attempts per UTC day; it preserves existing STT requests,
+credentials and the $5 global cap. It refuses unexpected policies. Back up the ledger before
+this deployment. Rolling back to a STT-only binary after migration requires an explicit
+policy-compatible rollback; do not delete the ledger to make an old binary start.
+
+Each socket receives one `{question, passages}` JSON snapshot, validates it before admission,
+and streams `accepted`, `delta`, then `done` with validated source IDs, or a safe error code.
+Only the selected conversation is supplied; prior Q&A is saved locally but is not model input.
+The service persists no question, transcript or response payload. Logs contain request IDs,
+timing and token counts. Client disconnect, revoked access or a 20-second deadline cancels
+the provider stream. No automatic retries. Cancellation cannot guarantee provider-side
+billing ceases instantly; the full allowance remains charged.
+
+Luna uses Responses, `reasoning.effort=none`, `service_tier=default` (Standard), `store=false`,
+no tools, and at most 1,000 output tokens. Input JSON is capped at 12,000 UTF-8 bytes and
+combined prompt/input plus a 1,024-byte framing allowance at 16,000 bytes, conservatively
+bounding text-token spend. Oversized input is rejected; no silent truncation. Model usage
+must be inspected during integration QA. ID validation establishes source existence, not
+semantic faithfulness; reviewed synthetic cases cover that separately.
+
+The native app permits Ask only when capture/replay is stopped. It saves question, answer,
+status and immutable source passages in the same session file. Backgrounding cancels Ask;
+partial results remain visibly incomplete. No background generation or cross-session memory.

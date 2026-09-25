@@ -1,13 +1,41 @@
-"""Approved founder trial policy; shared by the service and administrative CLI."""
+"""Approved founder trial policy; migration requires the service's exclusive process lock."""
 import os
 from pathlib import Path
+import sqlite3
 from admission import Admission
 
+STT = (2_000_000, 20_000, 6)
+ASK = (2_500_000, 3_000, 20)
 
-def open_ledger():
+
+def add_ask_policy(path):
+    """Add only the approved Ask allocation; never reset usage or change existing caps."""
+    if not path.exists():
+        return
+    db = sqlite3.connect(path, isolation_level=None)
+    try:
+        db.execute('BEGIN IMMEDIATE')
+        cap = db.execute('SELECT cap FROM budget WHERE id=1').fetchone()
+        policies = dict((row[0], tuple(row[1:])) for row in db.execute('SELECT category,cap,reservation,daily FROM policy'))
+        if cap != (5_000_000,) or policies not in ({'stt': STT}, {'stt': STT, 'ask': ASK}):
+            raise ValueError('Unexpected ledger policy; migration refused')
+        if 'ask' not in policies:
+            db.execute('INSERT INTO policy VALUES(?,?,?,?)', ('ask', *ASK))
+        db.execute('COMMIT')
+    except BaseException:
+        db.execute('ROLLBACK')
+        raise
+    finally:
+        db.close()
+
+
+def open_ledger(*, migrate=False):
     directory = Path(os.environ['VOICE_DATA_DIR'])
-    # Hosting must mount this directory before startup. Never recreate a missing disk.
     if not directory.is_dir():
         raise ValueError('Persistent data directory is unavailable')
-    return Admission(directory / 'usage.sqlite', total_microusd=5_000_000,
-                     limits={'stt': (2_000_000, 20_000, 6)})
+    path = directory / 'usage.sqlite'
+    enabled = os.environ.get('VOICE_ENABLE_ASK') == '1'
+    if enabled and migrate:
+        add_ask_policy(path)
+    limits = {'stt': STT, 'ask': ASK} if enabled else {'stt': STT}
+    return Admission(path, total_microusd=5_000_000, limits=limits)

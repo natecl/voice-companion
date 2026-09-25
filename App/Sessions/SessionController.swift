@@ -9,6 +9,10 @@ final class SessionController {
     var isReplaying = false
     var liveStatus: String?
     var isActive: Bool { isReplaying || liveStatus != nil }
+    var isAnswering = false
+    private var answerTask: Task<Void, Never>?
+    private var answerConnection: (any AnswerConnection)?
+    private let makeAnswerConnection: () -> any AnswerConnection
     private var recordingStarted: ContinuousClock.Instant?
     var recordingLimit = LiveTranscriber.recordingLimit
 
@@ -45,6 +49,7 @@ final class SessionController {
 
     init(store: SessionStore? = nil,
          allowsBackgroundRecording: Bool = SessionController.platformSupportsBackgroundRecording,
+         makeAnswerConnection: @escaping () -> any AnswerConnection = { LunaAnswerConnection() },
          makeConnection: @escaping () -> any RecordingConnection = { LiveTranscriber() },
          prepareRecording: @escaping () async throws -> Void = {
              let access = MicrophoneAccess()
@@ -54,6 +59,7 @@ final class SessionController {
              }
              _ = try RelayConfiguration.load()
          }) {
+        self.makeAnswerConnection = makeAnswerConnection
         self.allowsBackgroundRecording = allowsBackgroundRecording
         self.makeConnection = makeConnection
         self.prepareRecording = prepareRecording
@@ -69,7 +75,7 @@ final class SessionController {
     }
 
     func startReplay() {
-        guard !isActive else { return }
+        guard !isActive, !isAnswering else { return }
         errorMessage = nil
         current = CaptureSession(id: UUID(), createdAt: Date())
         isReplaying = true
@@ -106,7 +112,7 @@ final class SessionController {
     }
 
     func startRecording() {
-        guard !isActive else { return }
+        guard !isActive, !isAnswering else { return }
         errorMessage = nil
         liveStatus = "Connecting…"
         task = Task {
@@ -162,6 +168,7 @@ final class SessionController {
     }
 
     func didEnterBackground() {
+        if isAnswering { cancelAnswer(notice: AskFailure.interrupted.localizedDescription) }
         if allowsBackgroundRecording && liveStatus == "Recording" {
             // The active audio session owns background execution; no silent audio or retry loop.
             do { try persist() }
@@ -202,11 +209,73 @@ final class SessionController {
         task?.cancel()
     }
 
-    func close() { guard liveStatus == nil else { return }; if isReplaying { stop() }; current = nil; reload() }
+    func close() { guard liveStatus == nil, !isAnswering else { return }; if isReplaying { stop() }; current = nil; reload() }
     func deleteCurrent() {
-        guard let current, !isActive else { return }
+        guard let current, !isActive, !isAnswering else { return }
         do { try store.delete(current.id); self.current = nil; reload() }
         catch { errorMessage = "Could not delete session: \(error.localizedDescription)" }
     }
+    func ask(_ text: String) {
+        guard !isActive, !isAnswering, let session = current else { return }
+        errorMessage = nil
+        do {
+            let question = try ConversationQuestion(question: text, transcript: session.transcript)
+            let answer = ConversationAnswer(id: UUID(), createdAt: Date(), question: question)
+            var updated = session
+            if updated.answers == nil { updated.answers = [] }
+            updated.answers?.append(answer)
+            try store.save(updated)
+            current = updated
+            isAnswering = true
+            let connection = makeAnswerConnection()
+            answerConnection = connection
+            answerTask = Task {
+                var lastSave = ContinuousClock.now
+                do {
+                    try await connection.run(question) { event in
+                        guard self.current?.id == session.id,
+                              let index = self.current?.answers?.firstIndex(where: { $0.id == answer.id }) else { throw CancellationError() }
+                        if event.type == "delta", let text = event.text {
+                            self.current?.answers?[index].text += text
+                            if lastSave.duration(to: .now) >= .milliseconds(500) {
+                                try self.persist()
+                                lastSave = .now
+                            }
+                        } else if event.type == "done" {
+                            let refs = event.references ?? []
+                            guard refs.allSatisfy({ ref in question.passages.contains(where: { $0.id == ref }) }),
+                                  self.current?.answers?[index].text.isEmpty == false else { throw AskFailure.invalidReferences }
+                            self.current?.answers?[index].references = refs
+                            self.current?.answers?[index].state = .completed
+                        }
+                    }
+                    guard current?.answers?.last?.state == .completed else { throw AskFailure.unavailable }
+                } catch {
+                    if let index = current?.answers?.firstIndex(where: { $0.id == answer.id }), current?.answers?[index].state == .streaming {
+                        current?.answers?[index].state = .failed
+                        current?.answers?[index].notice = error.localizedDescription
+                    }
+                }
+                do { try persist() }
+                catch { errorMessage = "Could not save the answer: \(error.localizedDescription)" }
+                answerConnection = nil
+                isAnswering = false
+                reload()
+            }
+        } catch { errorMessage = error.localizedDescription }
+    }
+
+    func cancelAnswer(notice: String = "Answer cancelled. Partial text is saved.") {
+        guard isAnswering else { return }
+        if let index = current?.answers?.indices.last {
+            current?.answers?[index].state = .cancelled
+            current?.answers?[index].notice = notice
+        }
+        answerConnection?.cancel()
+        answerTask?.cancel()
+        do { try persist() }
+        catch { errorMessage = "Could not save the partial answer: \(error.localizedDescription)" }
+    }
+
     private func persist() throws { if let current { try store.save(current) } }
 }

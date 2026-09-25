@@ -9,6 +9,7 @@ struct CaptureSession: Codable, Identifiable {
     var endReason: String? = nil
     var stopNotice: String? = nil
     var recordingSeconds: Double? = nil
+    var answers: [ConversationAnswer]? = nil
 }
 
 struct SessionStore {
@@ -18,7 +19,18 @@ struct SessionStore {
         guard FileManager.default.fileExists(atPath: directory.path) else { return [] }
         return try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
             .filter { $0.pathExtension == "json" }
-            .map { try JSONDecoder().decode(CaptureSession.self, from: Data(contentsOf: $0)) }
+            .map {
+                var session = try JSONDecoder().decode(CaptureSession.self, from: Data(contentsOf: $0))
+                session.answers = session.answers?.map { item in
+                    var answer = item
+                    if answer.state == .streaming {
+                        answer.state = .failed
+                        answer.notice = "This answer was interrupted before completion. Partial text is saved."
+                    }
+                    return answer
+                }
+                return session
+            }
             .sorted { $0.createdAt > $1.createdAt }
     }
 
