@@ -8,6 +8,7 @@ import http
 import json
 import secrets
 import time
+from admission import Rejected
 from pathlib import Path
 from websockets.asyncio.server import serve
 from websockets.asyncio.client import connect
@@ -22,8 +23,9 @@ MAX_SESSIONS = 1
 SESSION_TIMEOUT = 330  # Connection setup + capture + bounded finalization.
 
 class Relay:
-    def __init__(self, key, token):
+    def __init__(self, key, token=None, *, admission=None):
         self.key, self.token = key, token
+        self.admission = admission
         self.active = False
         self.total_bytes = 0
         self.sessions = 0
@@ -33,15 +35,37 @@ class Relay:
             return connection.respond(http.HTTPStatus.OK, 'ready\n')
         if request.path != '/stt':
             return connection.respond(http.HTTPStatus.NOT_FOUND, 'Not found\n')
-        supplied = request.headers.get('Authorization', '')
+        try:
+            supplied = request.headers.get('Authorization', '')
+        except Exception:
+            return connection.respond(http.HTTPStatus.UNAUTHORIZED, 'Unauthorized\n')
+        if self.admission is not None:
+            try:
+                self.admission.authorized(supplied.removeprefix('Bearer ') if supplied.startswith('Bearer ') else '')
+            except Rejected:
+                return connection.respond(http.HTTPStatus.UNAUTHORIZED, 'Unauthorized\n')
+            except Exception:
+                return connection.respond(http.HTTPStatus.SERVICE_UNAVAILABLE, 'Authorization unavailable\n')
+            return
         if not hmac.compare_digest(supplied, 'Bearer ' + self.token):
             return connection.respond(http.HTTPStatus.UNAUTHORIZED, 'Unauthorized\n')
         if self.active or self.sessions >= MAX_SESSIONS or self.total_bytes >= MAX_BYTES:
             return connection.respond(http.HTTPStatus.TOO_MANY_REQUESTS, 'Development limit reached\n')
 
     async def handle(self, client):
+        reservation = None
+        token = None
+        if self.admission is not None:
+            try:
+                token = client.request.headers.get('Authorization', '').removeprefix('Bearer ')
+                reservation = self.admission.reserve(token, 'stt')
+            except Exception as error:
+                reason = str(error) if isinstance(error, Rejected) else 'authorization_unavailable'
+                await client.send(json.dumps({'type': 'error', 'message': reason}))
+                await client.close(1008, reason)
+                return
         # Recheck after handshake to avoid two accepted clients racing.
-        if self.active or self.sessions >= MAX_SESSIONS or self.total_bytes >= MAX_BYTES:
+        if self.admission is None and (self.active or self.sessions >= MAX_SESSIONS or self.total_bytes >= MAX_BYTES):
             await client.close(1008, 'Development limit reached')
             return
         self.active = True
@@ -51,12 +75,15 @@ class Relay:
         try:
             async with asyncio.timeout(SESSION_TIMEOUT):
                 async with connect(URL, additional_headers={'Authorization': 'Bearer ' + self.key},
-                                   open_timeout=10, close_timeout=2, max_size=2**20) as upstream:
+                                   open_timeout=2 if self.admission is not None else 10,
+                                   close_timeout=2, max_size=2**20) as upstream:
+                    if self.admission is not None:
+                        self.admission.authorized(token)
                     async def send_audio():
                         nonlocal sent
                         async for packet in client:
                             if isinstance(packet, bytes):
-                                if len(packet) % 2 or sent + len(packet) > MAX_BYTES or self.total_bytes + len(packet) > MAX_BYTES:
+                                if len(packet) % 2 or sent + len(packet) > MAX_BYTES or (self.admission is None and self.total_bytes + len(packet) > MAX_BYTES):
                                     raise ValueError('Audio limit or format error')
                                 sent += len(packet)
                                 self.total_bytes += len(packet)
@@ -78,19 +105,33 @@ class Relay:
                                 raise RuntimeError('Upstream error')
                         raise ConnectionError('Upstream ended without completion')
 
+                    async def monitor_access():
+                        while True:
+                            await asyncio.sleep(1)
+                            self.admission.authorized(token)
+
                     outgoing = asyncio.create_task(send_audio())
                     incoming = asyncio.create_task(receive_events())
+                    tasks = [outgoing, incoming]
+                    if self.admission is not None:
+                        tasks.append(asyncio.create_task(monitor_access()))
                     try:
-                        done, _ = await asyncio.wait([outgoing, incoming], return_when=asyncio.FIRST_COMPLETED)
+                        done, _ = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
                         for task in done:
                             task.result()
                         if incoming not in done:
-                            await asyncio.wait_for(incoming, timeout=10)
+                            remaining = [task for task in tasks if task is not outgoing]
+                            finished, _ = await asyncio.wait(remaining, timeout=10,
+                                                             return_when=asyncio.FIRST_COMPLETED)
+                            if not finished:
+                                raise TimeoutError('Finalization timed out')
+                            for task in finished:
+                                task.result()
                         status = 'completed'
                     finally:
-                        for task in (outgoing, incoming):
+                        for task in tasks:
                             if not task.done(): task.cancel()
-                        await asyncio.gather(outgoing, incoming, return_exceptions=True)
+                        await asyncio.gather(*tasks, return_exceptions=True)
         except Exception as error:
             status = type(error).__name__
             try:
@@ -104,8 +145,13 @@ class Relay:
                       'elapsed_seconds': round(time.monotonic() - started, 3),
                       'estimated_audio_cost_usd': sent / 32000 * .20 / 3600,
                       'billing_verified': False}
-            with (ROOT / 'work/relay-usage.jsonl').open('a') as ledger:
-                ledger.write(json.dumps(record) + '\n')
+            if reservation is not None:
+                # Do not release the durable active slot until upstream cleanup.
+                self.admission.finish(reservation, completed=status == 'completed')
+                record['request_id'] = reservation
+            else:
+                with (ROOT / 'work/relay-usage.jsonl').open('a') as ledger:
+                    ledger.write(json.dumps(record) + '\n')
             print(json.dumps(record), flush=True)
 
 async def main():

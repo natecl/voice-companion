@@ -1,6 +1,6 @@
 # V1 implementation plan — companion on tap
 
-Status: planning, September 24, 2026. Product scope agreed in conversation; implementation choices and targets below are proposals to verify. This plan does not authorize a public deployment or purchase. Canonical authorities: [product source of truth](product-source-of-truth.md), [engineering principles](engineering-principles.md), and [V0 runbook](v0-runbook.md).
+Status: execution requested September 24, 2026; checkpoint 0 underway. See the [operating contract proposal](v1-operating-contract.md) for hosting, limits, evaluation targets, and outstanding founder decisions. Implementation choices and targets remain proposals to verify. This plan does not authorize a public deployment or purchase. Canonical authorities: [product source of truth](product-source-of-truth.md), [engineering principles](engineering-principles.md), and [V0 runbook](v0-runbook.md).
 
 ## Outcome
 
