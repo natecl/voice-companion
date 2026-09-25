@@ -29,6 +29,7 @@ An iPhone-first companion for everyday conversations, with Mac support. Working 
 - [Video 2 transcript](docs/sources/transcripts/02-state-of-startups.txt)
 - [Garry Tan X posts supplied by the founder](docs/sources/garry-tan-x-posts.md)
 - [Jev research and possible implementation role](docs/jev-research.md)
+- [Automatic memory research and proposed harness](docs/automatic-memory-research.md)
 
 Sources and research inform the product; they do not silently change its definition. Implementation proposals remain hypotheses until accepted by the founder.
 
