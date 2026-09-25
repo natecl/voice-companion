@@ -24,7 +24,13 @@ struct SessionStore {
 
     func save(_ session: CaptureSession) throws {
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        try JSONEncoder().encode(session).write(to: file(session.id), options: .atomic)
+        #if os(iOS)
+        // Sessions must remain writable after locking a device that has already been unlocked.
+        let options: Data.WritingOptions = [.atomic, .completeFileProtectionUntilFirstUserAuthentication]
+        #else
+        let options: Data.WritingOptions = .atomic
+        #endif
+        try JSONEncoder().encode(session).write(to: file(session.id), options: options)
     }
 
     func delete(_ id: UUID) throws { try FileManager.default.removeItem(at: file(id)) }

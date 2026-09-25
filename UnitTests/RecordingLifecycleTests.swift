@@ -32,27 +32,54 @@ final class RecordingLifecycleTests: XCTestCase {
         }
         XCTFail("Recording state did not settle")
     }
-    private func withController(_ body: (SessionController, ControlledConnection, SessionStore) async throws -> Void) async throws {
+    private func withController(background: Bool = false, _ body: (SessionController, ControlledConnection, SessionStore) async throws -> Void) async throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: directory) }
         let store = SessionStore(directory: directory)
         let connection = ControlledConnection()
-        let controller = SessionController(store: store, makeConnection: { connection }, prepareRecording: {})
+        let controller = SessionController(store: store, allowsBackgroundRecording: background, makeConnection: { connection }, prepareRecording: {})
         try await body(controller, connection, store)
     }
+    func testActiveBackgroundCapturePreservesConnectionUntilExplicitStop() async throws {
+        try await withController(background: true) { controller, connection, store in
+            controller.startRecording()
+            await waitUntil { connection.finish != nil }
+            controller.didEnterBackground()
+            XCTAssertFalse(connection.cancelled)
+            XCTAssertEqual(controller.liveStatus, "Recording")
+            XCTAssertEqual(try store.load().first?.transcript.segments.first?.text, "Received words")
+            controller.stop()
+            await waitUntil { !controller.isActive }
+            XCTAssertTrue(connection.stopped)
+            XCTAssertEqual(try store.load().first?.completed, true)
+        }
+    }
+
+    func testBackgroundDuringPreparationCancelsWithoutStartingCapture() async throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let connection = ControlledConnection()
+        let controller = SessionController(store: SessionStore(directory: directory), allowsBackgroundRecording: true,
+            makeConnection: { connection }, prepareRecording: { try await Task.sleep(for: .seconds(10)) })
+        controller.startRecording()
+        controller.didEnterBackground()
+        await waitUntil { !controller.isActive }
+        XCTAssertFalse(connection.started)
+    }
+
     func testBackgroundPersistsBeforeCancellationAndSurvivesReload() async throws {
         try await withController { controller, connection, store in
             controller.startRecording()
             await waitUntil { connection.finish != nil }
-            controller.interrupt(reason: "App left foreground")
+            controller.didEnterBackground()
             XCTAssertTrue(connection.cancelled)
             let immediate = try XCTUnwrap(store.load().first)
             XCTAssertFalse(immediate.completed)
-            XCTAssertEqual(immediate.endReason, "App left foreground")
+            XCTAssertTrue(immediate.endReason?.contains("left the foreground") == true)
             XCTAssertEqual(immediate.transcript.segments.first?.text, "Received words")
             await waitUntil { !controller.isActive }
             let reopened = SessionController(store: store)
-            XCTAssertEqual(reopened.sessions.first?.endReason, "App left foreground")
+            XCTAssertEqual(reopened.sessions.first?.endReason, immediate.endReason)
         }
     }
     func testNetworkFailurePreservesTextAndClearsRecording() async throws {

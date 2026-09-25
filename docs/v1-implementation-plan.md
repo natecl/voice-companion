@@ -1,6 +1,6 @@
 # V1 implementation plan — companion on tap
 
-Status: checkpoint 1 verified September 24, 2026; see [hosted recording evidence](v1-hosted-validation.md). Checkpoint 2 is next. Luna/Jev access and integration remain later-checkpoint prerequisites. See the [operating contract proposal](v1-operating-contract.md) for hosting, limits, evaluation targets, and outstanding founder decisions. Implementation choices and targets remain proposals to verify. This plan does not authorize a public deployment or purchase. Canonical authorities: [product source of truth](product-source-of-truth.md), [engineering principles](engineering-principles.md), and [V0 runbook](v0-runbook.md).
+Status: checkpoint 1 verified September 24, 2026; see [hosted recording evidence](v1-hosted-validation.md). Checkpoint 2 is verified at the existing five-minute limit; see [background evidence](v1-background-validation.md). Checkpoint 3 (saved-conversation Ask) is next. Longer capture and battery/resource characterization remain prerequisites to increasing the cap. Luna/Jev access and integration remain later-checkpoint prerequisites. See the [operating contract proposal](v1-operating-contract.md) for hosting, limits, evaluation targets, and outstanding founder decisions. Implementation choices and targets remain proposals to verify. This plan does not authorize a public deployment or purchase. Canonical authorities: [product source of truth](product-source-of-truth.md), [engineering principles](engineering-principles.md), and [V0 runbook](v0-runbook.md).
 
 ## Outcome
 

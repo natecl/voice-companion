@@ -77,6 +77,10 @@ struct SessionsView: View {
                         Button("Back to sessions") { controller.close() }.disabled(controller.liveStatus != nil).accessibilityIdentifier("closeSession")
                     } else {
                         recordingLimitNotice
+                        #if os(iOS)
+                        Text("After recording starts, you can lock your phone. Reopen the app to stop. Calls or microphone changes may end the recording.")
+                            .font(.caption).foregroundStyle(.secondary)
+                        #endif
                         Button("Start recording") { controller.startRecording() }
                             .disabled(controller.isActive).accessibilityIdentifier("startRecording")
                         if let status = controller.liveStatus {
@@ -166,9 +170,7 @@ struct SessionsView: View {
             }
         }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .background && controller.isActive {
-                controller.interrupt(reason: "Recording stopped because the app left the foreground. Received text is saved; the transcript may be incomplete.")
-            }
+            if phase == .background { controller.didEnterBackground() }
         }
     }
 
