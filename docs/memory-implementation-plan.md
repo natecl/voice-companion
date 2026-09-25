@@ -1,6 +1,6 @@
 # Automatic cross-session memory — implementation plan
 
-Status: checkpoint 1 implemented and locally verified; checkpoints 2–3 remain planned. See the [foundation contract and evidence](memory-foundation.md). Founder direction consolidated September 25, 2026. Follow the [product source of truth](product-source-of-truth.md) and [engineering principles](engineering-principles.md). The existing internal V1 remains the verified baseline. Checkpoint 1 does not deploy changes or start paid evaluations.
+Status: checkpoints 1–2 implemented and locally verified; checkpoint 3 remains planned. See [learning evidence and limits](memory-learning.md). See the [foundation contract and evidence](memory-foundation.md). Founder direction consolidated September 25, 2026. Follow the [product source of truth](product-source-of-truth.md) and [engineering principles](engineering-principles.md). The existing internal V1 remains the verified baseline. Checkpoint 1 does not deploy changes or start paid evaluations.
 
 ## Outcome and accepted boundaries
 

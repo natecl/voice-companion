@@ -101,6 +101,9 @@ class Admission:
             raise Rejected('unauthorized')
         return row[0]
 
+    def active_credentials(self):
+        return [r[0] for r in self.db.execute('SELECT id FROM credential WHERE revoked=0 AND expires>?', (self.clock(),))]
+
     def revoke(self, identifier):
         self.db.execute('UPDATE credential SET revoked=1 WHERE id=?', (identifier,))
 

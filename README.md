@@ -32,6 +32,7 @@ An iPhone-first companion for everyday conversations, with Mac support. Working 
 - [Automatic memory research and proposed harness](docs/automatic-memory-research.md)
 - [Automatic memory implementation plan and PR checkpoints](docs/memory-implementation-plan.md)
 - [Memory foundation contract and local QA](docs/memory-foundation.md)
+- [Automatic learning, provider QA and cost accounting](docs/memory-learning.md)
 
 Sources and research inform the product; they do not silently change its definition. Implementation proposals remain hypotheses until accepted by the founder.
 

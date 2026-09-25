@@ -1,5 +1,7 @@
 # Memory foundation operating contract and evidence
 
+Historical checkpoint-1 evidence; current learning behavior and schema v2 are documented in [memory learning](memory-learning.md).
+
 September 25, 2026. Checkpoint 1 of the [memory plan](memory-implementation-plan.md). This is a local, provider-free foundation, not working AI extraction/recall or a deployed phone memory feature. The installed hosted configuration remains memory-disabled.
 
 ## Concrete storage and ownership contract

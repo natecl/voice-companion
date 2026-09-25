@@ -1,6 +1,8 @@
 """Single-instance internal service. Requires persistent storage and explicit caps."""
 import asyncio
 import fcntl
+import json
+from contextlib import suppress
 import os
 from pathlib import Path
 from service_policy import open_ledger
@@ -8,6 +10,9 @@ from ask import AskService, Luna
 from relay import Relay
 from memory_store import MemoryStore
 from memory_service import MemoryService
+from memory_budget import MemoryBudget, APPROVAL_ID, ALLOCATION
+from memory_models import MemoryModels
+from memory_writer import MemoryWriter, MemoryWorker
 from websockets.asyncio.server import serve
 
 
@@ -21,6 +26,7 @@ async def main():
         if not key:
             raise ValueError('Missing provider key')
         store = open_ledger(migrate=True)
+        learning_task = None
         try:
             store.recover_interrupted()
             answer_key = os.environ.get('OPENAI_API_KEY', '').strip()
@@ -34,6 +40,19 @@ async def main():
                 memory_store.recover_jobs()
                 memory_store.maintain()
                 memory = MemoryService(store, memory_store)
+            if os.environ.get('VOICE_ENABLE_MEMORY_LEARNING') == '1':
+                if memory is None or not answer_key or not os.environ.get('TYPESAFE_API_KEY'):
+                    raise ValueError('Learning requires memory and both provider credentials')
+                # Administrative receipt is provisioned separately; startup never grants itself spend.
+                receipt = json.loads((directory / 'memory-allocation.json').read_text())
+                allocation = store.db.execute('SELECT category,reserved FROM request WHERE id=?', (APPROVAL_ID,)).fetchone()
+                if allocation is None or tuple(allocation) != ('jev', ALLOCATION):
+                    raise ValueError('Learning allocation is not reserved in the global ledger')
+                if not (directory / 'memory-budget.sqlite').exists():
+                    raise ValueError('Transfer the canonical learning subledger before enablement')
+                budget = MemoryBudget(directory / 'memory-budget.sqlite', receipt)
+                writer = MemoryWriter(memory_store, MemoryModels(answer_key, os.environ['TYPESAFE_API_KEY']), budget)
+                learning_task = asyncio.create_task(MemoryWorker(writer, store).run())
             relay = Relay(key, admission=store, ask=ask, memory=memory)
             async with serve(relay.handle, '0.0.0.0', int(os.environ.get('PORT', '10000')),
                              process_request=relay.authorize, max_size=64000, max_queue=8,
@@ -41,6 +60,10 @@ async def main():
                 print('Internal transcription service ready', flush=True)
                 await asyncio.Future()
         finally:
+            if learning_task is not None:
+                learning_task.cancel()
+                with suppress(asyncio.CancelledError):
+                    await learning_task
             store.close()
 
 
