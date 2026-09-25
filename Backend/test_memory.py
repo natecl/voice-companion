@@ -37,6 +37,29 @@ class MemoryTests(unittest.TestCase):
         self.store.commit_claims(job, claims)
         return job
 
+    def test_review_empty_job_preserves_history_and_guards_retries(self):
+        old=self.write(source(),[])
+        with self.assertRaisesRegex(Rejected,'review_not_eligible'):
+            self.store.review_empty_job('other-owner',old['id'],'review-v6')
+        reviewed=self.store.review_empty_job(self.owner,old['id'],'review-v6')
+        self.assertNotEqual(old['id'],reviewed['id'])
+        self.assertIsNone(self.store.claim_job(self.owner))
+        with self.assertRaisesRegex(Rejected,'review_already_attempted'):
+            self.store.review_empty_job(self.owner,old['id'],'review-v6')
+        self.store.commit_claims(reviewed,[candidate()])
+        with self.assertRaisesRegex(Rejected,'review_not_empty'):
+            self.store.review_empty_job(self.owner,old['id'],'review-v7')
+        with self.store.connect() as db:
+            self.assertEqual(db.execute('SELECT state FROM job WHERE id=?',(old['id'],)).fetchone()[0],'done')
+
+    def test_review_cannot_restore_deleted_or_revised_source(self):
+        for session in ('deleted','revised'):
+            old=self.write(source(session),[])
+            if session=='deleted':self.store.delete_source(self.owner,session)
+            else:self.store.put_source(self.owner,source(session,revision=2))
+            with self.assertRaisesRegex(Rejected,'review_not_eligible'):
+                self.store.review_empty_job(self.owner,old['id'],'review-v6')
+
     def test_persistence_idempotency_revision_and_backup(self):
         data = source()
         self.assertEqual(self.store.put_source(self.owner, data)['status'], 'stored')

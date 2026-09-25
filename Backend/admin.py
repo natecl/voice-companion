@@ -49,6 +49,9 @@ def main():
     grant = commands.add_parser('grant-recording-attempt', help='One separately founder-approved attempt; reuse its approval ID on retry')
     grant.add_argument('--date', required=True)
     grant.add_argument('--approval-id', required=True)
+    ask_grant = commands.add_parser('grant-ask-attempt', help='One separately approved Ask for the UTC day; idempotent approval ID')
+    ask_grant.add_argument('--date', required=True)
+    ask_grant.add_argument('--approval-id', required=True)
     args = parser.parse_args()
     store = open_ledger()
     try:
@@ -65,6 +68,10 @@ def main():
             day = datetime.strptime(args.date, '%Y-%m-%d').replace(tzinfo=timezone.utc)
             added = store.grant_recording_attempt(int(day.timestamp()), args.approval_id)
             print('Recording grant added' if added else 'Recording grant already exists')
+        elif args.command == 'grant-ask-attempt':
+            day = datetime.strptime(args.date, '%Y-%m-%d').replace(tzinfo=timezone.utc)
+            added = store.grant_ask_attempt(int(day.timestamp()), args.approval_id)
+            print('Ask grant added' if added else 'Ask grant already exists')
         elif args.command == 'allow-one-recording':
             day = datetime.strptime(args.date, '%Y-%m-%d').replace(tzinfo=timezone.utc)
             store.allow_one_recording_today(int(day.timestamp()), replace_consumed=args.replace_consumed)

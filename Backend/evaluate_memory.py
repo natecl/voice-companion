@@ -42,6 +42,7 @@ async def main(suite, directory, run_name=None, reuse_extraction=None):
             return call
         models.extract = replay('extract', models.extract)
         models.judge = replay('judge', models.judge)
+        models.verify_support = replay('support', models.verify_support)
         # Exact-request replay bypasses both the provider and a new paid reservation.
         original_reserve = budget.reserve
         def reserve(key, model):

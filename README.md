@@ -33,9 +33,14 @@ An iPhone-first companion for everyday conversations, with Mac support. Working 
 - [Automatic memory implementation plan and PR checkpoints](docs/memory-implementation-plan.md)
 - [Memory foundation contract and local QA](docs/memory-foundation.md)
 - [Automatic learning, provider QA and cost accounting](docs/memory-learning.md)
+- [Memory recall acceptance and rollout](docs/memory-recall.md)
 
 Sources and research inform the product; they do not silently change its definition. Implementation proposals remain hypotheses until accepted by the founder.
 
 ## Development
 
 See [development commands and foundation QA](docs/development.md). The shared SwiftUI source is in `App/`; `project.yml` generates both native app targets and their UI tests.
+
+## Internal memory checkpoint
+
+The enrolled iPhone can synchronize session evidence and ask with source-linked past context. Final corrected recall and saved-source reopening are verified; Luna extracts and Jev independently verifies. See [acceptance](docs/memory-recall.md#final-physical-acceptance-and-checkpoint-review) for the recovered correction, bounded tests, and known conservative retention miss. The $0.28 memory QA allocation is exhausted; more provider-backed memory work requires a newly approved allowance. This is an internal trial, not a public release.

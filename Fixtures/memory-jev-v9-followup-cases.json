@@ -1,0 +1,118 @@
+[
+  {
+    "id": "anonymous-v9",
+    "source": {
+      "captured_at": 1790369847.775401,
+      "completed": true,
+      "passages": [
+        {
+          "id": "p1",
+          "start": 0.0,
+          "duration": 3.0,
+          "speakers": [
+            0
+          ],
+          "text": "I prefer quiet restaurants."
+        }
+      ],
+      "revision": 1,
+      "session_id": "anonymous-v9",
+      "timezone": "America/New_York"
+    },
+    "candidates": [
+      {
+        "text": "An unidentified speaker prefers quiet restaurants.",
+        "subject_name": null,
+        "kind": "preference",
+        "basis": "stated",
+        "source_ids": [
+          "p1"
+        ],
+        "expires_at": null
+      },
+      {
+        "text": "The app user prefers quiet restaurants.",
+        "subject_name": "user",
+        "kind": "preference",
+        "basis": "stated",
+        "source_ids": [
+          "p1"
+        ],
+        "expires_at": null
+      },
+      {
+        "text": "Maya prefers quiet restaurants.",
+        "subject_name": "Maya",
+        "kind": "preference",
+        "basis": "stated",
+        "source_ids": [
+          "p1"
+        ],
+        "expires_at": null
+      }
+    ],
+    "expected": [
+      "supported",
+      "unsupported",
+      "unsupported"
+    ]
+  },
+  {
+    "id": "named-v9",
+    "source": {
+      "captured_at": 1790369847.775401,
+      "completed": true,
+      "passages": [
+        {
+          "id": "p1",
+          "start": 0.0,
+          "duration": 3.0,
+          "speakers": [
+            0
+          ],
+          "text": "My name is Maya. I am a guest on this recording. I prefer quiet restaurants."
+        }
+      ],
+      "revision": 1,
+      "session_id": "named-v9",
+      "timezone": "America/New_York"
+    },
+    "candidates": [
+      {
+        "text": "Maya prefers quiet restaurants.",
+        "subject_name": "Maya",
+        "kind": "preference",
+        "basis": "stated",
+        "source_ids": [
+          "p1"
+        ],
+        "expires_at": null
+      },
+      {
+        "text": "A speaker prefers quiet restaurants.",
+        "subject_name": null,
+        "kind": "preference",
+        "basis": "stated",
+        "source_ids": [
+          "p1"
+        ],
+        "expires_at": null
+      },
+      {
+        "text": "The app user prefers quiet restaurants.",
+        "subject_name": "user",
+        "kind": "preference",
+        "basis": "stated",
+        "source_ids": [
+          "p1"
+        ],
+        "expires_at": null
+      }
+    ],
+    "expected": [
+      "supported",
+      "supported",
+      "unsupported"
+    ]
+  }
+]

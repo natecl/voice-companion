@@ -4,11 +4,16 @@ struct ConversationPassage: Codable, Identifiable, Equatable {
     let id: String
     let start: Double
     let text: String
+    var session_id: String? = nil
+    var revision: Int? = nil
+    var captured_at: Double? = nil
 }
 
 struct ConversationQuestion: Codable {
     let question: String
     let passages: [ConversationPassage]
+    var memory: Bool? = nil
+    var session_id: String? = nil
 
     init(question: String, transcript: Transcript) throws {
         let question = question.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -35,6 +40,8 @@ struct ConversationAnswer: Codable, Identifiable {
     var transcriptCutoffSeconds: Double?
     var capturedWhileRecording: Bool?
     var includedInterimText: Bool?
+    var pastSources: [ConversationPassage]?
+    var memoryStatus: String?
 }
 
 struct AnswerEvent: Decodable {
@@ -42,12 +49,15 @@ struct AnswerEvent: Decodable {
     var text: String?
     var references: [String]?
     var message: String?
+    var sources: [ConversationPassage]?
+    var memory_status: String?
 }
 
 enum AskFailure: LocalizedError {
-    case invalidQuestion, noTranscript, contextTooLarge, unavailable, invalidReferences, dailyLimit, budgetLimit, busy, accessExpired, interrupted
+    case invalidQuestion, noTranscript, contextTooLarge, unavailable, invalidReferences, dailyLimit, budgetLimit, busy, accessExpired, interrupted, memoryContextChanged
     var errorDescription: String? {
         switch self {
+        case .memoryContextChanged: "Past context changed while answering. Ask again using the updated conversation history."
         case .invalidQuestion: "Enter a question of at most 1,000 characters."
         case .noTranscript: "This session has no transcript to ask about yet."
         case .contextTooLarge: "This conversation is too long for the current Ask limit. Nothing was silently removed."
@@ -62,6 +72,7 @@ enum AskFailure: LocalizedError {
     }
     static func server(_ code: String?) -> Self {
         switch code {
+        case "memory_context_changed": .memoryContextChanged
         case "invalid_question": .invalidQuestion
         case "context_too_large": .contextTooLarge
         case "invalid_references": .invalidReferences

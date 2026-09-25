@@ -27,9 +27,9 @@ extension SessionController {
         }
         if arguments.contains("--ui-testing"), arguments.contains("--ask-ui-fixture") {
             let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-                .appendingPathComponent("VoiceCompanion-Ask-QA")
+                .appendingPathComponent(arguments.contains("--recall-ui-fixture") ? "VoiceCompanion-Recall-QA" : "VoiceCompanion-Ask-QA")
             let store = SessionStore(directory: directory)
-            let controller = SessionController(store: store, makeAnswerConnection: { AnswerUIFixture() })
+            let controller = SessionController(store: store, makeAnswerConnection: { AnswerUIFixture(past: arguments.contains("--recall-ui-fixture")) })
             if let saved = controller.sessions.first { controller.current = saved }
             else {
                 var session = CaptureSession(id: UUID(), createdAt: Date())
@@ -112,13 +112,19 @@ private final class RecordingUIFixture: RecordingConnection {
 @MainActor
 private final class AnswerUIFixture: AnswerConnection {
     let delay: Duration
-    init(delay: Duration = .milliseconds(500)) { self.delay = delay }
+    let past: Bool
+    init(delay: Duration = .milliseconds(500), past: Bool = false) { self.delay = delay; self.past = past }
     func run(_ question: ConversationQuestion, onEvent: (AnswerEvent) throws -> Void) async throws {
-        try onEvent(AnswerEvent(type: "delta", text: "Tuesday at ten"))
+        if past {
+            let source = ConversationPassage(id: "m1", start: 4, text: "Maya prefers morning meetings.",
+                session_id: "7D4027F4-E752-4F01-AEAA-2AE1D857839C", revision: 1, captured_at: 1790337600)
+            try onEvent(AnswerEvent(type: "context", sources: [source], memory_status: "available"))
+        }
+        try onEvent(AnswerEvent(type: "delta", text: past ? "Maya prefers mornings" : "Tuesday at ten"))
         try await Task.sleep(for: delay)
         try Task.checkCancellation()
-        try onEvent(AnswerEvent(type: "delta", text: " [[p1]]."))
-        try onEvent(AnswerEvent(type: "done", references: ["p1"]))
+        try onEvent(AnswerEvent(type: "delta", text: past ? " [[m1]]." : " [[p1]]."))
+        try onEvent(AnswerEvent(type: "done", references: [past ? "m1" : "p1"]))
     }
     func cancel() {}
 }

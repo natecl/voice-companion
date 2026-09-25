@@ -1,0 +1,5 @@
+[
+  {"id":"preference","question":"How should I prepare a meeting agenda for Nora Patel?","required":"agenda","forbidden":"Maya"},
+  {"id":"correction","question":"When does Project Birch's room booking expire now?","required":"29","forbidden":"28"},
+  {"id":"history","question":"What was Project Birch's original room booking expiry before the correction?","required":"28","forbidden":null}
+]

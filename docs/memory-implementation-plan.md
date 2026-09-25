@@ -1,12 +1,13 @@
 # Automatic cross-session memory — implementation plan
 
-Status: checkpoints 1–2 implemented and locally verified; checkpoint 3 remains planned. See [learning evidence and limits](memory-learning.md). See the [foundation contract and evidence](memory-foundation.md). Founder direction consolidated September 25, 2026. Follow the [product source of truth](product-source-of-truth.md) and [engineering principles](engineering-principles.md). The existing internal V1 remains the verified baseline. Checkpoint 1 does not deploy changes or start paid evaluations.
+Status: checkpoints 1–3 are implemented and verified for the bounded internal founder trial. Final phone corrected recall, source opening and saved reopening passed. See [acceptance and rollout record](memory-recall.md#final-physical-acceptance-and-checkpoint-review) for the recovery provenance, one conservative retention miss, and exhausted testing allocation. The original research/proposed steps below are retained as the design and verification plan, not a claim of production readiness. Follow the [product source of truth](product-source-of-truth.md) and [engineering principles](engineering-principles.md).
+
 
 ## Outcome and accepted boundaries
 
 A conversation automatically informs useful answers in later conversations. The companion learns from completed listening sessions, handles corrections and temporary context in the background, and uses Jev to judge retrieved candidates before Luna answers. No memory suggestions, approval inbox, Forget button, or memory-management screen. Internal lifecycle operations remain observable to engineers. Source references in answers remain available; they are not a memory-management UI.
 
-Build our own harness. Supermemory is inspiration only. Jev judges source support, attribution, modality, memory relationships and retrieval relevance; Luna extracts candidates and answers; code controls ownership, persistence, time and lifecycle transitions. This does not reopen the failed V1 Jev intent-routing experiment.
+Build our own harness. Supermemory is inspiration only. Luna extracts candidates and answers; Jev independently verifies source support, attribution, modality, memory relationships and retrieval relevance; code controls ownership, persistence, time and lifecycle transitions. This does not reopen the failed V1 Jev intent-routing experiment.
 
 The first slice includes session-end learning, relevant cross-session answers during/after recording, automatic maintenance and source-linked answers on iPhone. Preserve shared Mac contracts and existing recording/current-session Ask behavior. Defer live incremental learning, public account enrollment, full cross-device session sync, old-library bulk import, voice identity recognition, proactive participation and a new UI design. Do not automatically ingest old private sessions during migration. No automatic deletion of source transcripts based on age or retrieval frequency.
 
@@ -62,7 +63,7 @@ Existing Delete session remains intact and gains cloud propagation; this is not 
 **Deliver:** finalized sessions create and maintain supported memories without user action.
 
 - Consume durable jobs; Luna extracts bounded candidate claims with existing source IDs. Exclude assistant answers from evidence of user facts or commitments. Empty/filler sessions complete with no memories.
-- Find a small set of related existing records. Batch Jev questions for support, subject, modality, duplicate/update/conflict and temporary status. Pin model/rubric versions and give unknown/uncertain outcomes.
+- Find a small set of related existing records. Verify source support with a separate, narrowly scoped Jev batch, then batch Jev questions for subject, modality, duplicate/update/conflict and temporary status. Pin model/rubric versions and give unknown/uncertain outcomes.
 - Validate schemas and source existence in code, commit supported transitions, update compact profile and indexes. Profile only contains supported, attributed, broadly useful current information within a fixed budget.
 - Apply the lifecycle contract automatically. No user-facing forgetting workflow. Ambiguous claims remain evidence and do not contaminate the user's profile.
 - Record per-job state, input revision, usage and error reason without routinely logging transcript text. Bound concurrency and paid admission separately from Ask/STT. Check source validity again before commit.
@@ -70,7 +71,7 @@ Existing Delete session remains intact and gains cloud propagation; this is not 
 
 **Acceptance evidence:** local cached-response replay first, then a bounded real Luna/Jev run through the writer using synthetic saved transcripts. Inspect actual persisted claims/source links and updates. Include an unknown-speaker example, hypothetical/quoted speech, changed appointment, distinct similar names, duplicate input, incomplete recording, missing fields and provider failure. Restart/reprocess must not duplicate or restore invalidated claims. Simulated time verifies automatic expiration without waiting in real time.
 
-Compare extraction alone versus extraction with Jev on a small held-out set to establish which errors Jev fixes or introduces. No broad model competition. A failed critical gate blocks enablement; document and fix it rather than silently removing the agreed Jev role.
+Compare extraction alone versus extraction with Jev on a small held-out set to establish which errors Jev fixes or introduces. No broad model competition. A failed critical gate blocks enablement; document and fix it. Founder revision: remove Jev from a role that fails rather than preserving it through workarounds; the temporary Luna verifier during PR 3 was superseded by the founder’s explicit preference for independent Jev verification. Diagnose configuration and conservative false rejection separately from model suitability.
 
 ## PR 3 — Jev-assisted recall and complete iPhone acceptance
 

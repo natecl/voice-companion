@@ -5,13 +5,19 @@ private final class FixtureAnswer: AnswerConnection {
     var cancelled = false
     var stall = false
     var badReference = false
+    var past: ConversationPassage?
+    var invalidated = false
     var requested: ConversationQuestion?
     func run(_ question: ConversationQuestion, onEvent: (AnswerEvent) throws -> Void) async throws {
         requested = question
-        try onEvent(AnswerEvent(type: "delta", text: "Noon [[p1]]."))
+        if let past {
+            try onEvent(AnswerEvent(type: "context", sources: [past], memory_status: "available"))
+        }
+        try onEvent(AnswerEvent(type: "delta", text: past == nil ? "Noon [[p1]]." : "Morning [[m1]]."))
+        if invalidated { throw AskFailure.memoryContextChanged }
         if stall { try await Task.sleep(for: .seconds(20)) }
         try Task.checkCancellation()
-        try onEvent(AnswerEvent(type: "done", references: [badReference ? "p99" : "p1"]))
+        try onEvent(AnswerEvent(type: "done", references: [badReference ? "p99" : (past == nil ? "p1" : "m1")]))
     }
     func cancel() { cancelled = true }
 }
@@ -92,6 +98,35 @@ final class ConversationAnswerTests: XCTestCase {
             XCTAssertNil(connection.requested)
             XCTAssertNotNil(controller.answerErrorMessage)
             XCTAssertTrue(try store.load().isEmpty)
+        }
+    }
+
+    func testPastSourcesPersistAndDeletionRemovesDerivedAnswer() async throws {
+        try await exercise { controller, connection, store in
+            let previous = CaptureSession(id: UUID(), createdAt: Date())
+            try store.save(previous)
+            connection.past = ConversationPassage(id: "m1", start: 2, text: "Maya prefers mornings.",
+                session_id: previous.id.uuidString, revision: 1, captured_at: previous.createdAt.timeIntervalSince1970)
+            controller.ask("What does Maya prefer?")
+            try await waitUntil { !controller.isAnswering }
+            let saved = try XCTUnwrap(store.load().first(where: { $0.id == controller.current?.id }))
+            XCTAssertEqual(saved.answers?.first?.references, ["m1"])
+            XCTAssertEqual(saved.answers?.first?.pastSources?.first?.session_id, previous.id.uuidString)
+            try store.delete(previous.id)
+            XCTAssertEqual(try store.load().first?.answers?.count, 0)
+        }
+    }
+    func testInvalidationClearsPartialPastAnswer() async throws {
+        try await exercise { controller, connection, store in
+            connection.past = ConversationPassage(id: "m1", start: 2, text: "Old fact.",
+                session_id: UUID().uuidString, revision: 1, captured_at: 100)
+            connection.invalidated = true
+            controller.ask("What was said?")
+            try await waitUntil { !controller.isAnswering }
+            let answer = try XCTUnwrap(store.load().first?.answers?.first)
+            XCTAssertEqual(answer.state, .failed)
+            XCTAssertEqual(answer.text, "")
+            XCTAssertNil(answer.pastSources)
         }
     }
 

@@ -10,7 +10,7 @@ struct ConversationAskView: View {
         VStack(alignment: .leading, spacing: 14) {
             Divider()
             Text("Ask about this conversation").font(.headline)
-            Text("Answers use this transcript. Each question stands on its own.")
+            Text("Answers use the supplied conversation context. Each question stands on its own.")
                 .font(.caption).foregroundStyle(.secondary)
             if controller.liveStatus == "Recording" {
                 Text("Recording continues while you ask. Recent speech may still be processing; Ask uses only the transcript received so far.")
@@ -43,8 +43,8 @@ struct ConversationAskView: View {
                     }
                     if answer.state == .completed {
                         ForEach(answer.references, id: \.self) { reference in
-                            if let passage = answer.question.passages.first(where: { $0.id == reference }) {
-                                Button(String(format: "Source %@ · %.1fs", reference, passage.start)) { source = passage }
+                            if let passage = (answer.question.passages + (answer.pastSources ?? [])).first(where: { $0.id == reference }) {
+                                Button(String(format: passage.session_id == nil ? "Source %@ · %.1fs" : "Past source %@ · %.1fs", reference, passage.start)) { source = passage }
                                     .accessibilityIdentifier("answerSource")
                             }
                         }
@@ -65,6 +65,10 @@ struct ConversationAskView: View {
         .sheet(item: $source) { passage in
             VStack(alignment: .leading, spacing: 16) {
                 Text(String(format: "Transcript source · %.1fs", passage.start)).font(.headline)
+                if let timestamp = passage.captured_at {
+                    Text("Previous conversation · " + Date(timeIntervalSince1970: timestamp).formatted(date: .abbreviated, time: .shortened))
+                        .font(.caption).accessibilityIdentifier("pastSourceDate")
+                }
                 ScrollView { Text(passage.text).textSelection(.enabled) }
                 Text("Captured with this answer. Speaker identity is not verified.").font(.caption).foregroundStyle(.secondary)
                 Button("Done") { source = nil }
