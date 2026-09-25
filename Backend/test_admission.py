@@ -139,6 +139,38 @@ class RecordingAllowanceTests(unittest.TestCase):
             self.assertEqual(store.usage(), [('ask', 1, 20), ('stt', 3, 60)])
             store.close()
 
+    def test_ask_grant_survives_restart_is_single_expires_and_preserves_caps(self):
+        with tempfile.TemporaryDirectory() as d:
+            now=[10*86400]
+            def open_store():
+                return Admission(Path(d)/'usage.sqlite',clock=lambda:now[0],total_microusd=100,
+                                 limits={'ask':(60,20,1),'stt':(40,20,1)})
+            store=open_store()
+            try:
+                _,token=store.enroll(lifetime_seconds=3*86400)
+                def use(category='ask'):
+                    request=store.reserve(token,category);store.finish(request,completed=True)
+                use();use('stt')
+                with self.assertRaisesRegex(Rejected,'daily_limit'):use()
+                before=store.db.execute('SELECT * FROM request ORDER BY id').fetchall()
+                with self.assertRaises(ValueError):store.grant_ask_attempt(now[0]+86400,'ask-qa')
+                self.assertTrue(store.grant_ask_attempt(now[0],'ask-qa'))
+                self.assertEqual(before,store.db.execute('SELECT * FROM request ORDER BY id').fetchall())
+                store.close();store=open_store()
+                self.assertFalse(store.grant_ask_attempt(now[0],'ask-qa'))
+                with self.assertRaisesRegex(Rejected,'daily_limit'):use('stt')
+                use()
+                with self.assertRaisesRegex(Rejected,'daily_limit'):use()
+                now[0]+=86400
+                with self.assertRaises(ValueError):store.grant_ask_attempt(now[0],'ask-qa')
+                use()
+                with self.assertRaisesRegex(Rejected,'daily_limit'):use()
+                store.grant_ask_attempt(now[0],'ask-qa-later')
+                with self.assertRaisesRegex(Rejected,'budget_limit'):use()
+                self.assertEqual(store.usage(),[('ask',3,60),('stt',1,20)])
+                self.assertEqual(store.db.execute("SELECT daily FROM policy WHERE category='ask'").fetchone()[0],1)
+            finally:store.close()
+
     def test_existing_allowance_migrates_without_adding_an_attempt(self):
         with tempfile.TemporaryDirectory() as d:
             path = Path(d) / 'usage.sqlite'
