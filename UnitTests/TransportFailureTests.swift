@@ -73,12 +73,16 @@ final class TransportFailureTests: XCTestCase {
         }
         try await waitUntil { !controller.isActive }
         XCTAssertTrue(audio.stopped)
-        XCTAssertEqual(audio.started, !["ready-timeout", "stop-connecting", "reject"].contains(mode))
+        XCTAssertEqual(audio.started, !["ready-timeout", "stop-connecting", "reject", "daily_limit", "budget_limit", "busy", "unauthorized", "authorization_unavailable"].contains(mode))
         let saved = try XCTUnwrap(store.load().first)
         XCTAssertEqual(saved.completed, ["complete", "empty"].contains(mode) && (action == "stop" || action == nil))
         if ["drop", "error", "final-timeout", "complete"].contains(mode) {
             XCTAssertEqual(saved.transcript.segments.first?.text, "Preserved fixture words")
         }
+        let rejectionMessages = ["daily_limit": "midnight UTC", "budget_limit": "budget has been reached",
+                                 "busy": "already active", "unauthorized": "expired or was revoked",
+                                 "authorization_unavailable": "cannot verify recording access", "reject": "expired or was revoked"]
+        if let expected = rejectionMessages[mode] { XCTAssertTrue(saved.endReason?.contains(expected) == true, "Expected \(expected), got \(saved.endReason ?? "nil")") }
         if mode == "ready-timeout" { XCTAssertTrue(saved.endReason?.contains("did not become ready") == true) }
         if mode == "final-timeout" { XCTAssertTrue(saved.endReason?.contains("Final transcription results") == true) }
         if action == "audio-failure" { XCTAssertTrue(saved.endReason?.contains("could not be sent quickly enough") == true) }
@@ -109,6 +113,12 @@ final class TransportFailureTests: XCTestCase {
 
     func testEmptyTranscriptFinalizesWithoutInventingText() async throws { try await exercise("empty") }
     func testCaptureRouteFailurePreservesTextAndClosesConnection() async throws { try await exercise("complete", action: "route-change") }
+
+    func testAdmissionErrorsNeverStartCaptureAndExplainReason() async throws {
+        for mode in ["daily_limit", "budget_limit", "busy", "unauthorized", "authorization_unavailable"] {
+            try await exercise(mode)
+        }
+    }
 
     func testRejectedAuthorizationNeverStartsCapture() async throws { try await exercise("reject") }
     func testAudioStreamFailurePreservesItsReasonAndClosesSocket() async throws { try await exercise("complete", action: "audio-failure") }

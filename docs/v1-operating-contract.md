@@ -1,6 +1,6 @@
 # V1 operating contract
 
-Status: implementation requested September 24, 2026; checkpoint 0 underway. The founder accepted the paid Render recommendation after reviewing its free-tier limitations and approximately $7.25/month baseline. Render CLI authentication and workspace access are verified; the founder has now explicitly approved up to $5 total V1 provider-testing spend, allocated as below. The internal relay is deployed and successive physical-iPhone recordings are verified; see [hosted validation](v1-hosted-validation.md). Final checkpoint review remains. Governed by [engineering principles](engineering-principles.md) and the [V1 plan](v1-implementation-plan.md).
+Status: implementation requested September 24, 2026; checkpoint 0 underway. The founder accepted the paid Render recommendation after reviewing its free-tier limitations and approximately $7.25/month baseline. Render CLI authentication and workspace access are verified; the founder has now explicitly approved up to $5 total V1 provider-testing spend, allocated as below. The internal relay is deployed and successive physical-iPhone recordings are verified; see [hosted validation](v1-hosted-validation.md). Checkpoint 1 review and targeted verification are complete. Governed by [engineering principles](engineering-principles.md) and the [V1 plan](v1-implementation-plan.md).
 
 ## First delivery and deployment proposal
 
@@ -15,7 +15,7 @@ Official documentation reviewed September 24:
 - [CLI](https://render.com/docs/cli): supports deployment, logs, and noninteractive operation, allowing agents to run and inspect the service.
 - [Pricing](https://render.com/pricing): Starter $7/month plus disk $0.25/GB/month, approximately $7.25/month baseline before taxes and usage extras. Reconfirm the checkout before purchase.
 
-Render CLI 2.28.0 was installed and authenticated. The existing workspace is selected; its unrelated service was only inspected and was not modified. No Voice Companion service has been created.
+Render CLI 2.28.0 was installed and authenticated. The existing workspace is selected; its unrelated service was only inspected and was not modified. The dedicated Voice Companion service is deployed; see hosted validation for its identity and tested commit.
 
 ## Request flow and authentication
 
@@ -70,4 +70,4 @@ These are internal acceptance targets, not measured results or public latency cl
 
 ## Immediate next action
 
-Hosting/access and the $5 total provider-testing envelope are approved. Continue implementing durable admission/quotas with local socket tests, authenticated hosted transport and native configuration, and finally the two short physical-iPhone sessions after readiness. No independent-iPhone claim or checkpoint-1 merge until that real path passes.
+Checkpoint 1 is verified; merge the reviewed checkpoint, then implement pocket-ready capture in checkpoint 2. Keep the current five-minute cap until the separately bounded longer-capture check. Manual locking/speech/interruption QA still requires explicit founder readiness. Luna and Jev remain later integrations; the $5 total provider-testing ceiling persists across checkpoints.

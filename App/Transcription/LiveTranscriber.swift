@@ -107,14 +107,32 @@ final class LiveTranscriber: RecordingConnection {
     private func receive(_ socket: URLSessionWebSocketTask) async throws -> GrokEvent {
         let message: URLSessionWebSocketTask.Message
         do { message = try await socket.receive() }
-        catch { throw (timeoutError as Error?) ?? sendingError ?? error }
+        catch {
+            if let status = (socket.response as? HTTPURLResponse)?.statusCode {
+                if status == 401 || status == 403 { throw CaptureFailure.accessExpired }
+                if status == 503 { throw CaptureFailure.authorizationUnavailable }
+            }
+            throw (timeoutError as Error?) ?? sendingError ?? error
+        }
         let data: Data
         switch message {
         case .data(let bytes): data = bytes
         case .string(let text): data = Data(text.utf8)
         @unknown default: throw CaptureFailure.connectionEnded
         }
-        return try JSONDecoder().decode(GrokEvent.self, from: data)
+        let event = try JSONDecoder().decode(GrokEvent.self, from: data)
+        if event.type == "error" {
+            // Only known relay codes become user-facing messages; never display arbitrary provider text.
+            switch event.message {
+            case "unauthorized": throw CaptureFailure.accessExpired
+            case "daily_limit": throw CaptureFailure.dailyLimit
+            case "budget_limit": throw CaptureFailure.budgetLimit
+            case "busy": throw CaptureFailure.serviceBusy
+            case "authorization_unavailable": throw CaptureFailure.authorizationUnavailable
+            default: throw CaptureFailure.connectionEnded
+            }
+        }
+        return event
     }
 
     private func cleanup() {

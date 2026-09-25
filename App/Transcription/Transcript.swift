@@ -39,6 +39,7 @@ struct GrokEvent: Decodable {
     let start: Double?
     let duration: Double?
     let is_final: Bool?
+    var message: String? = nil
 
     var segment: TranscriptSegment? {
         guard type == "transcript.partial", let text, !text.isEmpty,
