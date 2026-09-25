@@ -13,6 +13,7 @@ from memory_service import MemoryService
 from memory_budget import MemoryBudget, APPROVAL_ID, ALLOCATION
 from memory_models import MemoryModels
 from memory_writer import MemoryWriter, MemoryWorker
+from memory_recall import MemoryRecall
 from websockets.asyncio.server import serve
 
 
@@ -40,7 +41,9 @@ async def main():
                 memory_store.recover_jobs()
                 memory_store.maintain()
                 memory = MemoryService(store, memory_store)
-            if os.environ.get('VOICE_ENABLE_MEMORY_LEARNING') == '1':
+            learning_enabled = os.environ.get('VOICE_ENABLE_MEMORY_LEARNING') == '1'
+            recall_enabled = os.environ.get('VOICE_ENABLE_MEMORY_RECALL') == '1'
+            if learning_enabled or recall_enabled:
                 if memory is None or not answer_key or not os.environ.get('TYPESAFE_API_KEY'):
                     raise ValueError('Learning requires memory and both provider credentials')
                 # Administrative receipt is provisioned separately; startup never grants itself spend.
@@ -51,8 +54,14 @@ async def main():
                 if not (directory / 'memory-budget.sqlite').exists():
                     raise ValueError('Transfer the canonical learning subledger before enablement')
                 budget = MemoryBudget(directory / 'memory-budget.sqlite', receipt)
-                writer = MemoryWriter(memory_store, MemoryModels(answer_key, os.environ['TYPESAFE_API_KEY']), budget)
-                learning_task = asyncio.create_task(MemoryWorker(writer, store).run())
+                models = MemoryModels(answer_key, os.environ['TYPESAFE_API_KEY'])
+                if learning_enabled:
+                    writer = MemoryWriter(memory_store, models, budget)
+                    learning_task = asyncio.create_task(MemoryWorker(writer, store).run())
+                if recall_enabled:
+                    if ask is None:
+                        raise ValueError('Recall requires Ask enabled')
+                    ask.recall = MemoryRecall(memory_store, models, budget)
             relay = Relay(key, admission=store, ask=ask, memory=memory)
             async with serve(relay.handle, '0.0.0.0', int(os.environ.get('PORT', '10000')),
                              process_request=relay.authorize, max_size=64000, max_queue=8,

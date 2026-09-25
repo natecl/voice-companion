@@ -262,7 +262,11 @@ final class SessionController {
         guard canAsk, let session = current else { return }
         answerErrorMessage = nil
         do {
-            let question = try ConversationQuestion(question: text, transcript: session.transcript)
+            var question = try ConversationQuestion(question: text, transcript: session.transcript)
+            if memorySync != nil {
+                question.memory = true
+                question.session_id = session.id.uuidString
+            }
             var answer = ConversationAnswer(id: UUID(), createdAt: Date(), question: question)
             answer.transcriptCutoffSeconds = session.transcript.receivedThroughSeconds
             answer.capturedWhileRecording = liveStatus == "Recording"
@@ -282,7 +286,18 @@ final class SessionController {
                         guard !Task.isCancelled, self.current?.id == session.id,
                               let index = self.current?.answers?.firstIndex(where: { $0.id == answer.id }),
                               self.current?.answers?[index].state == .streaming else { throw CancellationError() }
-                        if event.type == "delta", let text = event.text {
+                        if event.type == "context" {
+                            let sources = event.sources ?? []
+                            guard sources.count <= 8, Set(sources.map(\.id)).count == sources.count,
+                                  sources.allSatisfy({ $0.id.hasPrefix("m") && $0.session_id != nil && $0.revision != nil && $0.captured_at != nil }) else {
+                                throw AskFailure.invalidReferences
+                            }
+                            self.current?.answers?[index].pastSources = sources
+                            self.current?.answers?[index].memoryStatus = event.memory_status
+                            if event.memory_status == "unavailable" {
+                                self.current?.answers?[index].notice = "Past context is unavailable. This answer uses the current conversation."
+                            }
+                        } else if event.type == "delta", let text = event.text {
                             self.current?.answers?[index].text += text
                             if lastSave.duration(to: .now) >= .milliseconds(500) {
                                 try self.persist()
@@ -290,7 +305,8 @@ final class SessionController {
                             }
                         } else if event.type == "done" {
                             let refs = event.references ?? []
-                            guard refs.allSatisfy({ ref in question.passages.contains(where: { $0.id == ref }) }),
+                            let available = question.passages + (self.current?.answers?[index].pastSources ?? [])
+                            guard refs.allSatisfy({ ref in available.contains(where: { $0.id == ref }) }),
                                   self.current?.answers?[index].text.isEmpty == false else { throw AskFailure.invalidReferences }
                             self.current?.answers?[index].references = refs
                             self.current?.answers?[index].state = .completed
@@ -300,6 +316,11 @@ final class SessionController {
                 } catch {
                     if let index = current?.answers?.firstIndex(where: { $0.id == answer.id }), current?.answers?[index].state == .streaming {
                         current?.answers?[index].state = .failed
+                        if error as? AskFailure == .memoryContextChanged {
+                            current?.answers?[index].text = ""
+                            current?.answers?[index].pastSources = nil
+                            current?.answers?[index].references = []
+                        }
                         current?.answers?[index].notice = error.localizedDescription
                     }
                 }

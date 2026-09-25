@@ -48,6 +48,20 @@ struct SessionStore {
         try JSONEncoder().encode(session).write(to: file(session.id), options: options)
     }
 
-    func delete(_ id: UUID) throws { try FileManager.default.removeItem(at: file(id)) }
+    func removeAnswers(referencing sourceID: String) throws {
+        for var session in try load() {
+            let retained = session.answers?.filter { answer in
+                !(answer.pastSources ?? []).contains { $0.session_id == sourceID }
+            }
+            if retained?.count != session.answers?.count {
+                session.answers = retained
+                try save(session)
+            }
+        }
+    }
+    func delete(_ id: UUID) throws {
+        try removeAnswers(referencing: id.uuidString)
+        try FileManager.default.removeItem(at: file(id))
+    }
     private func file(_ id: UUID) -> URL { directory.appendingPathComponent(id.uuidString + ".json") }
 }

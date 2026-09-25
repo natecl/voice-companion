@@ -329,6 +329,25 @@ class MemoryStore:
                         claim['state'] = 'expired'
             return source
 
+    def recall_snapshot(self, owner):
+        """Consistent owner snapshot, including lifecycle for raw-evidence fallback."""
+        with self.transaction() as db:
+            sources = []
+            rows = db.execute('SELECT session,revision,payload FROM source WHERE owner=? AND deleted=0 ORDER BY session', (owner,)).fetchall()
+            for row in rows:
+                source = json.loads(row['payload'])
+                for passage in source['passages']:
+                    claims = [dict(c) for c in db.execute("""SELECT c.id,c.state,c.valid_from,c.valid_until,c.replaces,c.basis,c.subject
+                        FROM claim c JOIN support s ON s.claim=c.id
+                        WHERE s.owner=? AND s.session=? AND s.revision=? AND s.passage=? ORDER BY c.id""",
+                        (owner, row['session'], row['revision'], passage['id']))]
+                    for claim in claims:
+                        if claim['state'] == 'active' and claim['valid_until'] is not None and claim['valid_until'] <= self.clock():
+                            claim['state'] = 'expired'
+                    passage['claims'] = claims
+                sources.append(source)
+            return sources
+
     def profile(self, owner):
         # Derived on demand: no independent stale cache to invalidate in this foundation.
         return [c for c in self.search(owner, limit=50) if c['subject'] == 'user' and c['kind'] == 'preference' and c['basis'] == 'stated'][:10]

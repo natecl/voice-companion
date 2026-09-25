@@ -177,6 +177,7 @@ final class MemorySync {
     func recover(store: SessionStore, activeSessionID: UUID? = nil) throws {
         // Complete interrupted tracked sessions only; legacy sessions have no owner marker.
         let deleted = Set(try outbox.entries().filter { $0.operation.operation == "delete" }.map { $0.operation.sessionID })
+        for sourceID in deleted { try store.removeAnswers(referencing: sourceID) }
         for var session in try store.load() {
             guard session.id != activeSessionID else { continue }
             if deleted.contains(session.id.uuidString) {
