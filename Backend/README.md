@@ -1,6 +1,6 @@
-# Development relay
+# Voice Companion backend
 
-This is a local Mac development relay, not a deployed service. Python 3.11+ and websockets 15.0.1 are required (`python3 -m pip install -r Backend/requirements.txt` in your chosen virtual environment).
+The repository contains a local development relay and a deployed internal hosted service. The first section describes the local relay; see the V1 hosted section below for the current phone service. Python 3.11+ and websockets 15.0.1 are required (`python3 -m pip install -r Backend/requirements.txt` in your chosen virtual environment).
 
 Run `python3 Backend/relay.py` from the repository. It reads the ignored `.env`, binds only 127.0.0.1:8766, and writes a short-lived random client credential to `work/relay-client.json` with owner-only permissions. Quit with Ctrl-C; the client configuration is removed. The provider key never enters the native app. Do not expose this process publicly.
 
@@ -34,11 +34,11 @@ This is a bounded internal development transport, not public hosting or producti
 
 The Mac check script selects the current `python3` for these tests; it must have Backend/requirements.txt installed. Override with `VOICE_TEST_PYTHON=/absolute/path/to/python`. For direct xcodebuild calls, use `TEST_RUNNER_VOICE_TEST_PYTHON=/absolute/path/to/python`. Default microphone and paid-provider checks remain excluded. These transport tests require neither credentials nor microphone permission.
 
-## V1 hosted service — implementation in progress
+## V1 hosted service — internal founder trial
 
 `hosted.py` adds persistent admission to the same relay. It requires `XAI_API_KEY`,
 `VOICE_DATA_DIR` on a persistent disk, with the approved $5 total ledger and $2 STT allocation in `service_policy.py`.
-Only STT is enabled; future categories require an explicit policy migration. `PORT` defaults
+STT and direct Luna Ask are enabled in the current service. Ask requires `VOICE_ENABLE_ASK=1` and `OPENAI_API_KEY`; policy migration preserves previous accounting. `PORT` defaults
 to 10000. Run behind the hosting platform's TLS termination; never expose its
 plain HTTP listener directly. No enrolled credentials exist on initial startup.
 
@@ -110,6 +110,10 @@ bounding text-token spend. Oversized input is rejected; no silent truncation. Mo
 must be inspected during integration QA. ID validation establishes source existence, not
 semantic faithfulness; reviewed synthetic cases cover that separately.
 
-The native app permits Ask only when capture/replay is stopped. It saves question, answer,
+The native app permits Ask during recording once text arrives, or after recording stops; it remains disabled during replay/connection/finalization. Recording and answer controls are independent. Each answer records the immutable transcript cutoff and any provisional-text caveat. It saves question, answer,
 status and immutable source passages in the same session file. Backgrounding cancels Ask;
 partial results remain visibly incomplete. No background generation or cross-session memory.
+
+## Explicit QA allowances
+
+Base daily quotas and monetary caps remain enforced. For a separately founder-approved extra recording, run `python Backend/admin.py grant-recording-attempt --date YYYY-MM-DD --approval-id <unique-approval-id>` on the service. Use the current UTC date and reuse the same ID if the command response is uncertain; retries do not add another attempt. Grants expire at midnight UTC and never refund or remove old usage. This is an administrative command, not a public endpoint or permission to grant additional usage without approval. Earlier September 25 one-day/replacement allowance rows remain in the ledger for accounting compatibility. See [V1 runbook](../docs/v1-runbook.md) for the current operational boundaries.
