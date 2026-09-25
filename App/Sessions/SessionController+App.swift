@@ -7,7 +7,7 @@ extension SessionController {
         if arguments.contains("--ui-testing"), (arguments.contains("--recording-ui-fixture") || arguments.contains("--long-transcript-ui-fixture") || arguments.contains("--empty-recording-ui-fixture")) {
             let longTranscript = arguments.contains("--long-transcript-ui-fixture")
             let emptyTranscript = arguments.contains("--empty-recording-ui-fixture")
-            let controller = SessionController(makeConnection: { RecordingUIFixture(longTranscript: longTranscript, emptyTranscript: emptyTranscript) }, prepareRecording: {})
+            let controller = SessionController(allowsBackgroundRecording: false, makeConnection: { RecordingUIFixture(longTranscript: longTranscript, emptyTranscript: emptyTranscript) }, prepareRecording: {})
             controller.recordingLimit = longTranscript ? LiveTranscriber.recordingLimit : .seconds(6)
             return controller
         }

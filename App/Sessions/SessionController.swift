@@ -25,6 +25,16 @@ final class SessionController {
         recordingStarted = nil
     }
 
+    private let finalizationTask = RecordingFinalizationTask()
+    private let allowsBackgroundRecording: Bool
+    nonisolated static var platformSupportsBackgroundRecording: Bool {
+        #if os(iOS)
+        true
+        #else
+        false
+        #endif
+    }
+
     private var live: (any RecordingConnection)?
     private let makeConnection: () -> any RecordingConnection
     private let prepareRecording: () async throws -> Void
@@ -34,6 +44,7 @@ final class SessionController {
     private let logger = Logger(subsystem: "ai.voicecompanion.app", category: "session")
 
     init(store: SessionStore? = nil,
+         allowsBackgroundRecording: Bool = SessionController.platformSupportsBackgroundRecording,
          makeConnection: @escaping () -> any RecordingConnection = { LiveTranscriber() },
          prepareRecording: @escaping () async throws -> Void = {
              let access = MicrophoneAccess()
@@ -43,6 +54,7 @@ final class SessionController {
              }
              _ = try RelayConfiguration.load()
          }) {
+        self.allowsBackgroundRecording = allowsBackgroundRecording
         self.makeConnection = makeConnection
         self.prepareRecording = prepareRecording
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
@@ -111,6 +123,7 @@ final class SessionController {
                     self.liveStatus = "Recording"
                     self.logger.info("microphone_recording_started")
                 }, onFinishing: { reason in
+                    self.beginFinalizationAllowance()
                     self.freezeRecordingTime()
                     if reason == .developmentLimit {
                         self.current?.stopNotice = "Stopped automatically at the development recording limit (\(self.recordingLimit.components.seconds) seconds)."
@@ -135,9 +148,28 @@ final class SessionController {
                 do { try persist() }
                 catch { errorMessage = "Could not save received text: \(error.localizedDescription)" }
             }
+            finalizationTask.end()
             live = nil
             liveStatus = nil
             reload()
+        }
+    }
+
+    private func beginFinalizationAllowance() {
+        finalizationTask.begin { [weak self] in
+            self?.interrupt(reason: "Recording finalization was interrupted by the system. Received text is saved; the transcript may be incomplete.")
+        }
+    }
+
+    func didEnterBackground() {
+        if allowsBackgroundRecording && liveStatus == "Recording" {
+            // The active audio session owns background execution; no silent audio or retry loop.
+            do { try persist() }
+            catch { interrupt(reason: "Recording stopped because received text could not be saved.") }
+        } else if allowsBackgroundRecording && liveStatus == "Finishing…" {
+            beginFinalizationAllowance()
+        } else if isActive {
+            interrupt(reason: "Recording stopped because the app left the foreground before background capture was active. Received text is saved; the transcript may be incomplete.")
         }
     }
 

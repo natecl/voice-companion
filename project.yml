@@ -29,6 +29,10 @@ targets:
       - App
       - path: Fixtures/transcript-events.json
         buildPhase: resources
+    info:
+      path: App/Phone-Info.plist
+      properties:
+        UIBackgroundModes: [audio]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: ai.voicecompanion.phone
