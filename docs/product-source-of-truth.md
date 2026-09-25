@@ -53,3 +53,9 @@ Founder decision, September 24, 2026: speaker diarization is best-effort for the
 ## V1 implementation refinement — September 25, 2026
 
 Founder decision: use direct Luna for V1 questions and proceed to Ask while listening. Defer Jev intent routing after its quality evaluation; it is an optional future implementation tool, not a product requirement or V1 gate. The one-liner and PBN remain unchanged. See [decision](v1-jev-decision.md).
+
+## Automatic memory refinement — September 25, 2026
+
+Founder decisions for the next slice: learn automatically from captured conversations and allow relevant past context to inform Ask in a new conversation. No memory suggestion inbox, approval-per-memory flow, Forget button or memory-management screen. Memory maintenance is internal: supersede corrected claims, expire temporary context, invalidate unsupported claims and consolidate duplicates. Retirement from current context does not erase useful history or imply an event was completed. Existing session deletion remains supported.
+
+Use Jev for bounded memory judgments and relevance assessment of retrieved candidates, with application code enforcing ownership and lifecycle rules. Supermemory is research inspiration only, not an integration. Unknown speakers must not become user facts. These are agreed product directions; the [memory implementation plan](memory-implementation-plan.md) defines proposed checkpoints and verification, not delivered capabilities. The one-liner and PBN remain unchanged.

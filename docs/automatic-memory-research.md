@@ -4,7 +4,7 @@ Research date: September 25, 2026. Research and architecture recommendation, not
 
 ## Accepted product direction
 
-The founder wants automatic memory formation, not proposed memories or a confirmation inbox. Relevant context can carry across conversations and inform answers inside a new meeting. Memory remains inspectable, correctable and forgettable. Separate the source of a claim from its current interpretation. This extends the verified current-session V1; it does not change the one-liner or retroactively claim memory was delivered.
+The founder wants automatic memory formation, not proposed memories or a confirmation inbox. Relevant context can carry across conversations and inform answers inside a new meeting. Founder clarification after this research: memory maintenance is internal, with no Forget button or memory-management UI. Superseding, expiration, invalidation and duplicate consolidation happen automatically; useful historical evidence remains available. Existing session deletion remains supported. The [implementation plan](memory-implementation-plan.md) supersedes earlier user-managed forgetting proposals. Separate the source of a claim from its current interpretation. This extends the verified current-session V1; it does not change the one-liner or retroactively claim memory was delivered.
 
 The founder explicitly does not want to adopt Supermemory. It is a research reference only: no SDK, service, self-hosted deployment or provider comparison is proposed. Build our own focused memory harness, borrowing useful engineering concepts rather than its infrastructure. This constraint is accepted; the design below is a proposal, not an implemented or approved architecture.
 
@@ -88,7 +88,7 @@ Current docs list `jev-1.13.0`, text-only, $0.042 per million input tokens with 
 
 Official TypeSafe cookbooks cover candidate entity alignment, RAG passage classification, extraction verification and citation checking. They demonstrate patterns, not calibrated performance on our speech. [Alignment](https://docs.typesafe.ai/cookbooks/entity_alignment), [RAG filtering](https://docs.typesafe.ai/cookbooks/classifying_rag_passages), [extraction cascade](https://docs.typesafe.ai/cookbooks/sde_cascade), [citations](https://docs.typesafe.ai/cookbooks/citation_check)
 
-Start with candidate support/attribution and pairwise update decisions. Add relevance reranking only if it improves held-out retrieval. Do not put a Jev call in front of every search just to decide whether to search: a false negative can erase the product's continuity, and search may be cheaper/faster than gating it. Explicit “this meeting only” intent can be handled directly; otherwise retrieve bounded candidates and discard irrelevant results.
+Start with candidate support/attribution and pairwise update decisions. The founder subsequently selected Jev for relevance assessment of retrieved candidates in the next slice; verify that role on held-out retrieval before enabling it. Do not put a Jev call in front of every search just to decide whether to search: a false negative can erase the product's continuity, and search may be cheaper/faster than gating it. Explicit “this meeting only” intent can be handled directly; otherwise retrieve bounded candidates and discard irrelevant results.
 
 Jev confidence summarizes the distribution over supplied options; it is not an independently proven correctness rate. Calibrate thresholds for each action on our labeled data. Wrong-subject writes and false merges warrant much stricter acceptance than missing a low-value preference. [Confidence](https://docs.typesafe.ai/confidence)
 
@@ -126,7 +126,7 @@ At answer time, search with the question plus a small relevant portion of curren
 
 Freeze an answer context manifest: current session/revision/cutoff, memory versions and source IDs. Label current-conversation evidence separately from older context and assistant inference. If retrieval fails, answer from current context only and say past context is unavailable; never equate a retrieval outage with “you never told me.” Historical questions may need superseded records; current-state questions normally should not.
 
-Forget must suppress the memory, its profile contribution, cached retrieval and future source-based recreation. Define how saved answers containing the forgotten information are handled; they are another copy. Account deletion must cover cloud content and outstanding jobs, not just local JSON. This requires new durable backend content and user ownership: our present relay deliberately persists no transcripts, so memory is a real data-lifecycle change.
+Internal invalidation must remove unsupported claims from the profile and cached retrieval and prevent stale-job recreation. Superseding and expiration instead retain temporal history. Saved answer copies referencing deleted sources also require lifecycle handling. Account deletion must cover cloud content and outstanding jobs, not just local JSON. This requires new durable backend content and user ownership: our present relay deliberately persists no transcripts, so memory is a real data-lifecycle change.
 
 ## Keeping the implementation small and inspectable
 
@@ -141,11 +141,11 @@ Start with ordinary persistent records and typed relationships. Treat embeddings
 
 Key background jobs by user, session, source revision and extractor version. Commit memory transitions transactionally and keep a durable processing cursor. A revision or deletion check immediately before commit prevents stale workers from restoring invalid claims. A failed memory job must not prevent transcript saving or current-session Ask. Record job outcomes, source IDs, model/rubric versions, token usage and latency; avoid logging entire private conversations by default.
 
-Retrieval applies authenticated ownership, deletion and temporal constraints in code before ranking. Lexical matches help exact names; embeddings help paraphrases. Retrieve a small candidate set, then optionally use Jev for semantic relevance. Preserve contextualized source passages for questions where extracted facts are insufficient. [Contextual retrieval](https://www.anthropic.com/engineering/contextual-retrieval)
+Retrieval applies authenticated ownership, deletion and temporal constraints in code before ranking. Lexical matches help exact names; embeddings help paraphrases. Retrieve a small candidate set, then use Jev for semantic relevance as agreed for the next slice. Preserve contextualized source passages for questions where extracted facts are insufficient. [Contextual retrieval](https://www.anthropic.com/engineering/contextual-retrieval)
 
 Updates need two clocks: when we learned the claim and when it applies. A backfilled old conversation should not overwrite a recent correction merely because it arrived later. Contradictions can remain separate attributed claims. If several sources support a memory, deleting one requires reevaluating remaining support; deleting a source must not leave its unsupported derivatives active.
 
-Forgetting a fact while retaining its source transcript requires a scoped suppression record so automatic reprocessing cannot recreate the fact. Session deletion instead invalidates the source and dependent records. Specify both behaviors, including saved answers and backups, before promising either to users. User corrections are authoritative instructions about their memory; quoted transcript instructions remain untrusted content.
+No fact-forgetting UI is planned. Internal retirement must distinguish historical validity from unsupported or deleted information, including source-passage fallback. Session deletion invalidates the source and dependent records; define saved-answer and backup handling too. Corrections require source and subject attribution; quoted transcript instructions remain untrusted content.
 
 ## Cost and latency implications
 
@@ -163,13 +163,13 @@ Measure memory-write precision/recall, wrong-subject rate, false merges, stale-c
 
 LongMemEval's categories and Supermemory's open MemoryBench can help structure the harness, but chat benchmarks are not proof of noisy multi-speaker audio handling. Do not rank products using scores with different readers, token budgets, judges or datasets. [LongMemEval](https://arxiv.org/abs/2410.10813), [MemoryBench](https://supermemory.ai/docs/memorybench/overview)
 
-The first product acceptance scenario should span conversations: a fact is captured automatically in session A; a question in B uses it with the original source; C corrects it; D uses the new fact and can explain its change; forgetting removes it from retrieval/profile and it stays absent after replay/restart. No approval or suggestion inbox occurs anywhere. One final physical-iPhone path is necessary once fixtures and provider contracts pass; repeated audio runs are not needed to debug memory lifecycle code.
+The first product acceptance scenario should span conversations: a fact is captured automatically in session A; a question in B uses it with the original source; C corrects it; D uses the new fact and can explain its change; temporary context is retired automatically and stays out of current-state answers after replay/restart while remaining available as history. Source deletion must prevent invalidated content from resurfacing. No approval or suggestion inbox occurs anywhere. One final physical-iPhone path is necessary once fixtures and provider contracts pass; repeated audio runs are not needed to debug memory lifecycle code.
 
 ## Proposed implementation sequence
 
-1. Define source revisions, ownership, memory records and deletion semantics. Build synthetic multi-session fixtures and a persistent job/store path. Prove replay, corrections and forgetting locally before paid model calls.
+1. Define source revisions, ownership, memory records and deletion semantics. Build synthetic multi-session fixtures and a persistent job/store path. Prove replay, corrections, internal lifecycle maintenance and deletion locally before paid model calls.
 2. Add automatic session-end candidate extraction and a small Jev judgment batch for source support, attribution and updates. Evaluate against the same extractor without Jev, with a separately agreed provider budget. Keep unknown attribution as conversation evidence, not a user approval queue.
-3. Add bounded cross-session recall and source-linked answers. Preserve the existing current-session path and clearly distinguish past context. Prove the full capture, recall, correction and forgetting scenario on iPhone when the founder is ready.
+3. Add bounded cross-session recall and source-linked answers. Preserve the existing current-session path and clearly distinguish past context. Prove capture, cross-session recall and correction on iPhone when the founder is ready; test automatic expiration with a controlled fixture clock. No user-facing forgetting step.
 4. Only after that loop works, consider incremental in-session consolidation, more sophisticated retrieval or additional Jev roles where measured failures justify them.
 
 The next design decisions are persistent backend storage, authenticated ownership and extraction schema. Research supports these responsibilities, but does not select a database or authorize a deployment. Keep the implementation in a few focused modules in the existing backend; avoid a separate service per pipeline stage.
