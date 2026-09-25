@@ -68,13 +68,16 @@ struct SessionsView: View {
                             .accessibilityElement(children: .contain)
                             .accessibilityIdentifier("transcriptSegment")
                         }
+                        if !controller.isActive, !session.transcript.segments.isEmpty {
+                            ConversationAskView(controller: controller, answers: session.answers ?? []).id(session.id)
+                        }
                         if controller.isReplaying {
                             Button("Stop replay") { controller.stop() }.accessibilityIdentifier("stopReplay")
                         } else if controller.liveStatus == nil {
                             Button("Delete session", role: .destructive) { confirmingDeletion = true }
-                                .accessibilityIdentifier("deleteSession")
+                                .disabled(controller.isAnswering).accessibilityIdentifier("deleteSession")
                         }
-                        Button("Back to sessions") { controller.close() }.disabled(controller.liveStatus != nil).accessibilityIdentifier("closeSession")
+                        Button("Back to sessions") { controller.close() }.disabled(controller.liveStatus != nil || controller.isAnswering).accessibilityIdentifier("closeSession")
                     } else {
                         recordingLimitNotice
                         #if os(iOS)
@@ -118,7 +121,7 @@ struct SessionsView: View {
             Button("Delete", role: .destructive) { controller.deleteCurrent() }
                 .accessibilityIdentifier("confirmDeleteSession")
         } message: {
-            Text("This permanently deletes the saved transcript. This cannot be undone.")
+            Text("This permanently deletes the saved transcript and its questions and answers. This cannot be undone.")
         }
         .task {
             if ProcessInfo.processInfo.arguments.contains("--relay-check") {

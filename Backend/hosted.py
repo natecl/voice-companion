@@ -4,6 +4,7 @@ import fcntl
 import os
 from pathlib import Path
 from service_policy import open_ledger
+from ask import AskService, Luna
 from relay import Relay
 from websockets.asyncio.server import serve
 
@@ -17,10 +18,15 @@ async def main():
         key = os.environ['XAI_API_KEY'].strip()
         if not key:
             raise ValueError('Missing provider key')
-        store = open_ledger()
+        store = open_ledger(migrate=True)
         try:
             store.recover_interrupted()
-            relay = Relay(key, admission=store)
+            answer_key = os.environ.get('OPENAI_API_KEY', '').strip()
+            enabled = os.environ.get('VOICE_ENABLE_ASK') == '1'
+            if enabled and not answer_key:
+                raise ValueError('Ask enabled without provider credential')
+            ask = AskService(store, Luna(answer_key)) if enabled else None
+            relay = Relay(key, admission=store, ask=ask)
             async with serve(relay.handle, '0.0.0.0', int(os.environ.get('PORT', '10000')),
                              process_request=relay.authorize, max_size=64000, max_queue=8,
                              close_timeout=2, server_header=None):
