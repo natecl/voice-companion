@@ -1,0 +1,498 @@
+[
+  {
+    "session": "fresh-preference",
+    "responses": {
+      "extract": {
+        "data": {
+          "memories": [
+            {
+              "text": "Nora Patel prefers a short agenda before meetings.",
+              "subject_name": "Nora Patel",
+              "kind": "preference",
+              "basis": "stated",
+              "source_ids": [
+                "p1"
+              ],
+              "expires_at": null
+            }
+          ]
+        },
+        "usage": {
+          "input_tokens": 568,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 55,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 623
+        },
+        "elapsed_seconds": 3.020129666001594
+      },
+      "judge": {
+        "data": {
+          "model": "jev-1.13.0",
+          "answers": {
+            "support_0": {
+              "type": "choice",
+              "choice": "supported",
+              "confidence": 1.0,
+              "probabilities": {
+                "uncertain": 0.0,
+                "supported": 1.0,
+                "unsupported": 0.0
+              }
+            },
+            "attribution_0": {
+              "type": "choice",
+              "choice": "named",
+              "confidence": 0.97,
+              "probabilities": {
+                "named": 0.98,
+                "unknown": 0.02,
+                "wrong": 0.0
+              }
+            },
+            "modality_0": {
+              "type": "choice",
+              "choice": "stated",
+              "confidence": 0.99,
+              "probabilities": {
+                "tentative": 0.0,
+                "inferred": 0.0,
+                "stated": 0.99,
+                "discard": 0.01
+              }
+            },
+            "relation_0": {
+              "type": "choice",
+              "choice": "new",
+              "confidence": 0.99,
+              "probabilities": {
+                "conflict": 0.0,
+                "new": 1.0
+              }
+            }
+          },
+          "usage": {
+            "input_tokens": 1042,
+            "output_tokens": 162
+          }
+        },
+        "usage": {
+          "input_tokens": 1042,
+          "output_tokens": 162
+        },
+        "elapsed_seconds": 0.5475563330037403
+      }
+    }
+  },
+  {
+    "session": "fresh-unknown",
+    "responses": {
+      "extract": {
+        "data": {
+          "memories": [
+            {
+              "text": "An unidentified speaker prefers well-lit rooms for calls.",
+              "subject_name": null,
+              "kind": "preference",
+              "basis": "stated",
+              "source_ids": [
+                "p1"
+              ],
+              "expires_at": null
+            }
+          ]
+        },
+        "usage": {
+          "input_tokens": 566,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 53,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 619
+        },
+        "elapsed_seconds": 1.690975833000266
+      },
+      "judge": {
+        "data": {
+          "model": "jev-1.13.0",
+          "answers": {
+            "support_0": {
+              "type": "choice",
+              "choice": "supported",
+              "confidence": 0.89,
+              "probabilities": {
+                "uncertain": 0.02,
+                "unsupported": 0.06,
+                "supported": 0.92
+              }
+            },
+            "attribution_0": {
+              "type": "choice",
+              "choice": "unknown",
+              "confidence": 1.0,
+              "probabilities": {
+                "named": 0.0,
+                "wrong": 0.0,
+                "unknown": 1.0
+              }
+            },
+            "modality_0": {
+              "type": "choice",
+              "choice": "stated",
+              "confidence": 0.97,
+              "probabilities": {
+                "stated": 0.98,
+                "discard": 0.01,
+                "tentative": 0.0,
+                "inferred": 0.01
+              }
+            },
+            "relation_0": {
+              "type": "choice",
+              "choice": "new",
+              "confidence": 1.0,
+              "probabilities": {
+                "conflict": 0.0,
+                "new": 1.0
+              }
+            }
+          },
+          "usage": {
+            "input_tokens": 1036,
+            "output_tokens": 162
+          }
+        },
+        "usage": {
+          "input_tokens": 1036,
+          "output_tokens": 162
+        },
+        "elapsed_seconds": 0.4472031670011347
+      }
+    }
+  },
+  {
+    "session": "fresh-hypothetical",
+    "responses": {
+      "extract": {
+        "data": {
+          "memories": []
+        },
+        "usage": {
+          "input_tokens": 583,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 13,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 596
+        },
+        "elapsed_seconds": 1.5372182089995476
+      }
+    }
+  },
+  {
+    "session": "fresh-temporary",
+    "responses": {
+      "extract": {
+        "data": {
+          "memories": [
+            {
+              "text": "Project Birch's temporary room booking is valid until 2026-09-28T09:30:00+00:00.",
+              "subject_name": "Project Birch",
+              "kind": "fact",
+              "basis": "stated",
+              "source_ids": [
+                "p1"
+              ],
+              "expires_at": "2026-09-28T09:30:00+00:00"
+            }
+          ]
+        },
+        "usage": {
+          "input_tokens": 585,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 85,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 670
+        },
+        "elapsed_seconds": 1.5633037910010898
+      },
+      "judge": {
+        "data": {
+          "model": "jev-1.13.0",
+          "answers": {
+            "support_0": {
+              "type": "choice",
+              "choice": "supported",
+              "confidence": 1.0,
+              "probabilities": {
+                "supported": 1.0,
+                "unsupported": 0.0,
+                "uncertain": 0.0
+              }
+            },
+            "attribution_0": {
+              "type": "choice",
+              "choice": "named",
+              "confidence": 0.99,
+              "probabilities": {
+                "unknown": 0.0,
+                "wrong": 0.0,
+                "named": 1.0
+              }
+            },
+            "modality_0": {
+              "type": "choice",
+              "choice": "stated",
+              "confidence": 0.99,
+              "probabilities": {
+                "tentative": 0.0,
+                "stated": 0.99,
+                "inferred": 0.0,
+                "discard": 0.01
+              }
+            },
+            "expiry_0": {
+              "type": "choice",
+              "choice": "date_0",
+              "confidence": 0.97,
+              "probabilities": {
+                "none": 0.02,
+                "date_0": 0.98
+              }
+            },
+            "relation_0": {
+              "type": "choice",
+              "choice": "new",
+              "confidence": 0.99,
+              "probabilities": {
+                "new": 1.0,
+                "conflict": 0.0
+              }
+            }
+          },
+          "usage": {
+            "input_tokens": 1296,
+            "output_tokens": 196
+          }
+        },
+        "usage": {
+          "input_tokens": 1296,
+          "output_tokens": 196
+        },
+        "elapsed_seconds": 0.402532499996596
+      }
+    }
+  },
+  {
+    "session": "fresh-update",
+    "responses": {
+      "extract": {
+        "data": {
+          "memories": [
+            {
+              "text": "Project Birch's temporary room booking is valid until 2026-09-29T09:30:00+00:00, corrected from 2026-09-28T09:30:00+00:00.",
+              "subject_name": "Project Birch",
+              "kind": "fact",
+              "basis": "stated",
+              "source_ids": [
+                "p1"
+              ],
+              "expires_at": null
+            }
+          ]
+        },
+        "usage": {
+          "input_tokens": 608,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 90,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 698
+        },
+        "elapsed_seconds": 1.836140166997211
+      },
+      "judge": {
+        "data": {
+          "model": "jev-1.13.0",
+          "answers": {
+            "support_0": {
+              "type": "choice",
+              "choice": "supported",
+              "confidence": 0.94,
+              "probabilities": {
+                "uncertain": 0.0,
+                "supported": 0.96,
+                "unsupported": 0.04
+              }
+            },
+            "attribution_0": {
+              "type": "choice",
+              "choice": "named",
+              "confidence": 0.99,
+              "probabilities": {
+                "unknown": 0.01,
+                "named": 0.99,
+                "wrong": 0.0
+              }
+            },
+            "modality_0": {
+              "type": "choice",
+              "choice": "stated",
+              "confidence": 0.99,
+              "probabilities": {
+                "inferred": 0.0,
+                "tentative": 0.0,
+                "discard": 0.01,
+                "stated": 0.99
+              }
+            },
+            "expiry_0": {
+              "type": "choice",
+              "choice": "date_0",
+              "confidence": 0.94,
+              "probabilities": {
+                "date_1": 0.0,
+                "none": 0.04,
+                "date_0": 0.96
+              }
+            },
+            "relation_0": {
+              "type": "choice",
+              "choice": "update_0",
+              "confidence": 1.0,
+              "probabilities": {
+                "duplicate_0": 0.0,
+                "update_0": 1.0,
+                "conflict": 0.0,
+                "new": 0.0
+              }
+            }
+          },
+          "usage": {
+            "input_tokens": 1754,
+            "output_tokens": 225
+          }
+        },
+        "usage": {
+          "input_tokens": 1754,
+          "output_tokens": 225
+        },
+        "elapsed_seconds": 0.47662866600148845
+      }
+    }
+  },
+  {
+    "session": "fresh-repeat",
+    "responses": {
+      "extract": {
+        "data": {
+          "memories": [
+            {
+              "text": "Nora Patel prefers a short agenda before meetings.",
+              "subject_name": "Nora Patel",
+              "kind": "preference",
+              "basis": "stated",
+              "source_ids": [
+                "p1"
+              ],
+              "expires_at": null
+            }
+          ]
+        },
+        "usage": {
+          "input_tokens": 567,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 55,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 622
+        },
+        "elapsed_seconds": 1.8017042920037056
+      },
+      "judge": {
+        "data": {
+          "model": "jev-1.13.0",
+          "answers": {
+            "support_0": {
+              "type": "choice",
+              "choice": "supported",
+              "confidence": 0.99,
+              "probabilities": {
+                "unsupported": 0.0,
+                "supported": 1.0,
+                "uncertain": 0.0
+              }
+            },
+            "attribution_0": {
+              "type": "choice",
+              "choice": "named",
+              "confidence": 0.98,
+              "probabilities": {
+                "unknown": 0.01,
+                "named": 0.99,
+                "wrong": 0.0
+              }
+            },
+            "modality_0": {
+              "type": "choice",
+              "choice": "stated",
+              "confidence": 0.99,
+              "probabilities": {
+                "discard": 0.01,
+                "inferred": 0.0,
+                "tentative": 0.0,
+                "stated": 0.99
+              }
+            },
+            "relation_0": {
+              "type": "choice",
+              "choice": "duplicate_0",
+              "confidence": 0.99,
+              "probabilities": {
+                "duplicate_0": 0.99,
+                "new": 0.01,
+                "update_0": 0.0,
+                "conflict": 0.0
+              }
+            }
+          },
+          "usage": {
+            "input_tokens": 1377,
+            "output_tokens": 182
+          }
+        },
+        "usage": {
+          "input_tokens": 1377,
+          "output_tokens": 182
+        },
+        "elapsed_seconds": 0.42901500000152737
+      }
+    }
+  }
+]

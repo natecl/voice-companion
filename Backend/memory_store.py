@@ -1,5 +1,5 @@
 """Application-owned memory lifecycle. No model calls; connections are operation-scoped."""
-from contextlib import contextmanager
+from contextlib import contextmanager, closing
 import hashlib
 import json
 import math
@@ -10,8 +10,8 @@ import uuid
 
 from admission import Rejected
 
-VERSION = 1
-EXTRACTOR_VERSION = 'foundation-v1'
+VERSION = 2
+EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
 
@@ -63,7 +63,7 @@ class MemoryStore:
         self.path, self.clock = Path(path), clock
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, VERSION):
+            if version not in (0, 1, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -92,6 +92,17 @@ class MemoryStore:
                     CREATE INDEX claim_owner ON claim(owner,state);
                     CREATE INDEX support_source ON support(owner,session,revision);
                     PRAGMA user_version=1;
+                    COMMIT;
+                ''')
+            if version < 2:
+                db.executescript('''
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE job_result(
+                      job TEXT NOT NULL REFERENCES job(id), stage TEXT NOT NULL,
+                      request_hash TEXT NOT NULL, response TEXT NOT NULL,
+                      PRIMARY KEY(job,stage,request_hash));
+                    ALTER TABLE job ADD COLUMN error TEXT;
+                    PRAGMA user_version=2;
                     COMMIT;
                 ''')
         self.path.chmod(0o600)
@@ -137,6 +148,7 @@ class MemoryStore:
             return existing_owner
 
     def _invalidate_source(self, db, owner, session):
+        db.execute('DELETE FROM job_result WHERE job IN (SELECT id FROM job WHERE owner=? AND session=?)', (owner, session))
         db.execute('DELETE FROM support WHERE owner=? AND session=?', (owner, session))
         # Unsupported content is scrubbed; IDs/state remain for stale-write diagnostics.
         db.execute("UPDATE claim SET state='invalid',reason='source_changed',text=NULL,subject=NULL WHERE owner=? AND NOT EXISTS(SELECT 1 FROM support WHERE support.claim=claim.id)", (owner,))
@@ -163,7 +175,7 @@ class MemoryStore:
                 if db.execute('SELECT count(*) FROM source WHERE owner=? AND deleted=0', (owner,)).fetchone()[0] >= 1000:
                     raise Rejected('memory_storage_limit')
                 db.execute('INSERT INTO source VALUES(?,?,?,?,?,0)', (owner, session, revision, digest, payload))
-            db.execute('INSERT INTO job VALUES(?,?,?,?,?,?,NULL)', (str(uuid.uuid4()), owner, session, revision, EXTRACTOR_VERSION, 'queued'))
+            db.execute('INSERT INTO job(id,owner,session,revision,extractor,state,lease) VALUES(?,?,?,?,?,?,NULL)', (str(uuid.uuid4()), owner, session, revision, EXTRACTOR_VERSION, 'queued'))
             return {'status': 'stored', 'revision': revision}
 
     def delete_source(self, owner, session):
@@ -178,6 +190,12 @@ class MemoryStore:
         with self.connect() as db:
             row = db.execute('SELECT payload FROM source WHERE owner=? AND session=? AND deleted=0', (owner, session)).fetchone()
             return json.loads(row['payload']) if row else None
+
+    def pending_owners(self, credentials):
+        # Only internal owners with a currently authorized enrollment may incur learning spend.
+        with self.connect() as db:
+            allowed = {r['owner'] for r in db.execute('SELECT credential,owner FROM credential_owner') if r['credential'] in credentials}
+            return [r['owner'] for r in db.execute("SELECT owner FROM job WHERE state='queued' GROUP BY owner ORDER BY min(rowid)") if r['owner'] in allowed]
 
     def claim_job(self, owner):
         with self.transaction() as db:
@@ -211,6 +229,23 @@ class MemoryStore:
             for c in candidates:
                 self._write_claim(db, c, owner, session, revision, passages)
             db.execute("UPDATE job SET state='done',lease=NULL WHERE id=?", (live['id'],))
+
+    def finish_failed(self, job, code):
+        identifier(code)
+        with self.transaction() as db:
+            db.execute("UPDATE job SET state='failed',error=?,lease=NULL WHERE id=? AND lease=? AND state='running'", (code, job['id'], job['lease']))
+
+    def cached_result(self, job, stage, request_hash):
+        with self.connect() as db:
+            row = db.execute('SELECT response FROM job_result WHERE job=? AND stage=? AND request_hash=?', (job['id'], stage, request_hash)).fetchone()
+            return json.loads(row[0]) if row else None
+
+    def cache_result(self, job, stage, request_hash, result):
+        with self.transaction() as db:
+            current = db.execute("SELECT 1 FROM job WHERE id=? AND lease=? AND state='running'", (job['id'], job['lease'])).fetchone()
+            if not current:
+                raise Rejected('stale_job')
+            db.execute('INSERT OR REPLACE INTO job_result VALUES(?,?,?,?)', (job['id'], stage, request_hash, json.dumps(result, allow_nan=False)))
 
     def _write_claim(self, db, c, owner, session, revision, passages):
         if not isinstance(c, dict) or not isinstance(c.get('text'), str) or not 1 <= len(c['text']) <= 2000:
@@ -308,5 +343,5 @@ class MemoryStore:
         with path.open('xb'):
             pass
         path.chmod(0o600)
-        with self.connect() as source, sqlite3.connect(path) as target:
+        with self.connect() as source, closing(sqlite3.connect(path)) as target:
             source.backup(target)
