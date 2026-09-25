@@ -1,6 +1,6 @@
 # Memory recall checkpoint — local evidence and rollout proposal
 
-September 25, 2026. Checkpoint 3 is implemented locally and **not complete**: hosted enablement and physical-iPhone acceptance remain pending. Follow the canonical engineering principles. No hosted configuration or phone installation changed in this pass.
+September 25, 2026. Checkpoint 3 is implemented locally and **not complete**: hosted enablement is verified; physical-iPhone memory acceptance remains pending. Follow the canonical engineering principles. The founder approved rollout after reviewing persistent storage; see the deployed-state record below.
 
 ## Implemented path
 
@@ -47,3 +47,16 @@ Render documents encrypted daily disk snapshots retained for **at least seven da
 For this founder trial, no automatic memory backup/restore job is added. Never put a pre-deletion database snapshot back into live use. On corruption, disable memory and continue current-context Ask; any recovery requires a separately reviewed SQLite restore and reconciliation with the latest phone deletion tombstones/source revisions before re-enabling. If the current tombstone history cannot be recovered, do not serve the restored memory. Platform snapshot restore is not the recovery path. This manual fail-closed policy is intentionally limited to the internal trial.
 
 After rollout approval, verify migrations and preserved accounting, provision/install the tested phone build, then wait for founder readiness before manual QA. Planned sequence: session A states a simple non-sensitive preference; session B asks about it without restating it; session C corrects it; Ask uses the correction; open and reopen source references. Use short recordings within existing caps. No merge as complete until physical-device acceptance passes.
+
+
+## Approved rollout — September 25, 2026
+
+Founder explicitly approved enabling memory after reviewing the storage change. Render deployment `dep-dardqku0tbcc73b6m0jg` went live at 20:46:00 UTC with tested implementation `890798f735cfc5c2130bba76ebb4a8e5b5b8f4d1`. Existing service `srv-daqtfs7lot8c73dleuug`, existing 1GB disk and manual deployment policy remain. Three memory feature flags are enabled and the existing TypeSafe credential is server-only.
+
+Preflight verified zero active requests and created a SQLite usage backup (`usage-before-memory-890798f.sqlite`) on persistent storage. Startup verified memory schema 2, initially zero sources, preserved 37 memory attempts/$0.185 reserved, and unchanged global reservations of $0.555. The canonical memory budget and receipt were transferred with matching SHA-256 checks; local originals were renamed to read-only evidence files, so existing local QA runners cannot spend that allocation. No budget reset or new grant occurred.
+
+An authenticated empty-source upsert over the hosted WebSocket was acknowledged; the actual background worker completed its empty job without inference. Deletion was acknowledged afterward. The identifier-only probe tombstone remains, not a user transcript. Provider call count and reserves were unchanged. This proves deployed synchronization, migration and worker connectivity, not phone audio or model quality.
+
+The signed `890798f` app was built and installed on the connected physical iPhone 16 Pro. A seven-day memory-enabled internal credential was securely imported into device-only Keychain; transfer-file disappearance confirms the import path completed. Temporary local/server credential exports were deleted. Stable owner/credential identifiers are retained in ignored operational metadata for renewal. The app was launched with `--relay-check`, which does not record or call a provider. No old untracked sessions were imported.
+
+Evidence: ignored `work/memory-rollout-*.log`, deploy JSON, and enrollment metadata. The installed app and server are prepared. Still wait for explicit founder readiness before the short microphone learn → recall → correct → recall-correction sequence. PR #28 remains draft/unmerged until that acceptance passes.
