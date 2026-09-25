@@ -65,8 +65,9 @@ def validate_source(source):
 
 
 class MemoryStore:
-    def __init__(self, path, *, clock=time.time):
+    def __init__(self, path, *, clock=time.time, personal_learning=False):
         self.path, self.clock = Path(path), clock
+        self.personal_learning = personal_learning
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
             if version not in (0, 1, 2, VERSION):
@@ -190,7 +191,7 @@ class MemoryStore:
                 if db.execute('SELECT count(*) FROM source WHERE owner=? AND deleted=0', (owner,)).fetchone()[0] >= 1000:
                     raise Rejected('memory_storage_limit')
                 db.execute('INSERT INTO source VALUES(?,?,?,?,?,0)', (owner, session, revision, digest, payload))
-            db.execute('INSERT INTO job(id,owner,session,revision,extractor,state,lease) VALUES(?,?,?,?,?,?,NULL)', (str(uuid.uuid4()), owner, session, revision, EXTRACTOR_VERSION, 'profile_pending' if source.get('origin') == 'personal_text' else 'queued'))
+            db.execute('INSERT INTO job(id,owner,session,revision,extractor,state,lease) VALUES(?,?,?,?,?,?,NULL)', (str(uuid.uuid4()), owner, session, revision, EXTRACTOR_VERSION, 'profile_pending' if source.get('origin') == 'personal_text' and not self.personal_learning else 'queued'))
             return {'status': 'stored', 'revision': revision}
 
     def delete_source(self, owner, session):

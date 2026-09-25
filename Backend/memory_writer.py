@@ -4,6 +4,7 @@ from datetime import datetime
 import hashlib
 import json
 from admission import Rejected
+from profile_identity import personal, profile_subject, PROFILE_RUBRIC, rank_related
 from memory_models import (RUBRIC, extraction_request, judgment_request,
                            parse_candidates, parse_judgments, metered, expiry_options,
                            support_request, parse_support)
@@ -47,6 +48,14 @@ def select_claims(source, candidates, judgments, related, support):
         if attribution['choice'] == 'wrong':
             decision['reason'] = 'attribution'; continue
         subject = subject_key(c['subject_name']) if accepted(attribution,'named') else None
+        profile_link = False
+        if personal(source):
+            label = {'user':'user','related':'related','other':'named','unknown':'unknown'}[c['subject_scope']]
+            if not accepted(attribution, label):
+                decision['reason'] = 'personal_attribution'; continue
+            if label in ('user','related'):
+                subject = profile_subject(source, c)
+                profile_link = label == 'related'
         c = dict(c)
         dates = expiry_options(source, c)
         if dates:
@@ -64,12 +73,18 @@ def select_claims(source, candidates, judgments, related, support):
         valid_from = None if until is not None and until <= source['captured_at'] else source['captured_at']
         claim = dict(text=c['text'], subject=subject, kind=c['kind'], basis=mode['choice'],
                      passages=c['source_ids'], valid_from=valid_from, valid_until=until,
-                     judgment_version=RUBRIC, relation='new')
+                     judgment_version=PROFILE_RUBRIC if personal(source) else RUBRIC, relation='new')
+        if profile_link: claim['profile_link'] = True
         relation = judgments[f'relation_{i}']
         label = relation['choice']
         if subject is not None and label.startswith(('duplicate_', 'update_')) and accepted(relation,label):
             target = related[i][int(label.split('_')[1])]
             # Owner filtering is performed in lookup; store repeats subject/kind/time checks atomically.
+            # Related people begin source-scoped. Only an independently verified explicit
+            # correction may connect them across sources; a matching name is not enough.
+            if profile_link and label.startswith('update_') and target.get('profile_link'):
+                subject = target['subject']
+                claim['subject'] = subject
             if target['subject'] == subject and target['kind'] == c['kind']:
                 if label.startswith('duplicate_') and target['basis'] == claim['basis'] and target['valid_until'] == until:
                     claim.update(relation='duplicate', target=target['id'], valid_from=target['valid_from'])
@@ -109,9 +124,15 @@ class MemoryWriter:
                     return {'job':job['id'], 'accepted':0, 'reason':'source_support'}
                 related = []
                 for c in candidates:
-                    pool = await asyncio.to_thread(self.store.search, owner, (c['subject_name'] or c['text'])[:1000], limit=50)
-                    identity = subject_key(c['subject_name'])
-                    related.append([p for p in pool if identity is not None and p['subject'] == identity and p['kind'] == c['kind']][:4])
+                    identity = profile_subject(source, c) if personal(source) and c['subject_scope'] in ('user','related') else subject_key(c['subject_name'])
+                    pool = await asyncio.to_thread(self.store.profile, owner) if personal(source) else await asyncio.to_thread(self.store.search, owner, (c['subject_name'] or c['text'])[:1000], limit=50)
+                    if personal(source) and c['subject_scope'] == 'related':
+                        terms = (c['subject_name'].casefold(), c['subject_relation'].casefold())
+                        related.append(rank_related(c, [p for p in pool if p['profile_link'] and p['kind'] == c['kind']
+                                        and all(t in p['text'].casefold() for t in terms)]))
+                    else:
+                        matches = [p for p in pool if identity is not None and p['subject'] == identity and p['kind'] == c['kind']]
+                        related.append(rank_related(c, matches) if personal(source) else matches[:4])
                 request = judgment_request(source, candidates, related)
                 judged = await metered(self.store, self.budget, job, 'judge', request, self.models.judge)
                 judgments = parse_judgments(judged['data'], request)
