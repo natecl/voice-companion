@@ -18,6 +18,9 @@ struct TranscriptSegment: Codable, Identifiable {
 
 struct Transcript: Codable {
     var segments: [TranscriptSegment] = []
+    var receivedThroughSeconds: Double {
+        segments.map { $0.start + $0.duration }.max() ?? 0
+    }
 
     mutating func apply(_ segment: TranscriptSegment) {
         guard !segment.text.isEmpty else { return }

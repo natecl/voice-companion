@@ -31,6 +31,10 @@ struct ConversationAnswer: Codable, Identifiable {
     var references: [String] = []
     var state: State = .streaming
     var notice: String?
+    // Optional for compatibility with saved answers from before live Ask.
+    var transcriptCutoffSeconds: Double?
+    var capturedWhileRecording: Bool?
+    var includedInterimText: Bool?
 }
 
 struct AnswerEvent: Decodable {

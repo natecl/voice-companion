@@ -10,12 +10,14 @@ from websockets.asyncio.client import connect
 from websockets.exceptions import InvalidStatus
 from admission import Admission
 from relay import Relay
+from ask import AskService
 
 
 class HostedRelayTests(unittest.IsolatedAsyncioTestCase):
     @asynccontextmanager
-    async def service(self, budget=40000, stall_finalization=False):
+    async def service(self, budget=40000, stall_finalization=False, answer_provider=None):
         self.calls = 0
+        self.audio_frames = 0
         self.closed = asyncio.Event()
         self.finalizing = asyncio.Event()
         async def provider(ws):
@@ -25,6 +27,7 @@ class HostedRelayTests(unittest.IsolatedAsyncioTestCase):
                 async for packet in ws:
                     if isinstance(packet, bytes):
                         self.assertEqual(packet, bytes(3200))
+                        self.audio_frames += 1
                     else:
                         self.assertEqual(json.loads(packet), {'type': 'audio.done'})
                         self.finalizing.set()
@@ -34,12 +37,13 @@ class HostedRelayTests(unittest.IsolatedAsyncioTestCase):
                 self.closed.set()
         with tempfile.TemporaryDirectory() as directory:
             store = Admission(Path(directory) / 'usage.sqlite', total_microusd=budget,
-                              limits={'stt': (budget, 20000, 6)})
+                              limits={'stt': (budget, 20000, 6), 'ask': (budget, 3000, 20)})
             owner, token = store.enroll()
             try:
                 async with serve(provider, '127.0.0.1', 0) as upstream:
                     with patch('relay.URL', f'ws://127.0.0.1:{upstream.sockets[0].getsockname()[1]}'):
-                        relay = Relay('synthetic-key', admission=store)
+                        ask = AskService(store, answer_provider) if answer_provider else None
+                        relay = Relay('synthetic-key', admission=store, ask=ask)
                         async with serve(relay.handle, '127.0.0.1', 0, process_request=relay.authorize) as server:
                             yield store, owner, token, f'ws://127.0.0.1:{server.sockets[0].getsockname()[1]}/stt'
             finally:
@@ -97,6 +101,33 @@ class HostedRelayTests(unittest.IsolatedAsyncioTestCase):
                 await ws.recv()
             await asyncio.wait_for(self.closed.wait(), 2)
             self.assertEqual(self.calls, 1)
+
+    async def test_cancelling_concurrent_ask_keeps_audio_stream_alive(self):
+        closed = asyncio.Event()
+        class Answer:
+            async def stream(self, data):
+                try:
+                    yield {'type': 'delta', 'text': 'Tuesday'}
+                    await asyncio.Future()
+                finally: closed.set()
+        async with self.service(answer_provider=Answer()) as (store, owner, token, url):
+            headers={'Authorization':'Bearer '+token}
+            async with connect(url, additional_headers=headers) as recording:
+                await recording.recv()
+                await recording.send(bytes(3200))
+                async with connect(url.replace('/stt','/ask'), additional_headers=headers) as answer:
+                    await answer.send(json.dumps({'question':'When?', 'passages':[{'id':'p1','start':0,'text':'Tuesday'}]}))
+                    self.assertEqual(json.loads(await answer.recv())['type'],'accepted')
+                    self.assertEqual(json.loads(await answer.recv())['type'],'delta')
+                    await recording.send(bytes(3200))
+                await asyncio.wait_for(closed.wait(),2)
+                await recording.send(bytes(3200))
+                await recording.send('{"type":"audio.done"}')
+                self.assertEqual(json.loads(await recording.recv())['type'],'transcript.done')
+                await recording.wait_closed()
+            self.assertEqual(self.audio_frames,3)
+            self.assertEqual(self.calls,1)
+            self.assertEqual(store.usage(),[('ask',1,3000),('stt',1,20000)])
 
 
 if __name__ == '__main__':

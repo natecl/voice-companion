@@ -4,6 +4,13 @@ extension SessionController {
     static func forApp() -> SessionController {
         #if DEBUG
         let arguments = ProcessInfo.processInfo.arguments
+        if arguments.contains("--ui-testing"), arguments.contains("--live-ask-ui-fixture") {
+            let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+                .appendingPathComponent("VoiceCompanion-Live-Ask-QA")
+            return SessionController(store: SessionStore(directory: directory),
+                makeAnswerConnection: { AnswerUIFixture(delay: .seconds(3)) },
+                makeConnection: { LiveAskUIRecording() }, prepareRecording: {})
+        }
         if arguments.contains("--ui-testing"), arguments.contains("--ask-ui-fixture") {
             let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
                 .appendingPathComponent("VoiceCompanion-Ask-QA")
@@ -80,13 +87,29 @@ private final class RecordingUIFixture: RecordingConnection {
 #if DEBUG
 @MainActor
 private final class AnswerUIFixture: AnswerConnection {
+    let delay: Duration
+    init(delay: Duration = .milliseconds(500)) { self.delay = delay }
     func run(_ question: ConversationQuestion, onEvent: (AnswerEvent) throws -> Void) async throws {
         try onEvent(AnswerEvent(type: "delta", text: "Tuesday at ten"))
-        try await Task.sleep(for: .milliseconds(500))
+        try await Task.sleep(for: delay)
         try Task.checkCancellation()
         try onEvent(AnswerEvent(type: "delta", text: " [[p1]]."))
         try onEvent(AnswerEvent(type: "done", references: ["p1"]))
     }
     func cancel() {}
+}
+
+@MainActor
+private final class LiveAskUIRecording: RecordingConnection {
+    private var stopped = false
+    func run(onReady: (Duration) -> Void, onFinishing: @escaping (RecordingStopReason) -> Void,
+             onEvent: (GrokEvent) throws -> Void) async throws {
+        onReady(.seconds(300))
+        try onEvent(GrokEvent(type: "transcript.partial", text: "The appointment is Tuesday at ten.", words: [], start: 0, duration: 2, is_final: false))
+        while !stopped { try await Task.sleep(for: .milliseconds(50)) }
+        onFinishing(.user)
+    }
+    func stop() { stopped = true }
+    func cancel() { stopped = true }
 }
 #endif

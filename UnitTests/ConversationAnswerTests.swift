@@ -90,7 +90,7 @@ final class ConversationAnswerTests: XCTestCase {
             controller.current?.transcript.segments = [TranscriptSegment(start: 0, duration: 1, text: String(repeating: "x", count: 13000), words: [], isFinal: true)]
             controller.ask("Summarize")
             XCTAssertNil(connection.requested)
-            XCTAssertNotNil(controller.errorMessage)
+            XCTAssertNotNil(controller.answerErrorMessage)
             XCTAssertTrue(try store.load().isEmpty)
         }
     }
@@ -103,7 +103,7 @@ final class ConversationAnswerTests: XCTestCase {
             XCTAssertFalse(controller.isAnswering)
             XCTAssertNil(connection.requested)
             XCTAssertTrue(controller.current?.answers?.isEmpty ?? true)
-            XCTAssertNotNil(controller.errorMessage)
+            XCTAssertNotNil(controller.answerErrorMessage)
         }
     }
 }

@@ -54,6 +54,9 @@ struct SessionsView: View {
                         if session.transcript.segments.isEmpty {
                             Text(controller.isActive ? "Waiting for transcript…" : "No transcript was received.")
                         }
+                        if !controller.isReplaying, !session.transcript.segments.isEmpty {
+                            ConversationAskView(controller: controller, answers: session.answers ?? []).id(session.id)
+                        }
                         ForEach(session.transcript.segments) { segment in
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(String(format: "%.1fs", segment.start)).font(.caption).foregroundStyle(.secondary)
@@ -67,9 +70,6 @@ struct SessionsView: View {
                             }
                             .accessibilityElement(children: .contain)
                             .accessibilityIdentifier("transcriptSegment")
-                        }
-                        if !controller.isActive, !session.transcript.segments.isEmpty {
-                            ConversationAskView(controller: controller, answers: session.answers ?? []).id(session.id)
                         }
                         if controller.isReplaying {
                             Button("Stop replay") { controller.stop() }.accessibilityIdentifier("stopReplay")

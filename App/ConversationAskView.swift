@@ -12,13 +12,31 @@ struct ConversationAskView: View {
             Text("Ask about this conversation").font(.headline)
             Text("Answers use this transcript. Each question stands on its own.")
                 .font(.caption).foregroundStyle(.secondary)
+            if controller.liveStatus == "Recording" {
+                Text("Recording continues while you ask. Recent speech may still be processing; Ask uses only the transcript received so far.")
+                    .font(.caption).foregroundStyle(.secondary).accessibilityIdentifier("liveAskNotice")
+            }
+            if let error = controller.answerErrorMessage {
+                Text(error).foregroundStyle(.red).accessibilityIdentifier("answerError")
+            }
             ForEach(answers) { answer in
                 VStack(alignment: .leading, spacing: 8) {
                     Text(answer.question.question).font(.headline)
+                    if let cutoff = answer.transcriptCutoffSeconds {
+                        Text(String(format: "Transcript snapshot through %.1fs", cutoff))
+                            .font(.caption).foregroundStyle(.secondary).accessibilityIdentifier("answerCutoff")
+                    }
+                    if answer.capturedWhileRecording == true {
+                        Text("Later speech is not included in this answer.").font(.caption).foregroundStyle(.secondary)
+                    }
+                    if answer.includedInterimText == true {
+                        Text("This snapshot includes provisional text. Its saved sources stay fixed if the transcript changes.")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
                     Text(answer.text.isEmpty ? (answer.state == .streaming ? "Thinking…" : "No answer text received.") : answer.text)
                         .textSelection(.enabled).accessibilityIdentifier("answerText")
                     if answer.state == .streaming {
-                        Text("Answering… · sources checked when complete").font(.caption).foregroundStyle(.secondary)
+                        Text("Answering… · source links appear when complete").font(.caption).foregroundStyle(.secondary)
                     }
                     if let notice = answer.notice {
                         Text(notice).font(.caption).foregroundStyle(.secondary)
@@ -40,7 +58,7 @@ struct ConversationAskView: View {
                 Button("Cancel answer") { controller.cancelAnswer() }.accessibilityIdentifier("cancelAnswer")
             } else {
                 Button("Ask") { controller.ask(question) }
-                    .disabled(question.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .disabled(!controller.canAsk || question.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                     .accessibilityIdentifier("submitQuestion")
             }
         }
