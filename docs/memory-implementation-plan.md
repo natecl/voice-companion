@@ -1,6 +1,7 @@
 # Automatic cross-session memory — implementation plan
 
-Status: checkpoints 1–2 implemented and locally verified; checkpoint 3 is locally implemented, with live synthetic recall verified; hosted rollout is verified; physical-iPhone memory acceptance remains pending. See [recall evidence and rollout proposal](memory-recall.md). See [learning evidence and limits](memory-learning.md). See the [foundation contract and evidence](memory-foundation.md). Founder direction consolidated September 25, 2026. Follow the [product source of truth](product-source-of-truth.md) and [engineering principles](engineering-principles.md). The existing internal V1 remains the verified baseline. Checkpoint 1 does not deploy changes or start paid evaluations.
+Status: checkpoints 1–3 are implemented and verified for the bounded internal founder trial. Final phone corrected recall, source opening and saved reopening passed. See [acceptance and rollout record](memory-recall.md#final-physical-acceptance-and-checkpoint-review) for the recovery provenance, one conservative retention miss, and exhausted testing allocation. The original research/proposed steps below are retained as the design and verification plan, not a claim of production readiness. Follow the [product source of truth](product-source-of-truth.md) and [engineering principles](engineering-principles.md).
+
 
 ## Outcome and accepted boundaries
 

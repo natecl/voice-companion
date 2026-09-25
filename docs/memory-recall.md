@@ -1,6 +1,6 @@
-# Memory recall checkpoint — local evidence and rollout proposal
+# Memory recall checkpoint — acceptance and rollout record
 
-September 25, 2026. Checkpoint 3 is implemented locally and **not complete**: hosted enablement is verified; physical-iPhone memory acceptance remains pending. Follow the canonical engineering principles. The founder approved rollout after reviewing persistent storage; see the deployed-state record below.
+September 25, 2026. Checkpoint 3 is verified for the bounded internal founder trial. Physical-iPhone corrected recall, source opening and saved reopening passed; the final saved file was independently inspected. See final acceptance below for the corrected session’s recovery provenance, limited quality evidence and exhausted testing allowance. Earlier pending/failure entries are chronological records, not the current status.
 
 ## Implemented path
 
@@ -90,3 +90,18 @@ The founder-ready final phone Ask encountered the separate daily limit: 20/20 As
 Commit `85b7251` deployed as `dep-darejnojo6nc73flht30`, live 2026-09-25 21:39:22 UTC. It adds an administrative `grant-ask-attempt` and date-scoped idempotent grant table, preserving base policies and all historical charges. Eighteen admission/Ask tests passed (`work/ask-grant-tests.log`), including restart, expiry, duplicate approval IDs, category separation and monetary limits.
 
 Grant `memory-corrected-recall-ask-20260925-one` was added on the verified deployed commit: 20 used / 21 allowed, one remaining. Before/after usage was identical; applying the grant made zero provider calls. It expires at midnight UTC and does not add a recording allowance. Evidence: `work/ask-grant-verified.json`. Retry only the pending question in neutral session B; corrected answer/source reopening still needs actual phone acceptance.
+
+## Final physical acceptance and checkpoint review
+
+On backend `85b7251` / native `890798f`, the founder asked the same question in neutral session B and reported “Project Maple now prefers afternoon meetings,” with the correction from C as the source. The founder opened the source, returned to Sessions, reopened B and confirmed the answer/link persisted. The agent independently copied only B's saved JSON from the connected iPhone 16 Pro and verified:
+
+- completed answer: `Project Maple now prefers afternoon meetings. [[m2]]`;
+- `memoryStatus=available`, references exactly `m2`;
+- m2 points to session C `DB3BED44-4E5B-4E66-AFB3-0759A0FA1F54`, revision 1, 0.384 seconds, containing the afternoon correction;
+- B retains the earlier morning answer as its historical answer snapshot; the new answer correctly uses the correction. Two failed empty Ask attempts also remain; they were not erased.
+
+Evidence: ignored mode-0600 `work/memory-phone-final-recall.json` and founder observations in the task. Server ledger confirms the final Ask completed at 21:41:04 UTC. It reserved $0.003; the final Jev recall used the last $0.005 allocation slot. Global reservations are now $0.651/$5; memory is **$0.28/$0.28 reserved (56 calls), exhausted**. No further provider QA is authorized from this allocation. Daily Ask is 21/21 including its date-scoped grant. More memory learning/recall requires a new explicit testing allowance; waiting for the daily reset does not replenish the memory budget.
+
+Checkpoint review: actual phone initial learn/recall and final corrected recall/source persistence passed. C initially failed and was recovered through guarded cached stages under the temporary verifier; restored Jev separately verified the exact correction, and real-response replay proves the final writer's supersession behavior. Do not describe this as an uninterrupted automatic run under v9 or erase the recovery. Controlled-clock retirement/history, deletion/owner guards, restart behavior and UI/source contracts retain their recorded evidence. Targeted restoration tests (69 backend) and subsequent allowance/Ask tests (18) passed; no additional paid run is needed to recheck unchanged capture/UI code.
+
+The 18/19 support-quality result retains one false rejection of a valid anonymized summary from a named source. Review classifies this as a disclosed conservative retention limitation for this internal slice, not a false-attribution acceptance, blocker to the proven Maple flow, or a passing general-quality benchmark. Larger-library recall, full cross-device sync and production rollout remain future work. The checkpoint is eligible to merge under the standing verified-checkpoint authorization; this is not a public-launch approval.
