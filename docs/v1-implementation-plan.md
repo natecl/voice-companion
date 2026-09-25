@@ -1,10 +1,10 @@
 # V1 implementation plan — companion on tap
 
-Status: checkpoint 1 verified September 24, 2026; see [hosted recording evidence](v1-hosted-validation.md). Checkpoint 2 is verified at the existing five-minute limit; see [background evidence](v1-background-validation.md). Checkpoint 3 (saved-conversation Ask) is next. Longer capture and battery/resource characterization remain prerequisites to increasing the cap. Luna/Jev access and integration remain later-checkpoint prerequisites. See the [operating contract proposal](v1-operating-contract.md) for hosting, limits, evaluation targets, and outstanding founder decisions. Implementation choices and targets remain proposals to verify. This plan does not authorize a public deployment or purchase. Canonical authorities: [product source of truth](product-source-of-truth.md), [engineering principles](engineering-principles.md), and [V0 runbook](v0-runbook.md).
+Status: checkpoints 1–3 verified, including physical-iPhone saved-conversation Ask. Founder decision September 25: defer Jev routing from V1 after evaluation showed no reliable net benefit; proceed with direct Luna to checkpoint 5, Ask while listening. Preserve the five-minute cap and existing budgets. See [Jev decision](v1-jev-decision.md) and [Ask evidence](v1-ask-validation.md). Canonical authorities remain the product source of truth and engineering principles.
 
 ## Outcome
 
-An iPhone user starts listening, puts the phone away, and later opens the conversation and taps Ask. The companion answers from what it has heard so far without requiring a recap. The same interaction works after recording stops. Jev classifies the requested help; GPT-6 Luna generates the response using the versioned [companion personality and behavior prompt](../Backend/prompts/companion-v1.md). Founder selected Luna on September 24, with reasoning explicitly off (`none`) and Standard processing to prioritize quick responses; this supersedes the earlier Flex choice. No comparative model testing is planned. Actual latency remains unverified; see the operating contract for request limits and the no-upgrade/no-retry policy.
+An iPhone user starts listening, puts the phone away, and later opens the conversation and taps Ask. The companion answers from what it has heard so far without requiring a recap. The same interaction works after recording stops. GPT-6 Luna interprets the question and generates the response directly using the versioned [companion personality and behavior prompt](../Backend/prompts/companion-v1.md). Founder selected Luna on September 24, with reasoning explicitly off (`none`) and Standard processing to prioritize quick responses; this supersedes the earlier Flex choice. No comparative model testing is planned. Saved-conversation latency has bounded integration evidence; see the operating contract for request limits and the no-upgrade/no-retry policy.
 
 Consumer positioning: an iPhone-first listening companion that understands the conversation—and, over time, the context of your life—so you can turn to it without starting from scratch. V1 delivers the current-conversation portion. The PBN foundation and one-liner remain unchanged: “Granola with an AI that listens alongside you and can join the conversation.”
 
@@ -14,11 +14,11 @@ Included:
 - iPhone operation independent of the Mac, with repeated sessions and bounded paid usage.
 - User-started microphone capture continuing while locked/backgrounded, explicit recording state, safe interruption handling, and saved reopening.
 - Explicit in-app Ask, typed questions, and text answers during/after the selected conversation.
-- Jev routing between recall, summary, and perspective, with a general grounded-answer fallback for uncertainty, mixed requests, timeout, or failure.
+- Direct Luna answering for recall, summary, perspective and mixed questions; no Jev dependency.
 - Inspectable transcript references for claims about the conversation; clear separation of the companion's suggestions from statements in the transcript.
 - Local session and Q&A history, deletion, and the existing best-effort speaker labels.
 
-Deferred: voice questions/replies, proactive interjections, automatic memories, past-conversation retrieval, task execution, web browsing, computer audio, cross-device sync, Watch/AirPods controls, and public billing/distribution. A mascot is a design exploration, not a delivery dependency. Ask from the Lock Screen and starting capture from outside the app are separate enhancements; V1 starts in-app and supports locking afterward. No promise of recording through phone calls or continuing after force-quit.
+Deferred: Jev routing, voice questions/replies, proactive interjections, automatic memories, past-conversation retrieval, task execution, web browsing, computer audio, cross-device sync, Watch/AirPods controls, and public billing/distribution. A mascot is a design exploration, not a delivery dependency. Ask from the Lock Screen and starting capture from outside the app are separate enhancements; V1 starts in-app and supports locking afterward. No promise of recording through phone calls or continuing after force-quit.
 
 ## Checkpoint 0 — settle the operating contract
 
@@ -54,7 +54,7 @@ QA: cached/replayed events for status UI, local microphone checks for route life
 
 ## Checkpoint 3 — direct Ask on a saved conversation
 
-Build the reliable baseline before inserting Jev. Tap Ask, type a question, receive a streamed text answer from the selected conversation. Preserve question/answer history within that session. Use stable transcript passage IDs and a bounded context snapshot; references open the cited passage. Unknown information should produce an honest limitation rather than an invented answer. Perspective questions may request general reasoning, but that reasoning must be distinguished from transcript facts.
+Use the verified direct Luna baseline. Tap Ask, type a question, receive a streamed text answer from the selected conversation. Preserve question/answer history within that session. Use stable transcript passage IDs and a bounded context snapshot; references open the cited passage. Unknown information should produce an honest limitation rather than an invented answer. Perspective questions may request general reasoning, but that reasoning must be distinguished from transcript facts.
 
 Acceptance:
 - Recall, summary, and perspective requests work through the direct path.
@@ -64,7 +64,9 @@ Acceptance:
 
 QA: versioned synthetic conversations and fixed questions, local UI/provider-event replay, then bounded functional QA of the selected Luna integration, without a comparative model evaluation. No new transcription needed. Validate reference existence in code; support/faithfulness also requires semantic review, not just valid IDs. Select the simplest context strategy that fits the bounded session; do not silently discard earlier conversation when limits are reached.
 
-## Checkpoint 4 — Jev judgment layer
+## Checkpoint 4 — Jev judgment layer (deferred by founder)
+
+The following is the historical evaluation plan, not an active V1 requirement. The founder accepted deferral September 25 after reviewing the failed quality gate. See [decision and evidence](v1-jev-decision.md).
 
 Use Jev Choice for one narrow decision per Ask: recall, summary, perspective, or mixed/uncertain. Input is the question plus bounded same-session context where needed. Application code chooses the answer policy; Jev does not generate prose, store memory, or certify truth. The fallback can use the direct grounded-answer path without blocking the user.
 
@@ -79,7 +81,7 @@ TypeSafe's official [introduction](https://docs.typesafe.ai/introduction), revie
 
 ## Checkpoint 5 — Ask while listening
 
-Reuse the verified question/answer/routing path during an active session. Each Ask gets an immutable transcript snapshot and an explicit context cutoff. Capture continues independently while a text answer is generated. The answer is not silently rewritten as subsequent speech arrives. Keep app/provider state separate so an answer failure cannot stop recording and a transcription failure is not hidden by a successful answer.
+Reuse the verified direct question/answer path during an active session. Each Ask gets an immutable transcript snapshot and an explicit context cutoff. Capture continues independently while a text answer is generated. The answer is not silently rewritten as subsequent speech arrives. Keep app/provider state separate so an answer failure cannot stop recording and a transcription failure is not hidden by a successful answer.
 
 Acceptance:
 - Physical iPhone records actual speech, answers a typed question about it, continues capturing later speech, then stops and reopens both transcript and answer history.
@@ -98,7 +100,7 @@ Package the installed internal build, setup/runbook, evidence, known limits, and
 
 ## Module boundaries and observability
 
-Keep focused interfaces within the current codebase: audio capture; transcription adapter; transcript/session storage; context snapshot builder; Jev question router; answer client; UI. Server owns authentication, provider secrets, and enforced budgets. Add no vector database or general agent framework for a one-conversation scope.
+Keep focused interfaces within the current codebase: audio capture; transcription adapter; transcript/session storage; context snapshot builder; answer client; UI. Server owns authentication, provider secrets, and enforced budgets. Add no vector database or general agent framework for a one-conversation scope.
 
 Measure capture-to-first-text, Ask-to-route, Ask-to-first-answer, completion, cancellation, and provider usage with request correlation IDs. Avoid recording private transcript/question content in routine telemetry. Timing should distinguish network/provider latency from app handling. Keep paid test inputs explicit and bounded, retain reusable sanitized fixtures, and use no automatic paid retries.
 

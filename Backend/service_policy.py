@@ -2,10 +2,13 @@
 import os
 from pathlib import Path
 import sqlite3
+from contextlib import closing
 from admission import Admission
 
 STT = (2_000_000, 20_000, 6)
 ASK = (2_500_000, 3_000, 20)
+# Historical experiment accounting only; the product has no Jev caller.
+RETIRED_JEV = (500_000, 500, 64)
 
 
 def add_ask_policy(path):
@@ -17,7 +20,7 @@ def add_ask_policy(path):
         db.execute('BEGIN IMMEDIATE')
         cap = db.execute('SELECT cap FROM budget WHERE id=1').fetchone()
         policies = dict((row[0], tuple(row[1:])) for row in db.execute('SELECT category,cap,reservation,daily FROM policy'))
-        if cap != (5_000_000,) or policies not in ({'stt': STT}, {'stt': STT, 'ask': ASK}):
+        if cap != (5_000_000,) or policies not in ({'stt': STT}, {'stt': STT, 'ask': ASK}, {'stt': STT, 'ask': ASK, 'jev': RETIRED_JEV}):
             raise ValueError('Unexpected ledger policy; migration refused')
         if 'ask' not in policies:
             db.execute('INSERT INTO policy VALUES(?,?,?,?)', ('ask', *ASK))
@@ -38,4 +41,8 @@ def open_ledger(*, migrate=False):
     if enabled and migrate:
         add_ask_policy(path)
     limits = {'stt': STT, 'ask': ASK} if enabled else {'stt': STT}
+    if path.exists():
+        with closing(sqlite3.connect(path)) as db:
+            if db.execute("SELECT 1 FROM policy WHERE category='jev'").fetchone():
+                limits['jev'] = RETIRED_JEV
     return Admission(path, total_microusd=5_000_000, limits=limits)
