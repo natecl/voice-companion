@@ -2,7 +2,7 @@
 
 > Granola with an AI that listens alongside you and can join the conversation.
 
-An iPhone-first companion for everyday conversations, with Mac support. Working name: Voice Companion. This private repository contains the native apps and canonical product knowledge. Mac and iPhone apps can replay a sample transcript, show speaker labels, and save/reopen sessions. Mac and iPhone microphone transcription is available through the bounded local development relay, with encrypted LAN transport for iPhone. This is an internal development build with best-effort speaker labels, foreground recording, a five-minute session cap, and local transcript storage. See the [V0 runbook](docs/v0-runbook.md) for setup, current acceptance, and known limitations.
+An iPhone-first companion for everyday conversations, with Mac support. Working name: Voice Companion. The installed internal V1 build records microphone audio through the hosted service, supports locked-screen capture, saves transcripts locally, and answers typed questions during or after a conversation with fixed source references. Recording remains capped at five minutes; speaker labels are best-effort. See the [V1 runbook](docs/v1-runbook.md) for use, setup, quotas and known limits, and [final acceptance](docs/v1-acceptance.md) for evidence. The [V0 runbook](docs/v0-runbook.md) retains local Mac relay instructions and historical scope. This private repository is not a public release.
 
 ## Product source of truth
 
