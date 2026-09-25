@@ -10,6 +10,11 @@ final class SessionController {
     var liveStatus: String?
     var isActive: Bool { isReplaying || liveStatus != nil }
     var isAnswering = false
+    var answerErrorMessage: String?
+    var canAsk: Bool {
+        !isReplaying && !isAnswering && (liveStatus == nil || liveStatus == "Recording") &&
+        current?.transcript.segments.isEmpty == false
+    }
     private var answerTask: Task<Void, Never>?
     private var answerConnection: (any AnswerConnection)?
     private let makeAnswerConnection: () -> any AnswerConnection
@@ -77,6 +82,7 @@ final class SessionController {
     func startReplay() {
         guard !isActive, !isAnswering else { return }
         errorMessage = nil
+        answerErrorMessage = nil
         current = CaptureSession(id: UUID(), createdAt: Date())
         isReplaying = true
         logger.info("replay_started")
@@ -114,6 +120,7 @@ final class SessionController {
     func startRecording() {
         guard !isActive, !isAnswering else { return }
         errorMessage = nil
+        answerErrorMessage = nil
         liveStatus = "Connecting…"
         task = Task {
             do {
@@ -209,18 +216,21 @@ final class SessionController {
         task?.cancel()
     }
 
-    func close() { guard liveStatus == nil, !isAnswering else { return }; if isReplaying { stop() }; current = nil; reload() }
+    func close() { guard liveStatus == nil, !isAnswering else { return }; if isReplaying { stop() }; current = nil; answerErrorMessage = nil; reload() }
     func deleteCurrent() {
         guard let current, !isActive, !isAnswering else { return }
         do { try store.delete(current.id); self.current = nil; reload() }
         catch { errorMessage = "Could not delete session: \(error.localizedDescription)" }
     }
     func ask(_ text: String) {
-        guard !isActive, !isAnswering, let session = current else { return }
-        errorMessage = nil
+        guard canAsk, let session = current else { return }
+        answerErrorMessage = nil
         do {
             let question = try ConversationQuestion(question: text, transcript: session.transcript)
-            let answer = ConversationAnswer(id: UUID(), createdAt: Date(), question: question)
+            var answer = ConversationAnswer(id: UUID(), createdAt: Date(), question: question)
+            answer.transcriptCutoffSeconds = session.transcript.receivedThroughSeconds
+            answer.capturedWhileRecording = liveStatus == "Recording"
+            answer.includedInterimText = session.transcript.segments.contains { !$0.isFinal }
             var updated = session
             if updated.answers == nil { updated.answers = [] }
             updated.answers?.append(answer)
@@ -233,8 +243,9 @@ final class SessionController {
                 var lastSave = ContinuousClock.now
                 do {
                     try await connection.run(question) { event in
-                        guard self.current?.id == session.id,
-                              let index = self.current?.answers?.firstIndex(where: { $0.id == answer.id }) else { throw CancellationError() }
+                        guard !Task.isCancelled, self.current?.id == session.id,
+                              let index = self.current?.answers?.firstIndex(where: { $0.id == answer.id }),
+                              self.current?.answers?[index].state == .streaming else { throw CancellationError() }
                         if event.type == "delta", let text = event.text {
                             self.current?.answers?[index].text += text
                             if lastSave.duration(to: .now) >= .milliseconds(500) {
@@ -257,12 +268,12 @@ final class SessionController {
                     }
                 }
                 do { try persist() }
-                catch { errorMessage = "Could not save the answer: \(error.localizedDescription)" }
+                catch { answerErrorMessage = "Could not save the answer: \(error.localizedDescription)" }
                 answerConnection = nil
                 isAnswering = false
                 reload()
             }
-        } catch { errorMessage = error.localizedDescription }
+        } catch { answerErrorMessage = error.localizedDescription }
     }
 
     func cancelAnswer(notice: String = "Answer cancelled. Partial text is saved.") {
@@ -274,7 +285,7 @@ final class SessionController {
         answerConnection?.cancel()
         answerTask?.cancel()
         do { try persist() }
-        catch { errorMessage = "Could not save the partial answer: \(error.localizedDescription)" }
+        catch { answerErrorMessage = "Could not save the partial answer: \(error.localizedDescription)" }
     }
 
     private func persist() throws { if let current { try store.save(current) } }

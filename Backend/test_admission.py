@@ -1,5 +1,6 @@
 import concurrent.futures
 from pathlib import Path
+import sqlite3
 import tempfile
 import threading
 import unittest
@@ -101,6 +102,113 @@ class AdmissionTests(unittest.TestCase):
             Admission(self.path, total_microusd=101, limits=self.policy['limits'])
         self.assertEqual(self.store.usage(), [])
         self.assertEqual(self.store.authorized(self.token), self.owner)
+
+class RecordingAllowanceTests(unittest.TestCase):
+    def test_named_grant_is_idempotent_expires_and_keeps_budget(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / 'usage.sqlite'
+            now = [10 * 86400]
+            def open_store():
+                return Admission(path, clock=lambda: now[0], total_microusd=80,
+                                 limits={'stt': (80, 20, 1), 'ask': (40, 20, 1)})
+            store = open_store()
+            _, token = store.enroll(lifetime_seconds=3 * 86400)
+            def use(category='stt'):
+                request = store.reserve(token, category)
+                store.finish(request, completed=True)
+            use()
+            with self.assertRaises(ValueError):
+                store.grant_recording_attempt(now[0] + 86400, 'phone-qa')
+            self.assertTrue(store.grant_recording_attempt(now[0], 'phone-qa'))
+            store.close()
+            store = open_store()
+            self.assertFalse(store.grant_recording_attempt(now[0], 'phone-qa'))
+            use()
+            with self.assertRaisesRegex(Rejected, 'daily_limit'):
+                use()
+            use('ask')
+            with self.assertRaisesRegex(Rejected, 'daily_limit'):
+                use('ask')
+            now[0] += 86400
+            use()
+            with self.assertRaisesRegex(Rejected, 'daily_limit'):
+                use()
+            store.grant_recording_attempt(now[0], 'later-approval')
+            with self.assertRaisesRegex(Rejected, 'budget_limit'):
+                use()
+            self.assertEqual(store.usage(), [('ask', 1, 20), ('stt', 3, 60)])
+            store.close()
+
+    def test_existing_allowance_migrates_without_adding_an_attempt(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / 'usage.sqlite'
+            with sqlite3.connect(path) as db:
+                db.execute('CREATE TABLE recording_qa_day(day_start INTEGER PRIMARY KEY, approved_at REAL NOT NULL)')
+                db.execute('INSERT INTO recording_qa_day VALUES(864000,864010)')
+            store = Admission(path, total_microusd=100, limits={'stt': (100, 20, 1)})
+            self.assertEqual(store.db.execute('SELECT * FROM recording_qa_day').fetchall(), [(864000, 864010, 1)])
+            store.close()
+
+    def test_replacement_is_single_consumed_only_and_preserves_history(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / 'usage.sqlite'
+            now = [10 * 86400]
+            def open_store():
+                return Admission(path, clock=lambda: now[0], total_microusd=1000, limits={'stt': (1000, 20, 1)})
+            store = open_store()
+            _, token = store.enroll(lifetime_seconds=3 * 86400)
+            store.allow_one_recording_today(now[0])
+            with self.assertRaises(ValueError):
+                store.allow_one_recording_today(now[0], replace_consumed=True)
+            for _ in range(2):
+                request = store.reserve(token, 'stt')
+                with self.assertRaises(ValueError):
+                    store.allow_one_recording_today(now[0], replace_consumed=True)
+                store.finish(request, completed=True)
+            before = store.db.execute('SELECT * FROM request').fetchall()
+            store.allow_one_recording_today(now[0], replace_consumed=True)
+            self.assertEqual(before, store.db.execute('SELECT * FROM request').fetchall())
+            with self.assertRaises(ValueError):
+                store.allow_one_recording_today(now[0], replace_consumed=True)
+            store.close()
+            store = open_store()
+            request = store.reserve(token, 'stt')
+            store.finish(request, completed=False)
+            with self.assertRaisesRegex(Rejected, 'daily_limit'):
+                store.reserve(token, 'stt')
+            now[0] += 86400
+            request = store.reserve(token, 'stt')
+            store.finish(request, completed=True)
+            with self.assertRaisesRegex(Rejected, 'daily_limit'):
+                store.reserve(token, 'stt')
+            self.assertEqual(store.usage(), [('stt', 4, 80)])
+            store.close()
+
+    def test_one_extra_attempt_survives_restart_expires_and_keeps_budget(self):
+        with tempfile.TemporaryDirectory() as d:
+            path=Path(d)/'usage.sqlite';now=[10*86400]
+            def open_store():
+                return Admission(path,clock=lambda:now[0],total_microusd=140,limits={'stt':(140,20,3)})
+            store=open_store();_,token=store.enroll(lifetime_seconds=3*86400)
+            def use():
+                req=store.reserve(token,'stt');store.finish(req,completed=False)
+            for _ in range(3):use()
+            with self.assertRaisesRegex(Rejected,'daily_limit'):use()
+            with self.assertRaises(ValueError):store.allow_one_recording_today(now[0]+86400)
+            store.allow_one_recording_today(now[0])
+            with self.assertRaises(ValueError):store.allow_one_recording_today(now[0])
+            store.close();store=open_store()
+            use()
+            with self.assertRaisesRegex(Rejected,'daily_limit'):use()
+            self.assertEqual(store.usage(),[('stt',4,80)])
+            now[0]+=86400
+            for _ in range(3):use()
+            with self.assertRaisesRegex(Rejected,'daily_limit'):use()
+            store.allow_one_recording_today(now[0])
+            with self.assertRaisesRegex(Rejected,'budget_limit'):use()
+            self.assertEqual(store.db.execute("SELECT daily FROM policy WHERE category='stt'").fetchone()[0],3)
+            self.assertEqual(store.usage(),[('stt',7,140)])
+            store.close()
 
 
 if __name__ == '__main__':

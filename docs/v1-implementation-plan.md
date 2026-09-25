@@ -1,6 +1,6 @@
 # V1 implementation plan — companion on tap
 
-Status: checkpoints 1–3 verified, including physical-iPhone saved-conversation Ask. Founder decision September 25: defer Jev routing from V1 after evaluation showed no reliable net benefit; proceed with direct Luna to checkpoint 5, Ask while listening. Preserve the five-minute cap and existing budgets. See [Jev decision](v1-jev-decision.md) and [Ask evidence](v1-ask-validation.md). Canonical authorities remain the product source of truth and engineering principles.
+Status: checkpoints 1–3 and 5 verified, including physical-iPhone Ask while listening and speech captured after the answer completes. Jev checkpoint 4 is deferred by founder decision. Next: checkpoint 6, internal V1 acceptance and handoff. Preserve the five-minute cap and monetary budgets. See [live Ask evidence](v1-live-ask-validation.md) and [Jev decision](v1-jev-decision.md). Canonical authorities remain the product source of truth and engineering principles.
 
 ## Outcome
 
