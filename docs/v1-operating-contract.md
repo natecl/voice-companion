@@ -1,6 +1,6 @@
 # V1 operating contract
 
-Status: implementation requested September 24, 2026; checkpoint 0 underway. The founder accepted the paid Render recommendation after reviewing its free-tier limitations and approximately $7.25/month baseline. Render CLI authentication and workspace access are verified; the founder has now explicitly approved up to $5 total V1 provider-testing spend, allocated as below. No service has been deployed, no paid evaluation has run, and checkpoint 0 is not complete. Governed by [engineering principles](engineering-principles.md) and the [V1 plan](v1-implementation-plan.md).
+Status: implementation requested September 24, 2026; checkpoint 0 underway. The founder accepted the paid Render recommendation after reviewing its free-tier limitations and approximately $7.25/month baseline. Render CLI authentication and workspace access are verified; the founder has now explicitly approved up to $5 total V1 provider-testing spend, allocated as below. The internal relay is deployed and successive physical-iPhone recordings are verified; see [hosted validation](v1-hosted-validation.md). Final checkpoint review remains. Governed by [engineering principles](engineering-principles.md) and the [V1 plan](v1-implementation-plan.md).
 
 ## First delivery and deployment proposal
 
