@@ -1,6 +1,6 @@
 # V1 operating contract
 
-Status: implementation requested September 24, 2026; checkpoint 0 underway. The founder accepted the paid Render recommendation after reviewing its free-tier limitations and approximately $7.25/month baseline. Render CLI authentication and workspace access are verified; the separate $5 provider-evaluation envelope remains proposed. No service has been deployed, no paid evaluation has run, and checkpoint 0 is not complete. Governed by [engineering principles](engineering-principles.md) and the [V1 plan](v1-implementation-plan.md).
+Status: implementation requested September 24, 2026; checkpoint 0 underway. The founder accepted the paid Render recommendation after reviewing its free-tier limitations and approximately $7.25/month baseline. Render CLI authentication and workspace access are verified; the founder has now explicitly approved up to $5 total V1 provider-testing spend, allocated as below. No service has been deployed, no paid evaluation has run, and checkpoint 0 is not complete. Governed by [engineering principles](engineering-principles.md) and the [V1 plan](v1-implementation-plan.md).
 
 ## First delivery and deployment proposal
 
@@ -31,7 +31,7 @@ One active recording per user and initially one globally. Use a single-instance 
 
 ## Proposed paid-trial envelope
 
-Founder approval requested for approximately $7.25/month hosting and **up to $5 total V1 provider evaluation spend**, not a recurring $5 daily allowance. Suggested allocation: $2 STT, $2.50 answers, $0.50 Jev. Enforce component limits and a global ceiling through conservative reservations; provider estimates are not verified invoices or an account-wide billing guarantee. Check available provider account limits before enabling traffic.
+Founder approved approximately $7.25/month hosting and **up to $5 total V1 provider testing spend**, not a recurring $5 daily allowance. Working allocation: $2 STT, $2.50 answers, $0.50 Jev. Enforce component limits and a global ceiling through conservative reservations; provider estimates are not verified invoices or an account-wide billing guarantee. Check available provider account limits before enabling traffic.
 
 Keep the app's five-minute capture limit, the relay's 310-second PCM allowance, and 330-second wall timeout initially. Propose six recording attempts per user per UTC day and a global six-attempt daily limit for the founder-only trial. Failed attempts consume an attempt; UTC rollover does not reset the overall evaluation envelope. Limit ordinary Ask to 20 attempts per day; any larger held-out evaluation needs its own explicitly bounded run. Disable unused endpoints until their checkpoint is implemented.
 
@@ -70,4 +70,4 @@ These are internal acceptance targets, not measured results or public latency cl
 
 ## Immediate next action
 
-Confirm hosting choice/access and the proposed cost envelope. Then implement durable admission/quotas with local socket tests, authenticated hosted transport and native configuration, and finally the two short physical-iPhone sessions after readiness. No independent-iPhone claim or checkpoint-1 merge until that real path passes.
+Hosting/access and the $5 total provider-testing envelope are approved. Continue implementing durable admission/quotas with local socket tests, authenticated hosted transport and native configuration, and finally the two short physical-iPhone sessions after readiness. No independent-iPhone claim or checkpoint-1 merge until that real path passes.

@@ -47,7 +47,7 @@ enum CaptureFailure: LocalizedError {
         case .interrupted: "Audio capture was interrupted or its input changed. Received text is saved; start a new recording to continue."
         case .unavailable: "The microphone audio format is unavailable."
         case .overflow: "Audio could not be sent quickly enough. Recording stopped to avoid missing speech."
-        case .noRelay: "Start the development relay and launch the app with its configuration."
+        case .noRelay: "Recording connection is not configured. Install the internal service configuration or start the development relay."
         case .connectionEnded: "The transcription connection ended before completion."
         }
     }

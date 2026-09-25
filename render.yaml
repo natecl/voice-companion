@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: voice-companion
+    runtime: python
+    plan: starter
+    region: virginia
+    numInstances: 1
+    autoDeployTrigger: off
+    buildCommand: pip install -r Backend/requirements.txt
+    startCommand: python Backend/hosted.py
+    healthCheckPath: /health
+    disk:
+      name: voice-companion-ledger
+      mountPath: /var/data/voice-companion
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.7
+      - key: VOICE_DATA_DIR
+        value: /var/data/voice-companion
+      - key: XAI_API_KEY
+        sync: false

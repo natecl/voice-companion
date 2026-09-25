@@ -1,0 +1,55 @@
+"""Run on the persistent service instance. Never prints credentials to logs."""
+import argparse
+import json
+import os
+from pathlib import Path
+from urllib.parse import urlsplit
+from service_policy import open_ledger
+
+
+def export_credential(store, url, destination, days):
+    parsed = urlsplit(url)
+    if (parsed.scheme != 'wss' or not parsed.hostname or parsed.path != '/stt'
+            or parsed.username or parsed.password or parsed.query or parsed.fragment):
+        raise ValueError('Expected a public wss://host/stt URL')
+    # Refuse to overwrite existing exports; no plaintext credential on stdout.
+    with Path(destination).open('x') as output:
+        os.chmod(destination, 0o600)
+        identifier, token = store.enroll(lifetime_seconds=days * 86400)
+        try:
+            json.dump({'url': url, 'token': token}, output)
+            output.flush()
+            os.fsync(output.fileno())
+        except BaseException:
+            store.revoke(identifier)
+            raise
+    return identifier
+
+
+def main():
+    os.umask(0o077)
+    parser = argparse.ArgumentParser(description=__doc__)
+    commands = parser.add_subparsers(dest='command', required=True)
+    enroll = commands.add_parser('enroll')
+    enroll.add_argument('--url', required=True)
+    enroll.add_argument('--output', required=True)
+    enroll.add_argument('--days', type=int, choices=range(1, 31), default=7)
+    revoke = commands.add_parser('revoke')
+    revoke.add_argument('credential_id')
+    commands.add_parser('usage')
+    args = parser.parse_args()
+    store = open_ledger()
+    try:
+        if args.command == 'enroll':
+            print('Enrolled credential ID:', export_credential(store, args.url, args.output, args.days))
+        elif args.command == 'revoke':
+            store.revoke(args.credential_id)
+            print('Revocation recorded')
+        else:
+            print(json.dumps({'reservations': store.usage()}))
+    finally:
+        store.close()
+
+
+if __name__ == '__main__':
+    main()
