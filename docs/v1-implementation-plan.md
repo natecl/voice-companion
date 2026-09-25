@@ -4,7 +4,7 @@ Status: execution requested September 24, 2026; checkpoint 0 underway. See the [
 
 ## Outcome
 
-An iPhone user starts listening, puts the phone away, and later opens the conversation and taps Ask. The companion answers from what it has heard so far without requiring a recap. The same interaction works after recording stops. Jev classifies the requested help; GPT-6 Luna generates the response using the versioned [companion personality and behavior prompt](../Backend/prompts/companion-v1.md). Founder selected Luna on September 24; no comparative model testing is planned.
+An iPhone user starts listening, puts the phone away, and later opens the conversation and taps Ask. The companion answers from what it has heard so far without requiring a recap. The same interaction works after recording stops. Jev classifies the requested help; GPT-6 Luna generates the response using the versioned [companion personality and behavior prompt](../Backend/prompts/companion-v1.md). Founder selected Luna on September 24, with reasoning explicitly off (`none`) and the cheapest synchronous processing tier (Flex); no comparative model testing is planned. Flex latency and availability remain unverified; see the operating contract for the tradeoff and no-upgrade/no-retry policy.
 
 Consumer positioning: an iPhone-first listening companion that understands the conversation—and, over time, the context of your life—so you can turn to it without starting from scratch. V1 delivers the current-conversation portion. The PBN foundation and one-liner remain unchanged: “Granola with an AI that listens alongside you and can join the conversation.”
 
