@@ -221,9 +221,11 @@ final class SessionController {
         do {
             let question = try ConversationQuestion(question: text, transcript: session.transcript)
             let answer = ConversationAnswer(id: UUID(), createdAt: Date(), question: question)
-            if current?.answers == nil { current?.answers = [] }
-            current?.answers?.append(answer)
-            try persist()
+            var updated = session
+            if updated.answers == nil { updated.answers = [] }
+            updated.answers?.append(answer)
+            try store.save(updated)
+            current = updated
             isAnswering = true
             let connection = makeAnswerConnection()
             answerConnection = connection

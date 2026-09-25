@@ -94,4 +94,16 @@ final class ConversationAnswerTests: XCTestCase {
             XCTAssertTrue(try store.load().isEmpty)
         }
     }
+
+    func testInitialSaveFailureDoesNotStartOrDisplayPendingAnswer() async throws {
+        try await exercise { controller, connection, store in
+            // A file at the store's directory makes persistence fail deterministically.
+            try Data().write(to: store.directory)
+            controller.ask("What time?")
+            XCTAssertFalse(controller.isAnswering)
+            XCTAssertNil(connection.requested)
+            XCTAssertTrue(controller.current?.answers?.isEmpty ?? true)
+            XCTAssertNotNil(controller.errorMessage)
+        }
+    }
 }
