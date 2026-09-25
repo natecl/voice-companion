@@ -4,7 +4,7 @@ Status: execution requested September 24, 2026; checkpoint 0 underway. See the [
 
 ## Outcome
 
-An iPhone user starts listening, puts the phone away, and later opens the conversation and taps Ask. The companion answers from what it has heard so far without requiring a recap. The same interaction works after recording stops. Jev classifies the requested help; an answer model generates the response.
+An iPhone user starts listening, puts the phone away, and later opens the conversation and taps Ask. The companion answers from what it has heard so far without requiring a recap. The same interaction works after recording stops. Jev classifies the requested help; GPT-6 Luna generates the response using the versioned [companion personality and behavior prompt](../Backend/prompts/companion-v1.md). Founder selected Luna on September 24; no comparative model testing is planned.
 
 Consumer positioning: an iPhone-first listening companion that understands the conversation—and, over time, the context of your life—so you can turn to it without starting from scratch. V1 delivers the current-conversation portion. The PBN foundation and one-liner remain unchanged: “Granola with an AI that listens alongside you and can join the conversation.”
 
@@ -22,7 +22,7 @@ Deferred: voice questions/replies, proactive interjections, automatic memories, 
 
 ## Checkpoint 0 — settle the operating contract
 
-Confirm the smallest authenticated backend/hosting option, a development spending cap, and one answer-model candidate. Prefer the existing Swift apps and relay boundary; change stack only for an evidenced need. Research current official API behavior, pricing, and retention before choosing. Credentials remain server-side. Do not promise on-device processing: cloud services receive audio or selected text even when transcripts are stored locally.
+Confirm the smallest authenticated backend/hosting option, a development spending cap, and access to the selected answer model, GPT-6 Luna. Prefer the existing Swift apps and relay boundary; change stack only for an evidenced need. Research current official API behavior, pricing, and retention before choosing. Credentials remain server-side. Do not promise on-device processing: cloud services receive audio or selected text even when transcripts are stored locally.
 
 Proposed initial trial boundary: invited users, one active recording per user, configurable duration/daily usage caps, and clear cap messages. Preserve V0's five-minute limit until longer capture is deliberately verified. A 30-minute maximum is a proposed first practical target, not an approved unlimited-recording promise. Define exact duration and budget before the corresponding paid run.
 
@@ -62,7 +62,7 @@ Acceptance:
 - Missing information, wrong-conversation context, unassigned speakers, quoted malicious instructions, cancellation, and provider failure are handled without fabricated evidence or lost transcript.
 - Session deletion removes associated local Q&A. App relaunch restores the saved conversation and answer history.
 
-QA: versioned synthetic conversations and fixed questions, local UI/provider-event replay, then a small bounded answer-model evaluation. No new transcription needed. Validate reference existence in code; support/faithfulness also requires semantic review, not just valid IDs. Select the simplest context strategy that fits the bounded session; do not silently discard earlier conversation when limits are reached.
+QA: versioned synthetic conversations and fixed questions, local UI/provider-event replay, then bounded functional QA of the selected Luna integration, without a comparative model evaluation. No new transcription needed. Validate reference existence in code; support/faithfulness also requires semantic review, not just valid IDs. Select the simplest context strategy that fits the bounded session; do not silently discard earlier conversation when limits are reached.
 
 ## Checkpoint 4 — Jev judgment layer
 

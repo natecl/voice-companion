@@ -39,11 +39,13 @@ Keep the app's five-minute capture limit, the relay's 310-second PCM allowance, 
 
 First checkpoint live QA: at most two 20-second sessions after explicit founder readiness, no automatic retry. Estimated audio cost $0.0023 total; authorization can still reserve full request allowances. A failure is investigated locally before another paid attempt.
 
-## Answer candidate and Jev
+## Selected answer model and Jev
 
-Evaluate the pinned `grok-4.20-0309-non-reasoning` model first: it uses the existing provider account and offers a direct-response candidate for low-latency Ask. This is an implementation hypothesis, not a quality winner. The [official model page](https://docs.x.ai/developers/models/grok-4.20-non-reasoning) lists $1.25 per million input tokens and $2.50 per million output tokens at the relevant short-context tier. A 5,000-input/500-output answer would be about $0.0075. Verify account availability and streaming behavior before integration; pin the version rather than a moving alias. No web/tools calls.
+Founder decision, September 24: use **GPT-6 Luna (`gpt-6-luna`)** for V1 answers and shape its personality and behavior through the versioned [companion prompt](../Backend/prompts/companion-v1.md). This supersedes the earlier Grok candidate and conversational recommendations of Sonnet/Gemini. No comparative model testing is planned, per founder instruction. Required functional integration QA remains scoped to the selected model; this decision is not a measured quality claim.
 
-Propose a 16,000-token total input ceiling and 1,000-token output limit per Ask, reserving $0.0225 at those rates before any additional safety margin. Token accounting and the API's output-limit semantics must be verified before claiming enforcement. Reject an oversized snapshot clearly; do not silently drop early passages. Use stateless requests and disable optional provider conversation storage using the documented API contract during integration.
+The [official model page](https://developers.openai.com/api/docs/models/gpt-6-luna), reviewed September 24, lists $0.10 per million input tokens and $0.50 per million output tokens. A 5,000-input/500-output answer would be approximately $0.00075. Start with reasoning effort `none` for the direct-answer path, streaming via the Responses API, with no web/tools. Verify access and request behavior at integration. An OpenAI API credential must remain server-side; no Luna calls or live integration exist yet.
+
+Propose a 16,000-token total input ceiling and 1,000-token output limit per Ask. At those rates the maximum token estimate is $0.0021 before safety margin; reserve $0.003 per request once token counting and limit semantics are verified. Reject oversized context clearly instead of silently truncating. Use stateless requests with `store: false`; that does not by itself remove provider abuse-monitoring retention. See [OpenAI data controls](https://developers.openai.com/api/docs/guides/your-data).
 
 Jev remains checkpoint 4: one typed routing judgment per Ask, not a prose generator or constant transcript processor. Its [introduction](https://docs.typesafe.ai/introduction) confirms typed decisions. Recheck endpoint, version, pricing, retention, and credentials before sending any transcript context. No Jev call is needed for independent recording.
 
