@@ -1,0 +1,130 @@
+[
+  {
+    "id": "student",
+    "suite": "development",
+    "text": "I study biology. I enjoy drawing birds on weekends.",
+    "expect_user": [
+      "biology",
+      "birds"
+    ],
+    "min": 2
+  },
+  {
+    "id": "family",
+    "suite": "development",
+    "text": "My daughter Maya enjoys swimming. I prefer quiet mornings.",
+    "expect_user": [
+      "quiet"
+    ],
+    "expect_related": [
+      "Maya",
+      "swimming"
+    ],
+    "forbid_user": [
+      "enjoys swimming"
+    ],
+    "min": 2
+  },
+  {
+    "id": "correction",
+    "suite": "development",
+    "text": "Correction: I now prefer lively mornings instead of quiet mornings.",
+    "expect_user": [
+      "lively"
+    ],
+    "supersedes": true,
+    "min": 1
+  },
+  {
+    "id": "quoted",
+    "suite": "development",
+    "text": "A lecture example said: 'I am a surgeon and I have three children.' This was a hypothetical character, not me.",
+    "forbid_user": [
+      "surgeon",
+      "children"
+    ],
+    "max": 0,
+    "min": 0
+  },
+  {
+    "id": "athlete",
+    "suite": "heldout",
+    "text": "I play wheelchair basketball every Saturday. My dog Pepper has a vet appointment on October 3.",
+    "expect_user": [
+      "basketball"
+    ],
+    "expect_related": [
+      "Pepper",
+      "vet"
+    ],
+    "min": 2
+  },
+  {
+    "id": "work-life",
+    "suite": "heldout",
+    "text": "I work as a teacher. I care about spending evenings with my family. I might take up pottery next month.",
+    "expect_user": [
+      "teacher",
+      "family",
+      "pottery"
+    ],
+    "tentative": [
+      "pottery"
+    ],
+    "min": 3
+  },
+  {
+    "id": "ambiguity",
+    "suite": "heldout",
+    "text": "Two friends of mine are named Sam. One likes tennis and the other likes chess; I haven't said which is which.",
+    "forbid_user": [
+      "likes tennis",
+      "likes chess"
+    ],
+    "no_related_merge": true,
+    "min": 0
+  },
+  {
+    "id": "anonymous",
+    "suite": "heldout",
+    "origin": "recording",
+    "text": "I love rock climbing.",
+    "expect_unknown": true,
+    "min": 1
+  },
+  {
+    "id": "family-update",
+    "suite": "extension",
+    "text": "Correction: my daughter Maya now enjoys tennis instead of swimming.",
+    "expect_related": [
+      "Maya",
+      "tennis"
+    ],
+    "related_update": true,
+    "min": 1
+  },
+  {
+    "id": "different-person",
+    "suite": "extension",
+    "text": "My friend Maya, who is a different person from my daughter Maya, enjoys swimming.",
+    "expect_related": [
+      "friend",
+      "swimming"
+    ],
+    "new_person": true,
+    "min": 1
+  },
+  {
+    "id": "reported-care",
+    "suite": "extension",
+    "text": "My doctor suggested physical therapy for my knee pain. I have not decided whether to try it.",
+    "expect_user": [
+      "physical therapy"
+    ],
+    "forbid_user": [
+      "diagnosed",
+      "committed to"
+    ],
+    "min": 1
+  }
+]

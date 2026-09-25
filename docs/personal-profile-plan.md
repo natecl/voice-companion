@@ -1,6 +1,6 @@
 # Personal companion profile — implementation plan
 
-Status: checkpoint 1 implemented and locally verified; checkpoints 2–3 pending. See [foundation evidence](personal-profile-foundation.md). Founder direction, September 25, 2026. Follow the [engineering principles](engineering-principles.md) and [product source of truth](product-source-of-truth.md). Voice recognition follows this slice.
+Status: checkpoints 1–2 implemented and verified within their bounded scopes; checkpoint 3 pending. See [learning evidence](personal-profile-learning.md). See [foundation evidence](personal-profile-foundation.md). Founder direction, September 25, 2026. Follow the [engineering principles](engineering-principles.md) and [product source of truth](product-source-of-truth.md). Voice recognition follows this slice.
 
 ## Outcome and boundary
 
@@ -55,7 +55,7 @@ No memory suggestions, per-fact approvals or memory-management screen. Personal 
 
 Each checkpoint: verified main → implement → run and inspect actual claimed behavior → focused PR → review → merge after gates pass. Record tested commit, input provenance, expected/observed results, commands, costs and limitations. Diagnose at the failing layer; broaden checks only for changed contracts or unresolved risk. No unrelated cleanup.
 
-The existing $0.28 memory QA allocation is exhausted. Founder approval, September 25, 2026: an additional maximum **$1 total** for this personal-profile slice's provider QA, covering Luna extraction/answers and Jev verification/retrieval across PRs 2–3. This is a ceiling, not a spending target or a separate allowance per checkpoint. Approval ID: `personal-profile-qa-2026-09-25-100`. The approval is recorded here; it has not yet been provisioned in the runtime budget ledger and no calls were made to record it.
+The existing $0.28 memory QA allocation is exhausted. Founder approval, September 25, 2026: an additional maximum **$1 total** for this personal-profile slice's provider QA, covering Luna extraction/answers and Jev verification/retrieval across PRs 2–3. This is a ceiling, not a spending target or a separate allowance per checkpoint. Approval ID: `personal-profile-qa-2026-09-25-100`. The allocation is now provisioned in the canonical hosted ledger. Checkpoint 2 used 30 calls ($0.30 conservatively reserved); $0.70 remains for this slice. See the learning evidence for accounting details.
 
 Planning and local fixture work need no provider spend. Before live QA, define the concrete cases and maximum call counts and provision this allowance idempotently in the existing accounting path. Track all covered calls against the aggregate $1 cap, preserve earlier spending, and stop before exceeding the allowance; any increase requires new approval. Reuse saved responses and make no automatic paid retries or quota resets. Review concrete deployment/migration and rollback before hosted enablement; preserve the spend ledger and existing working path, with a profile feature gate.
 

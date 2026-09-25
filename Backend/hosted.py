@@ -9,6 +9,7 @@ from service_policy import open_ledger
 from ask import AskService, Luna
 from relay import Relay
 from memory_store import MemoryStore
+from profile_budget import ProfileBudget, APPROVAL_ID as PROFILE_APPROVAL_ID, ALLOCATION as PROFILE_ALLOCATION
 from memory_service import MemoryService
 from memory_budget import MemoryBudget, APPROVAL_ID, ALLOCATION
 from memory_models import MemoryModels
@@ -35,9 +36,12 @@ async def main():
             if enabled and not answer_key:
                 raise ValueError('Ask enabled without provider credential')
             ask = AskService(store, Luna(answer_key)) if enabled else None
+            personal_enabled = os.environ.get('VOICE_ENABLE_PERSONAL_LEARNING') == '1'
+            if personal_enabled and os.environ.get('VOICE_ENABLE_MEMORY_LEARNING') != '1':
+                raise ValueError('Personal learning requires memory learning')
             memory = None
             if os.environ.get('VOICE_ENABLE_MEMORY') == '1':
-                memory_store = MemoryStore(directory / 'memory.sqlite')
+                memory_store = MemoryStore(directory / 'memory.sqlite', personal_learning=personal_enabled)
                 memory_store.recover_jobs()
                 memory_store.maintain()
                 memory = MemoryService(store, memory_store)
@@ -54,6 +58,11 @@ async def main():
                 if not (directory / 'memory-budget.sqlite').exists():
                     raise ValueError('Transfer the canonical learning subledger before enablement')
                 budget = MemoryBudget(directory / 'memory-budget.sqlite', receipt)
+                if personal_enabled:
+                    allocation = store.db.execute('SELECT category,reserved FROM request WHERE id=?', (PROFILE_APPROVAL_ID,)).fetchone()
+                    if allocation is None or tuple(allocation) != ('ask', PROFILE_ALLOCATION):
+                        raise ValueError('Profile QA allocation is not reserved')
+                    budget = ProfileBudget(directory / 'memory-budget.sqlite')
                 models = MemoryModels(answer_key, os.environ['TYPESAFE_API_KEY'])
                 if learning_enabled:
                     writer = MemoryWriter(memory_store, models, budget)
