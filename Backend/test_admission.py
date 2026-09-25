@@ -104,6 +104,41 @@ class AdmissionTests(unittest.TestCase):
         self.assertEqual(self.store.authorized(self.token), self.owner)
 
 class RecordingAllowanceTests(unittest.TestCase):
+    def test_named_grant_is_idempotent_expires_and_keeps_budget(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / 'usage.sqlite'
+            now = [10 * 86400]
+            def open_store():
+                return Admission(path, clock=lambda: now[0], total_microusd=80,
+                                 limits={'stt': (80, 20, 1), 'ask': (40, 20, 1)})
+            store = open_store()
+            _, token = store.enroll(lifetime_seconds=3 * 86400)
+            def use(category='stt'):
+                request = store.reserve(token, category)
+                store.finish(request, completed=True)
+            use()
+            with self.assertRaises(ValueError):
+                store.grant_recording_attempt(now[0] + 86400, 'phone-qa')
+            self.assertTrue(store.grant_recording_attempt(now[0], 'phone-qa'))
+            store.close()
+            store = open_store()
+            self.assertFalse(store.grant_recording_attempt(now[0], 'phone-qa'))
+            use()
+            with self.assertRaisesRegex(Rejected, 'daily_limit'):
+                use()
+            use('ask')
+            with self.assertRaisesRegex(Rejected, 'daily_limit'):
+                use('ask')
+            now[0] += 86400
+            use()
+            with self.assertRaisesRegex(Rejected, 'daily_limit'):
+                use()
+            store.grant_recording_attempt(now[0], 'later-approval')
+            with self.assertRaisesRegex(Rejected, 'budget_limit'):
+                use()
+            self.assertEqual(store.usage(), [('ask', 1, 20), ('stt', 3, 60)])
+            store.close()
+
     def test_existing_allowance_migrates_without_adding_an_attempt(self):
         with tempfile.TemporaryDirectory() as d:
             path = Path(d) / 'usage.sqlite'

@@ -44,6 +44,9 @@ class Admission:
                     CHECK(state IN ('active','completed','failed','interrupted')));
             CREATE UNIQUE INDEX IF NOT EXISTS one_active_category
                 ON request(category) WHERE state='active';
+            CREATE TABLE IF NOT EXISTS recording_qa_grant (
+                approval_id TEXT PRIMARY KEY, day_start INTEGER NOT NULL,
+                approved_at REAL NOT NULL);
             CREATE TABLE IF NOT EXISTS recording_qa_day (
                 day_start INTEGER PRIMARY KEY, approved_at REAL NOT NULL);
         ''')
@@ -120,6 +123,22 @@ class Admission:
                     raise ValueError('This day already has its one recording allowance')
                 self.db.execute('INSERT INTO recording_qa_day(day_start,approved_at) VALUES(?,?)', (day_start, now))
 
+    def grant_recording_attempt(self, day_start, approval_id):
+        """One explicitly approved attempt; the approval ID makes retries idempotent."""
+        now = self.clock()
+        if day_start != int(now // 86400) * 86400:
+            raise ValueError('Grant must name the current UTC day')
+        if not isinstance(approval_id, str) or not 1 <= len(approval_id) <= 120:
+            raise ValueError('A bounded approval ID is required')
+        with self.transaction():
+            existing = self.db.execute('SELECT day_start FROM recording_qa_grant WHERE approval_id=?', (approval_id,)).fetchone()
+            if existing:
+                if existing != (day_start,):
+                    raise ValueError('Approval ID belongs to another day')
+                return False
+            self.db.execute('INSERT INTO recording_qa_grant VALUES(?,?,?)', (approval_id, day_start, now))
+            return True
+
     def reserve(self, token, category):
         with self.transaction():
             owner = self.authorized(token)
@@ -136,6 +155,7 @@ class Admission:
                 allowance = self.db.execute('SELECT attempts FROM recording_qa_day WHERE day_start=?', (day_start,)).fetchone()
                 if allowance:
                     daily += allowance[0]
+                daily += self.db.execute('SELECT count(*) FROM recording_qa_grant WHERE day_start=?', (day_start,)).fetchone()[0]
             if self.db.execute('SELECT count(*) FROM request WHERE category=? AND started>=?',
                                (category, day_start)).fetchone()[0] >= daily:
                 raise Rejected('daily_limit')

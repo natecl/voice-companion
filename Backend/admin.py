@@ -41,6 +41,9 @@ def main():
     allowance = commands.add_parser('allow-one-recording', help='Requires explicit founder approval for this UTC day')
     allowance.add_argument('--date', required=True, help='Current UTC date, YYYY-MM-DD')
     allowance.add_argument('--replace-consumed', action='store_true', help='Separately approved replacement for an accidentally consumed extra attempt')
+    grant = commands.add_parser('grant-recording-attempt', help='One separately founder-approved attempt; reuse its approval ID on retry')
+    grant.add_argument('--date', required=True)
+    grant.add_argument('--approval-id', required=True)
     args = parser.parse_args()
     store = open_ledger()
     try:
@@ -49,6 +52,10 @@ def main():
         elif args.command == 'revoke':
             store.revoke(args.credential_id)
             print('Revocation recorded')
+        elif args.command == 'grant-recording-attempt':
+            day = datetime.strptime(args.date, '%Y-%m-%d').replace(tzinfo=timezone.utc)
+            added = store.grant_recording_attempt(int(day.timestamp()), args.approval_id)
+            print('Recording grant added' if added else 'Recording grant already exists')
         elif args.command == 'allow-one-recording':
             day = datetime.strptime(args.date, '%Y-%m-%d').replace(tzinfo=timezone.utc)
             store.allow_one_recording_today(int(day.timestamp()), replace_consumed=args.replace_consumed)
