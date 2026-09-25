@@ -4,6 +4,12 @@ import XCTest
 @MainActor
 final class MemoryUITests: XCTestCase {
     func testSavedTranscriptSynchronizesReopensAndDeletesWithoutMemoryUI() throws {
+        try verifySource(personal: false)
+    }
+    func testPersonalNoteSynchronizesReopensAndDeletes() throws {
+        try verifySource(personal: true)
+    }
+    private func verifySource(personal: Bool) throws {
         continueAfterFailure = false
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
@@ -23,24 +29,42 @@ final class MemoryUITests: XCTestCase {
         }, object: nil)
         XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 5), .completed)
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "--memory-ui-fixture", "--relay-config", config.path]
+        app.launchArguments = ["--ui-testing", "--memory-ui-fixture"]
+        app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = try String(contentsOf: config, encoding: .utf8)
         app.launch()
         defer { app.terminate() }
-        app.buttons["startRecording"].tap()
+        let content = personal ? "My daughter Maya enjoys swimming." : "Synthetic appointment Tuesday at ten. Microphone off."
+        if personal {
+            app.buttons["addPersonalNote"].tap()
+            let editor = app.textViews["personalNoteText"]
+            XCTAssertTrue(editor.waitForExistence(timeout: 3))
+            editor.tap()
+            editor.typeText(content)
+            app.buttons["savePersonalNote"].tap()
+        } else { app.buttons["startRecording"].tap() }
         XCTAssertTrue(app.staticTexts["Saved"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Synthetic appointment Tuesday at ten. Microphone off."].exists)
+        XCTAssertTrue(app.staticTexts[content].exists)
         let report = directory.appendingPathComponent("report.json")
         let synced = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
             guard let data = try? Data(contentsOf: report), let value = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return false }
             return (value["sources"] as? [[String: Any]])?.count == 1 && (value["usage"] as? [Any])?.isEmpty == true
         }, object: nil)
         XCTAssertEqual(XCTWaiter.wait(for: [synced], timeout: 5), .completed)
+        if personal {
+            XCTAssertTrue(app.staticTexts["Saved and synced. Personal learning is not enabled yet."].waitForExistence(timeout: 3))
+            XCTAssertFalse(app.staticTexts["Speaker pending"].exists)
+            let value = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: report)) as? [String: Any])
+            let payload = try XCTUnwrap((value["sources"] as? [[String: Any]])?.first?["payload"] as? String)
+            let source = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(payload.utf8)) as? [String: Any])
+            XCTAssertEqual(source["origin"] as? String, "personal_text")
+            XCTAssertTrue(String(describing: value["diagnostics"]).contains("profile_pending"))
+        }
         app.terminate(); app.launch()
         app.buttons["savedSession"].firstMatch.tap()
-        XCTAssertTrue(app.staticTexts["Synthetic appointment Tuesday at ten. Microphone off."].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts[content].waitForExistence(timeout: 3))
         XCTAssertFalse(app.buttons["Forget"].exists)
         let attachment = XCTAttachment(screenshot: app.screenshot())
-        attachment.name = "Memory foundation — synthetic saved transcript, no memory-management UI"
+        attachment.name = personal ? "Personal note — saved and reopened" : "Memory foundation — synthetic saved transcript"
         attachment.lifetime = .keepAlways
         add(attachment)
         app.buttons["deleteSession"].tap()

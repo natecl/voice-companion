@@ -20,7 +20,7 @@ class MemoryService:
                         data = json.loads(raw)
                     except ValueError:
                         raise Rejected('invalid_memory_request') from None
-                    if not isinstance(data, dict) or data.get('version') != 1 or type(data.get('version')) is not int:
+                    if not isinstance(data, dict) or data.get('version') not in (1, 2) or type(data.get('version')) is not int:
                         raise Rejected('invalid_memory_request')
                     token = socket.request.headers.get('Authorization', '').removeprefix('Bearer ')
                     credential = self.admission.authorized(token)
@@ -30,6 +30,10 @@ class MemoryService:
                         raise Rejected('memory_owner_mismatch')
                     operation = data.get('operation')
                     if operation == 'upsert' and set(data) == {'version', 'owner', 'operation', 'source'}:
+                        if not isinstance(data['source'], dict):
+                            raise Rejected('invalid_memory_request')
+                        if data['version'] == 1 and 'origin' in data['source']:
+                            raise Rejected('invalid_memory_request')
                         # Recheck after async owner lookup, before persistence dispatch.
                         self.admission.authorized(token)
                         result = await asyncio.to_thread(self.store.put_source, owner, data['source'])
@@ -38,7 +42,7 @@ class MemoryService:
                         result = await asyncio.to_thread(self.store.delete_source, owner, data['session_id'])
                     else:
                         raise Rejected('invalid_memory_request')
-                    await socket.send(json.dumps({'type': 'memory_ack', 'version': 1, 'owner': owner, **result}))
+                    await socket.send(json.dumps({'type': 'memory_ack', 'version': data['version'], 'owner': owner, **result}))
         except Exception as error:
             reason = str(error) if isinstance(error, Rejected) else 'memory_unavailable'
             try:

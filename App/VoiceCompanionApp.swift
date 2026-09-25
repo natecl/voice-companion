@@ -8,6 +8,8 @@ struct VoiceCompanionApp: App {
 
 struct SessionsView: View {
     @State private var controller = SessionController.forApp()
+    @State private var writingPersonalNote = false
+    @State private var personalDraft = ""
     @State private var confirmingDeletion = false
     @State private var microphone = MicrophoneAccess()
     @State private var microphoneCheck: String?
@@ -23,7 +25,7 @@ struct SessionsView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     Label("Voice Companion", systemImage: "waveform").font(.title.bold())
-                    Text(isMicrophoneCheck ? "Local microphone diagnostic · no upload" : controller.current == nil ? "Ready to record" : controller.current?.source == "microphone" ? "Microphone session" : "Sample replay · microphone off").foregroundStyle(.secondary)
+                    Text(isMicrophoneCheck ? "Local microphone diagnostic · no upload" : controller.current == nil ? "Ready to record" : controller.current?.source == "personal_text" ? "Personal note" : controller.current?.source == "microphone" ? "Microphone session" : "Sample replay · microphone off").foregroundStyle(.secondary)
                     if ProcessInfo.processInfo.arguments.contains("--request-microphone") {
                         Text(microphone.state == .allowed ? "Microphone permission granted. Recording has not started." :
                              microphone.state == .denied ? "Microphone access is denied. Enable it in System Settings to record." :
@@ -51,6 +53,9 @@ struct SessionsView: View {
                         if let reason = session.endReason, reason != controller.errorMessage { Text(reason).foregroundStyle(.secondary) }
                         Text(controller.liveStatus ?? (controller.isReplaying ? "Replaying sample…" : (session.completed ? "Saved" : "Incomplete · saved")))
                             .accessibilityIdentifier("sessionStatus")
+                        if let status = controller.personalNoteSyncStatus {
+                            Text(status).font(.caption).foregroundStyle(.secondary).accessibilityIdentifier("personalSyncStatus")
+                        }
                         if session.transcript.segments.isEmpty {
                             Text(controller.isActive ? "Waiting for transcript…" : "No transcript was received.")
                         }
@@ -59,9 +64,11 @@ struct SessionsView: View {
                         }
                         ForEach(session.transcript.segments) { segment in
                             VStack(alignment: .leading, spacing: 8) {
-                                Text(String(format: "%.1fs", segment.start)).font(.caption).foregroundStyle(.secondary)
+                                if session.source != "personal_text" {
+                                    Text(String(format: "%.1fs", segment.start)).font(.caption).foregroundStyle(.secondary)
+                                }
                                 if segment.words.isEmpty {
-                                    Text("Speaker pending").font(.caption)
+                                    if session.source != "personal_text" { Text("Speaker pending").font(.caption) }
                                     Text(segment.text)
                                 } else {
                                     // Keep word attribution visible without changing provider output.
@@ -91,13 +98,17 @@ struct SessionsView: View {
                         }
                         Button("Replay sample") { controller.startReplay() }
                             .buttonStyle(.borderedProminent).disabled(controller.isActive).accessibilityIdentifier("replaySample")
+                        if controller.canSavePersonalNote {
+                            Button("Add personal note") { writingPersonalNote = true }
+                                .accessibilityIdentifier("addPersonalNote")
+                        }
                         if controller.sessions.isEmpty { Text("No saved sessions yet.") }
                         ForEach(controller.sessions) { session in
                             Button {
                                 controller.current = session
                             } label: {
                                 VStack(alignment: .leading) {
-                                    Text(session.source == "microphone" ? "Recorded conversation" : "Sample conversation")
+                                    Text(session.source == "personal_text" ? "Personal note" : session.source == "microphone" ? "Recorded conversation" : "Sample conversation")
                                     Text(session.createdAt.formatted()).font(.caption)
                                 }
                             }.accessibilityIdentifier("savedSession")
@@ -116,12 +127,31 @@ struct SessionsView: View {
                 .padding().background(.regularMaterial)
             }
         }
+        .sheet(isPresented: $writingPersonalNote) {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Personal note").font(.title2.bold())
+                Text("Share something about your life. This is saved as a note written by you; people you mention remain separate.")
+                TextEditor(text: $personalDraft).frame(minHeight: 160).accessibilityIdentifier("personalNoteText")
+                if let error = controller.errorMessage { Text(error).foregroundStyle(.red) }
+                HStack {
+                    Button("Cancel") { writingPersonalNote = false }
+                    Spacer()
+                    Button("Save note") {
+                        if controller.savePersonalNote(personalDraft) {
+                            personalDraft = ""
+                            writingPersonalNote = false
+                        }
+                    }.disabled(personalDraft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                        .accessibilityIdentifier("savePersonalNote")
+                }
+            }.padding(24).frame(minWidth: 300)
+        }
         .alert("Delete this session?", isPresented: $confirmingDeletion) {
             Button("Cancel", role: .cancel) {}
             Button("Delete", role: .destructive) { controller.deleteCurrent() }
                 .accessibilityIdentifier("confirmDeleteSession")
         } message: {
-            Text("This permanently deletes the saved transcript and its questions and answers. This cannot be undone.")
+            Text("This permanently deletes the saved note or transcript and its questions and answers. This cannot be undone.")
         }
         .task {
             if ProcessInfo.processInfo.arguments.contains("--relay-check") {
