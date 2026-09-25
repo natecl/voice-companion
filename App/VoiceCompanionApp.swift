@@ -174,6 +174,7 @@ struct SessionsView: View {
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .background { controller.didEnterBackground() }
+            if phase == .active { controller.didBecomeActive() }
         }
     }
 

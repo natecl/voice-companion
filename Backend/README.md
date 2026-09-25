@@ -117,3 +117,10 @@ partial results remain visibly incomplete. No background generation or cross-ses
 ## Explicit QA allowances
 
 Base daily quotas and monetary caps remain enforced. For a separately founder-approved extra recording, run `python Backend/admin.py grant-recording-attempt --date YYYY-MM-DD --approval-id <unique-approval-id>` on the service. Use the current UTC date and reuse the same ID if the command response is uncertain; retries do not add another attempt. Grants expire at midnight UTC and never refund or remove old usage. This is an administrative command, not a public endpoint or permission to grant additional usage without approval. Earlier September 25 one-day/replacement allowance rows remain in the ledger for accounting compatibility. See [V1 runbook](../docs/v1-runbook.md) for the current operational boundaries.
+
+
+## Memory foundation (disabled by default)
+
+The optional `/memory` source-synchronization endpoint and separate `memory.sqlite` are implemented for local checkpoint QA. They require `VOICE_ENABLE_MEMORY=1` on the service and an explicitly provisioned `memoryOwnerID` on the client. Current hosted configuration remains disabled and persists no transcript payloads. See the [operating contract, retention limits and evidence](../docs/memory-foundation.md) before enabling. No extraction worker or past-context Ask is enabled by this foundation.
+
+Internal credential provisioning for this path uses `enroll --memory`; renewal must include `--memory-owner <existing owner>` to preserve ownership. These flags extend the existing command, including its required URL/output path. Do not enable or provision hosted memory until the documented deployment/retention gates are resolved. Provider budgets and the usage ledger are unchanged.

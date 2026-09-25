@@ -5,6 +5,7 @@ struct RelayConfiguration: Codable {
     let url: URL
     let token: String
     let rootCertificate: String?
+    var memoryOwnerID: String? = nil
 
     static func load() throws -> Self {
         #if DEBUG
@@ -48,6 +49,7 @@ struct RelayConfiguration: Codable {
     }
 
     func validateHosted() throws {
+        if let memoryOwnerID, UUID(uuidString: memoryOwnerID) == nil { throw CaptureFailure.noRelay }
         guard url.scheme == "wss", let host = url.host, !host.isEmpty,
               url.path == "/stt", url.user == nil, url.password == nil,
               url.query == nil, url.fragment == nil, rootCertificate == nil,

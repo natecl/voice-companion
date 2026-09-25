@@ -6,6 +6,8 @@ from pathlib import Path
 from service_policy import open_ledger
 from ask import AskService, Luna
 from relay import Relay
+from memory_store import MemoryStore
+from memory_service import MemoryService
 from websockets.asyncio.server import serve
 
 
@@ -26,7 +28,13 @@ async def main():
             if enabled and not answer_key:
                 raise ValueError('Ask enabled without provider credential')
             ask = AskService(store, Luna(answer_key)) if enabled else None
-            relay = Relay(key, admission=store, ask=ask)
+            memory = None
+            if os.environ.get('VOICE_ENABLE_MEMORY') == '1':
+                memory_store = MemoryStore(directory / 'memory.sqlite')
+                memory_store.recover_jobs()
+                memory_store.maintain()
+                memory = MemoryService(store, memory_store)
+            relay = Relay(key, admission=store, ask=ask, memory=memory)
             async with serve(relay.handle, '0.0.0.0', int(os.environ.get('PORT', '10000')),
                              process_request=relay.authorize, max_size=64000, max_queue=8,
                              close_timeout=2, server_header=None):

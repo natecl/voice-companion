@@ -10,6 +10,9 @@ struct CaptureSession: Codable, Identifiable {
     var stopNotice: String? = nil
     var recordingSeconds: Double? = nil
     var answers: [ConversationAnswer]? = nil
+    var memoryOwnerID: String? = nil
+    var memoryTerminal: Bool? = nil
+    var captureTimezone: String? = nil
 }
 
 struct SessionStore {

@@ -23,10 +23,11 @@ MAX_SESSIONS = 1
 SESSION_TIMEOUT = 330  # Connection setup + capture + bounded finalization.
 
 class Relay:
-    def __init__(self, key, token=None, *, admission=None, ask=None):
+    def __init__(self, key, token=None, *, admission=None, ask=None, memory=None):
         self.key, self.token = key, token
         self.admission = admission
         self.ask = ask
+        self.memory = memory
         self.active = False
         self.total_bytes = 0
         self.sessions = 0
@@ -34,7 +35,7 @@ class Relay:
     def authorize(self, connection, request):
         if request.path == '/health':
             return connection.respond(http.HTTPStatus.OK, 'ready\n')
-        if request.path != '/stt' and not (request.path == '/ask' and self.ask is not None):
+        if request.path != '/stt' and not (request.path == '/ask' and self.ask is not None) and not (request.path == '/memory' and self.memory is not None):
             return connection.respond(http.HTTPStatus.NOT_FOUND, 'Not found\n')
         try:
             supplied = request.headers.get('Authorization', '')
@@ -54,6 +55,8 @@ class Relay:
             return connection.respond(http.HTTPStatus.TOO_MANY_REQUESTS, 'Development limit reached\n')
 
     async def handle(self, client):
+        if client.request.path == "/memory" and self.memory is not None:
+            return await self.memory.handle(client)
         if client.request.path == "/ask" and self.ask is not None:
             return await self.ask.handle(client)
         reservation = None

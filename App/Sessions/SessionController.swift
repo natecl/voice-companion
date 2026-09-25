@@ -50,9 +50,11 @@ final class SessionController {
     var errorMessage: String?
     private var task: Task<Void, Never>?
     private let store: SessionStore
+    private let memorySync: MemorySync?
     private let logger = Logger(subsystem: "ai.voicecompanion.app", category: "session")
 
     init(store: SessionStore? = nil,
+         memorySync: MemorySync? = nil,
          allowsBackgroundRecording: Bool = SessionController.platformSupportsBackgroundRecording,
          makeAnswerConnection: @escaping () -> any AnswerConnection = { LunaAnswerConnection() },
          makeConnection: @escaping () -> any RecordingConnection = { LiveTranscriber() },
@@ -64,6 +66,7 @@ final class SessionController {
              }
              _ = try RelayConfiguration.load()
          }) {
+        self.memorySync = memorySync
         self.makeAnswerConnection = makeAnswerConnection
         self.allowsBackgroundRecording = allowsBackgroundRecording
         self.makeConnection = makeConnection
@@ -71,7 +74,17 @@ final class SessionController {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         let folder = ProcessInfo.processInfo.arguments.contains("--ui-testing") ? "VoiceCompanion-QA" : "VoiceCompanion"
         self.store = store ?? SessionStore(directory: base.appendingPathComponent(folder).appendingPathComponent("sessions"))
+        if let memorySync {
+            do { try memorySync.recover(store: self.store) }
+            catch { errorMessage = "Could not recover pending session synchronization." }
+        }
         reload()
+    }
+
+    func didBecomeActive() {
+        guard let memorySync else { return }
+        do { try memorySync.recover(store: store, activeSessionID: isActive ? current?.id : nil) }
+        catch { logger.error("memory_recovery_failed") }
     }
 
     func reload() {
@@ -123,10 +136,15 @@ final class SessionController {
         answerErrorMessage = nil
         liveStatus = "Connecting…"
         task = Task {
+            var recordingSessionID: UUID?
             do {
                 try await prepareRecording()
                 try Task.checkCancellation()
                 current = CaptureSession(id: UUID(), createdAt: Date(), source: "microphone")
+                recordingSessionID = current?.id
+                current?.memoryOwnerID = memorySync?.outbox.owner
+                current?.memoryTerminal = false
+                current?.captureTimezone = TimeZone.current.identifier
                 try persist()
                 let connection = makeConnection()
                 live = connection
@@ -150,16 +168,26 @@ final class SessionController {
                 })
                 let completed = current?.endReason == nil
                 current?.completed = completed
+                current?.memoryTerminal = true
                 try persist()
+                if let current { memorySync?.stage(current) }
                 logger.info("microphone_recording_completed")
             } catch {
-                freezeRecordingTime()
-                current?.completed = false
-                let reason = current?.endReason ?? "Recording ended: \(error.localizedDescription)"
-                current?.endReason = reason
-                errorMessage = reason
-                do { try persist() }
-                catch { errorMessage = "Could not save received text: \(error.localizedDescription)" }
+                if recordingSessionID != nil, current?.id == recordingSessionID {
+                    freezeRecordingTime()
+                    current?.completed = false
+                    let reason = current?.endReason ?? "Recording ended: \(error.localizedDescription)"
+                    current?.endReason = reason
+                    errorMessage = reason
+                    current?.memoryTerminal = true
+                    do {
+                        try persist()
+                        if let current { memorySync?.stage(current) }
+                    }
+                    catch { errorMessage = "Could not save received text: \(error.localizedDescription)" }
+                } else {
+                    errorMessage = "Recording could not start: \(error.localizedDescription)"
+                }
             }
             finalizationTask.end()
             live = nil
@@ -219,7 +247,15 @@ final class SessionController {
     func close() { guard liveStatus == nil, !isAnswering else { return }; if isReplaying { stop() }; current = nil; answerErrorMessage = nil; reload() }
     func deleteCurrent() {
         guard let current, !isActive, !isAnswering else { return }
-        do { try store.delete(current.id); self.current = nil; reload() }
+        do {
+            if let memorySync, current.memoryOwnerID == memorySync.outbox.owner {
+                try memorySync.outbox.delete(current.id)
+            }
+            try store.delete(current.id)
+            self.current = nil
+            reload()
+            memorySync?.kick()
+        }
         catch { errorMessage = "Could not delete session: \(error.localizedDescription)" }
     }
     func ask(_ text: String) {
