@@ -2,6 +2,7 @@
 import argparse
 import json
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 from service_policy import open_ledger
@@ -37,6 +38,8 @@ def main():
     revoke = commands.add_parser('revoke')
     revoke.add_argument('credential_id')
     commands.add_parser('usage')
+    allowance = commands.add_parser('allow-one-recording', help='Requires explicit founder approval for this UTC day')
+    allowance.add_argument('--date', required=True, help='Current UTC date, YYYY-MM-DD')
     args = parser.parse_args()
     store = open_ledger()
     try:
@@ -45,6 +48,10 @@ def main():
         elif args.command == 'revoke':
             store.revoke(args.credential_id)
             print('Revocation recorded')
+        elif args.command == 'allow-one-recording':
+            day = datetime.strptime(args.date, '%Y-%m-%d').replace(tzinfo=timezone.utc)
+            store.allow_one_recording_today(int(day.timestamp()))
+            print('One additional recording attempt authorized for UTC date', args.date)
         else:
             print(json.dumps({'reservations': store.usage()}))
     finally:

@@ -102,6 +102,33 @@ class AdmissionTests(unittest.TestCase):
         self.assertEqual(self.store.usage(), [])
         self.assertEqual(self.store.authorized(self.token), self.owner)
 
+class RecordingAllowanceTests(unittest.TestCase):
+    def test_one_extra_attempt_survives_restart_expires_and_keeps_budget(self):
+        with tempfile.TemporaryDirectory() as d:
+            path=Path(d)/'usage.sqlite';now=[10*86400]
+            def open_store():
+                return Admission(path,clock=lambda:now[0],total_microusd=140,limits={'stt':(140,20,3)})
+            store=open_store();_,token=store.enroll(lifetime_seconds=3*86400)
+            def use():
+                req=store.reserve(token,'stt');store.finish(req,completed=False)
+            for _ in range(3):use()
+            with self.assertRaisesRegex(Rejected,'daily_limit'):use()
+            with self.assertRaises(ValueError):store.allow_one_recording_today(now[0]+86400)
+            store.allow_one_recording_today(now[0])
+            with self.assertRaises(ValueError):store.allow_one_recording_today(now[0])
+            store.close();store=open_store()
+            use()
+            with self.assertRaisesRegex(Rejected,'daily_limit'):use()
+            self.assertEqual(store.usage(),[('stt',4,80)])
+            now[0]+=86400
+            for _ in range(3):use()
+            with self.assertRaisesRegex(Rejected,'daily_limit'):use()
+            store.allow_one_recording_today(now[0])
+            with self.assertRaisesRegex(Rejected,'budget_limit'):use()
+            self.assertEqual(store.db.execute("SELECT daily FROM policy WHERE category='stt'").fetchone()[0],3)
+            self.assertEqual(store.usage(),[('stt',7,140)])
+            store.close()
+
 
 if __name__ == '__main__':
     unittest.main()

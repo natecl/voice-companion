@@ -44,6 +44,8 @@ class Admission:
                     CHECK(state IN ('active','completed','failed','interrupted')));
             CREATE UNIQUE INDEX IF NOT EXISTS one_active_category
                 ON request(category) WHERE state='active';
+            CREATE TABLE IF NOT EXISTS recording_qa_day (
+                day_start INTEGER PRIMARY KEY, approved_at REAL NOT NULL);
         ''')
         try:
             with self.transaction():
@@ -97,6 +99,16 @@ class Admission:
     def revoke(self, identifier):
         self.db.execute('UPDATE credential SET revoked=1 WHERE id=?', (identifier,))
 
+    def allow_one_recording_today(self, day_start):
+        """Administrative founder-approved exception; one extra attempt on this UTC day only."""
+        now = self.clock()
+        if day_start != int(now // 86400) * 86400:
+            raise ValueError('Allowance must name the current UTC day')
+        with self.transaction():
+            if self.db.execute('SELECT 1 FROM recording_qa_day WHERE day_start=?', (day_start,)).fetchone():
+                raise ValueError('This day already has its one recording allowance')
+            self.db.execute('INSERT INTO recording_qa_day VALUES(?,?)', (day_start, now))
+
     def reserve(self, token, category):
         with self.transaction():
             owner = self.authorized(token)
@@ -109,6 +121,9 @@ class Admission:
                 raise Rejected('busy')
             now = self.clock()
             day_start = int(now // 86400) * 86400
+            if category == 'stt' and self.db.execute(
+                    'SELECT 1 FROM recording_qa_day WHERE day_start=?', (day_start,)).fetchone():
+                daily += 1
             if self.db.execute('SELECT count(*) FROM request WHERE category=? AND started>=?',
                                (category, day_start)).fetchone()[0] >= daily:
                 raise Rejected('daily_limit')
