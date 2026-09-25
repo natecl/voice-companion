@@ -1,0 +1,148 @@
+[
+  {
+    "id": "summary",
+    "question": "Summarize what was decided.",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0,
+        "text": "We will run a two-week pilot."
+      },
+      {
+        "id": "p2",
+        "start": 5,
+        "text": "We have not decided whether to buy the annual plan."
+      }
+    ],
+    "review": "Two-week pilot; annual purchase undecided; cite both."
+  },
+  {
+    "id": "perspective",
+    "question": "What is a sensible next step?",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0,
+        "text": "The prototype crashes when the phone locks."
+      },
+      {
+        "id": "p2",
+        "start": 5,
+        "text": "We want to launch tomorrow."
+      }
+    ],
+    "review": "Separate suggestion from facts; suggest addressing crash or bounded trial, cite context."
+  },
+  {
+    "id": "commitment",
+    "question": "Did they agree to fund it?",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0,
+        "text": "We agreed to explore the idea and discuss funding next month."
+      }
+    ],
+    "review": "No funding commitment established; exploration only."
+  },
+  {
+    "id": "mixed",
+    "question": "What did we decide, and what risk should I consider?",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0,
+        "text": "We decided to test the prototype with five volunteers before launch."
+      }
+    ],
+    "review": "Decision five-person test; separate inferred risks from recorded decision."
+  },
+  {
+    "id": "summary-disagreement",
+    "question": "Summarize the discussion neutrally.",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0,
+        "text": "Mina favors a Friday release because it reaches more customers."
+      },
+      {
+        "id": "p2",
+        "start": 5,
+        "text": "Owen objects because the payment flow still fails."
+      },
+      {
+        "id": "p3",
+        "start": 10,
+        "text": "They have not agreed on a release date."
+      }
+    ],
+    "review": "Preserve disagreement, reasons and unresolved date; no invented consensus."
+  },
+  {
+    "id": "summary-actions",
+    "question": "Outline the decisions, open questions, and agreed tasks.",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0,
+        "text": "We decided to invite five volunteers to a pilot."
+      },
+      {
+        "id": "p2",
+        "start": 5,
+        "text": "Ana will send invitations on Tuesday."
+      },
+      {
+        "id": "p3",
+        "start": 10,
+        "text": "We might charge ten dollars later, but pricing is undecided."
+      }
+    ],
+    "review": "Separate decision, explicit task, and unresolved pricing."
+  },
+  {
+    "id": "perspective-reversibility",
+    "question": "Would you prioritize speed or reversibility here?",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0,
+        "text": "The migration will delete the old records immediately."
+      },
+      {
+        "id": "p2",
+        "start": 5,
+        "text": "We have not tested restoring the backup."
+      },
+      {
+        "id": "p3",
+        "start": 10,
+        "text": "The team wants the new dashboard running by tomorrow."
+      }
+    ],
+    "review": "Offer clear recommendation and rationale; distinguish inference from facts; suggest a reversible check without claiming it happened."
+  },
+  {
+    "id": "perspective-risk",
+    "question": "What might we be overlooking?",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0,
+        "text": "All five testers used the same newest iPhone model."
+      },
+      {
+        "id": "p2",
+        "start": 5,
+        "text": "Nobody tested with a slow connection."
+      },
+      {
+        "id": "p3",
+        "start": 10,
+        "text": "The team thinks the app is ready for everyone."
+      }
+    ],
+    "review": "Identify plausible coverage/network risks as inference and useful next step; do not invent observed failures."
+  }
+]
