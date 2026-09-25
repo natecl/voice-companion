@@ -6,8 +6,8 @@ import unittest
 from admission import Admission, Rejected
 from memory_store import MemoryStore
 from memory_budget import MemoryBudget, reserve_global_allocation, ALLOCATION
-from memory_models import MemoryModels, JEV, parse_judgments, judgment_request
-from memory_writer import MemoryWriter, MemoryWorker
+from memory_models import MemoryModels, JEV, parse_judgments, judgment_request, support_request, parse_support
+from memory_writer import MemoryWriter, MemoryWorker, select_claims
 from test_memory import source
 
 
@@ -18,7 +18,7 @@ def memory(text='Maya prefers morning meetings.', name='Maya', **kw):
 def answers(request, overrides=None):
     result = {}
     for k, q in request['questions'].items():
-        value = 'supported' if k.startswith('support') else 'named' if k.startswith('attribution') else 'stated' if k.startswith('modality') else 'none' if k.startswith('expiry') else 'new'
+        value = 'named' if k.startswith('attribution') else 'stated' if k.startswith('modality') else 'none' if k.startswith('expiry') else 'new'
         value = (overrides or {}).get(k,value)
         result[k] = dict(type='choice', choice=value, confidence=.99,
                         probabilities={option:1. if option==value else 0. for option in q['criteria']})
@@ -36,17 +36,22 @@ class LearningTests(unittest.IsolatedAsyncioTestCase):
         self.budget = MemoryBudget(self.directory/'subledger.sqlite',receipt)
         self.store = MemoryStore(self.directory/'memory.sqlite',clock=lambda:150.)
         self.owner = self.store.owner_for('credential')
-        self.extractions = 0; self.judgments = 0
+        self.extractions = 0; self.judgments = 0; self.verifications = 0
+        self.support_overrides = {}
         self.candidates = [memory()]; self.overrides = {}
 
     def writer(self):
         async def extract(request):
             self.extractions += 1
             return {'data':{'memories':self.candidates},'usage':{'input_tokens':100,'output_tokens':100}}
+        async def verify(request):
+            self.verifications += 1
+            data={str(i):self.support_overrides.get(i,'supported') for i in range(len(self.candidates))}
+            return {'data':data,'usage':{}}
         async def judge(request):
             self.judgments += 1
             return {'data':answers(request,self.overrides),'usage':{'input_tokens':100,'output_tokens':0}}
-        return MemoryWriter(self.store,MemoryModels('unused','unused',luna_call=extract,jev_call=judge),self.budget)
+        return MemoryWriter(self.store,MemoryModels('unused','unused',luna_call=extract,jev_call=judge,support_call=verify),self.budget)
 
     async def test_automatic_write_duplicate_correction_and_cached_outputs(self):
         self.store.put_source(self.owner,source(text='Maya prefers morning meetings.'))
@@ -73,7 +78,8 @@ class LearningTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_support_and_unknown_identity_are_not_user_facts(self):
         self.candidates = [memory('The user is a surgeon.',name='user'),memory('An unidentified speaker prefers mornings.',name=None)]
-        self.overrides = {'support_0':'unsupported','attribution_1':'unknown'}
+        self.support_overrides = {0:'unsupported'}
+        self.overrides = {'attribution_1':'unknown'}
         self.store.put_source(self.owner,source(text='Imagine I am a surgeon. I prefer mornings.'))
         result = await self.writer().process_next(self.owner)
         self.assertEqual(result['accepted'],1)
@@ -191,8 +197,14 @@ class LearningTests(unittest.IsolatedAsyncioTestCase):
         now=[datetime.fromisoformat('2026-09-25T12:00:00+00:00').timestamp()]
         self.store.clock=lambda:now[0]
         async def extract(request):return cached[json.loads(request['input'])['session_id']]['extract']
-        async def judge(request):return cached[request['state']['source']['session_id']]['judge']
-        writer=MemoryWriter(self.store,MemoryModels('','',luna_call=extract,jev_call=judge),self.budget)
+        async def verify(request):
+            # Lifecycle-only replay: support is a test double, not a Luna quality claim.
+            candidates=json.loads(request['input'])['candidates']
+            return {'data':{str(i):'supported' for i in range(len(candidates))},'usage':{}}
+        async def judge(request):
+            old=cached[request['state']['source']['session_id']]['judge']
+            return {**old,'data':{**old['data'],'answers':{k:v for k,v in old['data']['answers'].items() if k in request['questions']}}}
+        writer=MemoryWriter(self.store,MemoryModels('','',luna_call=extract,jev_call=judge,support_call=verify),self.budget)
         for c in cases:
             now[0]+=60
             data=source(c['id'],text=c['text']);data['captured_at']=now[0]
@@ -215,6 +227,73 @@ class LearningTests(unittest.IsolatedAsyncioTestCase):
         self.assertIsNone(reopened.claim_job(self.owner))
         self.assertEqual(len(reopened.search(self.owner)),2)
 
+    async def test_unsupported_or_uncertain_skips_jev_and_writes_nothing(self):
+        for i,verdict in enumerate(('unsupported','uncertain')):
+            self.support_overrides={0:verdict}
+            self.store.put_source(self.owner,source(str(i)))
+            result=await self.writer().process_next(self.owner)
+            self.assertEqual(result['accepted'],0)
+        self.assertEqual(self.verifications,2)
+        self.assertEqual(self.judgments,0)
+        self.assertEqual(self.store.search(self.owner),[])
+
+    async def test_support_failure_is_not_retried(self):
+        async def fail(request):raise Rejected('invalid_support')
+        self.store.put_source(self.owner,source())
+        writer=self.writer();writer.models.support_call=fail
+        with self.assertRaisesRegex(Rejected,'invalid_support'):await writer.process_next(self.owner)
+        self.assertIsNone(await writer.process_next(self.owner))
+        self.assertEqual(self.judgments,0)
+        self.assertEqual(self.store.search(self.owner),[])
+
+    def test_support_contract_and_other_gates(self):
+        c=memory();src=source(text=c['text']);req=judgment_request(src,[c],[[]])
+        self.assertFalse(any(k.startswith('support_') for k in req['questions']))
+        for bad in ({}, {'0':'yes'}, {'0':'supported','1':'supported'}, {'0':[]}):
+            with self.assertRaises(Rejected):parse_support(bad,[c])
+        judged=answers(req)['answers']
+        self.assertEqual(len(select_claims(src,[c],judged,[[]],['supported'])[0]),1)
+        judged['modality_0']=answers(req,{'modality_0':'discard'})['answers']['modality_0']
+        self.assertEqual(select_claims(src,[c],judged,[[]],['supported'])[0],[])
+
+    async def test_real_correction_verdicts_supersede_old_claim(self):
+        root=Path(__file__).resolve().parents[1]
+        record=json.loads((root/'Fixtures/memory-support-provider-responses.json').read_text())[0]
+        state=json.loads(record['request']['input'])
+        fresh=json.loads((root/'Fixtures/memory-correction-v6-judgments.json').read_text())
+        self.candidates=[memory('The speaker stated that Project Maple prefers morning meetings.',name='Project Maple')]
+        self.store.put_source(self.owner,source(text='For Project Maple, we prefer morning meetings.'))
+        await self.writer().process_next(self.owner)
+        self.store.clock=lambda:state['source']['captured_at']+1
+        self.store.put_source(self.owner,state['source'])
+        async def extract(request):return {'data':{'memories':state['candidates']},'usage':{}}
+        async def verify(request):
+            self.assertEqual(request,record['request'])
+            return record['response']
+        async def judge(request):
+            # Same source/candidates and relation options; local target IDs differ from hosted IDs.
+            self.assertEqual(request['questions'],fresh['request']['questions'])
+            self.assertEqual(request['state']['source'],fresh['request']['state']['source'])
+            return fresh['response']
+        writer=MemoryWriter(self.store,MemoryModels('','',luna_call=extract,jev_call=judge,support_call=verify),self.budget)
+        result=await writer.process_next(self.owner)
+        self.assertEqual(result['accepted'],1)
+        self.assertEqual(result['decisions'][0]['reason'],'supersedes')
+        current=self.store.search(self.owner)
+        self.assertEqual(len(current),1)
+        self.assertIn('afternoon',current[0]['text'])
+        self.assertEqual({c['state'] for c in self.store.search(self.owner,historical=True)},{'active','superseded'})
+
+    def test_replay_live_support_verdicts_preserves_acceptance_and_rejections(self):
+        root=Path(__file__).resolve().parents[1]
+        records=json.loads((root/'Fixtures/memory-support-provider-responses.json').read_text())
+        for record in records:
+            state=json.loads(record['request']['input'])
+            self.assertEqual(support_request(state['source'],state['candidates']),record['request'])
+            verdicts=parse_support(record['response']['data'],state['candidates'])
+            # Preserve original label expectations; uncertain and unsupported both prohibit writes.
+            self.assertEqual([v=='supported' for v in verdicts],[v=='supported' for v in record['expected']])
+
     def test_budget_is_idempotent_bounded_and_preserves_global_history(self):
         receipt=reserve_global_allocation(self.directory/'usage.sqlite')
         self.assertEqual(receipt['global_reserved_microusd'],ALLOCATION)
@@ -225,7 +304,7 @@ class LearningTests(unittest.IsolatedAsyncioTestCase):
 
     def test_invalid_probabilities_are_rejected(self):
         req=judgment_request(source(),[memory()],[[]]);response=answers(req)
-        response['answers']['support_0']['probabilities']['supported']=float('nan')
+        response['answers']['attribution_0']['probabilities']['named']=float('nan')
         with self.assertRaises(Rejected):parse_judgments(response,req)
 
 

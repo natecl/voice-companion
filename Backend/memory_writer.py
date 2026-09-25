@@ -5,7 +5,8 @@ import hashlib
 import json
 from admission import Rejected
 from memory_models import (RUBRIC, extraction_request, judgment_request,
-                           parse_candidates, parse_judgments, metered, expiry_options)
+                           parse_candidates, parse_judgments, metered, expiry_options,
+                           support_request, parse_support)
 
 
 def accepted(answer, label):
@@ -31,13 +32,14 @@ def expiry(candidate, source):
     except ValueError: raise Rejected('unsupported_expiry') from None
 
 
-def select_claims(source, candidates, judgments, related):
+def select_claims(source, candidates, judgments, related, support):
     claims, decisions = [], []
     for i, c in enumerate(candidates):
         decision = {'candidate':i,'result':'discarded'}
         decisions.append(decision)
-        if not accepted(judgments[f'support_{i}'], 'supported'):
+        if support[i] != 'supported':
             decision['reason'] = 'source_support'; continue
+        decision['support_method'] = 'luna'
         mode = judgments[f'modality_{i}']
         if mode['choice'] not in ('stated','tentative') or not accepted(mode, mode['choice']):
             decision['reason'] = 'modality'; continue
@@ -99,6 +101,12 @@ class MemoryWriter:
                 if not candidates:
                     await asyncio.to_thread(self.store.commit_claims, job, [])
                     return {'job':job['id'], 'accepted':0, 'reason':'no_candidates'}
+                request = support_request(source, candidates)
+                verified = await metered(self.store, self.budget, job, 'support', request, self.models.verify_support)
+                support = parse_support(verified['data'], candidates)
+                if 'supported' not in support:
+                    await asyncio.to_thread(self.store.commit_claims, job, [])
+                    return {'job':job['id'], 'accepted':0, 'reason':'source_support'}
                 related = []
                 for c in candidates:
                     pool = await asyncio.to_thread(self.store.search, owner, (c['subject_name'] or c['text'])[:1000], limit=50)
@@ -107,7 +115,7 @@ class MemoryWriter:
                 request = judgment_request(source, candidates, related)
                 judged = await metered(self.store, self.budget, job, 'judge', request, self.models.judge)
                 judgments = parse_judgments(judged['data'], request)
-                claims, decisions = select_claims(source, candidates, judgments, related)
+                claims, decisions = select_claims(source, candidates, judgments, related, support)
                 await asyncio.to_thread(self.store.commit_claims, job, claims)
                 await asyncio.to_thread(self.store.maintain)
                 return {'job':job['id'], 'accepted':len(claims), 'decisions':decisions}

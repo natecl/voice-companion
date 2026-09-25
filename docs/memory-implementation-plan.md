@@ -6,7 +6,7 @@ Status: checkpoints 1–2 implemented and locally verified; checkpoint 3 is loca
 
 A conversation automatically informs useful answers in later conversations. The companion learns from completed listening sessions, handles corrections and temporary context in the background, and uses Jev to judge retrieved candidates before Luna answers. No memory suggestions, approval inbox, Forget button, or memory-management screen. Internal lifecycle operations remain observable to engineers. Source references in answers remain available; they are not a memory-management UI.
 
-Build our own harness. Supermemory is inspiration only. Jev judges source support, attribution, modality, memory relationships and retrieval relevance; Luna extracts candidates and answers; code controls ownership, persistence, time and lifecycle transitions. This does not reopen the failed V1 Jev intent-routing experiment.
+Build our own harness. Supermemory is inspiration only. Luna extracts candidates, verifies source support in a separate bounded call, and answers; Jev judges attribution, modality, memory relationships and retrieval relevance; code controls ownership, persistence, time and lifecycle transitions. This does not reopen the failed V1 Jev intent-routing experiment.
 
 The first slice includes session-end learning, relevant cross-session answers during/after recording, automatic maintenance and source-linked answers on iPhone. Preserve shared Mac contracts and existing recording/current-session Ask behavior. Defer live incremental learning, public account enrollment, full cross-device session sync, old-library bulk import, voice identity recognition, proactive participation and a new UI design. Do not automatically ingest old private sessions during migration. No automatic deletion of source transcripts based on age or retrieval frequency.
 
@@ -62,7 +62,7 @@ Existing Delete session remains intact and gains cloud propagation; this is not 
 **Deliver:** finalized sessions create and maintain supported memories without user action.
 
 - Consume durable jobs; Luna extracts bounded candidate claims with existing source IDs. Exclude assistant answers from evidence of user facts or commitments. Empty/filler sessions complete with no memories.
-- Find a small set of related existing records. Batch Jev questions for support, subject, modality, duplicate/update/conflict and temporary status. Pin model/rubric versions and give unknown/uncertain outcomes.
+- Find a small set of related existing records. Verify source support with a separate batched Luna call, then batch Jev questions for subject, modality, duplicate/update/conflict and temporary status. Pin model/rubric versions and give unknown/uncertain outcomes.
 - Validate schemas and source existence in code, commit supported transitions, update compact profile and indexes. Profile only contains supported, attributed, broadly useful current information within a fixed budget.
 - Apply the lifecycle contract automatically. No user-facing forgetting workflow. Ambiguous claims remain evidence and do not contaminate the user's profile.
 - Record per-job state, input revision, usage and error reason without routinely logging transcript text. Bound concurrency and paid admission separately from Ask/STT. Check source validity again before commit.
@@ -70,7 +70,7 @@ Existing Delete session remains intact and gains cloud propagation; this is not 
 
 **Acceptance evidence:** local cached-response replay first, then a bounded real Luna/Jev run through the writer using synthetic saved transcripts. Inspect actual persisted claims/source links and updates. Include an unknown-speaker example, hypothetical/quoted speech, changed appointment, distinct similar names, duplicate input, incomplete recording, missing fields and provider failure. Restart/reprocess must not duplicate or restore invalidated claims. Simulated time verifies automatic expiration without waiting in real time.
 
-Compare extraction alone versus extraction with Jev on a small held-out set to establish which errors Jev fixes or introduces. No broad model competition. A failed critical gate blocks enablement; document and fix it rather than silently removing the agreed Jev role.
+Compare extraction alone versus extraction with Jev on a small held-out set to establish which errors Jev fixes or introduces. No broad model competition. A failed critical gate blocks enablement; document and fix it. Founder revision: remove Jev from a role that fails rather than preserving it through workarounds; source support moved to Luna during PR 3.
 
 ## PR 3 — Jev-assisted recall and complete iPhone acceptance
 

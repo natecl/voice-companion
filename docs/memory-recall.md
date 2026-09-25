@@ -60,3 +60,9 @@ An authenticated empty-source upsert over the hosted WebSocket was acknowledged;
 The signed `890798f` app was built and installed on the connected physical iPhone 16 Pro. A seven-day memory-enabled internal credential was securely imported into device-only Keychain; transfer-file disappearance confirms the import path completed. Temporary local/server credential exports were deleted. Stable owner/credential identifiers are retained in ignored operational metadata for renewal. The app was launched with `--relay-check`, which does not record or call a provider. No old untracked sessions were imported.
 
 Evidence: ignored `work/memory-rollout-*.log`, deploy JSON, and enrollment metadata. The installed app and server are prepared. Still wait for explicit founder readiness before the short microphone learn → recall → correct → recall-correction sequence. PR #28 remains draft/unmerged until that acceptance passes.
+
+## Physical phone progress and correction defect
+
+The founder recorded the Project Maple morning preference (A), then a separate neutral schedule session (B). Ask in B returned “Project Maple prefers morning meetings. [[m1]]”; the saved native answer contains `memoryStatus=available` and an m1 source pointing to A's exact passage. This proves initial cross-session recall on the phone.
+
+The founder then recorded correction C: afternoon meetings instead of mornings. Its transcript synchronized and Luna extraction was correct, but Jev source support rejected it. PR #28 remains draft: do not mark correction acceptance complete or ask for more audio. See the [source-support replacement and preserved failure evidence](memory-learning.md#source-support-replacement-during-checkpoint-3). Next deploy the verified replacement, recover C through guarded cached-stage review, and after founder readiness ask the same question in B; verify the afternoon answer and source C.

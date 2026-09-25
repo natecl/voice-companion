@@ -206,6 +206,26 @@ class MemoryStore:
             db.execute("UPDATE job SET state='running',lease=? WHERE id=?", (lease, row['id']))
             return dict(row) | {'lease': lease}
 
+    def review_empty_job(self, owner, original_id, review_version):
+        """Operator-only recovery after a diagnosed false rejection; never scheduled automatically."""
+        identifier(review_version)
+        with self.transaction() as db:
+            old = db.execute("SELECT * FROM job WHERE id=? AND owner=? AND state='done'", (original_id, owner)).fetchone()
+            if not old: raise Rejected('review_not_eligible')
+            live = db.execute('SELECT * FROM source WHERE owner=? AND session=?', (owner, old['session'])).fetchone()
+            if not live or live['deleted'] or live['revision'] != old['revision']:
+                raise Rejected('review_not_eligible')
+            if db.execute('SELECT 1 FROM support WHERE owner=? AND session=? AND revision=?',
+                          (owner, old['session'], old['revision'])).fetchone():
+                raise Rejected('review_not_empty')
+            if db.execute('SELECT 1 FROM job WHERE owner=? AND session=? AND revision=? AND extractor=?',
+                          (owner, old['session'], old['revision'], review_version)).fetchone():
+                raise Rejected('review_already_attempted')
+            job = dict(id=str(uuid.uuid4()), owner=owner, session=old['session'], revision=old['revision'],
+                       extractor=review_version, state='running', lease=str(uuid.uuid4()), error=None)
+            db.execute('INSERT INTO job(id,owner,session,revision,extractor,state,lease,error) VALUES(:id,:owner,:session,:revision,:extractor,:state,:lease,:error)',job)
+            return job
+
     def recover_jobs(self):
         # A model call may already have incurred spend. Never automatically replay it.
         with self.transaction() as db:

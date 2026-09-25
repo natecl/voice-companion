@@ -149,3 +149,7 @@ Founder instruction: keep code, architecture, tooling, and documentation simple 
 Avoid duplicated logic, dead code, speculative configuration, and unnecessary dependencies. Clean up artifacts introduced by the current change; do not mix unrelated refactors into a focused slice. Keep errors and state transitions explicit rather than hiding complexity behind clever code. Simplicity must preserve correctness, observability, and necessary failure handling.
 
 Review each checkpoint for readability and maintainability as well as behavior. The next engineer or agent should be able to understand what the code does, why it exists, and how to verify it without reconstructing the conversation.
+
+## Providers must earn their role
+
+Founder clarification, September 25, 2026: remove a model from a role when evidence shows it is not working as intended. Jev is an implementation choice, not a requirement to preserve at the expense of product behavior. Diagnose the affected role, verify the replacement against supported and unsupported cases, preserve failed evidence, and keep useful independent roles only while their evidence supports them. Do not accumulate prompt workarounds or weaken acceptance rules merely to retain a preferred provider.

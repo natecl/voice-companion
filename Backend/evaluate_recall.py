@@ -37,8 +37,14 @@ async def main():
         owner = store.owner_for('synthetic-recall')
         cached = {c['session']:c['responses'] for c in json.loads((ROOT/'Fixtures/memory-provider-responses.json').read_text())}
         async def extract(request): return cached[json.loads(request['input'])['session_id']]['extract']
-        async def judge(request): return cached[request['state']['source']['session_id']]['judge']
-        writer = MemoryWriter(store, MemoryModels('', '', luna_call=extract, jev_call=judge), FixtureBudget())
+        async def verify(request):
+            # Storage setup only: deterministic support double, not a provider quality claim.
+            candidates=json.loads(request['input'])['candidates']
+            return {'data':{str(i):'supported' for i in range(len(candidates))},'usage':{}}
+        async def judge(request):
+            old=cached[request['state']['source']['session_id']]['judge']
+            return {**old,'data':{**old['data'],'answers':{k:v for k,v in old['data']['answers'].items() if k in request['questions']}}}
+        writer = MemoryWriter(store, MemoryModels('', '', luna_call=extract, jev_call=judge, support_call=verify), FixtureBudget())
         for c in json.loads((ROOT/'Fixtures/memory-learning-cases.json').read_text()):
             if c['suite'] != 'heldout-v3': continue
             now += 60
