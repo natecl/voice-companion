@@ -1,0 +1,12 @@
+[
+  {
+    "id": "dev-07",
+    "question": "What would you recommend?",
+    "expected": "perspective"
+  },
+  {
+    "id": "dev-08",
+    "question": "What risks should I consider?",
+    "expected": "perspective"
+  }
+]

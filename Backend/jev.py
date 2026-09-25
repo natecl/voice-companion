@@ -7,7 +7,7 @@ from pathlib import Path
 import time
 
 MODEL = 'jev-1.13.0'
-VERSION = 'question-intent-v1'
+VERSION = 'question-intent-v2'
 WAIT_SECONDS = .750
 MIN_CONFIDENCE = .70
 MIN_PROBABILITY = .80

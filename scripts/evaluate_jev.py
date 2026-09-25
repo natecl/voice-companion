@@ -40,7 +40,8 @@ async def main():
                     except Exception as error:
                         # Do not emit exception strings that can include request credentials.
                         result=Judgment(reason=type(error).__name__)
-                    record={**case,**asdict(result),'seconds':time.monotonic()-started,'correct':result.route==case['expected']}
+                    correct = result.route == case['expected'] and result.reason in ('classified','mixed_uncertain','uncertain')
+                    record={**case,**asdict(result),'seconds':time.monotonic()-started,'correct':correct}
                     output.write(json.dumps(record)+'\n');output.flush();os.fsync(output.fileno())
                     print(json.dumps(record),flush=True)
                     if result.reason not in ('classified','mixed_uncertain','uncertain','timeout'):
