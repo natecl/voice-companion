@@ -82,3 +82,11 @@ Founder-directed restoration is live on backend commit `92ef78b`, Render deploy 
 Before deployment, active requests were zero. Original base allocation remains $0.25 and the separately approved Jev-only grant is $0.03; memory reservations total $0.275, with one Jev call remaining. Global reservations are $0.648 within $5. A new learning session still needs a separately approved Luna allocation because the base allowance is exhausted; do not use the Jev-only grant for extraction. No new recording is needed for the pending corrected-recall question.
 
 69 backend tests passed. Model-quality evidence is 18/19 expected decisions, zero false acceptances and one conservative false rejection of a valid anonymized summary from a named-guest transcript. This remains disclosed, not silently turned into a passing quality result. See the [restoration evidence](memory-learning.md#independent-jev-verification-restored--founder-revision). PR #28 remains draft for final phone correction/source reopening and review of this retention limitation. Server synthetic probe scratch files were removed after preserving the evidence in fixtures.
+
+## Final Ask quota unblock
+
+The founder-ready final phone Ask encountered the separate daily limit: 20/20 Ask requests used on September 25 UTC. The latest accepted Ask remained at 20:55:35 UTC; the blocked attempt created no reservation and no provider call. The founder explicitly approved one extra Ask ($0.003 reservation when used), with the one previously approved Jev retrieval call unchanged.
+
+Commit `85b7251` deployed as `dep-darejnojo6nc73flht30`, live 2026-09-25 21:39:22 UTC. It adds an administrative `grant-ask-attempt` and date-scoped idempotent grant table, preserving base policies and all historical charges. Eighteen admission/Ask tests passed (`work/ask-grant-tests.log`), including restart, expiry, duplicate approval IDs, category separation and monetary limits.
+
+Grant `memory-corrected-recall-ask-20260925-one` was added on the verified deployed commit: 20 used / 21 allowed, one remaining. Before/after usage was identical; applying the grant made zero provider calls. It expires at midnight UTC and does not add a recording allowance. Evidence: `work/ask-grant-verified.json`. Retry only the pending question in neutral session B; corrected answer/source reopening still needs actual phone acceptance.
