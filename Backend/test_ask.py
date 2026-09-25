@@ -99,3 +99,20 @@ class AskTests(unittest.IsolatedAsyncioTestCase):
             store=Admission(path,total_microusd=5_000_000,limits={'stt':STT,'ask':ASK})
             self.assertEqual(store.usage(),[('stt',1,20000)])
             store.authorized(token); store.close()
+
+class RetiredAccountingTests(unittest.TestCase):
+    def test_direct_baseline_preserves_retired_experiment_charges(self):
+        import os
+        from unittest.mock import patch
+        from service_policy import open_ledger, RETIRED_JEV
+        with tempfile.TemporaryDirectory() as d:
+            path=Path(d)/'usage.sqlite'
+            store=Admission(path,total_microusd=5_000_000,limits={'stt':STT,'ask':ASK,'jev':RETIRED_JEV})
+            _,token=store.enroll();request=store.reserve(token,'jev');store.finish(request,completed=False);store.close()
+            with patch.dict(os.environ,{'VOICE_DATA_DIR':d,'VOICE_ENABLE_ASK':'1'}):
+                store=open_ledger(migrate=True)
+                self.assertEqual(store.usage(),[('jev',1,500)])
+                store.authorized(token)
+                request=store.reserve(token,'ask');store.finish(request,completed=True)
+                self.assertEqual(store.usage(),[('ask',1,3000),('jev',1,500)])
+                store.close()

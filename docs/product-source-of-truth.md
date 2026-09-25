@@ -49,3 +49,7 @@ Build Proven, then Better, then New. The [V0 scope](v0-scope.md) defines the fir
 ## V0 acceptance clarification
 
 Founder decision, September 24, 2026: speaker diarization is best-effort for the internal voice-in/transcript-out slice and is not a strict completion gate. Text must display without waiting for speaker identity. This does not change Granola as the Proven or the one-liner. Attribution-dependent memories and proactive companion participation require separate validation later; V0 does not establish who the user is from anonymous speaker labels.
+
+## V1 implementation refinement — September 25, 2026
+
+Founder decision: use direct Luna for V1 questions and proceed to Ask while listening. Defer Jev intent routing after its quality evaluation; it is an optional future implementation tool, not a product requirement or V1 gate. The one-liner and PBN remain unchanged. See [decision](v1-jev-decision.md).

@@ -1,0 +1,29 @@
+# Jev question routing — quality gate failed; routing disabled
+
+Checkpoint 4, branch v1/jev-question-routing, from verified main af000b3. Production routing remains disabled until acceptance passes. One question-only Choice judgment selects recall, summary, perspective or mixed/uncertain; the last uses the direct policy. No transcript, past context or memory is sent to Jev. Luna retains all grounding rules and generates the sole answer.
+
+Pinned jev-1.13.0, question-intent-v2; confidence >=0.70 and winning probability >=0.80, valid distribution/model/usage required. Maximum routing wait 750ms, no HTTP retries or redirects. Cancellation propagates. Malformed, unavailable, uncertain or budget-denied routing falls back to direct answering. Settings frozen before development calls; separate held-out fixtures will freeze after development and before their run.
+
+Official docs rechecked September 25: [API](https://docs.typesafe.ai/api), [models/pricing](https://docs.typesafe.ai/models), [data terms](https://typesafe.ai/legal/data-processing). Input $0.042/M, output free; no default fixed retention duration established, enterprise ZDR not assumed. Read-only model listing authenticated successfully. No customer transcript is needed for this classification.
+
+Accounting: additive Jev policy $0.50 lifetime, $0.0005 per request (8,000-byte input ceiling plus framing), 64 daily ordinary requests. Existing $5 global and STT/Ask policies remain unchanged. Administrative frozen evaluations may reserve up to 48 Jev or 16 Luna calls in one batch, charge all attempts upfront, and block overlapping calls in that category. Ordinary public admission never uses this batch override. The batch reservation counts as one ledger row, not one actual provider call; fixture evidence records actual counts. Output files are exclusive and persisted to prevent accidental named reruns. No refunds for unused/failed attempts.
+
+Initial local verification: 28 backend tests passed, including socket-level routing/fallback with exactly one answer. No native change or new transcription required. Development set: 12 questions. Held-out gate remains >=22/24 acceptable routes, no harmful route mistakes; eight paired direct/routed answer cases must show >=2 useful improvements without grounding regressions and <=500ms median added first-answer latency. Preserve failed gates and ask the founder for scope resolution rather than silently enabling.
+
+Development v1 at c2c30be: 10/12 expected routes, two safe uncertain fallbacks on brief perspective questions. 0.093–0.383s observed routing latency. The question-only rubric is clarified in v2; thresholds stay fixed. Recheck those two development cases before the frozen 24-case held-out run. Timeout is never counted as a correct judgment even for an expected direct route.
+
+## Observed gates and pause
+
+Backend `d5f254e` is deployed for evaluation with `VOICE_ENABLE_JEV=0`; the app retains direct Luna answering. Additive migration preserved existing budgets, requests and credentials exactly; backup integrity passed. Local backend suite: 28 tests passed. Focused checks after rubric clarification: 12 tests passed. No native code changed.
+
+Development v2 fixed both uncertain perspective cases without lowering thresholds. Frozen held-out: 24/24 acceptable routes, no harmful routing mistakes, median 143ms and max 337ms. See [routing evidence](v1-jev-routing-evidence.md).
+
+Eight paired direct/routed Luna cases: two useful perspective improvements, median added first text 168ms, **one grounding regression**. The routed coverage-risk answer asserted that varied operating systems were untested; the source did not establish OS-version coverage. Direct phrased potential gaps conditionally. This fails the no-grounding-regression gate even though routing/latency passed. See [all compared answers and review](v1-jev-answer-evidence.md). Do not merge or enable as a verified checkpoint.
+
+46 Jev calls and 16 Luna calls this checkpoint, no retries. Estimated total $0.002743714; permanently reserved $0.071. Estimates are not invoices. No new transcription and no phone QA were needed for the evaluation. Temporary evaluation credentials were revoked by the runners.
+
+Founder decision needed: recommended next step is a narrow perspective-policy correction that requires conditional wording for inferred gaps, followed by targeted functional regression checks. Keep existing failed evidence and thresholds. Do not silently tune away this failed held-out quality result or turn on routing before the scope decision.
+
+## Founder resolution
+
+September 25: defer Jev from V1, preserve the failed evaluation, close PR #20 without merging, and proceed to direct-Luna Ask while listening. See [decision](v1-jev-decision.md). The proposed targeted retest above is superseded; no further Jev calls are authorized as part of this checkpoint.
