@@ -38,9 +38,10 @@ async def main():
         cached = {c['session']:c['responses'] for c in json.loads((ROOT/'Fixtures/memory-provider-responses.json').read_text())}
         async def extract(request): return cached[json.loads(request['input'])['session_id']]['extract']
         async def verify(request):
-            # Storage setup only: deterministic support double, not a provider quality claim.
-            candidates=json.loads(request['input'])['candidates']
-            return {'data':{str(i):'supported' for i in range(len(candidates))},'usage':{}}
+            # Storage setup only; explicit test double, no quality or live-provider claim.
+            answers={key:dict(type='choice',choice='supported',confidence=1.,
+                     probabilities={'supported':1.,'unsupported':0.,'uncertain':0.}) for key in request['questions']}
+            return {'data':{'model':request['model'],'answers':answers},'usage':{}}
         async def judge(request):
             old=cached[request['state']['source']['session_id']]['judge']
             return {**old,'data':{**old['data'],'answers':{k:v for k,v in old['data']['answers'].items() if k in request['questions']}}}

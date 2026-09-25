@@ -153,3 +153,5 @@ Review each checkpoint for readability and maintainability as well as behavior. 
 ## Providers must earn their role
 
 Founder clarification, September 25, 2026: remove a model from a role when evidence shows it is not working as intended. Jev is an implementation choice, not a requirement to preserve at the expense of product behavior. Diagnose the affected role, verify the replacement against supported and unsupported cases, preserve failed evidence, and keep useful independent roles only while their evidence supports them. Do not accumulate prompt workarounds or weaken acceptance rules merely to retain a preferred provider.
+
+Founder refinement: prefer Luna for extraction and Jev for independent verification. A false rejection under an application threshold does not by itself prove the model is unsuitable. Diagnose the question, supplied context, and gating separately; test supported and unsupported cases without tuning solely to one success. The temporary Luna-verifies-Luna approach is superseded by this explicit preference. Keep failed evidence and do not deploy a candidate fix with known false acceptances.

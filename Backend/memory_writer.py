@@ -39,7 +39,7 @@ def select_claims(source, candidates, judgments, related, support):
         decisions.append(decision)
         if support[i] != 'supported':
             decision['reason'] = 'source_support'; continue
-        decision['support_method'] = 'luna'
+        decision['support_method'] = 'jev'
         mode = judgments[f'modality_{i}']
         if mode['choice'] not in ('stated','tentative') or not accepted(mode, mode['choice']):
             decision['reason'] = 'modality'; continue
@@ -103,7 +103,7 @@ class MemoryWriter:
                     return {'job':job['id'], 'accepted':0, 'reason':'no_candidates'}
                 request = support_request(source, candidates)
                 verified = await metered(self.store, self.budget, job, 'support', request, self.models.verify_support)
-                support = parse_support(verified['data'], candidates)
+                support = parse_support(verified['data'], request)
                 if 'supported' not in support:
                     await asyncio.to_thread(self.store.commit_claims, job, [])
                     return {'job':job['id'], 'accepted':0, 'reason':'source_support'}
