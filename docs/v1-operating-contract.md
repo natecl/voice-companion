@@ -70,4 +70,4 @@ These are internal acceptance targets, not measured results or public latency cl
 
 ## Immediate next action
 
-Checkpoint 1 is verified; merge the reviewed checkpoint, then implement pocket-ready capture in checkpoint 2. Keep the current five-minute cap until the separately bounded longer-capture check. Manual locking/speech/interruption QA still requires explicit founder readiness. Luna and Jev remain later integrations; the $5 total provider-testing ceiling persists across checkpoints.
+Checkpoints 1 and 2 are verified within the five-minute internal limit; proceed to saved-conversation Ask in checkpoint 3. Keep the current five-minute cap until the separately bounded longer-capture check. Manual locking/speech/interruption QA still requires explicit founder readiness. Luna and Jev remain later integrations; the $5 total provider-testing ceiling persists across checkpoints.
