@@ -4,6 +4,20 @@ extension SessionController {
     static func forApp() -> SessionController {
         #if DEBUG
         let arguments = ProcessInfo.processInfo.arguments
+        if arguments.contains("--ui-testing"), arguments.contains("--memory-ui-fixture") {
+            guard let config = try? RelayConfiguration.load(), config.url.host == "127.0.0.1",
+                  let owner = config.memoryOwnerID, UUID(uuidString: owner) != nil else {
+                let controller = SessionController(prepareRecording: { throw CaptureFailure.noRelay })
+                controller.errorMessage = "Local memory fixture configuration is unavailable."
+                return controller
+            }
+            let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+                .appendingPathComponent("VoiceCompanion-Memory-QA").appendingPathComponent(owner)
+            let sync = MemorySync(outbox: MemoryOutbox(directory: base.appendingPathComponent("outbox"), owner: owner),
+                                  transport: MemorySocketTransport(configuration: { config }))
+            return SessionController(store: SessionStore(directory: base.appendingPathComponent("sessions")), memorySync: sync,
+                makeConnection: { MemoryUIRecording() }, prepareRecording: {})
+        }
         if arguments.contains("--ui-testing"), arguments.contains("--live-ask-ui-fixture") {
             let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
                 .appendingPathComponent("VoiceCompanion-Live-Ask-QA")
@@ -34,6 +48,16 @@ extension SessionController {
             return controller
         }
         #endif
+        if ProcessInfo.processInfo.arguments.contains("--ui-testing") { return SessionController() }
+        if let config = try? RelayConfiguration.load(), let owner = config.memoryOwnerID,
+           UUID(uuidString: owner) != nil {
+            let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+                .appendingPathComponent("VoiceCompanion")
+            let outbox = MemoryOutbox(directory: base.appendingPathComponent("memory-outbox").appendingPathComponent(owner), owner: owner)
+            let sync = MemorySync(outbox: outbox, transport: MemorySocketTransport())
+            sync.observeNetwork()
+            return SessionController(memorySync: sync)
+        }
         return SessionController()
     }
 }
@@ -111,5 +135,19 @@ private final class LiveAskUIRecording: RecordingConnection {
     }
     func stop() { stopped = true }
     func cancel() { stopped = true }
+}
+#endif
+
+#if DEBUG
+@MainActor
+private final class MemoryUIRecording: RecordingConnection {
+    func run(onReady: (Duration) -> Void, onFinishing: @escaping (RecordingStopReason) -> Void,
+             onEvent: (GrokEvent) throws -> Void) async throws {
+        onReady(.seconds(300))
+        try onEvent(GrokEvent(type: "transcript.partial", text: "Synthetic appointment Tuesday at ten. Microphone off.", words: [], start: 0, duration: 2, is_final: true))
+        onFinishing(.user)
+    }
+    func stop() {}
+    func cancel() {}
 }
 #endif

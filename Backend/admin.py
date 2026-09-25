@@ -8,7 +8,7 @@ from urllib.parse import urlsplit
 from service_policy import open_ledger
 
 
-def export_credential(store, url, destination, days):
+def export_credential(store, url, destination, days, *, memory=None, owner=None):
     parsed = urlsplit(url)
     if (parsed.scheme != 'wss' or not parsed.hostname or parsed.path != '/stt'
             or parsed.username or parsed.password or parsed.query or parsed.fragment):
@@ -18,7 +18,10 @@ def export_credential(store, url, destination, days):
         os.chmod(destination, 0o600)
         identifier, token = store.enroll(lifetime_seconds=days * 86400)
         try:
-            json.dump({'url': url, 'token': token}, output)
+            config = {'url': url, 'token': token}
+            if memory is not None:
+                config['memoryOwnerID'] = memory.owner_for(identifier, existing_owner=owner)
+            json.dump(config, output)
             output.flush()
             os.fsync(output.fileno())
         except BaseException:
@@ -35,6 +38,8 @@ def main():
     enroll.add_argument('--url', required=True)
     enroll.add_argument('--output', required=True)
     enroll.add_argument('--days', type=int, choices=range(1, 31), default=7)
+    enroll.add_argument('--memory', action='store_true', help='Enable source synchronization for this internal client')
+    enroll.add_argument('--memory-owner', help='Existing stable memory owner for credential renewal')
     revoke = commands.add_parser('revoke')
     revoke.add_argument('credential_id')
     commands.add_parser('usage')
@@ -48,7 +53,11 @@ def main():
     store = open_ledger()
     try:
         if args.command == 'enroll':
-            print('Enrolled credential ID:', export_credential(store, args.url, args.output, args.days))
+            from memory_store import MemoryStore
+            if args.memory_owner and not args.memory:
+                raise ValueError('--memory-owner requires --memory')
+            memory = MemoryStore(Path(os.environ['VOICE_DATA_DIR']) / 'memory.sqlite') if args.memory else None
+            print('Enrolled credential ID:', export_credential(store, args.url, args.output, args.days, memory=memory, owner=args.memory_owner))
         elif args.command == 'revoke':
             store.revoke(args.credential_id)
             print('Revocation recorded')

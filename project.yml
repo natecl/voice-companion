@@ -47,6 +47,9 @@ targets:
   MacUITests:
     type: bundle.ui-testing
     platform: macOS
+    settings:
+      base:
+        CODE_SIGN_ENTITLEMENTS: UITests/MacUITests.entitlements
     sources: [UITests]
     dependencies:
       - target: VoiceCompanionMac
