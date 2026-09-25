@@ -40,6 +40,7 @@ def main():
     commands.add_parser('usage')
     allowance = commands.add_parser('allow-one-recording', help='Requires explicit founder approval for this UTC day')
     allowance.add_argument('--date', required=True, help='Current UTC date, YYYY-MM-DD')
+    allowance.add_argument('--replace-consumed', action='store_true', help='Separately approved replacement for an accidentally consumed extra attempt')
     args = parser.parse_args()
     store = open_ledger()
     try:
@@ -50,7 +51,7 @@ def main():
             print('Revocation recorded')
         elif args.command == 'allow-one-recording':
             day = datetime.strptime(args.date, '%Y-%m-%d').replace(tzinfo=timezone.utc)
-            store.allow_one_recording_today(int(day.timestamp()))
+            store.allow_one_recording_today(int(day.timestamp()), replace_consumed=args.replace_consumed)
             print('One additional recording attempt authorized for UTC date', args.date)
         else:
             print(json.dumps({'reservations': store.usage()}))

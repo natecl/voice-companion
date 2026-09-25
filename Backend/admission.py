@@ -49,6 +49,8 @@ class Admission:
         ''')
         try:
             with self.transaction():
+                if 'attempts' not in {row[1] for row in self.db.execute('PRAGMA table_info(recording_qa_day)')}:
+                    self.db.execute('ALTER TABLE recording_qa_day ADD COLUMN attempts INTEGER NOT NULL DEFAULT 1 CHECK(attempts BETWEEN 1 AND 2)')
                 saved = self.db.execute('SELECT cap FROM budget WHERE id=1').fetchone()
                 if saved is None:
                     self.db.execute('INSERT INTO budget VALUES(1, ?)', (total_microusd,))
@@ -99,15 +101,24 @@ class Admission:
     def revoke(self, identifier):
         self.db.execute('UPDATE credential SET revoked=1 WHERE id=?', (identifier,))
 
-    def allow_one_recording_today(self, day_start):
-        """Administrative founder-approved exception; one extra attempt on this UTC day only."""
+    def allow_one_recording_today(self, day_start, *, replace_consumed=False):
+        """Date-scoped extra attempt; replacing a consumed grant requires separate approval."""
         now = self.clock()
         if day_start != int(now // 86400) * 86400:
             raise ValueError('Allowance must name the current UTC day')
         with self.transaction():
-            if self.db.execute('SELECT 1 FROM recording_qa_day WHERE day_start=?', (day_start,)).fetchone():
-                raise ValueError('This day already has its one recording allowance')
-            self.db.execute('INSERT INTO recording_qa_day VALUES(?,?)', (day_start, now))
+            row = self.db.execute('SELECT attempts FROM recording_qa_day WHERE day_start=?', (day_start,)).fetchone()
+            if replace_consumed:
+                base = self.db.execute("SELECT daily FROM policy WHERE category='stt'").fetchone()
+                used = self.db.execute("SELECT count(*) FROM request WHERE category='stt' AND started>=?", (day_start,)).fetchone()[0]
+                active = self.db.execute("SELECT 1 FROM request WHERE category='stt' AND state='active'").fetchone()
+                if row != (1,) or base is None or used != base[0] + 1 or active:
+                    raise ValueError('Replacement requires exactly one consumed allowance and no active recording')
+                self.db.execute('UPDATE recording_qa_day SET attempts=2 WHERE day_start=?', (day_start,))
+            else:
+                if row:
+                    raise ValueError('This day already has its one recording allowance')
+                self.db.execute('INSERT INTO recording_qa_day(day_start,approved_at) VALUES(?,?)', (day_start, now))
 
     def reserve(self, token, category):
         with self.transaction():
@@ -121,9 +132,10 @@ class Admission:
                 raise Rejected('busy')
             now = self.clock()
             day_start = int(now // 86400) * 86400
-            if category == 'stt' and self.db.execute(
-                    'SELECT 1 FROM recording_qa_day WHERE day_start=?', (day_start,)).fetchone():
-                daily += 1
+            if category == 'stt':
+                allowance = self.db.execute('SELECT attempts FROM recording_qa_day WHERE day_start=?', (day_start,)).fetchone()
+                if allowance:
+                    daily += allowance[0]
             if self.db.execute('SELECT count(*) FROM request WHERE category=? AND started>=?',
                                (category, day_start)).fetchone()[0] >= daily:
                 raise Rejected('daily_limit')
