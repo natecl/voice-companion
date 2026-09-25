@@ -6,9 +6,10 @@ from admission import Admission
 
 STT = (2_000_000, 20_000, 6)
 ASK = (2_500_000, 3_000, 20)
+JEV = (500_000, 500, 64)
 
 
-def add_ask_policy(path):
+def add_ask_policy(path, *, jev=False):
     """Add only the approved Ask allocation; never reset usage or change existing caps."""
     if not path.exists():
         return
@@ -17,10 +18,15 @@ def add_ask_policy(path):
         db.execute('BEGIN IMMEDIATE')
         cap = db.execute('SELECT cap FROM budget WHERE id=1').fetchone()
         policies = dict((row[0], tuple(row[1:])) for row in db.execute('SELECT category,cap,reservation,daily FROM policy'))
-        if cap != (5_000_000,) or policies not in ({'stt': STT}, {'stt': STT, 'ask': ASK}):
+        allowed = [{'stt': STT}, {'stt': STT, 'ask': ASK}]
+        if jev:
+            allowed.append({'stt': STT, 'ask': ASK, 'jev': JEV})
+        if cap != (5_000_000,) or policies not in allowed:
             raise ValueError('Unexpected ledger policy; migration refused')
         if 'ask' not in policies:
             db.execute('INSERT INTO policy VALUES(?,?,?,?)', ('ask', *ASK))
+        if jev and 'jev' not in policies:
+            db.execute('INSERT INTO policy VALUES(?,?,?,?)', ('jev', *JEV))
         db.execute('COMMIT')
     except BaseException:
         db.execute('ROLLBACK')
@@ -35,7 +41,12 @@ def open_ledger(*, migrate=False):
         raise ValueError('Persistent data directory is unavailable')
     path = directory / 'usage.sqlite'
     enabled = os.environ.get('VOICE_ENABLE_ASK') == '1'
+    jev = os.environ.get('VOICE_JEV_LEDGER') == '1'
+    if jev and not enabled:
+        raise ValueError('Jev requires Ask accounting')
     if enabled and migrate:
-        add_ask_policy(path)
+        add_ask_policy(path, jev=jev)
     limits = {'stt': STT, 'ask': ASK} if enabled else {'stt': STT}
+    if jev:
+        limits['jev'] = JEV
     return Admission(path, total_microusd=5_000_000, limits=limits)

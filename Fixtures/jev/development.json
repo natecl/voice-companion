@@ -1,0 +1,62 @@
+[
+  {
+    "id": "dev-01",
+    "question": "What time is the appointment?",
+    "expected": "recall"
+  },
+  {
+    "id": "dev-02",
+    "question": "Did anyone agree to pay?",
+    "expected": "recall"
+  },
+  {
+    "id": "dev-03",
+    "question": "What advice did the teacher give?",
+    "expected": "recall"
+  },
+  {
+    "id": "dev-04",
+    "question": "Summarize this conversation.",
+    "expected": "summary"
+  },
+  {
+    "id": "dev-05",
+    "question": "Give me the main takeaways.",
+    "expected": "summary"
+  },
+  {
+    "id": "dev-06",
+    "question": "List the discussed decisions and action items.",
+    "expected": "summary"
+  },
+  {
+    "id": "dev-07",
+    "question": "What would you recommend?",
+    "expected": "perspective"
+  },
+  {
+    "id": "dev-08",
+    "question": "What risks should I consider?",
+    "expected": "perspective"
+  },
+  {
+    "id": "dev-09",
+    "question": "Is this a sensible plan?",
+    "expected": "perspective"
+  },
+  {
+    "id": "dev-10",
+    "question": "What did we decide, and what should I do next?",
+    "expected": "direct"
+  },
+  {
+    "id": "dev-11",
+    "question": "Summarize the discussion and critique the plan.",
+    "expected": "direct"
+  },
+  {
+    "id": "dev-12",
+    "question": "Thoughts?",
+    "expected": "direct"
+  }
+]

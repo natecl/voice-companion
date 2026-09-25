@@ -98,6 +98,20 @@ class Admission:
         self.db.execute('UPDATE credential SET revoked=1 WHERE id=?', (identifier,))
 
     def reserve(self, token, category):
+        return self._reserve(token, category, attempts=1, evaluation=False)
+
+    def reserve_evaluation(self, token, category, attempts):
+        """Administrative batch only; never exposed by a public endpoint.
+
+        Reserve the whole frozen run upfront, including unused/failed attempts.
+        Ordinary daily limits stay unchanged. The active category blocks overlap.
+        """
+        maximum = {'ask': 16, 'jev': 48}.get(category, 0)
+        if type(attempts) is not int or not 1 <= attempts <= maximum:
+            raise ValueError('Invalid evaluation bound')
+        return self._reserve(token, category, attempts=attempts, evaluation=True)
+
+    def _reserve(self, token, category, *, attempts, evaluation):
         with self.transaction():
             owner = self.authorized(token)
             policy = self.db.execute('SELECT cap,reservation,daily FROM policy WHERE category=?',
@@ -105,11 +119,12 @@ class Admission:
             if policy is None:
                 raise Rejected('unsupported_category')
             cap, amount, daily = policy
+            amount *= attempts
             if self.db.execute("SELECT 1 FROM request WHERE category=? AND state='active'", (category,)).fetchone():
                 raise Rejected('busy')
             now = self.clock()
             day_start = int(now // 86400) * 86400
-            if self.db.execute('SELECT count(*) FROM request WHERE category=? AND started>=?',
+            if not evaluation and self.db.execute('SELECT count(*) FROM request WHERE category=? AND started>=?',
                                (category, day_start)).fetchone()[0] >= daily:
                 raise Rejected('daily_limit')
             category_used = self.db.execute('SELECT coalesce(sum(reserved),0) FROM request WHERE category=?',

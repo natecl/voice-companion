@@ -10,6 +10,7 @@ from admission import Admission, Rejected
 from ask import AskService, validate_request, references
 from relay import Relay
 from service_policy import add_ask_policy, STT, ASK
+from jev import Judgment, POLICIES
 
 QUESTION = {'question':'What time?', 'passages':[{'id':'p1','start':0,'text':'We meet at noon.'}]}
 
@@ -19,8 +20,10 @@ class FakeLuna:
         self.closed = asyncio.Event()
         self.stall = False
         self.bad = False
-    async def stream(self, data):
+        self.policies = []
+    async def stream(self, data, *, policy=''):
         self.calls += 1
+        self.policies.append(policy)
         try:
             yield {'type':'delta','text':'Noon [[p9]].' if self.bad else 'Noon [[p1]].'}
             if self.stall: await asyncio.Future()
@@ -30,12 +33,12 @@ class FakeLuna:
 
 class AskTests(unittest.IsolatedAsyncioTestCase):
     @asynccontextmanager
-    async def service(self):
+    async def service(self, router=None):
         with tempfile.TemporaryDirectory() as d:
-            store=Admission(Path(d)/'ledger',total_microusd=6000,limits={'ask':(6000,3000,20)})
+            store=Admission(Path(d)/'ledger',total_microusd=6000,limits={'ask':(6000,3000,20),'jev':(500,500,64)})
             owner,token=store.enroll()
             provider=FakeLuna()
-            relay=Relay('unused',admission=store,ask=AskService(store,provider))
+            relay=Relay('unused',admission=store,ask=AskService(store,provider,router=router))
             try:
                 async with serve(relay.handle,'127.0.0.1',0,process_request=relay.authorize) as server:
                     yield store,owner,token,provider,f'ws://127.0.0.1:{server.sockets[0].getsockname()[1]}/ask'
@@ -87,6 +90,20 @@ class AskTests(unittest.IsolatedAsyncioTestCase):
             provider.bad=True
             self.assertEqual((await self.call(url,token))[-1]['message'],'invalid_references')
             self.assertEqual(store.db.execute('SELECT state FROM request').fetchone()[0],'failed')
+
+    async def test_routing_and_failure_each_generate_exactly_one_answer(self):
+        class Router:
+            fail = False
+            async def classify(self, question):
+                if self.fail: raise ValueError('Malformed provider reply')
+                return Judgment(route='recall', reason='classified')
+        for fail in (False, True):
+            router=Router();router.fail=fail
+            async with self.service(router) as (store,owner,token,provider,url):
+                result=await self.call(url,token)
+                self.assertEqual(result[-1]['type'],'done')
+                self.assertEqual(provider.calls,1)
+                self.assertEqual(provider.policies,['' if fail else POLICIES['recall']])
 
     def test_validation_and_migration_preserve_accounting(self):
         with self.assertRaises(Rejected): references('Wrong [[p2]]',QUESTION['passages'])

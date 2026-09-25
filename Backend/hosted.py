@@ -7,6 +7,8 @@ from service_policy import open_ledger
 from ask import AskService, Luna
 from relay import Relay
 from websockets.asyncio.server import serve
+import httpx
+from jev import Jev
 
 
 async def main():
@@ -19,13 +21,23 @@ async def main():
         if not key:
             raise ValueError('Missing provider key')
         store = open_ledger(migrate=True)
+        router_client = None
         try:
             store.recover_interrupted()
             answer_key = os.environ.get('OPENAI_API_KEY', '').strip()
             enabled = os.environ.get('VOICE_ENABLE_ASK') == '1'
             if enabled and not answer_key:
                 raise ValueError('Ask enabled without provider credential')
-            ask = AskService(store, Luna(answer_key)) if enabled else None
+            router = None
+            if os.environ.get('VOICE_ENABLE_JEV') == '1':
+                jev_key = os.environ.get('TYPESAFE_API_KEY', '').strip()
+                if not enabled or os.environ.get('VOICE_JEV_LEDGER') != '1' or not jev_key:
+                    raise ValueError('Jev requires Ask, accounting and a credential')
+                router_client = httpx.AsyncClient(headers={'Authorization': 'Bearer ' + jev_key},
+                                                  timeout=.750, follow_redirects=False,
+                                                  transport=httpx.AsyncHTTPTransport(retries=0))
+                router = Jev(router_client)
+            ask = AskService(store, Luna(answer_key), router=router) if enabled else None
             relay = Relay(key, admission=store, ask=ask)
             async with serve(relay.handle, '0.0.0.0', int(os.environ.get('PORT', '10000')),
                              process_request=relay.authorize, max_size=64000, max_queue=8,
@@ -33,6 +45,8 @@ async def main():
                 print('Internal transcription service ready', flush=True)
                 await asyncio.Future()
         finally:
+            if router_client is not None:
+                await router_client.aclose()
             store.close()
 
 
