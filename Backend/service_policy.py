@@ -2,6 +2,7 @@
 import os
 from pathlib import Path
 import sqlite3
+from contextlib import closing
 from admission import Admission
 
 STT = (2_000_000, 20_000, 6)
@@ -41,7 +42,7 @@ def open_ledger(*, migrate=False):
         add_ask_policy(path)
     limits = {'stt': STT, 'ask': ASK} if enabled else {'stt': STT}
     if path.exists():
-        with sqlite3.connect(path) as db:
+        with closing(sqlite3.connect(path)) as db:
             if db.execute("SELECT 1 FROM policy WHERE category='jev'").fetchone():
                 limits['jev'] = RETIRED_JEV
     return Admission(path, total_microusd=5_000_000, limits=limits)
