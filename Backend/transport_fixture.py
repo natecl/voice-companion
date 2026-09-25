@@ -17,6 +17,10 @@ async def main():
         save()
         mode = socket.request.path
         try:
+            if mode in ('/daily_limit', '/budget_limit', '/busy', '/unauthorized', '/authorization_unavailable'):
+                await socket.send(json.dumps({'type': 'error', 'message': mode[1:]}))
+                await socket.wait_closed()
+                return
             if mode in ('/ready-timeout', '/stop-connecting'):
                 await socket.wait_closed()
                 return

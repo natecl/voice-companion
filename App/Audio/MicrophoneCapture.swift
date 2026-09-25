@@ -34,6 +34,7 @@ private final class PCMEncoder: @unchecked Sendable {
 
 enum CaptureFailure: LocalizedError {
     case permissionDenied, unavailable, overflow, noRelay, connectionEnded, interrupted, connectionTimedOut, finalizationTimedOut
+    case accessExpired, dailyLimit, budgetLimit, serviceBusy, authorizationUnavailable
     var errorDescription: String? {
         switch self {
         case .permissionDenied:
@@ -42,12 +43,17 @@ enum CaptureFailure: LocalizedError {
             #else
             "Microphone access is off. Enable VoiceCompanion in Settings > Privacy & Security > Microphone, then try again."
             #endif
+        case .accessExpired: "Recording access has expired or was revoked. Renew the internal service credential to continue."
+        case .dailyLimit: "Today's recording limit has been reached. Try again after midnight UTC."
+        case .budgetLimit: "The internal trial's transcription budget has been reached. No new recording was started."
+        case .serviceBusy: "Another recording is already active. Stop it before starting a new session."
+        case .authorizationUnavailable: "The service cannot verify recording access right now. Try again later."
         case .connectionTimedOut: "The transcription service did not become ready in time. Recording did not start."
         case .finalizationTimedOut: "Final transcription results did not arrive in time. Received text is saved; the transcript may be incomplete."
         case .interrupted: "Audio capture was interrupted or its input changed. Received text is saved; start a new recording to continue."
         case .unavailable: "The microphone audio format is unavailable."
         case .overflow: "Audio could not be sent quickly enough. Recording stopped to avoid missing speech."
-        case .noRelay: "Start the development relay and launch the app with its configuration."
+        case .noRelay: "Recording connection is not configured. Install the internal service configuration or start the development relay."
         case .connectionEnded: "The transcription connection ended before completion."
         }
     }

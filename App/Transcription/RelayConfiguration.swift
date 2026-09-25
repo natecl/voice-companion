@@ -1,7 +1,7 @@
 import Foundation
 import Security
 
-struct RelayConfiguration: Decodable {
+struct RelayConfiguration: Codable {
     let url: URL
     let token: String
     let rootCertificate: String?
@@ -13,6 +13,15 @@ struct RelayConfiguration: Decodable {
         if let index = arguments.firstIndex(of: "--relay-config"), index + 1 < arguments.count {
             file = URL(fileURLWithPath: arguments[index + 1])
         } else {
+            let provisioning = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                .appendingPathComponent("hosted-relay.json")
+            if FileManager.default.fileExists(atPath: provisioning.path) {
+                return try importHosted(from: provisioning, save: RelayCredentialStore.save)
+            }
+            if let stored = try RelayCredentialStore.load() {
+                try stored.validateHosted()
+                return stored
+            }
             file = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
                 .appendingPathComponent("relay-client.json")
         }
@@ -23,8 +32,29 @@ struct RelayConfiguration: Decodable {
         guard (loopback || encrypted), !config.token.isEmpty, config.url.path == "/stt" else { throw CaptureFailure.noRelay }
         return config
         #else
-        throw CaptureFailure.noRelay // Distribution authentication is not configured yet.
+        guard let stored = try RelayCredentialStore.load() else { throw CaptureFailure.noRelay }
+        try stored.validateHosted()
+        return stored
         #endif
+    }
+
+    /// Paired-device provisioning is internal-only. Delete the transfer file only after secure storage succeeds.
+    static func importHosted(from file: URL, save: (Self) throws -> Void) throws -> Self {
+        let config = try JSONDecoder().decode(Self.self, from: Data(contentsOf: file))
+        try config.validateHosted()
+        try save(config)
+        try FileManager.default.removeItem(at: file)
+        return config
+    }
+
+    func validateHosted() throws {
+        guard url.scheme == "wss", let host = url.host, !host.isEmpty,
+              url.path == "/stt", url.user == nil, url.password == nil,
+              url.query == nil, url.fragment == nil, rootCertificate == nil,
+              (32...256).contains(token.utf8.count),
+              !token.contains(where: { $0.isWhitespace || $0.isNewline }) else {
+            throw CaptureFailure.noRelay
+        }
     }
 
     func makeSession() throws -> URLSession {
@@ -32,8 +62,8 @@ struct RelayConfiguration: Decodable {
         configuration.timeoutIntervalForRequest = 15
         // Longer than capture + readiness/finalization deadlines; those own user-facing errors.
         configuration.timeoutIntervalForResource = Double(LiveTranscriber.recordingLimit.components.seconds) + 45
-        if url.scheme == "wss" {
-            guard let rootCertificate, let data = Data(base64Encoded: rootCertificate), let host = url.host,
+        if url.scheme == "wss", let rootCertificate {
+            guard let data = Data(base64Encoded: rootCertificate), let host = url.host,
                   SecCertificateCreateWithData(nil, data as CFData) != nil else { throw CaptureFailure.noRelay }
             return URLSession(configuration: configuration,
                               delegate: DevelopmentTrust(certificate: data, host: host), delegateQueue: nil)
