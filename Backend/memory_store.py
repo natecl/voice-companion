@@ -16,8 +16,9 @@ import memory_atomic
 import memory_time
 import memory_search
 import memory_vectors
+import memory_indexing
 
-VERSION = 11
+VERSION = 12
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -72,12 +73,15 @@ def validate_source(source):
 
 
 class MemoryStore:
-    def __init__(self, path, *, clock=time.time, personal_learning=False):
+    def __init__(self, path, *, clock=time.time, personal_learning=False, embedding_model=None):
         self.path, self.clock = Path(path), clock
         self.personal_learning = personal_learning
+        if embedding_model is not None and (not isinstance(embedding_model,str) or not 1<=len(embedding_model)<=250):
+            raise ValueError("Invalid embedding contract")
+        self.embedding_model = embedding_model
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, VERSION):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -159,6 +163,8 @@ class MemoryStore:
                 memory_search.migrate(db)
             if version < 11:
                 db.executescript(memory_vectors.SCHEMA)
+            if version < 12:
+                db.executescript(memory_indexing.SCHEMA)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)
@@ -204,6 +210,7 @@ class MemoryStore:
             return existing_owner
 
     def _invalidate_source(self, db, owner, session):
+        db.execute("UPDATE memory_index_job SET state='obsolete',lease=NULL,error=NULL WHERE owner=? AND session=?",(owner,session))
         db.execute('DELETE FROM memory_embedding WHERE owner=? AND session=?',(owner,session))
         db.execute('DELETE FROM memory_passage_index WHERE owner=? AND session=?',(owner,session))
         db.execute('DELETE FROM memory_fact_evidence WHERE owner=? AND session=?', (owner,session))
@@ -244,6 +251,7 @@ class MemoryStore:
                     raise Rejected('memory_storage_limit')
                 db.execute('INSERT INTO source VALUES(?,?,?,?,?,0)', (owner, session, revision, digest, payload))
             memory_search.index_source(db,owner,source)
+            memory_indexing.enqueue(db,owner,source,self.embedding_model)
             db.execute('INSERT INTO job(id,owner,session,revision,extractor,state,lease) VALUES(?,?,?,?,?,?,NULL)', (str(uuid.uuid4()), owner, session, revision, EXTRACTOR_VERSION, 'profile_pending' if source.get('origin') == 'personal_text' and not self.personal_learning else 'queued'))
             return {'status': 'stored', 'revision': revision}
 
