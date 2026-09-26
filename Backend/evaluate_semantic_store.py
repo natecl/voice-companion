@@ -10,8 +10,16 @@ from memory_vectors import index_source,retrieve
 from test_memory import source
 
 
-def run(cache):
+def run(cache, hybrid=False):
     model=LocalEmbeddings(cache)
+    def lookup(store, owner, query, model, limit=12):
+        if not hybrid:
+            return retrieve(store,owner,query,model,limit=limit)
+        from memory_hybrid import retrieve as combined
+        from memory_context import valid
+        result=combined(store,owner,query,embedder=model,limit=limit)
+        assert valid(store,owner,result["packet"])
+        return result["packet"]["items"]
     cases=json.loads((Path(__file__).parent/'fixtures/memory_semantic/cases.json').read_text())
     results=[]
     with tempfile.TemporaryDirectory() as folder:
@@ -23,7 +31,7 @@ def run(cache):
                 store.put_source(owner,source(session,text=text));index_source(store,owner,session,model);inserted+=1
             checks={};latency=[]
             for case in cases:
-                start=time.perf_counter();hits=retrieve(store,owner,case['query'],model,limit=5)
+                start=time.perf_counter();hits=lookup(store,owner,case['query'],model,limit=5)
                 latency.append((time.perf_counter()-start)*1000)
                 checks[case['id']]=case['id'] in [h['session_id'] for h in hits]
                 for hit in hits:
@@ -33,16 +41,16 @@ def run(cache):
         other=store.owner_for('long-source')
         text=('The room was quiet and the windows were open. '*150)+'My canoe is turquoise and stored beside the river.'
         store.put_source(other,source('long',text=text));out=index_source(store,other,'long',model)
-        hits=retrieve(store,other,'What color is my canoe?',model,limit=3)
+        hits=lookup(store,other,'What color is my canoe?',model,limit=3)
         long_ok=any('My canoe is turquoise' in h['text'] for h in hits)
         assert all(h['session_id']=='long' for h in hits)
         cached=index_source(store,other,'long',model)['status']=='cached'
-        store.delete_source(other,'long');deleted=not retrieve(store,other,'canoe',model)
-    result=dict(model=model.contract,results=results,long_source_pieces=out['pieces'],late_fact_retrieved=long_ok,
+        store.delete_source(other,'long');deleted=not lookup(store,other,'canoe',model)
+    result=dict(mode="hybrid" if hybrid else "semantic",model=model.contract,results=results,long_source_pieces=out['pieces'],late_fact_retrieved=long_ok,
                 cache_reused=cached,deleted_absent=deleted)
     print(json.dumps(result,indent=2))
     assert all(all(r['recall_at_5'].values()) and r['max_query_ms']<100 for r in results)
     assert long_ok and cached and deleted
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--cache',type=Path,required=True);a=p.parse_args();run(a.cache)
+    p=argparse.ArgumentParser();p.add_argument('--cache',type=Path,required=True);p.add_argument("--hybrid",action="store_true");a=p.parse_args();run(a.cache,a.hybrid)

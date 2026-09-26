@@ -115,7 +115,7 @@ Delivery split: **4A** makes validity qualification consistent across current se
 
 ### Checkpoint 5 — relevant retrieval and bounded context assembly
 
-Delivery split: **5A** adds transactional owner-scoped lexical indexing and bounded passage candidates; see [QA and limitations](memory-indexed-search.md). **5B** adds a pinned local English embedding adapter, source-span cache and semantic candidates; see [real-model QA and limits](memory-semantic-candidates.md). Hybrid ranking, background indexing integration and final context assembly remain pending.
+Delivery split: **5A** adds transactional owner-scoped lexical indexing and bounded passage candidates; see [QA and limitations](memory-indexed-search.md). **5B** adds a pinned local English embedding adapter, source-span cache and semantic candidates; see [real-model QA and limits](memory-semantic-candidates.md). **5C** adds rank fusion, shared evidence hydration and selected-source validation; see [behavior and QA](memory-hybrid-context.md). Final reranking, background indexing integration and answer context assembly remain pending.
 
 **Outcome:** the companion can find older relevant information without dumping a biography into every answer.
 
