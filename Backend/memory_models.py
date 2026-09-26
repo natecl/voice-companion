@@ -137,7 +137,11 @@ def judgment_request(source, candidates, related):
             questions[f'expiry_{i}'] = choice(prefix + 'Read the source passages to determine the current end of validity for THIS memory. Ignore the extracted expires_at field: it can be missing or wrong. Does the source explicitly state when THIS memory ceases to apply? Choose the corrected/current expiry when a correction replaces an earlier expiry. An event start is not an expiry. Do not guess.',
                 {'none':'No explicit expiry for this memory, or ambiguous.', **{f'date_{j}':f'The source explicitly sets {date} as the applicable expiry of this memory, after any correction.' for j,date in enumerate(dates)}})
         questions[f'relation_{i}'] = choice(prefix + 'How does this candidate relate to the supplied existing memories? Only select duplicate/update when same identity and semantic relationship are clear.', criteria)
-    request = {'model':JEV, 'state':{'source':source,'candidates':candidates,'related':related}, 'questions':questions}
+    # Schema-v5 identity annotations are not part of this legacy prompt contract.
+    # Adopt them only with the separately evaluated identity-judgment integration.
+    related_state = [[{k: v for k, v in old.items() if k not in ('identity_status', 'entity_id')}
+                      for old in group] for group in related]
+    request = {'model':JEV, 'state':{'source':source,'candidates':candidates,'related':related_state}, 'questions':questions}
     if len(json.dumps(request, ensure_ascii=False).encode()) > 28000: raise Rejected('memory_judgment_too_large')
     return request
 

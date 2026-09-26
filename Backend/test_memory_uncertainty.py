@@ -70,6 +70,11 @@ class UncertaintyTests(unittest.IsolatedAsyncioTestCase):
         unresolved = reopened.search(self.owner, unresolved_only=True)
         self.assertEqual(len(unresolved), 1)
         self.assertEqual(unresolved[0]['state'], 'unresolved')
+        self.assertEqual(unresolved[0]['identity_status'], 'unresolved')
+        mention = reopened.identities.mentions(self.owner, unresolved[0]['id'])[0]
+        self.assertEqual(mention['description']['name'], 'Maya')
+        self.assertEqual(mention['description']['relationship'], 'daughter')
+        self.assertIsNone(mention['description']['qualifiers'])
         self.assertEqual(unresolved[0]['proposed_targets'], [self.old['id']])
         self.assertEqual(unresolved[0]['sources'][0]['session'], fixture['source']['session_id'])
         self.assertEqual(reopened.profile(self.owner)[0]['state'], 'active')
@@ -148,7 +153,7 @@ class UncertaintyTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(migrated.profile(self.owner)[0]['id'], self.old['id'])
         self.assertEqual(migrated.put_source(self.owner, source('deleted'))['status'], 'deleted')
         with migrated.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 4)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 5)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0], 'ok')
             self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(), [])
         self.write(self.selected())
