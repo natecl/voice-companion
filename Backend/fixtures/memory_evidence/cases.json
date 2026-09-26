@@ -1,0 +1,51 @@
+[
+  {
+    "id": "explicit-change",
+    "origin": "personal_text",
+    "text": "My daughter Maya now enjoys tennis instead of swimming.",
+    "expected": {
+      "scope": "related_to_author",
+      "name": "Maya",
+      "relationship": "daughter",
+      "change": "correction",
+      "contains": "tennis"
+    }
+  },
+  {
+    "id": "qualified-person",
+    "origin": "personal_text",
+    "text": "My other daughter Maya enjoys tennis.",
+    "expected": {
+      "scope": "related_to_author",
+      "name": "Maya",
+      "qualifier": "other",
+      "contains": "tennis",
+      "change_in": [
+        "none",
+        "addition"
+      ]
+    }
+  },
+  {
+    "id": "anonymous-speaker",
+    "origin": "recording",
+    "text": "I am training for a marathon.",
+    "expected": {
+      "scope": "unresolved",
+      "name": null,
+      "contains": "marathon"
+    }
+  },
+  {
+    "id": "past-event-fresh",
+    "origin": "personal_text",
+    "text": "My uncle Ravi worked at the bakery ten years ago.",
+    "expected": {
+      "scope": "related_to_author",
+      "name": "Ravi",
+      "relationship": "uncle",
+      "time": "past",
+      "contains": "bakery"
+    }
+  }
+]
