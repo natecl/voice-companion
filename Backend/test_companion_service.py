@@ -58,6 +58,24 @@ class CompanionServiceTests(unittest.IsolatedAsyncioTestCase):
             m.delete_source(owner,'recording')
             self.assertTrue(all(t['answer'] is None for t in (await self.call(url,token,dict(operation='history',before=None)))[0]['turns']))
 
+    async def test_source_read_is_owner_scoped_exact_and_free(self):
+        async with self.service() as (a,token,m,owner,p,url):
+            live=source('recording',text='Maya enjoys swimming.');live['completed']=False
+            await self.call(url,token,question(live=live))
+            req=dict(operation='source',turn_id='q1',citation_id='p1')
+            item=(await self.call(url,token,req))[0]
+            self.assertEqual(item['source']['text'],'Maya enjoys swimming.')
+            self.assertIn('snapshot_id',item['source'])
+            m.put_source(owner,source('recording',text='Maya enjoys swimming. And painting.'))
+            self.assertEqual((await self.call(url,token,req))[0]['source']['text'],'Maya enjoys swimming.')
+            _,other=a.enroll()
+            self.assertEqual((await self.call(url,other,req))[0]['message'],'source_unavailable')
+            self.assertEqual((await self.call(url,token,dict(req,citation_id='p999')))[0]['message'],'source_unavailable')
+            self.assertEqual(a.usage(),[('ask',1,3000)])
+            self.assertEqual(len(p.calls),1)
+            m.delete_source(owner,'recording')
+            self.assertEqual((await self.call(url,token,req))[0]['message'],'source_unavailable')
+
     async def test_empty_chat_invalid_input_and_owner_isolation(self):
         async with self.service() as (a,token,m,owner,p,url):
             self.assertEqual((await self.call(url,token,{'operation':'ask','history':[]}))[-1]['type'],'error')

@@ -18,6 +18,10 @@ def validate_request(raw):
     try:
         data=json.loads(raw)
         if not isinstance(data,dict):raise ValueError()
+        if data.get('operation')=='source':
+            if set(data)!={'operation','turn_id','citation_id'}:raise ValueError()
+            identifier(data['turn_id']);identifier(data['citation_id'])
+            return data
         if data.get('operation')=='history':
             if set(data)!={'operation','before'} or (data['before'] is not None and (type(data['before']) is not int or data['before']<1)):
                 raise ValueError()
@@ -50,6 +54,9 @@ class CompanionService:
             credential=self.admission.authorized(token)
             async with asyncio.timeout(5):request=validate_request(await socket.recv())
             owner=await asyncio.to_thread(self.memory.owner_for,credential)
+            if request['operation']=='source':
+                item=await asyncio.to_thread(self.chat.citation,owner,request['turn_id'],request['citation_id'])
+                await send(dict(type='source',turn_id=request['turn_id'],source=item));return
             if request['operation']=='history':
                 await send(dict(type='history',**await asyncio.to_thread(self.chat.page,owner,before=request['before'])))
                 return
