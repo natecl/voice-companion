@@ -1,0 +1,107 @@
+{
+  "commit": "3eba445781a03a77f737ea84205894c22569151f",
+  "deployment": "dep-das36h8jo6nc73a0vcug",
+  "input": [
+    "Project Spruce.",
+    "Prefers evening meetings."
+  ],
+  "answer": "Project Spruce prefers evening meetings. [[p1]]",
+  "source": [
+    {
+      "type": "source",
+      "turn_id": "independent-rollout-final-ask-20260926",
+      "source": {
+        "id": "p1",
+        "session_id": "independent-rollout-spruce-20260926",
+        "revision": 1,
+        "passage_id": "p2",
+        "captured_at": 1790456874.364707,
+        "timezone": "UTC",
+        "origin": "recording",
+        "start": 2.0,
+        "speakers": [],
+        "text_start": 0,
+        "text_end": 25,
+        "text": "Prefers evening meetings.",
+        "lifecycle": [
+          {
+            "id": "a3e62281-b26d-44e4-8d72-7fba9f9c195e",
+            "text": "Project Spruce prefers evening meetings.",
+            "state": "active",
+            "reason": "supported",
+            "valid_from": 1790456874.364707,
+            "valid_until": null,
+            "replaces": null,
+            "basis": "stated",
+            "subject": "mention_eac7027593ff48b787d57be4a8a95035",
+            "kind": "preference",
+            "profile_link": 0,
+            "temporal_evidence": {
+              "version": "calendar-reference-v2",
+              "expression": null,
+              "captured_at": 1790456874.364707,
+              "timezone": "UTC",
+              "resolution": "unresolved",
+              "date": null,
+              "reason": "no_expression",
+              "reported_status": "current",
+              "basis": "stated",
+              "session": "independent-rollout-spruce-20260926",
+              "revision": 1
+            },
+            "identity_status": "established",
+            "entity_id": "f51640a6-f1a7-4d01-9352-90d9ca861ac5",
+            "related_claims": []
+          }
+        ],
+        "evidence_type": "original_source",
+        "claim_scope": "whole_passage"
+      }
+    }
+  ],
+  "reopened": true,
+  "success": true,
+  "final": {
+    "health/learning": {
+      "state": "idle",
+      "last_failure": null,
+      "completed": 1,
+      "quarantined": 0
+    },
+    "health/indexing": {
+      "state": "idle",
+      "completed": 1,
+      "failed": 0,
+      "last_failure": null
+    },
+    "global_reserved": 4513868,
+    "active_requests": 0,
+    "profile_by_model": [
+      [
+        "gpt-6-luna",
+        123,
+        1230000
+      ],
+      [
+        "gpt-6-sol",
+        2,
+        80000
+      ],
+      [
+        "jev-1.13.0",
+        197,
+        1970000
+      ]
+    ],
+    "profile_pending": 0,
+    "memory_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0\n"
+  },
+  "learning_reserved_delta_microusd": 80000,
+  "answer_reserved_microusd": 3000,
+  "learning_remaining_microusd": 170000,
+  "limitations": [
+    "Synthetic transcript synchronized through hosted API; no new microphone/device QA.",
+    "Two Ask attempts were blocked before provider access by historical daily quota accounting; no learning replay.",
+    "One available Ask attempt was provisioned without clearing history or changing money caps."
+  ]
+}
