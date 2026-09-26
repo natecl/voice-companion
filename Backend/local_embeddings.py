@@ -1,5 +1,6 @@
 """Optional, pinned CPU embedding adapter. No transcript is sent to a model API."""
 from admission import Rejected
+from threading import Lock
 
 MODEL='BAAI/bge-small-en-v1.5'
 REVISION='aa8f8b060edb00e03bfdd08813a2949946c8ba55'
@@ -15,6 +16,7 @@ class LocalEmbeddings:
         from huggingface_hub import snapshot_download
         path=snapshot_download('Qdrant/bge-small-en-v1.5-onnx-Q',revision=REVISION,cache_dir=str(cache),local_files_only=offline,
             allow_patterns=['model_optimized.onnx','tokenizer.json','tokenizer_config.json','config.json','special_tokens_map.json'])
+        self.lock=Lock()
         self.model=TextEmbedding(MODEL,specific_model_path=path,threads=2,providers=['CPUExecutionProvider'])
 
     def windows(self,text):
@@ -37,8 +39,15 @@ class LocalEmbeddings:
             start=max(start+1,end-80)
 
     def passages(self,texts):
-        return list(self.model.passage_embed(texts,batch_size=32))
+        # One window per inference bounds activation memory on the internal 512 MiB host.
+        # Release between windows so foreground query work can share the model.
+        vectors=[]
+        for text in texts:
+            with self.lock:
+                vectors.append(next(self.model.passage_embed([text],batch_size=1)))
+        return vectors
 
     def query(self,text):
         if self.model.token_count(text)>400:raise Rejected('embedding_query_too_large')
-        return next(self.model.query_embed(text))
+        with self.lock:
+            return next(self.model.query_embed(text))
