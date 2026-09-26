@@ -1,37 +1,64 @@
-# Independent source verification — candidate, not deployed
+# Independent source verification — verified opt-in, not deployed
 
-Founder direction: keep our memory backend and address its verification rejection. The gbrain comparison is closed as an adoption decision for now. Ordinary recording deletion retaining memory remains a separately approved, unimplemented contract change; this slice does not mix deletion changes into verifier QA.
+Founder direction: keep our backend and fix supported memories being rejected. Ordinary recording deletion retaining memory remains a separately approved, unimplemented change.
 
-## Diagnosed failure and smallest candidate
+## Failure and resulting behavior
 
-For the saved Juniper recording, the deployed verifier returns supported probabilities of 0.66 for fact support, 0.77 for stated modality and 0.56 for current-as-reported time. All fall below the unchanged 0.90 gates. The extractor correctly proposes the preference. Lowering one threshold or changing storage does not resolve this failure safely.
+The deployed Jev verifier rejected the saved Juniper preference at probabilities 0.66 (support), 0.77 (modality), and 0.56 (time), below the unchanged 0.90 gates. Extraction was correct. Earlier atomic classification improved metadata but still rejected factual support. A prior paid Sol screen passed 17 source-only support cases; that alone was insufficient for integration acceptance.
 
-The previously paid atomic Jev screen classifies the same fragment as stated at 0.99 and current at 1.0, while factual entailment remains 0.77. A separate previously approved Sol low-reasoning screen passed 17 factual-support cases. This is supporting evidence for separating the tasks, not proof the new composed writer is correct.
+The new `independent-source-v2` recording path:
 
-The candidate flag `independent_source_verification=False` remains off by default and has no hosted wiring:
+1. Luna extracts proposals and original evidence.
+2. GPT-6 Sol, low reasoning, independently judges each claim against original transcript passages: supported, contradicted or uncertain. It returns original passage IDs, without invented confidence scores.
+3. Application code preserves the full original cited passages and their exact spans, along with extraction evidence. Unknown/empty citations fail validation. Existing four-excerpt and 2,000-character-per-quote limits still apply; oversized evidence fails explicitly rather than being truncated. Added context cannot silently establish one speaker's identity.
+4. Jev independently classifies modality and source-reported temporal status. Existing 0.90 gates and explicit temporal-expression verification remain. An uncertain time stays unresolved, never silently current.
+5. Existing recording identity, pairwise identity, correction/applicability, expiry and atomic storage rules remain in force. Personal text and the non-Luna-identity path retain their previous verifier.
 
-1. Luna extracts proposals and original evidence as before.
-2. GPT-6 Sol low independently judges the claim from original passages and returns supported/contradicted/uncertain plus original passage IDs. No self-reported probability is invented. Supported citations must be nonempty and present in the proposal's persisted evidence. Extra context cannot silently become uncited support.
-3. Jev separately classifies stated/tentative/hypothetical/absent and source-reported temporal status. Application code compares these with the proposal at the existing 0.90 gates. Explicit temporal expressions retain the old independent expression check. A genuinely uncertain temporal representation remains unresolved rather than being promoted to current.
-4. Existing recording identity, pairwise identity, correction/applicability, expiry and atomic storage rules remain unchanged. Personal-text and non-Luna-identity paths retain the existing verifier.
+This is a separate source-only judgment, not Luna verifying its own extraction or statistical independence between model errors. It is not a repeated vote or a fallback after Jev rejection. We do not stack the rejected old Jev support score as another veto after Sol.
 
-The flag is scoped to unidentified recordings with the existing recording identity path. It is not a fallback after a Jev rejection or repeated model voting. A supported Sol verdict never bypasses other gates. New cached stages have versioned request identities; completed chunk results from another verification contract are rejected, not silently reused. No old failed job or completed source is automatically reprocessed.
+## Behavioral QA and discovered defect
 
-## Evidence and remaining gate
+The first new live run recovered the preference but rejected the location because Sol also cited its surrounding preference passage. The extractor's evidence omitted that passage. Paid calls stopped after this substantive failure. The fix retains complete original verifier evidence instead of discarding it or requiring the extractor and verifier to choose identical passage sets.
 
-Offline checks compare the new support request with the previously paid 17-case screen, preserve the original failed deployed replay, and run the actual SQLite writer through supported/contradicted/uncertain outcomes, restart and stale-source rejection. Integration tests inject verifier outcomes deliberately: they prove application behavior, **not** fresh model accuracy. Metadata unit tests reuse saved response fields only as parser/policy inputs; removing the support question changes the provider request and needs fresh validation.
+The second run reused those exact provider responses. Only changed/new requests incurred calls. Through the actual SQLite writer with chunking, semantic-boundary, expiry and consolidation settings enabled:
 
-No new provider calls have been made for this fix. The earlier $0.50 approval was scoped to gbrain; its unused balance is not silently repurposed.
+- Morning preference and library location both became active.
+- A subsequent correction superseded the library with the community center for the same entity; the preference remained active.
+- Saved state survived reopening, with no account-owner profile links inferred.
+- The frozen six-case verifier gate admitted named-family and student preferences; rejected negation, unsupported account ownership and quoted-person attribution; and rejected future-as-current metadata despite factual support.
 
-Proposed paid gate, requiring approval: up to **$0.25** within the existing $5 global cap. Use exact saved extraction/identity responses only where requests match; run fresh Sol support and Jev metadata on original/correction inputs, exercise their actual writer path, and screen a frozen independent set of positive and negative cases. Retaining the preference changes later identity/relation calls, so those changed requests require real evidence too. Reserve each request, enforce the total, make no automatic retries, stop on a substantive failure, and save responses for offline replay. Do not repeatedly tune to Juniper.
+The six-case gate tests verification decisions, not six fresh extraction pipelines. Actual writer integration uses the Juniper source and correction. This is bounded development evidence, not a population accuracy benchmark. The prior 17-case support screen and prior default-path rejection remain preserved. Its prompt/schema match the candidate, but its output cap was 1,800 rather than 1,300 tokens; it is historical supporting evidence, not an exact-request replay of the current configuration.
 
-Gate must show: preference retained; existing location correction remains valid; negation, competing subjects, quotation and future-as-current errors do not become active false memories; uncertain identity does not become account ownership; exact citations remain supported. Review ambiguous labels before the paid run. Source revision/deletion race checks stay required, independently of the future recording-retention feature.
+Files under `Backend/fixtures/source-verification/` contain initial failed calls/results, verified calls/results and the frozen input cases. These are synthetic transcripts. Cached responses are reused only when the complete request fingerprint matches. Offline tests run the actual writer against the exact live responses with a transport that cannot call providers. They also cover stale/deleted-source races, unsupported outcomes, citation preservation and incompatible cached verification versions in both flag directions.
 
-Do not merge this candidate as a completed fix or deploy it until the provider-backed composition and applicable budget integration pass. Existing runtime budgets do not yet admit Sol in the hosted learning path. Rollout and deliberate recovery of missed sources require a subsequent reviewed step; no automatic backfill.
+Reproduce without credentials or paid calls (choose a new output directory):
 
-The new six-case QA input is frozen before live inference in `Backend/fixtures/source-verification/qa-cases.json`: named-family/student positives, negation, unsupported account ownership, quoted-person attribution and future metadata. `expected_support` and `expected_admission` are deliberately separate: a true future claim with proposed current metadata must fail admission. These are synthetic development gates, not a population benchmark. All speakers in these cases are anonymous; “my sister” does not establish an account-owner relationship.
+```sh
+PYTHONPATH=Backend python3 Backend/evaluate_source_verification.py work/source-verification/replay-new --replay Backend/fixtures/source-verification/initial-calls.json --replay Backend/fixtures/source-verification/verified-calls.json --transport false
+```
 
-Local validation: 43 targeted tests passed across source verification, saved Sol screen, original subject-continuity failure, atomic classifier evidence, writer transactions and chunk behavior. The historical restored screen tests emitted SQLite ResourceWarnings; their connection lifetime was corrected and those three tests rerun successfully. `git diff --check` passed. These results do not satisfy the still-pending live composition gate.
+## Allowance and accounting
+
+The founder approved $0.25 specifically for this QA. An operator-only subledger reserves before every new network request, rejects repeats of failed/reserved requests, and preserves completed responses. No automatic paid retries occurred. `scripts/evaluations/source-verification-provider.py` records the credential-host transport used; it never prints keys.
+
+The global $0.25 reservation is funded from unused recording-budget headroom under the explicit approval ID `independent-verification-20260926-025`. Its global `stt` category identifies funding, not transcription usage; the separate model ledger records actual providers. No audio was transcribed, no runtime policy/quotas were increased, and no gbrain allocation was repurposed. Global reservations now total $4.260868 of $5.
+
+| Model | New calls | Conservative reservations | Input / output tokens |
+| --- | ---: | ---: | ---: |
+| GPT-6 Sol | 3 | $0.074248 | 1,351 / 306 |
+| Jev | 8 | $0.080000 | 6,711 / 873 |
+| GPT-6 Luna | 3 | $0.009907 | 1,739 / 264 |
+| Total | 14 | $0.164155 | |
+
+All 14 attempts completed; the remaining $0.085845 is unspent QA allowance, not automatically available for normal app learning. Reservations are conservative bounds, not a billing invoice. The full $0.25 remains reserved globally.
+
+Local verification: **57 targeted tests passed**, covering the source verifier, historical support screen, original subject-continuity failure, atomic classifier, writer/chunk behavior, runtime startup and budget controls. The exact-response replay made zero provider calls. `git diff --check` passed. Review found and fixed the citation-loss and old-version cache issues before merging.
+
+## Runtime and rollout boundary
+
+`VOICE_ENABLE_INDEPENDENT_VERIFICATION=1` explicitly enables this path only with memory rework. It is off by default. The hosted adapter and ProfileBudget opt-in admit Sol with a conservative $0.04 reservation per request, while retaining the approved aggregate cap and no-retry policy. The support request builder enforces its matching cost bound. A local actual-hosted-process test checks startup/history recovery without queued learning or new spend; budget tests prove enablement cannot mint credit.
+
+This checkpoint is code and provider-backed writer verification, **not deployment or physical-app acceptance**. No hosted flag or app build was changed. The existing app-learning allocation is exhausted; this separate QA ledger is not silently transferred into production learning. Rollout needs an explicit funding path before enabling new learning. No old source is automatically reprocessed; recovery of previously missed memories must be deliberate. Turning the flag off does not erase already learned memories; paused jobs from a different verifier contract fail explicitly for review.
 
 ## Research review — September 26, 2026
 

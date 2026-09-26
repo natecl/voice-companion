@@ -1,0 +1,106 @@
+[
+  {
+    "case": "split-subject",
+    "result": {
+      "job": "56bcf740-f299-42ee-8081-6c5573956836",
+      "accepted": 1,
+      "claims": [
+        "6683592f-def0-44df-91b5-6ece88a91dec"
+      ],
+      "decisions": [
+        {
+          "candidate": 0,
+          "result": "new"
+        },
+        {
+          "candidate": 1,
+          "result": "rejected",
+          "checks": {
+            "support": {
+              "label": "unsupported",
+              "accepted": false,
+              "verdict": "supported",
+              "passages": [
+                "p1",
+                "p2",
+                "p3"
+              ],
+              "rubric": "independent-source-v1"
+            },
+            "subject": {
+              "label": "named",
+              "accepted": true,
+              "policy": "subject",
+              "rubric": "recording-identity-v2",
+              "model": "gpt-6-luna",
+              "evidence": {
+                "label": "supported",
+                "quote": "Project Juniper. The meeting location is the library."
+              }
+            },
+            "modality": {
+              "label": "supported",
+              "accepted": true,
+              "classification": "stated",
+              "probability": 1.0,
+              "rubric": "independent-source-v1"
+            },
+            "time": {
+              "label": "supported",
+              "accepted": true,
+              "classification": "current",
+              "probability": 0.99,
+              "rubric": "independent-source-v1"
+            }
+          }
+        }
+      ]
+    },
+    "rows": [
+      {
+        "id": "6683592f-def0-44df-91b5-6ece88a91dec",
+        "owner": "c35db3b0-60f7-490a-b74f-e1d5dde8d391",
+        "text": "Project Juniper prefers morning meetings.",
+        "subject": "mention_38afa34ff63b469a99de5e1daf0b0a90",
+        "kind": "preference",
+        "basis": "stated",
+        "observed": 1790455583.2478058,
+        "valid_from": 1790443517.9455416,
+        "valid_until": null,
+        "state": "active",
+        "reason": "supported",
+        "replaces": null,
+        "judgment_version": "memory-evidence-v2.5",
+        "profile_link": 0,
+        "temporal_evidence": {
+          "version": "calendar-reference-v2",
+          "expression": null,
+          "captured_at": 1790443517.9455416,
+          "timezone": "UTC",
+          "resolution": "unresolved",
+          "date": null,
+          "reason": "no_expression",
+          "reported_status": "current",
+          "basis": "stated",
+          "session": "split-subject",
+          "revision": 1
+        },
+        "identity_status": "established",
+        "entity_id": "0674e313-a881-4610-8865-417be3693bd3",
+        "sources": [
+          {
+            "session": "split-subject",
+            "revision": 1,
+            "passage": "p1"
+          },
+          {
+            "session": "split-subject",
+            "revision": 1,
+            "passage": "p2"
+          }
+        ]
+      }
+    ],
+    "unresolved": []
+  }
+]

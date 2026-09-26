@@ -1,0 +1,385 @@
+[
+  {
+    "case": "split-subject",
+    "result": {
+      "job": "1d65cc5a-6128-4005-bfe6-d12ddb8dfe47",
+      "accepted": 2,
+      "claims": [
+        "9cbfecbb-4145-4eb1-b1e7-7d18acec181f",
+        "a12b98dd-44ff-4a85-b7e6-98456c37fcc8"
+      ],
+      "decisions": [
+        {
+          "candidate": 0,
+          "result": "new"
+        },
+        {
+          "candidate": 1,
+          "result": "new"
+        }
+      ]
+    },
+    "rows": [
+      {
+        "id": "a12b98dd-44ff-4a85-b7e6-98456c37fcc8",
+        "owner": "ca06262c-2931-49c8-a32c-87d44452fbea",
+        "text": "Project Juniper's meeting location is the library.",
+        "subject": "mention_1e32c929968d417594c823d03803115f",
+        "kind": "fact",
+        "basis": "stated",
+        "observed": 1790455683.805331,
+        "valid_from": 1790443517.9455416,
+        "valid_until": null,
+        "state": "active",
+        "reason": "supported",
+        "replaces": null,
+        "judgment_version": "memory-evidence-v2.5",
+        "profile_link": 0,
+        "temporal_evidence": {
+          "version": "calendar-reference-v2",
+          "expression": null,
+          "captured_at": 1790443517.9455416,
+          "timezone": "UTC",
+          "resolution": "unresolved",
+          "date": null,
+          "reason": "no_expression",
+          "reported_status": "current",
+          "basis": "stated",
+          "session": "split-subject",
+          "revision": 1
+        },
+        "identity_status": "established",
+        "entity_id": "e419098b-e780-47b6-8886-a3b8138da6ec",
+        "sources": [
+          {
+            "session": "split-subject",
+            "revision": 1,
+            "passage": "p1"
+          },
+          {
+            "session": "split-subject",
+            "revision": 1,
+            "passage": "p2"
+          },
+          {
+            "session": "split-subject",
+            "revision": 1,
+            "passage": "p3"
+          }
+        ]
+      },
+      {
+        "id": "9cbfecbb-4145-4eb1-b1e7-7d18acec181f",
+        "owner": "ca06262c-2931-49c8-a32c-87d44452fbea",
+        "text": "Project Juniper prefers morning meetings.",
+        "subject": "mention_5d492b8afa4c40958e45dc1f4b86b9f5",
+        "kind": "preference",
+        "basis": "stated",
+        "observed": 1790455683.803819,
+        "valid_from": 1790443517.9455416,
+        "valid_until": null,
+        "state": "active",
+        "reason": "supported",
+        "replaces": null,
+        "judgment_version": "memory-evidence-v2.5",
+        "profile_link": 0,
+        "temporal_evidence": {
+          "version": "calendar-reference-v2",
+          "expression": null,
+          "captured_at": 1790443517.9455416,
+          "timezone": "UTC",
+          "resolution": "unresolved",
+          "date": null,
+          "reason": "no_expression",
+          "reported_status": "current",
+          "basis": "stated",
+          "session": "split-subject",
+          "revision": 1
+        },
+        "identity_status": "established",
+        "entity_id": "e419098b-e780-47b6-8886-a3b8138da6ec",
+        "sources": [
+          {
+            "session": "split-subject",
+            "revision": 1,
+            "passage": "p1"
+          },
+          {
+            "session": "split-subject",
+            "revision": 1,
+            "passage": "p2"
+          }
+        ]
+      }
+    ],
+    "unresolved": []
+  },
+  {
+    "case": "correction",
+    "result": {
+      "job": "16ef7745-ef69-4f2d-a4dd-80f77dde80bf",
+      "accepted": 1,
+      "claims": [
+        "2a7c48b3-fb6a-45d6-9fad-962146209ff3"
+      ],
+      "decisions": [
+        {
+          "candidate": 0,
+          "result": "correct"
+        }
+      ]
+    },
+    "rows": [
+      {
+        "id": "2a7c48b3-fb6a-45d6-9fad-962146209ff3",
+        "owner": "ca06262c-2931-49c8-a32c-87d44452fbea",
+        "text": "Project Juniper now meets at the community center instead of the library.",
+        "subject": "mention_05c2312eec47438aa9579cec52bae48b",
+        "kind": "fact",
+        "basis": "stated",
+        "observed": 1790455688.952141,
+        "valid_from": 1790443639.5839324,
+        "valid_until": null,
+        "state": "active",
+        "reason": "identity_supported_correction",
+        "replaces": "a12b98dd-44ff-4a85-b7e6-98456c37fcc8",
+        "judgment_version": "memory-evidence-v2.5",
+        "profile_link": 0,
+        "temporal_evidence": {
+          "version": "calendar-reference-v2",
+          "expression": "now",
+          "captured_at": 1790443639.5839324,
+          "timezone": "UTC",
+          "resolution": "unresolved",
+          "date": null,
+          "reason": "ambiguous_or_unsupported",
+          "reported_status": "current",
+          "basis": "stated",
+          "session": "correction",
+          "revision": 1
+        },
+        "identity_status": "established",
+        "entity_id": "e419098b-e780-47b6-8886-a3b8138da6ec",
+        "sources": [
+          {
+            "session": "correction",
+            "revision": 1,
+            "passage": "p1"
+          }
+        ]
+      },
+      {
+        "id": "a12b98dd-44ff-4a85-b7e6-98456c37fcc8",
+        "owner": "ca06262c-2931-49c8-a32c-87d44452fbea",
+        "text": "Project Juniper's meeting location is the library.",
+        "subject": "mention_1e32c929968d417594c823d03803115f",
+        "kind": "fact",
+        "basis": "stated",
+        "observed": 1790455683.805331,
+        "valid_from": 1790443517.9455416,
+        "valid_until": null,
+        "state": "superseded",
+        "reason": "identity_supported_correction",
+        "replaces": null,
+        "judgment_version": "memory-evidence-v2.5",
+        "profile_link": 0,
+        "temporal_evidence": {
+          "version": "calendar-reference-v2",
+          "expression": null,
+          "captured_at": 1790443517.9455416,
+          "timezone": "UTC",
+          "resolution": "unresolved",
+          "date": null,
+          "reason": "no_expression",
+          "reported_status": "current",
+          "basis": "stated",
+          "session": "split-subject",
+          "revision": 1
+        },
+        "identity_status": "established",
+        "entity_id": "e419098b-e780-47b6-8886-a3b8138da6ec",
+        "sources": [
+          {
+            "session": "split-subject",
+            "revision": 1,
+            "passage": "p1"
+          },
+          {
+            "session": "split-subject",
+            "revision": 1,
+            "passage": "p2"
+          },
+          {
+            "session": "split-subject",
+            "revision": 1,
+            "passage": "p3"
+          }
+        ]
+      },
+      {
+        "id": "9cbfecbb-4145-4eb1-b1e7-7d18acec181f",
+        "owner": "ca06262c-2931-49c8-a32c-87d44452fbea",
+        "text": "Project Juniper prefers morning meetings.",
+        "subject": "mention_5d492b8afa4c40958e45dc1f4b86b9f5",
+        "kind": "preference",
+        "basis": "stated",
+        "observed": 1790455683.803819,
+        "valid_from": 1790443517.9455416,
+        "valid_until": null,
+        "state": "active",
+        "reason": "supported",
+        "replaces": null,
+        "judgment_version": "memory-evidence-v2.5",
+        "profile_link": 0,
+        "temporal_evidence": {
+          "version": "calendar-reference-v2",
+          "expression": null,
+          "captured_at": 1790443517.9455416,
+          "timezone": "UTC",
+          "resolution": "unresolved",
+          "date": null,
+          "reason": "no_expression",
+          "reported_status": "current",
+          "basis": "stated",
+          "session": "split-subject",
+          "revision": 1
+        },
+        "identity_status": "established",
+        "entity_id": "e419098b-e780-47b6-8886-a3b8138da6ec",
+        "sources": [
+          {
+            "session": "split-subject",
+            "revision": 1,
+            "passage": "p1"
+          },
+          {
+            "session": "split-subject",
+            "revision": 1,
+            "passage": "p2"
+          }
+        ]
+      }
+    ],
+    "unresolved": []
+  },
+  {
+    "case": "named-family",
+    "support": {
+      "verdict": "supported",
+      "passages": [
+        "p1",
+        "p2"
+      ]
+    },
+    "metadata": {
+      "modality_0": {
+        "label": "supported",
+        "accepted": true,
+        "classification": "stated",
+        "probability": 1.0,
+        "rubric": "independent-source-v2"
+      },
+      "time_0": {
+        "label": "supported",
+        "accepted": true,
+        "classification": "current",
+        "probability": 1.0,
+        "rubric": "independent-source-v2"
+      }
+    },
+    "accepted": true,
+    "expected": true
+  },
+  {
+    "case": "student-continuity",
+    "support": {
+      "verdict": "supported",
+      "passages": [
+        "p1",
+        "p2"
+      ]
+    },
+    "metadata": {
+      "modality_0": {
+        "label": "supported",
+        "accepted": true,
+        "classification": "stated",
+        "probability": 1.0,
+        "rubric": "independent-source-v2"
+      },
+      "time_0": {
+        "label": "supported",
+        "accepted": true,
+        "classification": "current",
+        "probability": 1.0,
+        "rubric": "independent-source-v2"
+      }
+    },
+    "accepted": true,
+    "expected": true
+  },
+  {
+    "case": "negation",
+    "support": {
+      "verdict": "contradicted",
+      "passages": [
+        "p1"
+      ]
+    },
+    "metadata": null,
+    "accepted": false,
+    "expected": false
+  },
+  {
+    "case": "unknown-owner",
+    "support": {
+      "verdict": "uncertain",
+      "passages": [
+        "p1"
+      ]
+    },
+    "metadata": null,
+    "accepted": false,
+    "expected": false
+  },
+  {
+    "case": "quoted-person",
+    "support": {
+      "verdict": "uncertain",
+      "passages": [
+        "p1",
+        "p2"
+      ]
+    },
+    "metadata": null,
+    "accepted": false,
+    "expected": false
+  },
+  {
+    "case": "future-metadata",
+    "support": {
+      "verdict": "supported",
+      "passages": [
+        "p1"
+      ]
+    },
+    "metadata": {
+      "modality_0": {
+        "label": "supported",
+        "accepted": true,
+        "classification": "stated",
+        "probability": 1.0,
+        "rubric": "independent-source-v2"
+      },
+      "time_0": {
+        "label": "unsupported",
+        "accepted": false,
+        "classification": "future",
+        "probability": 0.0,
+        "rubric": "independent-source-v2"
+      }
+    },
+    "accepted": false,
+    "expected": false
+  }
+]

@@ -16,7 +16,7 @@ from websockets.asyncio.server import serve
 from admission import Admission
 from companion_chat import CompanionChat
 from companion_service import CompanionService
-from hosted import rework_settings, validate_rework_allocations
+from hosted import rework_settings, validate_rework_allocations, independent_verification_setting
 from memory_store import MemoryStore
 from memory_budget import MemoryBudget, reserve_global_allocation
 import profile_budget
@@ -33,6 +33,13 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
         for env in ({'VOICE_ENABLE_COMPANION':'1'},dict(FLAGS,VOICE_ENABLE_MEMORY='0'),
                     dict(FLAGS,VOICE_ENABLE_MEMORY_REWORK='yes'),dict(FLAGS,VOICE_ENABLE_SEMANTIC_INDEX='1')):
             with self.assertRaises(ValueError):rework_settings(env)
+
+    def test_independent_verification_flag_requires_rework(self):
+        self.assertFalse(independent_verification_setting({},True))
+        self.assertTrue(independent_verification_setting({'VOICE_ENABLE_INDEPENDENT_VERIFICATION':'1'},True))
+        for value,rework in [('yes',True),('1',False)]:
+            with self.assertRaises(ValueError):
+                independent_verification_setting({'VOICE_ENABLE_INDEPENDENT_VERIFICATION':value},rework)
 
     async def test_route_requires_enablement_and_authorization_without_stt(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -88,7 +95,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
             with socket.socket() as sock:
                 sock.bind(('127.0.0.1',0));port=sock.getsockname()[1]
             env={k:v for k,v in os.environ.items() if not k.startswith('VOICE_ENABLE_')}
-            env.update(FLAGS,VOICE_ENABLE_ROLLOUT_QA='1',VOICE_DATA_DIR=folder,XAI_API_KEY='unused',OPENAI_API_KEY='unused',TYPESAFE_API_KEY='unused',PORT=str(port))
+            env.update(FLAGS,VOICE_ENABLE_ROLLOUT_QA='1',VOICE_ENABLE_INDEPENDENT_VERIFICATION='1',VOICE_DATA_DIR=folder,XAI_API_KEY='unused',OPENAI_API_KEY='unused',TYPESAFE_API_KEY='unused',PORT=str(port))
             if cache:env.update(VOICE_ENABLE_SEMANTIC_INDEX='1',VOICE_EMBEDDING_CACHE=cache,HF_HUB_OFFLINE='1')
             process=subprocess.Popen([sys.executable,str(Path(__file__).with_name('hosted.py'))],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
             try:

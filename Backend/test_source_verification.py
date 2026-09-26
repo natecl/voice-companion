@@ -15,12 +15,14 @@ ROOT = Path(__file__).parent / 'fixtures'
 
 
 class ContractTests(unittest.TestCase):
-    def test_support_contract_matches_prior_paid_screen(self):
+    def test_support_prompt_matches_prior_screen_with_lower_output_cap(self):
         cases, expected = screen_cases()
         request, bound = verifier.support_request(cases)
         self.assertEqual(request, build(cases)[0])
         self.assertLessEqual(bound, verifier.RESERVATION)
         saved = json.loads((ROOT/'independent-support/sol-screen.json').read_text())
+        self.assertEqual(saved['request']['max_output_tokens'],1800)
+        self.assertEqual(dict(request,max_output_tokens=1800),saved['request'])
         parsed = verifier.parse_support(saved['response']['data'], cases)
         self.assertEqual(len(parsed), 17)
         for key, value in parsed.items():
@@ -38,6 +40,25 @@ class ContractTests(unittest.TestCase):
         data['case_0']=dict(verdict='supported',passages=[])
         with self.assertRaisesRegex(Rejected,'citations'):
             verifier.support_decisions(data,source,[proposal])
+
+    def test_live_citation_expansion_preserves_original_text_and_bounds(self):
+        recorded=json.loads((ROOT/'source-verification/initial-calls.json').read_text())
+        import memory_evidence
+        source=json.loads(recorded[0]['request']['input'])
+        proposals=memory_evidence.parse_recording_extraction(recorded[0]['response']['data'],source)
+        verdict=recorded[1]['response']['data']
+        self.assertFalse(verifier.support_decisions(verdict,source,proposals)['support_1']['accepted'])
+        expanded=verifier.retain_support_evidence(verdict,source,proposals)
+        self.assertTrue(all(d['accepted'] for d in verifier.support_decisions(verdict,source,expanded).values()))
+        self.assertEqual([e['passage'] for e in expanded[1]['evidence']],['p1','p2','p3'])
+        for proposal in expanded:
+            for ref,span in zip(proposal['evidence'],proposal['spans']):
+                passage=next(p for p in source['passages'] if p['id']==ref['passage'])
+                self.assertEqual(ref['quote'],passage['text'][span['start']:span['end']])
+        self.assertEqual(len(proposals[1]['evidence']),2) # no mutation of extraction
+        source=copy.deepcopy(source);source['passages'][1]['text']='x'*2001
+        with self.assertRaisesRegex(Rejected,'invalid_evidence_quote'):
+            verifier.retain_support_evidence(verdict,source,proposals)
 
     def test_metadata_retains_thresholds_and_checks_expression(self):
         row=json.loads((ROOT/'atomic-preference/atomic-v1.json').read_text())[0]
@@ -59,7 +80,40 @@ class ContractTests(unittest.TestCase):
         self.assertFalse(verifier.metadata_decisions(data,request,proposals)['time_0']['accepted'])
 
 
+class BudgetTests(unittest.TestCase):
+    def test_sol_requires_opt_in_and_reserves_full_bound_without_new_credit(self):
+        import sqlite3
+        from profile_budget import ProfileBudget, APPROVAL_ID, ALLOCATION
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'budget.sqlite'
+            from contextlib import closing
+            with closing(sqlite3.connect(path)) as db, db:
+                db.execute('CREATE TABLE profile_allocation(id TEXT, cap INTEGER)')
+                db.execute('INSERT INTO profile_allocation VALUES(?,?)',(APPROVAL_ID,ALLOCATION))
+                db.execute('CREATE TABLE profile_attempt(id TEXT PRIMARY KEY, model TEXT, reserved INTEGER, state TEXT, usage TEXT)')
+            with self.assertRaisesRegex(Rejected,'unapproved_profile_model'):
+                ProfileBudget(path).reserve('disabled',verifier.MODEL)
+            budget=ProfileBudget(path,independent_source_verification=True)
+            for i in range(ALLOCATION//verifier.RESERVATION):budget.reserve(str(i),verifier.MODEL)
+            self.assertEqual(budget.cap,ALLOCATION)
+            self.assertEqual(budget.report()[0]['reserved_microusd'],ALLOCATION)
+            with self.assertRaisesRegex(Rejected,'profile_budget_limit'):budget.reserve('overflow',verifier.MODEL)
+            with self.assertRaisesRegex(Rejected,'paid_retry'):budget.reserve('0',verifier.MODEL)
+
+
 class WriterTests(unittest.IsolatedAsyncioTestCase):
+    async def test_exact_live_responses_replay_through_writer_without_network(self):
+        import contextlib
+        import io
+        from evaluate_source_verification import run
+        with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(io.StringIO()):
+            directory=Path(folder)/'replay'
+            await run(directory,'false',[ROOT/'source-verification/initial-calls.json',
+                                         ROOT/'source-verification/verified-calls.json'])
+            calls=json.loads((directory/'calls.json').read_text())
+            self.assertEqual(len(calls),17)
+            self.assertFalse(any(c['paid'] for c in calls))
+
     async def run_candidate(self, verdict='supported', delete_during_verification=False):
         recorded=json.loads((ROOT/'subject-continuity/calls.json').read_text())
         source=json.loads(recorded[0]['request']['input']);source.pop('origin',None)
@@ -118,6 +172,11 @@ class WriterTests(unittest.IsolatedAsyncioTestCase):
         await self.run_candidate(delete_during_verification=True)
 
     async def test_resumed_chunk_cannot_silently_reuse_old_verifier(self):
+        for rubric,enabled in [('evidence-judgments-v17',True),('independent-source-v1',False),
+                               (verifier.VERSION,False),('independent-source-v1',True)]:
+            await self.assert_cached_contract_rejected(rubric,enabled)
+
+    async def assert_cached_contract_rejected(self,rubric,enabled):
         import memory_evidence_chunks
         recorded=json.loads((ROOT/'subject-continuity/calls.json').read_text())
         source=json.loads(recorded[0]['request']['input']);source.pop('origin',None)
@@ -132,9 +191,9 @@ class WriterTests(unittest.IsolatedAsyncioTestCase):
             chunks=store.chunk_plan(job,planner=memory_evidence_chunks)
             # Persist the previous contract's completed evidence, then simulate interruption.
             store.complete_chunk(job,chunks[0]['id'],[dict(proposal=recorded[0]['response']['data']['memories'][0],
-                checks=dict(support=dict(label='supported',accepted=False,rubric='evidence-judgments-v17')))])
+                checks=dict(support=dict(label='supported',accepted=False,rubric=rubric)))])
             store.finish_failed(job,'learning_interrupted');store.resume_chunk_job(owner,job['id'])
-            writer=EvidenceWriter(store,NoCalls(),None,chunking=True,independent_source_verification=True)
+            writer=EvidenceWriter(store,NoCalls(),None,chunking=True,independent_source_verification=enabled)
             with self.assertRaisesRegex(Rejected,'verification_contract_changed'):
                 await writer.process_next(owner)
             self.assertEqual(store.search(owner,historical=True),[])

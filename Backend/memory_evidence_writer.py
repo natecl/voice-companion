@@ -49,7 +49,8 @@ class EvidenceWriter:
                         part=chunk['claims']
                         if part is not None:
                             independent=self.independent_source_verification and self.luna_identity and not personal(chunk['source'])
-                            if any((entry['checks']['support'].get('rubric')==memory_source_verification.VERSION)!=independent for entry in part):
+                            expected=memory_source_verification.VERSION if independent else memory_judgments.VERSION
+                            if any(entry['checks']['support'].get('rubric')!=expected for entry in part):
                                 raise Rejected('verification_contract_changed')
                         if part is None:
                             part=await self.extract_verified(job,chunk['source'],chunk['id']+':')
@@ -136,6 +137,7 @@ class EvidenceWriter:
             for start,end,request in bounded_batches(proposals,build_support,'source_verification_too_large'):
                 response=await metered(self.store,self.budget,job,
                     prefix+f'{memory_source_verification.VERSION}:support:{start}',request,self.models.extract)
+                proposals[start:end]=memory_source_verification.retain_support_evidence(response['data'],source,proposals[start:end])
                 for key,value in memory_source_verification.support_decisions(response['data'],source,proposals[start:end]).items():
                     verified[f'support_{start+int(key.rsplit("_",1)[1])}']=value
             for start,end,request in bounded_batches(proposals,
