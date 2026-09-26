@@ -12,6 +12,10 @@ An iPhone-first companion for everyday conversations, with Mac support. Working 
 
 [Engineering principles and agent feedback loop](docs/engineering-principles.md) is the canonical authority for how we select tools, design, implement, debug, test, review, and deliver this product. Product direction and engineering principles are complementary sources of truth. Provisional technology choices still require evidence.
 
+## Feature context
+
+Start with the [feature map](docs/features/README.md) to locate implemented behavior, code boundaries, targeted QA and [learned lessons](docs/features/lessons.md). It is a navigation aid; the canonical product and engineering documents retain authority.
+
 ## Knowledge documents
 
 - [Product source of truth and one-liner](docs/product-source-of-truth.md)

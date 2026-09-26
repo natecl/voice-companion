@@ -2,6 +2,8 @@
 
 Read README.md, docs/product-source-of-truth.md, docs/v0-scope.md, and docs/engineering-principles.md before proposing or implementing product changes.
 
+- Use docs/features/README.md to find affected modules, contracts, QA evidence and learned lessons. Update the relevant map when a checkpoint changes behavior, ownership, verification status or a material limitation; maps do not override canonical guidance.
+
 - Treat docs/engineering-principles.md as the canonical engineering source of truth for all engineering work, including stack selection, architecture, implementation, debugging, testing, review, and delivery. Supporting research cannot override it. Record explicit founder revisions there and keep dependent guidance aligned.
 - Preserve the exact agreed one-liner.
 - Product direction is iPhone-first: an everyday consumer companion is the refined New in Proven, Better, New. Let iPhone use cases lead priorities and design; retain Mac support and shared modules. Do not reinterpret this as feature parity at every checkpoint, continuous recording authorization, or implemented background capture.
