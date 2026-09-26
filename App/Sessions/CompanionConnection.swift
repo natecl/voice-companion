@@ -96,10 +96,11 @@ enum CompanionCommand: Encodable {
 }
 
 enum CompanionFailure: LocalizedError {
-    case invalidRequest, invalidResponse, requestConflict
+    case invalidRequest, invalidResponse, requestConflict, unavailable
     var errorDescription: String? {
         switch self {
         case .invalidRequest: "This chat request could not be sent."
+        case .unavailable: "The companion connection could not finish. Refresh the chat to check what was saved."
         case .invalidResponse: "The companion connection ended without a verified saved answer. Reload the chat to check its status."
         case .requestConflict: "This question was already sent with different context. Reload the chat before asking again."
         }
@@ -118,7 +119,9 @@ struct CompanionEventSequence {
             case "question_id_conflict": throw CompanionFailure.requestConflict
             case "chat_busy": throw AskFailure.busy
             case "companion_context_too_large": throw AskFailure.contextTooLarge
-            default: throw AskFailure.server(event.message)
+            case "invalid_question", "context_too_large", "invalid_references", "daily_limit", "budget_limit", "busy", "unauthorized", "memory_context_changed":
+                throw AskFailure.server(event.message)
+            default: throw CompanionFailure.unavailable
             }
         }
         switch command {
@@ -219,7 +222,7 @@ final class CompanionSocketConnection: CompanionConnection {
             if Task.isCancelled { throw CancellationError() }
             if (socket.response as? HTTPURLResponse)?.statusCode == 401 { throw AskFailure.accessExpired }
             if error is AskFailure || error is CompanionFailure || error is CancellationError { throw error }
-            throw AskFailure.unavailable
+            throw CompanionFailure.unavailable
         }
     }
     func cancel() {

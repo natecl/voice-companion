@@ -84,6 +84,28 @@ final class CompanionConnectionTests: XCTestCase {
         let liveTurn = try XCTUnwrap(events.first?.turns?.first(where: { $0.id == liveQuestion.question_id }))
         XCTAssertNotNil(liveTurn.citations.first?.source.snapshot_id)
         XCTAssertEqual(liveTurn.citations.first?.source.session_id, capture.id.uuidString)
+        let owner = try XCTUnwrap(config.memoryOwnerID)
+        let controller = CompanionController(owner: owner, makeConnection: { CompanionSocketConnection(configuration: { config }) })
+        controller.draft = "A new companion question"
+        controller.send()
+        controller.draft = "An unsent follow-up"
+        for _ in 0..<500 {
+            if !controller.isBusy { break }
+            try await Task.sleep(for: .milliseconds(10))
+        }
+        XCTAssertFalse(controller.isBusy)
+        XCTAssertNil(controller.notice)
+        XCTAssertNil(controller.response)
+        XCTAssertEqual(controller.turns.last?.question, "A new companion question")
+        XCTAssertEqual(controller.draft, "An unsent follow-up")
+        let restored = CompanionController(owner: owner, makeConnection: { CompanionSocketConnection(configuration: { config }) })
+        restored.refresh()
+        for _ in 0..<500 {
+            if !restored.isBusy { break }
+            try await Task.sleep(for: .milliseconds(10))
+        }
+        XCTAssertEqual(restored.turns.map(\.id), controller.turns.map(\.id))
+        print("Companion controller QA: send -> durable history -> draft preserved -> new controller restored")
         let stalled = try CompanionQuestion(question: "Wait forever", memory: false)
         let task = Task {
             try await reopened.run(.ask(stalled)) { event in
