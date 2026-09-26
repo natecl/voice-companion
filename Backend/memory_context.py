@@ -4,6 +4,7 @@ import json
 from admission import Rejected
 import memory_identity
 import memory_time
+import memory_related
 
 
 def hydrate(store, db, owner, ref, now):
@@ -25,6 +26,7 @@ def hydrate(store, db, owner, ref, now):
         store._qualify_time(claim, now)
         store._qualify_pending(db, owner, claim)
         claim.update(memory_identity.claim_identity(db, owner, claim['id']))
+        claim['related_claims'] = memory_related.relationships(db, owner, claim['id'])
     return dict(session_id=source['session_id'], revision=source['revision'], passage_id=passage['id'],
                 captured_at=source['captured_at'], timezone=source['timezone'],
                 origin=source.get('origin', 'recording'), start=passage['start'],
