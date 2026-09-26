@@ -79,7 +79,10 @@ class CompanionChat:
     def _validate_turn(self,db,owner,row):
         if row['state']!='complete':return False
         if not all(self._valid_dependency(db,owner,dep) for dep in self._dependencies(db,owner,row['id'])):
-            scrub(db,owner,row['id']);return False
+            # Qualification changes retire context, not the visible conversation.
+            # Keep dependencies so a later source deletion still scrubs this text.
+            db.execute("UPDATE companion_turn SET state='outdated' WHERE owner=? AND id=?",(owner,row['id']))
+            return False
         return True
 
     def complete(self,owner,question_id,answer,*,packets=(),history_ids=(),citations=()):
