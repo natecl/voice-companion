@@ -11,6 +11,8 @@ PER_CALL = 10_000
 MODELS = ('gpt-6-luna', 'jev-1.13.0')
 REWORK_APPROVAL_ID = 'memory-rework-additional-2026-09-25-100'
 REWORK_ALLOWANCE = 1_000_000
+CONSOLIDATION_APPROVAL_ID = 'memory-consolidation-additional-2026-09-26-020'
+CONSOLIDATION_ALLOWANCE = 200_000
 
 
 def provision(global_path, memory_path):
@@ -45,7 +47,7 @@ def provision(global_path, memory_path):
 
 
 class ProfileBudget:
-    def __init__(self, path, *, include_rework_allowance=False):
+    def __init__(self, path, *, include_rework_allowance=False, include_consolidation_allowance=False):
         self.path = Path(path)
         self.cap = ALLOCATION
         if not self.path.exists(): raise ValueError('Provision the canonical profile allocation first')
@@ -56,6 +58,12 @@ class ProfileBudget:
                 if db.execute('SELECT id,cap FROM profile_rework_allowance').fetchall() != [(REWORK_APPROVAL_ID,REWORK_ALLOWANCE)]:
                     raise ValueError('Explicit rework allowance required')
                 self.cap += REWORK_ALLOWANCE
+            if include_consolidation_allowance:
+                if not include_rework_allowance:
+                    raise ValueError('Rework allowance required first')
+                if db.execute('SELECT id,cap FROM profile_consolidation_allowance').fetchall() != [(CONSOLIDATION_APPROVAL_ID,CONSOLIDATION_ALLOWANCE)]:
+                    raise ValueError('Explicit consolidation allowance required')
+                self.cap += CONSOLIDATION_ALLOWANCE
 
     def reserve(self, key, model):
         if model not in MODELS: raise Rejected('unapproved_profile_model')
@@ -110,3 +118,34 @@ def provision_rework_allowance(global_path, memory_path):
         if db.execute('SELECT id,cap FROM profile_rework_allowance').fetchall()!=[(REWORK_APPROVAL_ID,REWORK_ALLOWANCE)]:
             raise ValueError('Rework approval conflicts')
     return dict(approval_id=REWORK_APPROVAL_ID,total_cap_microusd=ALLOCATION+REWORK_ALLOWANCE)
+
+
+def provision_consolidation_allowance(global_path, memory_path):
+    """Explicit founder-approved additional $0.20; idempotent and never called at startup."""
+    ProfileBudget(memory_path,include_rework_allowance=True) # Require the existing canonical ledger.
+    with database(global_path, isolation_level=None, timeout=2) as db:
+        db.execute('BEGIN IMMEDIATE')
+        try:
+            existing=db.execute('SELECT category,reserved FROM request WHERE id=?',(CONSOLIDATION_APPROVAL_ID,)).fetchone()
+            if existing:
+                if existing!=('ask',CONSOLIDATION_ALLOWANCE):raise ValueError('Rework approval conflicts')
+            else:
+                cap=db.execute('SELECT cap FROM budget WHERE id=1').fetchone()[0]
+                used=db.execute('SELECT coalesce(sum(reserved),0) FROM request').fetchone()[0]
+                category_cap=db.execute("SELECT cap FROM policy WHERE category='ask'").fetchone()[0]
+                category_used=db.execute("SELECT coalesce(sum(reserved),0) FROM request WHERE category='ask'").fetchone()[0]
+                if used+CONSOLIDATION_ALLOWANCE>cap or category_used+CONSOLIDATION_ALLOWANCE>category_cap:raise Rejected('budget_limit')
+                credential=db.execute('SELECT id FROM credential ORDER BY rowid DESC LIMIT 1').fetchone()
+                if credential is None:raise Rejected('no_internal_credential')
+                db.execute('INSERT INTO request VALUES(?,?,?,?,?,?)',
+                    (CONSOLIDATION_APPROVAL_ID,credential[0],'ask',time.time(),CONSOLIDATION_ALLOWANCE,'completed'))
+            db.execute('COMMIT')
+        except BaseException:
+            db.execute('ROLLBACK');raise
+    # Global reservation precedes local exposure; interruption cannot duplicate either.
+    with database(memory_path) as db:
+        db.execute('CREATE TABLE IF NOT EXISTS profile_consolidation_allowance(id TEXT PRIMARY KEY,cap INTEGER NOT NULL)')
+        db.execute('INSERT OR IGNORE INTO profile_consolidation_allowance VALUES(?,?)',(CONSOLIDATION_APPROVAL_ID,CONSOLIDATION_ALLOWANCE))
+        if db.execute('SELECT id,cap FROM profile_consolidation_allowance').fetchall()!=[(CONSOLIDATION_APPROVAL_ID,CONSOLIDATION_ALLOWANCE)]:
+            raise ValueError('Rework approval conflicts')
+    return dict(approval_id=CONSOLIDATION_APPROVAL_ID,total_cap_microusd=ALLOCATION+REWORK_ALLOWANCE+CONSOLIDATION_ALLOWANCE)

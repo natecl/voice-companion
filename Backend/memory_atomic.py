@@ -20,6 +20,23 @@ COMMIT;
 '''
 
 
+MULTI_SOURCE_SCHEMA = """
+BEGIN IMMEDIATE;
+ALTER TABLE memory_fact_evidence RENAME TO memory_fact_evidence_single;
+DROP INDEX fact_evidence_source;
+CREATE TABLE memory_fact_evidence(
+ claim TEXT NOT NULL REFERENCES claim(id), owner TEXT NOT NULL,
+ session TEXT NOT NULL, revision INTEGER NOT NULL, proposal TEXT NOT NULL, judgments TEXT NOT NULL,
+ PRIMARY KEY(claim,owner,session,revision),
+ FOREIGN KEY(owner,session) REFERENCES source(owner,session));
+INSERT INTO memory_fact_evidence SELECT * FROM memory_fact_evidence_single;
+DROP TABLE memory_fact_evidence_single;
+CREATE INDEX fact_evidence_source ON memory_fact_evidence(owner,session);
+PRAGMA user_version=9;
+COMMIT;
+"""
+
+
 def snapshot(db,owner,claim):
     row=db.execute("SELECT * FROM claim WHERE owner=? AND id=? AND state!='invalid'",(owner,claim)).fetchone()
     if row is None:raise Rejected('stale_relation_target')
@@ -49,14 +66,14 @@ def commit(store,job,items):
             raw={key:proposal[key] for key in memory_evidence.FIELDS}
             if memory_evidence.parse(dict(memories=[raw]),source,exact_spans=proposal.get('spans'))[0]!=proposal:raise Rejected('invalid_evidence_extraction')
             action=item['action']
-            if action not in ('new','unresolved','correct'):raise Rejected('invalid_relation')
+            if action not in ('new','unresolved','correct','duplicate'):raise Rejected('invalid_relation')
             target=item.get('target')
             target_item=item.get('target_item')
             if target_item is not None:
                 if target is not None or type(target_item) is not int or not 0<=target_item<len(ids):raise Rejected('invalid_batch_target')
                 target=ids[target_item]
-            if action=='correct' and (not target or (target_item is None and target not in item.get('snapshots',{}))):raise Rejected('missing_correction_snapshot')
-            if action!='correct' and target is not None:raise Rejected('invalid_relation')
+            if action in ('correct','duplicate') and (not target or (target_item is None and target not in item.get('snapshots',{}))):raise Rejected('missing_correction_snapshot')
+            if action not in ('correct','duplicate') and target is not None:raise Rejected('invalid_relation')
             identified=item.get('identity_verified',True)
             subject=None if not identified else 'user' if proposal['scope']=='author' else ('mention_'+uuid.uuid4().hex if proposal['scope']!='unresolved' else None)
             # The timestamp is the first source observation of applicability, never an invented event date.
@@ -73,13 +90,25 @@ def commit(store,job,items):
                 valid_until=memory_expiry.verified_boundary(source,proposal,item.get('expiry')),
                 judgment_version=memory_evidence.VERSION,relation=state_action,
                 profile_link=item.get('profile_verified',True) and identified and proposal['scope']=='related_to_author')
+            if action=='duplicate':
+                previous=db.execute('SELECT * FROM claim WHERE owner=? AND id=?',(owner,target)).fetchone()
+                if (target_item is not None or previous is None or previous['state']!='active'
+                        or previous['kind']!=proposal['kind'] or previous['basis']!='stated'
+                        or previous['valid_until'] is not None or previous['valid_from'] is None
+                        or not current or proposal['time']['expression'] is not None
+                        or proposal['kind'] not in ('fact','preference') or proposal['basis']!='stated'
+                        or not identified or item.get('anchor') is None
+                        or db.execute('SELECT 1 FROM support WHERE claim=? AND session=?',(target,session)).fetchone()):
+                    raise Rejected('incompatible_duplicate')
+                claim.update(relation='duplicate',target=target,subject=previous['subject'],
+                             valid_from=previous['valid_from'],profile_link=bool(previous['profile_link']))
             possible=list(item.get('possible_targets',[]))
             if any(t not in item.get('snapshots',{}) for t in possible):raise Rejected('missing_correction_snapshot')
             for pending in item.get('possible_target_items',[]):
                 if type(pending) is not int or not 0<=pending<len(ids):raise Rejected('invalid_batch_target')
                 possible.append(ids[pending])
             if possible and action!='unresolved':raise Rejected('invalid_relation')
-            if target:claim['proposed_targets']=[target]
+            if target and action=='correct':claim['proposed_targets']=[target]
             elif possible:claim['proposed_targets']=possible
             identifier=store._write_claim(db,claim,owner,session,revision,{p['id'] for p in source['passages']})
             memory_identity.add_mentions(db,owner,identifier,session,revision,claim['passages'],proposal['mention'])
@@ -96,11 +125,13 @@ def commit(store,job,items):
                 anchor_refs=item.get('anchor_refs',[])
                 first=anchor
                 evidence=refs+anchor_refs
-                for mention in db.execute("SELECT id FROM memory_mention WHERE owner=? AND claim=? ORDER BY id",(owner,identifier)).fetchall():
+                for mention in db.execute("SELECT id FROM memory_mention WHERE owner=? AND claim=? AND session=? AND revision=? ORDER BY id",(owner,identifier,session,revision)).fetchall():
                     link=memory_identity.link_in_transaction(db,owner,mention['id'],evidence,rubric=item['rubric'],anchor=first)
                     if first is None:first=link['id']
             db.execute('INSERT INTO memory_fact_evidence VALUES(?,?,?,?,?,?)',
                        (identifier,owner,session,revision,json.dumps(proposal),json.dumps(dict(item['judgments'],current_change=current_change,expiry=item.get('expiry')))))
+            if action=='duplicate':
+                db.execute("UPDATE claim SET reason='consolidated_evidence' WHERE id=?",(identifier,))
             if action=='correct':
                 context=memory_transitions.context(db,owner,identifier,target)
                 memory_transitions.apply_in_transaction(db,owner,identifier,target,evidence_token=context['token'],rubric=item['rubric'],now=store.clock())

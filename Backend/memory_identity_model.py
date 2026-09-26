@@ -44,3 +44,15 @@ def decisions(data,requested):
         result[key]=dict(label=value['label'],accepted=value['label']!='uncertain',evidence=value,
                          policy='identity',rubric=VERSION,model=LUNA)
     return result
+
+
+def contextual_request(pairs):
+    """Preserve neighboring source words that can establish or deny continuity."""
+    evidence={key:pair_evidence(pair,'identity') for key,pair in pairs.items()}
+    for key,pair in pairs.items():
+        incoming=pair['incoming'];proposal=incoming.get('proposal',{})
+        passages={p['id']:p['text'] for p in incoming['source']['passages']}
+        spans=proposal.get('spans',[])
+        if spans:
+            evidence[key]['incoming']['excerpts']=[passages[s['passage']][max(0,s['start']-200):s['end']+200] for s in spans]
+    return evidence_request(evidence)

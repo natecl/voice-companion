@@ -15,9 +15,10 @@ from memory_writer import bounded_batches
 
 
 class EvidenceWriter:
-    def __init__(self,store,models,budget,*,luna_identity=True,chunking=False,semantic_boundaries=False,expiry=False):
+    def __init__(self,store,models,budget,*,luna_identity=True,chunking=False,semantic_boundaries=False,expiry=False,consolidation=False):
         self.store,self.models,self.budget=store,models,budget
         self.lock=asyncio.Lock()
+        self.consolidation=consolidation
         self.expiry=expiry
         self.luna_identity=luna_identity
         self.chunking,self.semantic_boundaries=chunking,semantic_boundaries
@@ -70,7 +71,7 @@ class EvidenceWriter:
                         for role in ('identity','relation'):
                             entries=list(pairs.items())
                             luna=role=='identity' and self.luna_identity
-                            build=memory_identity_model.request if luna else lambda pairs:memory_judgments.pair_questions(pairs,role=role)
+                            build=(memory_identity_model.contextual_request if self.consolidation else memory_identity_model.request) if luna else lambda pairs:memory_judgments.pair_questions(pairs,role=role)
                             for begin,end,request in bounded_batches(entries,lambda a,b:build(dict(entries[a:b])),'memory_identity_too_large' if luna else 'memory_judgment_too_large'):
                                 response=await metered(self.store,self.budget,job,f'evidence-{role}:{index}:{begin}',request,self.models.extract if luna else self.models.judge)
                                 parsed=memory_identity_model.decisions(response['data'],request) if luna else memory_judgments.decisions(response['data'],request,role)
@@ -91,6 +92,22 @@ class EvidenceWriter:
                         if requested is not None:
                             response=await metered(self.store,self.budget,job,f'expiry:{memory_expiry.VERSION}:{index}',requested,self.models.judge)
                             item['expiry']=memory_expiry.decision(response['data'],requested)
+                    if self.consolidation and item['action']=='unresolved':
+                        duplicates=[c for key,c in zip(pairs,old) if identity[key]['accepted'] and identity[key]['label']=='same'
+                            and relations[key]['accepted'] and relations[key]['label']=='duplicate']
+                        if (len(old)==len(duplicates)==1 and not pool['truncated'] and item['identity_verified']
+                                and item.get('anchor') is not None and 'pending_index' not in duplicates[0]
+                                and not item['possible_targets'] and not item['possible_target_items']
+                                and p['kind'] in ('fact','preference') and p['basis']=='stated'
+                                and p['change']['kind'] in ('none','addition')
+                                and p['time']==dict(status='current',expression=None)):
+                            prior=duplicates[0]
+                            previous=prior.get('proposal')
+                            if (previous and previous['time']==p['time'] and prior['kind']==p['kind']
+                                    and prior['basis']=='stated' and prior['state']=='active'
+                                    and prior.get('valid_until') is None and prior['valid_from'] is not None
+                                    and not any(e['ref']['session']==source['session_id'] for e in prior['evidence'])):
+                                item.update(action='duplicate',target=prior['id'])
                     item['_entity']=item.get('_entity',f'batch_{len(items)}')
                     items.append(item);audit.append(dict(candidate=index,result=item['action']))
                 ids=await asyncio.to_thread(memory_atomic.commit,self.store,job,items)

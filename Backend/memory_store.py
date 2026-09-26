@@ -15,7 +15,7 @@ import memory_chunks
 import memory_atomic
 import memory_time
 
-VERSION = 8
+VERSION = 9
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -75,7 +75,7 @@ class MemoryStore:
         self.personal_learning = personal_learning
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, VERSION):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -151,6 +151,8 @@ class MemoryStore:
                 """)
             if version < 8:
                 db.executescript(memory_atomic.SCHEMA)
+            if version < 9:
+                db.executescript(memory_atomic.MULTI_SOURCE_SCHEMA)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)
@@ -204,6 +206,9 @@ class MemoryStore:
         # Unsupported content is scrubbed; IDs/state remain for stale-write diagnostics.
         db.execute("UPDATE claim SET state='invalid',reason='source_changed',text=NULL,subject=NULL WHERE owner=? AND NOT EXISTS(SELECT 1 FROM support WHERE support.claim=claim.id)", (owner,))
         db.execute("DELETE FROM claim_relation_proposal WHERE claim IN (SELECT id FROM claim WHERE owner=? AND state='invalid') OR target IN (SELECT id FROM claim WHERE owner=? AND state='invalid')", (owner, owner))
+        for row in db.execute("SELECT id FROM claim WHERE owner=? AND reason='consolidated_evidence' AND state='active'",(owner,)).fetchall():
+            if memory_identity.claim_identity(db,owner,row['id'])['identity_status']!='established':
+                db.execute("UPDATE claim SET state='unresolved',reason='consolidated_identity_changed' WHERE id=?",(row['id'],))
         memory_transitions.reopen_invalid(db, owner)
         db.execute("UPDATE job SET state='obsolete',lease=NULL WHERE owner=? AND session=?", (owner, session))
 
@@ -458,7 +463,7 @@ class MemoryStore:
         deleting the pending source removes that uncertainty, not a proven correction.
         """
         if item['state']!='active':return
-        pending=[r[0] for r in db.execute("""SELECT p.claim FROM claim_relation_proposal p
+        pending=[r[0] for r in db.execute("""SELECT DISTINCT p.claim FROM claim_relation_proposal p
             JOIN claim c ON c.id=p.claim JOIN memory_fact_evidence e ON e.claim=c.id
             WHERE p.target=? AND c.owner=? AND c.state='unresolved' ORDER BY p.claim""",(item['id'],owner))]
         if pending:

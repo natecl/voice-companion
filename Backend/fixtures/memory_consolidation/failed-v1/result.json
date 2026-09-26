@@ -1,0 +1,199 @@
+{
+  "sources": [
+    {
+      "session_id": "first",
+      "revision": 1,
+      "origin": "personal_text",
+      "captured_at": 1790424000.0,
+      "timezone": "America/New_York",
+      "completed": true,
+      "passages": [
+        {
+          "id": "p1",
+          "start": 0.0,
+          "duration": 1.0,
+          "speakers": [],
+          "text": "My daughter Maya enjoys swimming."
+        }
+      ]
+    },
+    {
+      "session_id": "repeat",
+      "revision": 1,
+      "origin": "personal_text",
+      "captured_at": 1790424001.0,
+      "timezone": "America/New_York",
+      "completed": true,
+      "passages": [
+        {
+          "id": "p1",
+          "start": 0.0,
+          "duration": 1.0,
+          "speakers": [],
+          "text": "To repeat what I told you before, my daughter Maya enjoys swimming."
+        }
+      ]
+    }
+  ],
+  "snapshots": [
+    {
+      "name": "first",
+      "result": {
+        "job": "da18a924-b2c6-4b5f-aaf7-17d1d50b5de6",
+        "accepted": 1,
+        "claims": [
+          "5abd33e1-c1d8-4f67-b146-d73d4bcca2c0"
+        ],
+        "decisions": [
+          {
+            "candidate": 0,
+            "result": "new"
+          }
+        ]
+      },
+      "rows": [
+        {
+          "id": "5abd33e1-c1d8-4f67-b146-d73d4bcca2c0",
+          "owner": "dd09a8a6-8a00-4b8b-8c0e-f0f72c044bb7",
+          "text": "Maya enjoys swimming.",
+          "subject": "mention_b46a85e6f8f14d3ca8e34f4aed888d23",
+          "kind": "preference",
+          "basis": "stated",
+          "observed": 1790424100.0,
+          "valid_from": 1790424000.0,
+          "valid_until": null,
+          "state": "active",
+          "reason": "supported",
+          "replaces": null,
+          "judgment_version": "memory-evidence-v2.5",
+          "profile_link": 1,
+          "temporal_evidence": {
+            "version": "calendar-reference-v2",
+            "expression": null,
+            "captured_at": 1790424000.0,
+            "timezone": "America/New_York",
+            "resolution": "unresolved",
+            "date": null,
+            "reason": "no_expression",
+            "reported_status": "current",
+            "basis": "stated",
+            "session": "first",
+            "revision": 1
+          },
+          "identity_status": "established",
+          "entity_id": "e28e104f-3e72-42ec-bc77-f9264e80179b",
+          "sources": [
+            {
+              "session": "first",
+              "revision": 1,
+              "passage": "p1"
+            }
+          ]
+        }
+      ],
+      "unresolved": []
+    },
+    {
+      "name": "repeat",
+      "result": {
+        "job": "589f566b-a5a3-4e4a-bbd1-1fa70b8ed87b",
+        "accepted": 1,
+        "claims": [
+          "3adcfee8-d8fa-4381-8aa3-046d2f6c63d8"
+        ],
+        "decisions": [
+          {
+            "candidate": 0,
+            "result": "unresolved"
+          }
+        ]
+      },
+      "rows": [
+        {
+          "id": "5abd33e1-c1d8-4f67-b146-d73d4bcca2c0",
+          "owner": "dd09a8a6-8a00-4b8b-8c0e-f0f72c044bb7",
+          "text": "Maya enjoys swimming.",
+          "subject": "mention_b46a85e6f8f14d3ca8e34f4aed888d23",
+          "kind": "preference",
+          "basis": "stated",
+          "observed": 1790424100.0,
+          "valid_from": 1790424000.0,
+          "valid_until": null,
+          "state": "active",
+          "reason": "supported",
+          "replaces": null,
+          "judgment_version": "memory-evidence-v2.5",
+          "profile_link": 1,
+          "temporal_evidence": {
+            "version": "calendar-reference-v2",
+            "expression": null,
+            "captured_at": 1790424000.0,
+            "timezone": "America/New_York",
+            "resolution": "unresolved",
+            "date": null,
+            "reason": "no_expression",
+            "reported_status": "current",
+            "basis": "stated",
+            "session": "first",
+            "revision": 1
+          },
+          "identity_status": "established",
+          "entity_id": "e28e104f-3e72-42ec-bc77-f9264e80179b",
+          "sources": [
+            {
+              "session": "first",
+              "revision": 1,
+              "passage": "p1"
+            }
+          ]
+        }
+      ],
+      "unresolved": [
+        {
+          "id": "3adcfee8-d8fa-4381-8aa3-046d2f6c63d8",
+          "owner": "dd09a8a6-8a00-4b8b-8c0e-f0f72c044bb7",
+          "text": "Maya enjoys swimming.",
+          "subject": "mention_c2fa3a7cfcbd467ca795c4d73ede43bd",
+          "kind": "preference",
+          "basis": "stated",
+          "observed": 1790424100.0,
+          "valid_from": 1790424001.0,
+          "valid_until": null,
+          "state": "unresolved",
+          "reason": "relation_unresolved",
+          "replaces": null,
+          "judgment_version": "memory-evidence-v2.5",
+          "profile_link": 1,
+          "proposed_targets": [],
+          "temporal_evidence": {
+            "version": "calendar-reference-v2",
+            "expression": null,
+            "captured_at": 1790424001.0,
+            "timezone": "America/New_York",
+            "resolution": "unresolved",
+            "date": null,
+            "reason": "no_expression",
+            "reported_status": "current",
+            "basis": "stated",
+            "session": "repeat",
+            "revision": 1
+          },
+          "identity_status": "established",
+          "entity_id": "9c6f9441-4078-4fd0-be5a-c3d9a602830d",
+          "sources": [
+            {
+              "session": "repeat",
+              "revision": 1,
+              "passage": "p1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "first": true,
+    "repeat": false,
+    "two_sources": false
+  }
+}
