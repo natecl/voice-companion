@@ -67,8 +67,18 @@ class EvidenceWriter:
                 items=[];audit=[]
                 for index,part in enumerate(parts):
                     p,checks=part['proposal'],part['checks']
-                    if not all(checks[a]['accepted'] and checks[a]['label']=='supported' for a in ('support','modality','time')):
+                    if not all(checks[a]['accepted'] and checks[a]['label']=='supported' for a in ('support','modality')):
                         audit.append(dict(candidate=index,result='rejected',checks=checks));continue
+                    if not (checks['time']['accepted'] and checks['time']['label']=='supported'):
+                        # Preserve independently supported undated facts without promoting
+                        # an unverified temporal classification to current knowledge.
+                        # Explicit date expressions still require their existing verification.
+                        if (checks['time'].get('rubric')!=memory_source_verification.VERSION
+                                or p['time']['expression'] is not None):
+                            audit.append(dict(candidate=index,result='rejected',checks=checks));continue
+                        checks=dict(checks,time=dict(checks['time'],
+                            disposition='retain_time_unresolved',proposed_time=dict(p['time'])))
+                        p=dict(p,time=dict(status='uncertain',expression=None))
                     pool=await asyncio.to_thread(memory_candidates.related,self.store,owner,p)
                     pool['candidates'].extend(self.pending(source,items,p))
                     old=pool['candidates']
@@ -219,7 +229,7 @@ class EvidenceWriter:
             else:item['target']=target['id']
         elif unclear or (not replacements and proposal['change']['kind'] in ('correction','uncertain')):
             item['action']='unresolved'
-        if not item['identity_verified']:item['action']='unresolved'
+        if not item['identity_verified'] or proposal['time']['status']=='uncertain':item['action']='unresolved'
         if item['action']!='correct':item.pop('current_change',None)
         if item['action']!='unresolved' or checks['subject']['label']=='wrong' or (proposal['scope']=='author' and not attributed):
             item['possible_targets']=[]

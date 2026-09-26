@@ -23,6 +23,9 @@ Local evidence: ignored `work/retention-rollout/` contains service/deploy metada
 
 ## Remaining physical acceptance
 
+Update: the founder approved one temporary recording and one Ask attempt and was ready. Both grants were applied without changing spending caps. The recording completed, but temporal verification discarded the supported Cedar fact; deletion and Ask were paused. See [the diagnosed failure and local fix](uncertain-memory-time.md). Physical acceptance remains incomplete.
+
+
 Use one short fictional recording, wait until its learned memory is confirmed, delete that recording, ask once about the remembered fact, then reopen the app and inspect the saved answer and unavailable-recording label. The earlier real-provider checks and simulator screenshot remain valid; no broad transcription regression run is needed.
 
 Preflight found recording quota 6/6 and Ask quota 40/40 for this UTC day. Do not ask the founder to begin a test that will immediately hit those limits. Await approval for one additional recording attempt and one additional Ask attempt, along with explicit readiness. The existing internal learning allocation has $0.17 remaining; category budgets also cover this short check. No new dollar allocation or permanent quota increase is proposed. Use unique, idempotent grant IDs, inspect effective availability before starting, and prohibit automatic paid retries.
