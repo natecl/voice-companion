@@ -29,8 +29,9 @@ def order(response, req):
 
 
 class MemoryRanker:
-    def __init__(self, store, models, budget):
+    def __init__(self, store, models, budget, *, multi_source=False):
         self.store, self.models, self.budget = store, models, budget
+        self.multi_source = multi_source
 
     async def prepare(self, owner, query, packet):
         import asyncio
@@ -43,19 +44,22 @@ class MemoryRanker:
         items=packet['items']
         if not items:
             return dict(packet=packet,status='no_match',budget_skipped=0)
-        req=request(query,[item['text'] for item in items])
+        import memory_multi_ranking
+        build=memory_multi_ranking.request if self.multi_source else request
+        parse=memory_multi_ranking.order if self.multi_source else order
+        req=build(query,[item['text'] for item in items])
         attempt=str(uuid.uuid4())+':memory-ranking'
         await asyncio.to_thread(self.budget.reserve,attempt,JEV)
         try:
             response=await self.models.judge(req)
             await asyncio.to_thread(self.budget.finish,attempt,response['usage'])
-            ranked=order(response['data'],req)
+            ranked=parse(response['data'],req)
         except BaseException:
             await asyncio.to_thread(self.budget.finish,attempt)
             raise
         selected=[]; skipped=0
         for key in ranked['order']:
-            if key=='none' or len(selected)==1: break
+            if key=='none' or len(selected)==(3 if self.multi_source else 1): break
             item=items[int(key[1:])]
             if len(json.dumps(selected+[item],ensure_ascii=False).encode())>10000:
                 skipped+=1;continue

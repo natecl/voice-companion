@@ -16,3 +16,7 @@ Freeze these cases before changing ranking semantics:
 Required provider evidence: one bounded Jev role batch covering positive and negative selection, followed by three actual recall-to-Luna cases exercising two independent sources, comparison, and no-match behavior. Maximum initial gate: **7 calls**, reserved at $0.01 each = **$0.07**, no automatic retry. Run recorded/SQLite/socket QA first. If the role gate fails, preserve it and stop that live sequence; do not weaken expectations to continue. Later persistent-chat and physical acceptance have separate frozen gates.
 
 Canonical remote ledger currently reserves **$2.18 of the approved $2.20**, leaving **$0.02**. The full next gate therefore requires a new allowance before paid execution. Request an additional **$0.20** (new total $2.40) to cover this gate and leave room for subsequent explicitly bounded chat checks; no unbounded model loops or bulk historical learning. This document does not provision that allowance or authorize spending beyond the current cap.
+
+Founder approved the requested additional $0.20 in the next turn. The new total cap is $2.40; provision it once through `provision_multisource_allowance` against the canonical remote ledgers. Old callers retain their prior caps.
+
+Gate completed through versioned experiments; see [results and remaining work](memory-multi-source.md). Current canonical reservation is $2.28 of $2.40, leaving $0.12.

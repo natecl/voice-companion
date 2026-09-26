@@ -16,9 +16,9 @@ def memory_disabled(data):
 
 
 class IndexedMemoryRecall:
-    def __init__(self,store,models,budget,embedder=None):
+    def __init__(self,store,models,budget,embedder=None,*,multi_source=False):
         self.store,self.embedder=store,embedder
-        self.ranker=MemoryRanker(store,models,budget)
+        self.ranker=MemoryRanker(store,models,budget,multi_source=multi_source)
 
     async def prepare(self,credential,data):
         # Explicit opt-out comes before owner lookup, candidate retrieval and inference.
