@@ -1,0 +1,6 @@
+{
+  "case": "quoted_subject",
+  "original_expected": "different",
+  "corrected_expected": "uncertain",
+  "reason": "The input mentions two people named Bea but supplies neither a target claim nor a target mention. The model cannot know which subject is being compared. The separate subjects/result.json live comparison supplies each target and verifies different, same, and unspecified/uncertain against identical source text."
+}

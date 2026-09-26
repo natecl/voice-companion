@@ -5,14 +5,16 @@ import memory_atomic
 import memory_candidates
 import memory_evidence
 import memory_judgments
+import memory_identity_model
 from memory_models import metered
 from memory_writer import bounded_batches
 
 
 class EvidenceWriter:
-    def __init__(self,store,models,budget):
+    def __init__(self,store,models,budget,*,luna_identity=True):
         self.store,self.models,self.budget=store,models,budget
         self.lock=asyncio.Lock()
+        self.luna_identity=luna_identity
 
     async def process_next(self,owner):
         async with self.lock:
@@ -45,9 +47,11 @@ class EvidenceWriter:
                     if pairs:
                         for role in ('identity','relation'):
                             entries=list(pairs.items())
-                            for begin,end,request in bounded_batches(entries,lambda a,b:memory_judgments.pair_questions(dict(entries[a:b]),role=role),'memory_judgment_too_large'):
-                                response=await metered(self.store,self.budget,job,f'evidence-{role}:{index}:{begin}',request,self.models.judge)
-                                parsed=memory_judgments.decisions(response['data'],request,role)
+                            luna=role=='identity' and self.luna_identity
+                            build=memory_identity_model.request if luna else lambda pairs:memory_judgments.pair_questions(pairs,role=role)
+                            for begin,end,request in bounded_batches(entries,lambda a,b:build(dict(entries[a:b])),'memory_identity_too_large' if luna else 'memory_judgment_too_large'):
+                                response=await metered(self.store,self.budget,job,f'evidence-{role}:{index}:{begin}',request,self.models.extract if luna else self.models.judge)
+                                parsed=memory_identity_model.decisions(response['data'],request) if luna else memory_judgments.decisions(response['data'],request,role)
                                 if role=='identity':identity.update(parsed)
                                 else:relations.update(parsed)
                     applicability={}
@@ -73,7 +77,9 @@ class EvidenceWriter:
     def select(proposal,pool,checks,identity,relations,applicability=None):
         applicability=applicability or {}
         attributed=checks['subject']['accepted'] and checks['subject']['label']==proposal['scope'] and proposal['scope']!='unresolved'
-        item=dict(proposal=proposal,action='new',rubric=memory_judgments.VERSION,
+        rubric=memory_judgments.VERSION
+        if any(d.get('rubric')==memory_identity_model.VERSION for d in identity.values()):rubric+='+'+memory_identity_model.VERSION
+        item=dict(proposal=proposal,action='new',rubric=rubric,
                   identity_verified=attributed,profile_verified=attributed,possible_targets=[],possible_target_items=[],
                   judgments=dict(source=checks,identity=identity,relation=relations,applicability=applicability),
                   snapshots={c['id']:c['evidence_token'] for c in pool['candidates'] if 'pending_index' not in c})
@@ -86,6 +92,12 @@ class EvidenceWriter:
                 unclear=True;continue
             if prior['identity_status']!='established' or not prior['identity_links']:
                 unclear=True;continue # Legacy metadata is not silently promoted.
+            descriptor=(prior.get('proposal') or {}).get('mention')
+            if descriptor and (descriptor['relationship']!=proposal['mention']['relationship']
+                    or set(descriptor['qualifiers'] or [])!=set(proposal['mention']['qualifiers'])):
+                # The identity ledger cannot yet represent cross-role aliases. Retain the fact
+                # unresolved rather than fail the whole source or bypass its link guard.
+                unclear=True;continue
             same.append(prior)
             if relation['label']=='replacement':
                 # Classification routes a candidate; a separate applicability verdict authorizes mutation.

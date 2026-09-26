@@ -42,7 +42,7 @@ class EvidenceWriterTests(unittest.IsolatedAsyncioTestCase):
         class Budget:
             def reserve(self,*args):pass
             def finish(self,*args):pass
-        self.writer=EvidenceWriter(self.store,Models(),Budget())
+        self.writer=EvidenceWriter(self.store,Models(),Budget(),luna_identity=False)
 
     async def run_source(self,session,proposals):
         self.outputs=proposals
@@ -266,3 +266,43 @@ class EvidenceWriterTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(unresolved),1)
         self.assertIn('citrus',unresolved[0]['text'])
         self.assertNotIn(unresolved[0]['entity_id'],{r['entity_id'] for r in rows})
+
+    async def test_luna_identity_writer_replays_household_flow(self):
+        await self.replay_luna_flow('luna-low-household')
+
+    async def test_luna_identity_writer_replays_routine_flow(self):
+        await self.replay_luna_flow('luna-low-routine')
+
+    async def replay_luna_flow(self,folder):
+        directory=Path(__file__).parent/'fixtures/memory_evidence_writer'/folder
+        recorded=json.loads((directory/'provider-calls.json').read_text())
+        index=0
+        async def consume(role,request):
+            nonlocal index
+            expected=recorded[index];index+=1
+            self.assertEqual(expected['role'],role)
+            self.assertEqual(request,expected['request'])
+            return copy.deepcopy(expected['response'])
+        async def extract(request):return await consume('extract',request)
+        async def judge(request):return await consume('judge',request)
+        self.writer.luna_identity=True
+        self.writer.models.extract=extract;self.writer.models.judge=judge
+        for name in ['first','correction','distinct']:
+            artifact=json.loads((directory/(name+'.json')).read_text())
+            self.store.put_source(self.owner,artifact['source'])
+            await self.writer.process_next(self.owner)
+        self.assertEqual(index,len(recorded))
+        rows=self.store.search(self.owner,historical=True)
+        self.assertEqual(sorted(r['state'] for r in rows),['active','active','superseded'])
+        self.assertEqual(len({r['entity_id'] for r in rows}),2)
+        self.assertEqual(self.store.search(self.owner,unresolved_only=True),[])
+
+    async def test_unrepresentable_cross_role_link_retains_fact_without_failing_source(self):
+        await self.run_source('one',[proposal('My daughter Maya enjoys swimming.')])
+        p=proposal('My colleague Maya also enjoys tennis.');p['mention']['relationship']='colleague'
+        result=await self.run_source('two',[p])
+        self.assertEqual(result['accepted'],1)
+        self.assertEqual(len(self.store.search(self.owner,unresolved_only=True)),1)
+        self.assertEqual(len(self.store.search(self.owner)),1)
+        with self.store.connect() as db:
+            self.assertEqual(db.execute("SELECT state FROM job WHERE session='two'").fetchone()[0],'done')

@@ -1,0 +1,92 @@
+{
+  "source": {
+    "session_id": "correction",
+    "revision": 1,
+    "captured_at": 1790337601.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "My cousin Eli switched from his paper planner to a digital calendar and now uses that to organize his week.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "63acbc9c-7758-41fe-88e0-9bc0c2945c36",
+    "accepted": 1,
+    "claims": [
+      "120c08e7-047d-4630-912d-4f538908a296"
+    ],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "correct"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "120c08e7-047d-4630-912d-4f538908a296",
+      "owner": "24e4cb70-85cf-4b6e-b2cf-30bf64bfcfdd",
+      "text": "Eli switched from his paper planner to a digital calendar and now uses it to organize his week.",
+      "subject": "mention_9ce2ed88c4a94cfcb1c3eb289993ae7e",
+      "kind": "event",
+      "basis": "stated",
+      "observed": 1790398397.411134,
+      "valid_from": 1790337601.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "identity_supported_correction",
+      "replaces": "f76c647d-ee17-430c-8519-baeca805c6f7",
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "2930b208-4b8f-4766-891d-89e9f6fc4875",
+      "sources": [
+        {
+          "session": "correction",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    },
+    {
+      "id": "f76c647d-ee17-430c-8519-baeca805c6f7",
+      "owner": "24e4cb70-85cf-4b6e-b2cf-30bf64bfcfdd",
+      "text": "Eli uses a paper planner to organize his week.",
+      "subject": "mention_5d48c8363d13462fa4cd21211dd32b26",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790398394.259,
+      "valid_from": 1790337600.0,
+      "valid_until": null,
+      "state": "superseded",
+      "reason": "identity_supported_correction",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "2930b208-4b8f-4766-891d-89e9f6fc4875",
+      "sources": [
+        {
+          "session": "first",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "checks": {
+    "no_unresolved": true,
+    "expected_count": true,
+    "old_historical": true,
+    "correction_active": true,
+    "same_identity": true
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "source": {
+    "session_id": "distinct",
+    "revision": 1,
+    "captured_at": 1790337602.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "My other roommate Tessa uses citrus laundry detergent.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "854aa827-e7b5-4fd9-9fca-95804d482468",
+    "accepted": 1,
+    "claims": [
+      "b0b52402-d3a0-462e-ad66-c050aa873394"
+    ],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "new"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "b0b52402-d3a0-462e-ad66-c050aa873394",
+      "owner": "3694df51-0a5c-4e52-a881-9276c37d034b",
+      "text": "Tessa uses citrus laundry detergent.",
+      "subject": "mention_ffd8e63e1e7f444d89d0db09b476fc0a",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790398373.4235291,
+      "valid_from": 1790337602.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "supported",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "66cf1133-06ee-433a-99b8-41c1732210c2",
+      "sources": [
+        {
+          "session": "distinct",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    },
+    {
+      "id": "0db80334-c244-40ff-ad23-432d73f56190",
+      "owner": "3694df51-0a5c-4e52-a881-9276c37d034b",
+      "text": "Tessa changed to unscented laundry detergent.",
+      "subject": "mention_b26702ab2fc143b386dd7ca6cacef328",
+      "kind": "event",
+      "basis": "stated",
+      "observed": 1790398369.9095914,
+      "valid_from": 1790337601.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "identity_supported_correction",
+      "replaces": "9aeaf800-5517-4a9c-a1fc-bbb13973010d",
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 0,
+      "identity_status": "established",
+      "entity_id": "ec2b3e92-7b73-4a31-9480-12d0173f8654",
+      "sources": [
+        {
+          "session": "correction",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    },
+    {
+      "id": "9aeaf800-5517-4a9c-a1fc-bbb13973010d",
+      "owner": "3694df51-0a5c-4e52-a881-9276c37d034b",
+      "text": "Tessa uses lavender laundry detergent.",
+      "subject": "mention_c04d0550d9ce45c0baca05f930d8bf53",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790398366.9566274,
+      "valid_from": 1790337600.0,
+      "valid_until": null,
+      "state": "superseded",
+      "reason": "identity_supported_correction",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "ec2b3e92-7b73-4a31-9480-12d0173f8654",
+      "sources": [
+        {
+          "session": "first",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "checks": {
+    "no_unresolved": true,
+    "expected_count": true,
+    "old_historical": true,
+    "correction_active": true,
+    "same_identity": true,
+    "other_active": true,
+    "different_identity": true
+  }
+}
