@@ -17,6 +17,8 @@ MULTISOURCE_APPROVAL_ID = 'memory-multisource-additional-2026-09-26-020'
 MULTISOURCE_ALLOWANCE = 200_000
 ROLLOUT_APPROVAL_ID = 'companion-rollout-qa-2026-09-26-050'
 ROLLOUT_ALLOWANCE = 500_000
+PREFERENCE_APPROVAL_ID = "preference-verification-qa-2026-09-26-030"
+PREFERENCE_ALLOWANCE = 300_000
 
 
 def provision(global_path, memory_path):
@@ -51,7 +53,7 @@ def provision(global_path, memory_path):
 
 
 class ProfileBudget:
-    def __init__(self, path, *, include_rework_allowance=False, include_consolidation_allowance=False, include_multisource_allowance=False, include_rollout_allowance=False):
+    def __init__(self, path, *, include_rework_allowance=False, include_consolidation_allowance=False, include_multisource_allowance=False, include_rollout_allowance=False, include_preference_allowance=False):
         self.path = Path(path)
         self.cap = ALLOCATION
         if not self.path.exists(): raise ValueError('Provision the canonical profile allocation first')
@@ -80,6 +82,11 @@ class ProfileBudget:
                 if db.execute('SELECT id,cap FROM profile_rollout_allowance').fetchall()!=[(ROLLOUT_APPROVAL_ID,ROLLOUT_ALLOWANCE)]:
                     raise ValueError('Explicit rollout allowance required')
                 self.cap += ROLLOUT_ALLOWANCE
+            if include_preference_allowance:
+                if not include_rollout_allowance:raise ValueError('Rollout allowance required first')
+                if db.execute('SELECT id,cap FROM profile_preference_allowance').fetchall()!=[(PREFERENCE_APPROVAL_ID,PREFERENCE_ALLOWANCE)]:
+                    raise ValueError('Explicit preference allowance required')
+                self.cap += PREFERENCE_ALLOWANCE
 
     def reserve(self, key, model):
         if model not in MODELS: raise Rejected('unapproved_profile_model')
@@ -106,7 +113,7 @@ class ProfileBudget:
 
 
 def _provision_additional(global_path,memory_path,approval,amount,table,total,allocations=None,redistribute=False):
-    if table not in ('profile_rework_allowance','profile_consolidation_allowance','profile_multisource_allowance','profile_rollout_allowance'):
+    if table not in ('profile_rework_allowance','profile_consolidation_allowance','profile_multisource_allowance','profile_rollout_allowance','profile_preference_allowance'):
         raise ValueError('Unknown allowance')
     allocations={'ask':amount} if allocations is None else allocations
     if (not allocations or set(allocations)-{'ask','jev'} or sum(allocations.values())!=amount
@@ -115,7 +122,10 @@ def _provision_additional(global_path,memory_path,approval,amount,table,total,al
     with database(global_path,isolation_level=None,timeout=2) as db:
         db.execute('BEGIN IMMEDIATE')
         try:
-            if redistribute:
+            if redistribute=='preference':
+                from service_policy import redistribute_preference_policy
+                redistribute_preference_policy(db)
+            elif redistribute:
                 from service_policy import redistribute_rollout_policy
                 redistribute_rollout_policy(db)
             missing=[]
@@ -175,3 +185,11 @@ def provision_rollout_allowance(global_path,memory_path):
                   include_multisource_allowance=True)
     return _provision_additional(global_path,memory_path,ROLLOUT_APPROVAL_ID,ROLLOUT_ALLOWANCE,
         'profile_rollout_allowance',2_900_000,allocations={'ask':350_000,'jev':150_000},redistribute=True)
+
+
+def provision_preference_allowance(global_path,memory_path):
+    """Founder approved $0.30; operator-only, not exposed to hosted callers."""
+    ProfileBudget(memory_path,include_rework_allowance=True,include_consolidation_allowance=True,
+                  include_multisource_allowance=True,include_rollout_allowance=True)
+    return _provision_additional(global_path,memory_path,PREFERENCE_APPROVAL_ID,PREFERENCE_ALLOWANCE,
+        'profile_preference_allowance',3_200_000,allocations={'ask':100_000,'jev':200_000},redistribute='preference')

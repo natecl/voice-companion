@@ -12,6 +12,18 @@ RETIRED_JEV = (500_000, 500, 64)
 
 ROLLOUT_POLICIES = {'stt':(1_500_000,20_000,6),'ask':(2_850_000,3_000,20),'jev':(650_000,500,64)}
 
+PREFERENCE_POLICIES = {'stt':(1_200_000,20_000,6),'ask':(2_950_000,3_000,20),'jev':(850_000,500,64)}
+
+def redistribute_preference_policy(db):
+    policies=dict((r[0],tuple(r[1:])) for r in db.execute('SELECT category,cap,reservation,daily FROM policy'))
+    if db.execute('SELECT cap FROM budget WHERE id=1').fetchone()!=(5_000_000,) or policies not in (ROLLOUT_POLICIES,PREFERENCE_POLICIES):
+        raise ValueError('Unexpected ledger policy')
+    for category,(cap,_,_) in PREFERENCE_POLICIES.items():
+        used=db.execute('SELECT coalesce(sum(reserved),0) FROM request WHERE category=?',(category,)).fetchone()[0]
+        if used>cap:raise ValueError('Existing usage exceeds redistributed cap')
+    for category,(cap,_,_) in PREFERENCE_POLICIES.items():
+        db.execute('UPDATE policy SET cap=? WHERE category=?',(cap,category))
+
 
 def redistribute_rollout_policy(db):
     """Caller owns the transaction: policy and reservation either both commit or neither does."""
@@ -35,7 +47,7 @@ def add_ask_policy(path):
         db.execute('BEGIN IMMEDIATE')
         cap = db.execute('SELECT cap FROM budget WHERE id=1').fetchone()
         policies = dict((row[0], tuple(row[1:])) for row in db.execute('SELECT category,cap,reservation,daily FROM policy'))
-        if cap != (5_000_000,) or policies not in ({'stt': STT}, {'stt': STT, 'ask': ASK}, {'stt': STT, 'ask': ASK, 'jev': RETIRED_JEV}, ROLLOUT_POLICIES):
+        if cap != (5_000_000,) or policies not in ({'stt': STT}, {'stt': STT, 'ask': ASK}, {'stt': STT, 'ask': ASK, 'jev': RETIRED_JEV}, ROLLOUT_POLICIES, PREFERENCE_POLICIES):
             raise ValueError('Unexpected ledger policy; migration refused')
         if 'ask' not in policies:
             db.execute('INSERT INTO policy VALUES(?,?,?,?)', ('ask', *ASK))
@@ -61,5 +73,5 @@ def open_ledger(*, migrate=False):
             if db.execute("SELECT 1 FROM policy WHERE category='jev'").fetchone():
                 limits['jev'] = RETIRED_JEV
             policies=dict((row[0],tuple(row[1:])) for row in db.execute('SELECT category,cap,reservation,daily FROM policy'))
-            if enabled and policies==ROLLOUT_POLICIES:limits=dict(ROLLOUT_POLICIES)
+            if enabled and policies in (ROLLOUT_POLICIES,PREFERENCE_POLICIES):limits=dict(policies)
     return Admission(path, total_microusd=5_000_000, limits=limits)
