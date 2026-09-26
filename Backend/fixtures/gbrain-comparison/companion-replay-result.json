@@ -1,0 +1,95 @@
+{
+  "scope": "exact saved provider replay, no fresh model-quality claim",
+  "checks": {
+    "correction_lifecycle": true,
+    "split_preference_retained": false,
+    "owner_isolation": true,
+    "deletion_and_reopen_remove_unsupported_correction": true,
+    "deleted_payload_and_support_removed": true
+  },
+  "before_delete": [
+    {
+      "id": "e2bd2048-14a7-4c7f-955e-941b9918350c",
+      "owner": "3bc1fc1a-d8c8-4f17-9bf1-ae207073ad1e",
+      "text": "Project Juniper now meets at the community center instead of the library.",
+      "subject": "mention_1ecb24c2204c4a298238e47e150cdbe6",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790452700.9250472,
+      "valid_from": 1790443639.5839324,
+      "valid_until": null,
+      "state": "active",
+      "reason": "identity_supported_correction",
+      "replaces": "0cf6686e-d6d9-408b-8dd9-6754e1190222",
+      "judgment_version": "memory-evidence-v2.5",
+      "profile_link": 0,
+      "temporal_evidence": {
+        "version": "calendar-reference-v2",
+        "expression": "now",
+        "captured_at": 1790443639.5839324,
+        "timezone": "UTC",
+        "resolution": "unresolved",
+        "date": null,
+        "reason": "ambiguous_or_unsupported",
+        "reported_status": "current",
+        "basis": "stated",
+        "session": "correction",
+        "revision": 1
+      },
+      "identity_status": "established",
+      "entity_id": "1a61f9c6-6432-49a6-ac86-0da67f2bf81b",
+      "sources": [
+        {
+          "session": "correction",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    },
+    {
+      "id": "0cf6686e-d6d9-408b-8dd9-6754e1190222",
+      "owner": "3bc1fc1a-d8c8-4f17-9bf1-ae207073ad1e",
+      "text": "Project Juniper's meeting location is the library.",
+      "subject": "mention_6f2901bd1ad44b2a8ea40293c9c97dda",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790452700.916501,
+      "valid_from": 1790443517.9455416,
+      "valid_until": null,
+      "state": "superseded",
+      "reason": "identity_supported_correction",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.5",
+      "profile_link": 0,
+      "temporal_evidence": {
+        "version": "calendar-reference-v2",
+        "expression": null,
+        "captured_at": 1790443517.9455416,
+        "timezone": "UTC",
+        "resolution": "unresolved",
+        "date": null,
+        "reason": "no_expression",
+        "reported_status": "current",
+        "basis": "stated",
+        "session": "split-subject",
+        "revision": 1
+      },
+      "identity_status": "established",
+      "entity_id": "1a61f9c6-6432-49a6-ac86-0da67f2bf81b",
+      "sources": [
+        {
+          "session": "split-subject",
+          "revision": 1,
+          "passage": "p1"
+        },
+        {
+          "session": "split-subject",
+          "revision": 1,
+          "passage": "p3"
+        }
+      ]
+    }
+  ],
+  "after_delete": [],
+  "replayed_calls": 9
+}

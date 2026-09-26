@@ -1,0 +1,54 @@
+[
+  {
+    "captured_at": 1790443517.9455416,
+    "completed": true,
+    "passages": [
+      {
+        "duration": 3.0,
+        "id": "p1",
+        "speakers": [],
+        "start": 0.0,
+        "text": "Project Juniper."
+      },
+      {
+        "duration": 3.0,
+        "id": "p2",
+        "speakers": [
+          0
+        ],
+        "start": 5.0,
+        "text": "Prefers morning meetings."
+      },
+      {
+        "duration": 3.0,
+        "id": "p3",
+        "speakers": [
+          0
+        ],
+        "start": 10.0,
+        "text": "The meeting location is the library."
+      }
+    ],
+    "revision": 1,
+    "session_id": "split-subject",
+    "timezone": "UTC",
+    "origin": "recording"
+  },
+  {
+    "captured_at": 1790443639.5839324,
+    "completed": true,
+    "passages": [
+      {
+        "duration": 3.0,
+        "id": "p1",
+        "speakers": [],
+        "start": 0.0,
+        "text": "Project Juniper has changed its meeting location. It now meets at the community center instead of the library."
+      }
+    ],
+    "revision": 1,
+    "session_id": "correction",
+    "timezone": "UTC",
+    "origin": "recording"
+  }
+]

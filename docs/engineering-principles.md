@@ -176,3 +176,6 @@ Founder decision, September 26, 2026: build and control our own memory system; d
 - Preserve uncertainty and sources throughout storage, lifecycle handling, retrieval and answer context. Expiry retires current applicability without erasing the original recording or implying a planned event occurred.
 
 The final bullet applies these principles to our agreed product lifecycle; the article does not itself specify our identity rules, expiry semantics or database schema. Keep that distinction explicit in implementation evidence.
+
+
+Founder refinement, September 26, 2026: authorize an isolated comparison of gbrain against our memory system before committing to further custom infrastructure. This reopens the build-versus-adopt decision for evaluation; it does not authorize migration, public forking, deployment, new provider spending beyond approved allowances, or weakening our attribution/deletion contracts. Preserve the app and production data while testing pinned upstream code on synthetic inputs. See [comparison evidence](gbrain-comparison.md).
