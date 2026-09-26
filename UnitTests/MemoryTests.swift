@@ -139,6 +139,29 @@ final class MemoryTests: XCTestCase {
         XCTAssertEqual(try box.entry(id.uuidString)?.operation.operation, "delete")
     }
 
+    func testLibraryDeletionPreservesActiveCaptureAndRequiresAcknowledgedAttachment() throws {
+        let directory = try temporaryDirectory()
+        let store = SessionStore(directory: directory.appendingPathComponent("sessions"))
+        let past = tracked("owner")
+        let active = tracked("owner")
+        try store.save(past); try store.save(active)
+        let box = MemoryOutbox(directory: directory.appendingPathComponent("outbox"), owner: "owner")
+        let controller = SessionController(store: store, memorySync: MemorySync(outbox: box, transport: OfflineMemory()), prepareRecording: {})
+        XCTAssertNil(controller.companionAttachment(for: past))
+        let upload = try XCTUnwrap(box.entry(past.id.uuidString)).operation
+        try box.acknowledge(upload)
+        XCTAssertEqual(controller.companionAttachment(for: past)?.revision, 1)
+        controller.current = active
+        controller.liveStatus = "Recording"
+        XCTAssertFalse(controller.deleteFromLibrary(active))
+        XCTAssertTrue(controller.deleteFromLibrary(past))
+        XCTAssertEqual(controller.current?.id, active.id)
+        XCTAssertEqual(controller.liveStatus, "Recording")
+        XCTAssertTrue(controller.pendingMemoryDeletion)
+        XCTAssertEqual(try store.load().map(\.id), [active.id])
+        XCTAssertNil(controller.companionAttachment(for: past))
+    }
+
     func testRealSocketControllerSaveRestartAndDelete() async throws {
         let directory = try temporaryDirectory()
         let fixture = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Backend/memory_fixture.py")

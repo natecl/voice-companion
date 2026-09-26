@@ -4,7 +4,7 @@ extension SessionController {
     static func forApp() -> SessionController {
         #if DEBUG
         let arguments = ProcessInfo.processInfo.arguments
-        if arguments.contains("--ui-testing"), arguments.contains("--memory-ui-fixture") {
+        if arguments.contains("--ui-testing"), (arguments.contains("--memory-ui-fixture") || arguments.contains("--companion-ui-fixture")) {
             // Test handoff must not read another app's private container.
             let fixtureJSON = ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"] ?? ""
             guard let config = try? JSONDecoder().decode(RelayConfiguration.self, from: Data(fixtureJSON.utf8)),
@@ -19,7 +19,10 @@ extension SessionController {
             let sync = MemorySync(outbox: MemoryOutbox(directory: base.appendingPathComponent("outbox"), owner: owner),
                                   transport: MemorySocketTransport(configuration: { config }))
             return SessionController(store: SessionStore(directory: base.appendingPathComponent("sessions")), memorySync: sync,
-                makeConnection: { MemoryUIRecording() }, prepareRecording: {})
+                makeConnection: { () -> any RecordingConnection in
+                    if arguments.contains("--companion-ui-fixture") { return CompanionUIRecording() }
+                    return MemoryUIRecording()
+                }, prepareRecording: {})
         }
         if arguments.contains("--ui-testing"), arguments.contains("--live-ask-ui-fixture") {
             let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
@@ -158,5 +161,32 @@ private final class MemoryUIRecording: RecordingConnection {
     }
     func stop() {}
     func cancel() {}
+}
+#endif
+
+#if DEBUG
+@MainActor
+private final class CompanionUIRecording: RecordingConnection {
+    private var stopped = false
+    func run(onReady: (Duration) -> Void, onFinishing: @escaping (RecordingStopReason) -> Void,
+             onEvent: (GrokEvent) throws -> Void) async throws {
+        onReady(.seconds(300))
+        try onEvent(GrokEvent(type: "transcript.partial", text: "Maya enjoys swimming.", words: [], start: 0, duration: 2, is_final: false))
+        var continuation = ""
+        while !stopped {
+            try await Task.sleep(for: .milliseconds(250))
+            if !stopped {
+                continuation += " More simulated speech."
+                try onEvent(GrokEvent(type: "transcript.partial", text: continuation, words: [], start: 2, duration: 1, is_final: false))
+            }
+        }
+        onFinishing(.user)
+        if !continuation.isEmpty {
+            try onEvent(GrokEvent(type: "transcript.partial", text: continuation, words: [], start: 2, duration: 1, is_final: true))
+        }
+        try onEvent(GrokEvent(type: "transcript.partial", text: "Maya enjoys swimming.", words: [], start: 0, duration: 2, is_final: true))
+    }
+    func stop() { stopped = true }
+    func cancel() { stopped = true }
 }
 #endif

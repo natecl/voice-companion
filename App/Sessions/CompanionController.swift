@@ -76,6 +76,7 @@ final class CompanionController {
                     case "context":
                         self.response?.sources = event.sources ?? []
                         self.response?.memoryStatus = event.memory_status
+                        if event.memory_status == "unavailable" { self.notice = "Some past context could not be retrieved for this answer." }
                     case "delta": self.response?.text += event.text ?? ""
                     case "done":
                         self.response?.references = event.references ?? []
@@ -150,6 +151,12 @@ final class CompanionController {
     func cancel() {
         connection?.cancel()
         task?.cancel()
+    }
+    func clearForSourceDeletion() {
+        cancel()
+        turns = []
+        response = nil
+        nextBefore = nil
     }
     func didEnterBackground() { cancel() }
     func didBecomeActive() { refresh() }

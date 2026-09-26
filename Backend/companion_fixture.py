@@ -8,11 +8,13 @@ from websockets.asyncio.server import serve
 from admission import Admission
 from companion_service import CompanionService
 from memory_store import MemoryStore
+from memory_service import MemoryService
 
 class Provider:
     async def stream(self, data):
         yield dict(type='delta', text='Maya swims. [[p1]]' if data['sources'] else 'Hello from the saved companion.')
         if data['question']=='Wait forever':await asyncio.Future()
+        if '--ui' in sys.argv:await asyncio.sleep(.6)
         yield dict(type='completed')
 
 async def main(directory):
@@ -21,7 +23,11 @@ async def main(directory):
     credential, token = ledger.enroll()
     store = MemoryStore(directory/'memory.sqlite')
     service = CompanionService(ledger, store, Provider())
-    async with serve(service.handle, '127.0.0.1', 0, max_size=64000) as server:
+    memory=MemoryService(ledger,store)
+    async def handle(socket):
+        if socket.request.path=='/memory':await memory.handle(socket)
+        else:await service.handle(socket)
+    async with serve(handle, '127.0.0.1', 0, max_size=64000) as server:
         config = dict(url=f'ws://127.0.0.1:{server.sockets[0].getsockname()[1]}/stt', token=token,
                       memoryOwnerID=store.owner_for(credential))
         temp = directory/'config.tmp'

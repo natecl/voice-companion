@@ -99,7 +99,7 @@ final class CompanionConnectionTests: XCTestCase {
             try await Task.sleep(for: .milliseconds(10))
         }
         XCTAssertFalse(controller.isBusy)
-        XCTAssertNil(controller.notice)
+        XCTAssertEqual(controller.notice, "Some past context could not be retrieved for this answer.")
         XCTAssertNil(controller.response)
         XCTAssertEqual(controller.turns.last?.question, "A new companion question")
         XCTAssertEqual(controller.draft, "An unsent follow-up")

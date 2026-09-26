@@ -3,7 +3,13 @@ import AVFoundation
 
 @main
 struct VoiceCompanionApp: App {
-    var body: some Scene { WindowGroup { SessionsView() } }
+    var body: some Scene {
+        WindowGroup {
+            if ProcessInfo.processInfo.arguments.contains("--companion-ui") {
+                CompanionRootView()
+            } else { SessionsView() }
+        }
+    }
 }
 
 struct SessionsView: View {
