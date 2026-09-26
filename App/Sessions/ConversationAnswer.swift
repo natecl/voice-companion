@@ -7,6 +7,7 @@ struct ConversationPassage: Codable, Identifiable, Equatable {
     var session_id: String? = nil
     var revision: Int? = nil
     var captured_at: Double? = nil
+    var retained_claim_id: String? = nil
 }
 
 struct ConversationQuestion: Codable {

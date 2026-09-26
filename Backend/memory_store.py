@@ -19,8 +19,9 @@ import memory_vectors
 import memory_indexing
 import companion_chat
 import companion_snapshots
+import memory_retention
 
-VERSION = 15
+VERSION = 16
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -75,15 +76,16 @@ def validate_source(source):
 
 
 class MemoryStore:
-    def __init__(self, path, *, clock=time.time, personal_learning=False, embedding_model=None):
+    def __init__(self, path, *, clock=time.time, personal_learning=False, embedding_model=None, retain_recording_memories=False):
         self.path, self.clock = Path(path), clock
         self.personal_learning = personal_learning
+        self.retain_recording_memories = retain_recording_memories
         if embedding_model is not None and (not isinstance(embedding_model,str) or not 1<=len(embedding_model)<=250):
             raise ValueError("Invalid embedding contract")
         self.embedding_model = embedding_model
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, VERSION):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -173,6 +175,8 @@ class MemoryStore:
                 db.executescript(companion_snapshots.SCHEMA)
             if version < 15:
                 db.executescript(companion_chat.REQUEST_SCHEMA)
+            if version < 16:
+                db.executescript(memory_retention.SCHEMA)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)
@@ -223,11 +227,13 @@ class MemoryStore:
         db.execute("UPDATE memory_index_job SET state='obsolete',lease=NULL,error=NULL WHERE owner=? AND session=?",(owner,session))
         db.execute('DELETE FROM memory_embedding WHERE owner=? AND session=?',(owner,session))
         db.execute('DELETE FROM memory_passage_index WHERE owner=? AND session=?',(owner,session))
-        db.execute('DELETE FROM memory_fact_evidence WHERE owner=? AND session=?', (owner,session))
+        retained = deleting and memory_retention.exists(db, owner, session)
+        if not retained:
+            db.execute('DELETE FROM memory_fact_evidence WHERE owner=? AND session=?', (owner,session))
         db.execute('DELETE FROM memory_chunk WHERE job IN (SELECT id FROM job WHERE owner=? AND session=?)', (owner,session))
-        memory_identity.invalidate_source(db, owner, session)
+        if not retained:memory_identity.invalidate_source(db, owner, session)
         db.execute('DELETE FROM job_result WHERE job IN (SELECT id FROM job WHERE owner=? AND session=?)', (owner, session))
-        db.execute('DELETE FROM support WHERE owner=? AND session=?', (owner, session))
+        if not retained:db.execute('DELETE FROM support WHERE owner=? AND session=?', (owner, session))
         # Unsupported content is scrubbed; IDs/state remain for stale-write diagnostics.
         db.execute("UPDATE claim SET state='invalid',reason='source_changed',text=NULL,subject=NULL WHERE owner=? AND NOT EXISTS(SELECT 1 FROM support WHERE support.claim=claim.id)", (owner,))
         db.execute("DELETE FROM claim_relation_proposal WHERE claim IN (SELECT id FROM claim WHERE owner=? AND state='invalid') OR target IN (SELECT id FROM claim WHERE owner=? AND state='invalid')", (owner, owner))
@@ -269,6 +275,8 @@ class MemoryStore:
     def delete_source(self, owner, session):
         identifier(session)
         with self.transaction() as db:
+            if self.retain_recording_memories:
+                memory_retention.preserve(db, owner, session)
             self._invalidate_source(db, owner, session, deleting=True)
             db.execute('''INSERT INTO source VALUES(?,?,0,NULL,NULL,1)
               ON CONFLICT(owner,session) DO UPDATE SET payload=NULL,digest=NULL,deleted=1''', (owner, session))

@@ -123,4 +123,4 @@ class CompanionChatTests(unittest.TestCase):
         self.assertEqual(migrated.source(self.owner,'s')['passages'][0]['text'],'Maya enjoys swimming.')
         self.assertEqual(migrated.put_source(self.owner,source('deleted'))['status'],'deleted')
         self.assertEqual(CompanionChat(migrated).page(self.owner)['turns'],[])
-        with migrated.connect() as db:self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],15)
+        with migrated.connect() as db:self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],16)

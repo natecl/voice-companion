@@ -109,7 +109,11 @@ struct CompanionRootView: View {
                     refreshWhenReady()
                 }
             }.accessibilityIdentifier("confirmDeleteSession")
-        } message: { Text("The recording and answers that depend on its evidence will be removed.") }
+        } message: {
+            Text(selected?.source == "personal_text"
+                 ? "The personal note and answers that depend on its evidence will be removed."
+                 : "The transcript and answers tied to it will be removed. Learned memories and their supporting excerpts may remain with your companion.")
+        }
     }
 
     @ViewBuilder private var chatContent: some View {
@@ -128,8 +132,14 @@ struct CompanionRootView: View {
                                 if let answer = turn.answer { Text(answer).textSelection(.enabled).accessibilityIdentifier("companionAnswer") }
                                 if turn.state != .complete { Text(turnLabel(turn.state)).font(.caption).foregroundStyle(.secondary) }
                                 ForEach(turn.citations, id: \.id) { citation in
-                                    Button("Source \(citation.id)") { openSource(turn: turn.id, citation: citation.id, owner: chat.owner) }
-                                        .accessibilityIdentifier("companionSource")
+                                    if citation.source.retained_claim_id != nil {
+                                        Text("Memory \(citation.id) · recording deleted")
+                                            .font(.caption).foregroundStyle(.secondary)
+                                            .accessibilityIdentifier("retainedMemoryReference")
+                                    } else {
+                                        Button("Source \(citation.id)") { openSource(turn: turn.id, citation: citation.id, owner: chat.owner) }
+                                            .accessibilityIdentifier("companionSource")
+                                    }
                                 }
                             }.id(turn.id)
                         }

@@ -42,7 +42,15 @@ def expand(store, owner, packet, *, max_claims=20, max_items=12):
                 JOIN source s ON s.owner=p.owner AND s.session=p.session AND s.revision=p.revision
                 WHERE p.owner=? AND p.claim=? AND s.deleted=0 ORDER BY p.session,p.passage''',(owner,claim)).fetchall()
             if any(tuple(s) in refs for s in supports): continue
-            if not supports: raise Rejected('memory_context_changed')
+            if not supports:
+                if any(c['id']==claim for item in items for c in item['lifecycle']):continue
+                import memory_retention
+                ref=memory_retention.reference_for_claim(db,owner,claim)
+                item=memory_context.hydrate(store,db,owner,ref,now) if ref else None
+                if item is None:raise Rejected('memory_context_changed')
+                items.append(item)
+                if len(items)>max_items:raise Rejected('related_context_too_large')
+                continue
             support=supports[0]
             item=memory_context.hydrate(store,db,owner,dict(session_id=support['session'],
                 revision=support['revision'],passage_id=support['passage']),now)

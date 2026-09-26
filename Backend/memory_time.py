@@ -61,14 +61,15 @@ def weekday_date(text, anchor):
 
 
 def annotate(db, owner, claim):
-    row = db.execute('''SELECT e.proposal,s.payload FROM memory_fact_evidence e
+    row = db.execute('''SELECT e.proposal,e.session FROM memory_fact_evidence e
         JOIN source s ON s.owner=e.owner AND s.session=e.session AND s.revision=e.revision
-        WHERE e.owner=? AND e.claim=? AND s.deleted=0
+        WHERE e.owner=? AND e.claim=? AND (s.deleted=0 OR EXISTS(SELECT 1 FROM retained_recording r WHERE r.owner=e.owner AND r.session=e.session AND r.revision=e.revision))
         AND EXISTS(SELECT 1 FROM support p WHERE p.claim=e.claim AND p.owner=e.owner
                    AND p.session=e.session AND p.revision=e.revision)''', (owner, claim['id'])).fetchone()
     if row is None:
         return
-    proposal, source = json.loads(row['proposal']), json.loads(row['payload'])
+    from memory_retention import source_metadata
+    proposal, source = json.loads(row['proposal']), source_metadata(db,owner,row['session'])
     claim['temporal_evidence'] = dict(
         resolve(proposal['time']['expression'], source['captured_at'], source['timezone'],
                 reported_status=proposal['time']['status']),

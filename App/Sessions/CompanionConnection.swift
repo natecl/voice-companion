@@ -44,6 +44,7 @@ struct CompanionSourceLocation: Decodable, Equatable {
     let text_start: Int
     let text_end: Int
     let snapshot_id: String?
+    var retained_claim_id: String? = nil
 }
 struct CompanionCitation: Decodable, Equatable {
     let id: String
@@ -58,6 +59,7 @@ struct CompanionEvidence: Decodable {
     let passage_id: String?
     let captured_at: Double?
     let snapshot_id: String?
+    var retained_claim_id: String? = nil
 }
 struct CompanionTurn: Decodable, Identifiable {
     enum State: String, Decodable { case pending, complete, failed, outdated, invalidated }

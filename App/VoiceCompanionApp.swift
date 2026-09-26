@@ -171,7 +171,9 @@ struct SessionsView: View {
             Button("Delete", role: .destructive) { controller.deleteCurrent() }
                 .accessibilityIdentifier("confirmDeleteSession")
         } message: {
-            Text("This permanently deletes the saved note or transcript and its questions and answers. This cannot be undone.")
+            Text(controller.current?.source == "personal_text"
+                 ? "This permanently deletes the saved note and its questions and answers. This cannot be undone."
+                 : "This deletes the transcript and its questions and answers. Learned memories and their supporting excerpts may remain with your companion.")
         }
         .task {
             if ProcessInfo.processInfo.arguments.contains("--relay-check") {

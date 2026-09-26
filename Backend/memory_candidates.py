@@ -4,6 +4,7 @@ import re
 from admission import Rejected
 from memory_identity import claim_identity, live_passage
 from memory_atomic import snapshot
+from memory_retention import source_metadata
 
 
 def terms(text):
@@ -36,10 +37,10 @@ def related(store,owner,proposal,*,limit=4):
             evidence=[]
             for ref in refs:
                 passage=live_passage(db,owner,ref)
-                source=db.execute('SELECT payload FROM source WHERE owner=? AND session=?',(owner,ref['session'])).fetchone()
-                origin=json.loads(source['payload']).get('origin','recording')
+                source=source_metadata(db,owner,ref['session'])
+                origin=source.get('origin','recording')
                 own=db.execute('SELECT proposal FROM memory_fact_evidence WHERE owner=? AND claim=? AND session=? AND revision=?',(owner,item['id'],ref['session'],ref['revision'])).fetchone()
-                evidence.append(dict(proposal=json.loads(own[0]) if own else None,ref=ref,passage=passage,origin=origin,captured_at=json.loads(source['payload']).get('captured_at')))
+                evidence.append(dict(proposal=json.loads(own[0]) if own else None,ref=ref,passage=passage,origin=origin,captured_at=source.get('captured_at')))
             item.update(claim_identity(db,owner,item['id']))
             item['evidence_token']=snapshot(db,owner,item['id'])
             item['identity_links']=[dict(r) for r in db.execute("SELECT l.* FROM memory_identity_link l JOIN memory_mention m ON m.id=l.mention WHERE m.owner=? AND m.claim=? AND l.state='active' ORDER BY l.id",(owner,item['id']))]

@@ -1,0 +1,473 @@
+[
+  {
+    "question": "Where does Project Juniper meet now?",
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "retention-0",
+        "conversation_id": "8874c280-21fb-4886-a4ed-d11964313369"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "retained_claim_id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+            "session_id": "correction",
+            "revision": 1,
+            "passage_id": "retained_481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+            "captured_at": 1790443639.5839324,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 73,
+            "text": "Project Juniper now meets at the community center instead of the library.",
+            "lifecycle": [
+              {
+                "id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+                "text": "Project Juniper now meets at the community center instead of the library.",
+                "subject": "mention_d63289561c5243c1b4438c0016f6d05d",
+                "kind": "fact",
+                "basis": "stated",
+                "observed": 1790460099.09375,
+                "valid_from": 1790443639.5839324,
+                "valid_until": null,
+                "state": "active",
+                "reason": "identity_supported_correction",
+                "replaces": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": "now",
+                  "captured_at": 1790443639.5839324,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "ambiguous_or_unsupported",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "correction",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": [
+                  {
+                    "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                    "relation": "supersedes"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p1"
+          },
+          {
+            "retained_claim_id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+            "session_id": "split-subject",
+            "revision": 1,
+            "passage_id": "retained_c1453a7f-74a3-401e-939b-81ec7579c3fe",
+            "captured_at": 1790443517.9455416,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 50,
+            "text": "Project Juniper's meeting location is the library.",
+            "lifecycle": [
+              {
+                "id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                "text": "Project Juniper's meeting location is the library.",
+                "subject": "mention_77488991b9b949659626270b9a6d5b03",
+                "kind": "fact",
+                "basis": "stated",
+                "observed": 1790460099.082089,
+                "valid_from": 1790443517.9455416,
+                "valid_until": null,
+                "state": "superseded",
+                "reason": "identity_supported_correction",
+                "replaces": null,
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": null,
+                  "captured_at": 1790443517.9455416,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "no_expression",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "split-subject",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": [
+                  {
+                    "claim": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+                    "relation": "superseded_by"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "From what I remember, Project Juniper now meets at the community center, not the library. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "retention-0",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ]
+  },
+  {
+    "question": "Can you quote the exact words from the deleted recording?",
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "retention-1",
+        "conversation_id": "8874c280-21fb-4886-a4ed-d11964313369"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "retained_claim_id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+            "session_id": "correction",
+            "revision": 1,
+            "passage_id": "retained_481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+            "captured_at": 1790443639.5839324,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 73,
+            "text": "Project Juniper now meets at the community center instead of the library.",
+            "lifecycle": [
+              {
+                "id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+                "text": "Project Juniper now meets at the community center instead of the library.",
+                "subject": "mention_d63289561c5243c1b4438c0016f6d05d",
+                "kind": "fact",
+                "basis": "stated",
+                "observed": 1790460099.09375,
+                "valid_from": 1790443639.5839324,
+                "valid_until": null,
+                "state": "active",
+                "reason": "identity_supported_correction",
+                "replaces": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": "now",
+                  "captured_at": 1790443639.5839324,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "ambiguous_or_unsupported",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "correction",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": [
+                  {
+                    "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                    "relation": "supersedes"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p1"
+          },
+          {
+            "retained_claim_id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+            "session_id": "split-subject",
+            "revision": 1,
+            "passage_id": "retained_c1453a7f-74a3-401e-939b-81ec7579c3fe",
+            "captured_at": 1790443517.9455416,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 50,
+            "text": "Project Juniper's meeting location is the library.",
+            "lifecycle": [
+              {
+                "id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                "text": "Project Juniper's meeting location is the library.",
+                "subject": "mention_77488991b9b949659626270b9a6d5b03",
+                "kind": "fact",
+                "basis": "stated",
+                "observed": 1790460099.082089,
+                "valid_from": 1790443517.9455416,
+                "valid_until": null,
+                "state": "superseded",
+                "reason": "identity_supported_correction",
+                "replaces": null,
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": null,
+                  "captured_at": 1790443517.9455416,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "no_expression",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "split-subject",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": [
+                  {
+                    "claim": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+                    "relation": "superseded_by"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p2"
+          }
+        ],
+        "memory_status": "no_match"
+      },
+      {
+        "type": "delta",
+        "text": "I can\u2019t quote the exact words: the recording was deleted, and I only have a retained summary\u2014not a transcript. From what I remember, it said Project Juniper meets at the community center instead of the library. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "retention-1",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ]
+  },
+  {
+    "question": "Does Project Juniper preferring morning meetings establish that I personally prefer morning meetings?",
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "retention-2",
+        "conversation_id": "8874c280-21fb-4886-a4ed-d11964313369"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "retained_claim_id": "2805e7c0-2f91-4118-9995-88740abea6f6",
+            "session_id": "split-subject",
+            "revision": 1,
+            "passage_id": "retained_2805e7c0-2f91-4118-9995-88740abea6f6",
+            "captured_at": 1790443517.9455416,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 41,
+            "text": "Project Juniper prefers morning meetings.",
+            "lifecycle": [
+              {
+                "id": "2805e7c0-2f91-4118-9995-88740abea6f6",
+                "text": "Project Juniper prefers morning meetings.",
+                "subject": "mention_e613717e08e4423090c53be1a3d877d7",
+                "kind": "preference",
+                "basis": "stated",
+                "observed": 1790460099.0816698,
+                "valid_from": 1790443517.9455416,
+                "valid_until": null,
+                "state": "active",
+                "reason": "supported",
+                "replaces": null,
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": null,
+                  "captured_at": 1790443517.9455416,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "no_expression",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "split-subject",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": []
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p1"
+          },
+          {
+            "retained_claim_id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+            "session_id": "correction",
+            "revision": 1,
+            "passage_id": "retained_481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+            "captured_at": 1790443639.5839324,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 73,
+            "text": "Project Juniper now meets at the community center instead of the library.",
+            "lifecycle": [
+              {
+                "id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+                "text": "Project Juniper now meets at the community center instead of the library.",
+                "subject": "mention_d63289561c5243c1b4438c0016f6d05d",
+                "kind": "fact",
+                "basis": "stated",
+                "observed": 1790460099.09375,
+                "valid_from": 1790443639.5839324,
+                "valid_until": null,
+                "state": "active",
+                "reason": "identity_supported_correction",
+                "replaces": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": "now",
+                  "captured_at": 1790443639.5839324,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "ambiguous_or_unsupported",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "correction",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": [
+                  {
+                    "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                    "relation": "supersedes"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p2"
+          },
+          {
+            "retained_claim_id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+            "session_id": "split-subject",
+            "revision": 1,
+            "passage_id": "retained_c1453a7f-74a3-401e-939b-81ec7579c3fe",
+            "captured_at": 1790443517.9455416,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 50,
+            "text": "Project Juniper's meeting location is the library.",
+            "lifecycle": [
+              {
+                "id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                "text": "Project Juniper's meeting location is the library.",
+                "subject": "mention_77488991b9b949659626270b9a6d5b03",
+                "kind": "fact",
+                "basis": "stated",
+                "observed": 1790460099.082089,
+                "valid_from": 1790443517.9455416,
+                "valid_until": null,
+                "state": "superseded",
+                "reason": "identity_supported_correction",
+                "replaces": null,
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": null,
+                  "captured_at": 1790443517.9455416,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "no_expression",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "split-subject",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": [
+                  {
+                    "claim": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+                    "relation": "superseded_by"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p3"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "No. From what I remember, the statement is about Project Juniper\u2019s preference for morning meetings; it doesn\u2019t establish that you personally prefer them. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "retention-2",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ]
+  }
+]

@@ -37,6 +37,13 @@ def independent_verification_setting(env, rework_enabled):
     return value=='1'
 
 
+def retention_setting(env, companion_enabled):
+    value=env.get('VOICE_RETAIN_RECORDING_MEMORIES','0')
+    if value not in ('0','1') or (value=='1' and not companion_enabled):
+        raise ValueError('Recording memory retention requires companion mode')
+    return value=='1'
+
+
 def validate_rework_allocations(admission, *, rollout=False, verification=False):
     import profile_budget as profile
     allocations=[(profile.REWORK_APPROVAL_ID,profile.REWORK_ALLOWANCE),
@@ -59,6 +66,7 @@ def validate_rework_allocations(admission, *, rollout=False, verification=False)
 async def main():
     rework_enabled,companion_enabled,semantic_enabled=rework_settings(os.environ)
     independent_verification=independent_verification_setting(os.environ,rework_enabled)
+    retain_recording_memories=retention_setting(os.environ,companion_enabled)
     rollout_qa=os.environ.get('VOICE_ENABLE_ROLLOUT_QA','0')
     if rollout_qa not in ('0','1') or (rollout_qa=='1' and not rework_enabled):
         raise ValueError('Rollout QA requires memory rework')
@@ -94,7 +102,8 @@ async def main():
                     # Loading is explicitly enabled; startup cannot download model files.
                     embedder=await asyncio.to_thread(LocalEmbeddings,os.environ['VOICE_EMBEDDING_CACHE'],offline=True)
                 memory_store = MemoryStore(directory / 'memory.sqlite', personal_learning=personal_enabled,
-                    embedding_model=embedder.contract if embedder else None)
+                    embedding_model=embedder.contract if embedder else None,
+                    retain_recording_memories=retain_recording_memories)
                 memory_store.recover_jobs()
                 memory_store.maintain()
                 memory = MemoryService(store, memory_store)

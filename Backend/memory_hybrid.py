@@ -3,6 +3,7 @@ from admission import Rejected
 import memory_context
 import memory_search
 import memory_vectors
+import memory_retention
 
 
 def retrieve(store, owner, query, *, embedder=None, use_memory=True, limit=12, exclude_session=None):
@@ -14,7 +15,8 @@ def retrieve(store, owner, query, *, embedder=None, use_memory=True, limit=12, e
     semantic = memory_vectors.retrieve(store, owner, query, embedder, limit=50,
                                       exclude_session=exclude_session) if embedder else []
     scores = {}; refs = {}
-    for hits in (lexical, semantic):
+    retained = memory_retention.retrieve(store, owner, query, limit=50, exclude_session=exclude_session)
+    for hits in (lexical, semantic, retained):
         visited = set()
         for rank, hit in enumerate(hits, 1):
             key = (hit['session_id'], hit['revision'], hit['passage_id'])
@@ -25,4 +27,4 @@ def retrieve(store, owner, query, *, embedder=None, use_memory=True, limit=12, e
             if key not in refs or 'text_start' in hit: refs[key] = hit
     ranked = [refs[key] for key in sorted(scores, key=lambda key: (-scores[key], key))]
     return dict(status='hybrid' if embedder else 'lexical_only',
-                packet=memory_context.select(store, owner, ranked, limit=limit))
+                packet=memory_context.select(store, owner, ranked[:100], limit=limit))
