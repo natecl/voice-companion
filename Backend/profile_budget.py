@@ -15,6 +15,8 @@ CONSOLIDATION_APPROVAL_ID = 'memory-consolidation-additional-2026-09-26-020'
 CONSOLIDATION_ALLOWANCE = 200_000
 MULTISOURCE_APPROVAL_ID = 'memory-multisource-additional-2026-09-26-020'
 MULTISOURCE_ALLOWANCE = 200_000
+ROLLOUT_APPROVAL_ID = 'companion-rollout-qa-2026-09-26-050'
+ROLLOUT_ALLOWANCE = 500_000
 
 
 def provision(global_path, memory_path):
@@ -49,7 +51,7 @@ def provision(global_path, memory_path):
 
 
 class ProfileBudget:
-    def __init__(self, path, *, include_rework_allowance=False, include_consolidation_allowance=False, include_multisource_allowance=False):
+    def __init__(self, path, *, include_rework_allowance=False, include_consolidation_allowance=False, include_multisource_allowance=False, include_rollout_allowance=False):
         self.path = Path(path)
         self.cap = ALLOCATION
         if not self.path.exists(): raise ValueError('Provision the canonical profile allocation first')
@@ -72,6 +74,12 @@ class ProfileBudget:
                 if db.execute('SELECT id,cap FROM profile_multisource_allowance').fetchall()!=[(MULTISOURCE_APPROVAL_ID,MULTISOURCE_ALLOWANCE)]:
                     raise ValueError('Explicit multisource allowance required')
                 self.cap += MULTISOURCE_ALLOWANCE
+            if include_rollout_allowance:
+                if not include_multisource_allowance:
+                    raise ValueError('Multisource allowance required first')
+                if db.execute('SELECT id,cap FROM profile_rollout_allowance').fetchall()!=[(ROLLOUT_APPROVAL_ID,ROLLOUT_ALLOWANCE)]:
+                    raise ValueError('Explicit rollout allowance required')
+                self.cap += ROLLOUT_ALLOWANCE
 
     def reserve(self, key, model):
         if model not in MODELS: raise Rejected('unapproved_profile_model')
@@ -97,8 +105,8 @@ class ProfileBudget:
             return [dict(zip(('model','calls','reserved_microusd'),row)) for row in db.execute('SELECT model,count(*),sum(reserved) FROM profile_attempt GROUP BY model')]
 
 
-def _provision_additional(global_path,memory_path,approval,amount,table,total,allocations=None):
-    if table not in ('profile_rework_allowance','profile_consolidation_allowance','profile_multisource_allowance'):
+def _provision_additional(global_path,memory_path,approval,amount,table,total,allocations=None,redistribute=False):
+    if table not in ('profile_rework_allowance','profile_consolidation_allowance','profile_multisource_allowance','profile_rollout_allowance'):
         raise ValueError('Unknown allowance')
     allocations={'ask':amount} if allocations is None else allocations
     if (not allocations or set(allocations)-{'ask','jev'} or sum(allocations.values())!=amount
@@ -107,6 +115,9 @@ def _provision_additional(global_path,memory_path,approval,amount,table,total,al
     with database(global_path,isolation_level=None,timeout=2) as db:
         db.execute('BEGIN IMMEDIATE')
         try:
+            if redistribute:
+                from service_policy import redistribute_rollout_policy
+                redistribute_rollout_policy(db)
             missing=[]
             for category,value in allocations.items():
                 key=approval if len(allocations)==1 else approval+':'+category
@@ -156,3 +167,11 @@ def provision_multisource_allowance(global_path,memory_path):
     return _provision_additional(global_path,memory_path,MULTISOURCE_APPROVAL_ID,MULTISOURCE_ALLOWANCE,
         'profile_multisource_allowance',ALLOCATION+REWORK_ALLOWANCE+CONSOLIDATION_ALLOWANCE+MULTISOURCE_ALLOWANCE,
         allocations={'ask':100_000,'jev':100_000})
+
+
+def provision_rollout_allowance(global_path,memory_path):
+    """Approved $0.50 redistribution within $5; operator-only, never startup."""
+    ProfileBudget(memory_path,include_rework_allowance=True,include_consolidation_allowance=True,
+                  include_multisource_allowance=True)
+    return _provision_additional(global_path,memory_path,ROLLOUT_APPROVAL_ID,ROLLOUT_ALLOWANCE,
+        'profile_rollout_allowance',2_900_000,allocations={'ask':350_000,'jev':150_000},redistribute=True)

@@ -31,7 +31,7 @@ The offline model probe returned 384 dimensions in about 0.97 seconds with appro
 
 Prepare consistent backups of canonical source, usage and memory-budget databases; migrate and inspect a private copy before deployment. Preserve existing owners, source revisions, tombstones, ledgers and failed jobs. Do not restore older databases as a rollback that resurrects deletions, and do not run an old binary on a new schema.
 
-Recommended full-feature deployment uses Render's 2 GB `1c-2g` (legacy `standard`) compute plan. The official [pricing page](https://render.com/pricing) lists $25/month versus the current 512 MB Starter's $7/month; this is a proposed $18/month increase, not an approved or applied change. See [plan definitions](https://render.com/docs/compute-plans). Final hosted resource acceptance remains required.
+The earlier capacity recommendation was Render's 2 GB `1c-2g` (legacy `standard`) compute plan. The official [pricing page](https://render.com/pricing) lists $25/month versus the current 512 MB Starter's $7/month; the founder explicitly declined this $18/month increase. Keep the current Starter plan and qualify its capacity; do not silently disable semantic retrieval or weaken acceptance. See [plan definitions](https://render.com/docs/compute-plans). Final hosted resource acceptance remains required.
 
 The canonical profile/rework ledger still reserves $2.38 of $2.40. No paid calls were made in the native/runtime checkpoints. A proposed additional $0.50 QA allocation would require explicit approval and category-budget reallocation within the existing $5 overall cap; current Ask/Jev category headroom alone cannot cover it. Do not reset spent attempts, silently increase limits or enable learning with insufficient allowance.
 
