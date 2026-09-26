@@ -1,0 +1,151 @@
+{
+  "source": {
+    "captured_at": 200.0,
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "duration": 0,
+        "id": "p1",
+        "speakers": [],
+        "start": 0,
+        "text": "my daughter maya now enjoys tennis instead of swimming"
+      }
+    ],
+    "revision": 1,
+    "session_id": "synthetic-maya-correction",
+    "timezone": "America/New_York"
+  },
+  "cached": {
+    "extract": {
+      "data": {
+        "memories": [
+          {
+            "text": "The user's daughter Maya now enjoys tennis instead of swimming.",
+            "subject_name": "Maya",
+            "kind": "preference",
+            "basis": "stated",
+            "source_ids": [
+              "p1"
+            ],
+            "expires_at": null,
+            "subject_scope": "related",
+            "subject_relation": "daughter"
+          }
+        ]
+      },
+      "usage": {
+        "input_tokens": 721,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 65,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 786
+      },
+      "elapsed_seconds": 1.4019267009571195
+    },
+    "judge": {
+      "data": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "attribution_0": {
+            "type": "choice",
+            "choice": "related",
+            "confidence": 0.95,
+            "probabilities": {
+              "related": 0.96,
+              "wrong": 0.04,
+              "unknown": 0.0,
+              "named": 0.0,
+              "user": 0.0
+            }
+          },
+          "modality_0": {
+            "type": "choice",
+            "choice": "stated",
+            "confidence": 0.99,
+            "probabilities": {
+              "discard": 0.01,
+              "tentative": 0.0,
+              "inferred": 0.0,
+              "stated": 0.99
+            }
+          },
+          "relation_0": {
+            "type": "choice",
+            "choice": "update_0",
+            "confidence": 0.82,
+            "probabilities": {
+              "conflict": 0.07,
+              "new": 0.05,
+              "update_0": 0.88
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 1405,
+          "output_tokens": 148
+        }
+      },
+      "usage": {
+        "input_tokens": 1405,
+        "output_tokens": 148
+      },
+      "elapsed_seconds": 0.14423060975968838
+    },
+    "support": {
+      "data": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "support_0": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 1.0,
+            "probabilities": {
+              "supported": 1.0,
+              "unsupported": 0.0,
+              "uncertain": 0.0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 595,
+          "output_tokens": 42
+        }
+      },
+      "usage": {
+        "input_tokens": 595,
+        "output_tokens": 42
+      },
+      "elapsed_seconds": 0.1753110932186246
+    }
+  },
+  "old": {
+    "id": "synthetic-prior-claim",
+    "owner": "synthetic-owner",
+    "text": "The user's daughter Maya enjoys swimming.",
+    "subject": "related_prior",
+    "kind": "preference",
+    "basis": "stated",
+    "observed": 100.0,
+    "valid_from": 100.0,
+    "valid_until": null,
+    "state": "active",
+    "reason": "supported",
+    "replaces": null,
+    "judgment_version": "personal-v1",
+    "profile_link": 1,
+    "sources": [
+      {
+        "session": "synthetic-maya-original",
+        "revision": 1,
+        "passage": "p1"
+      }
+    ]
+  },
+  "provenance": "Replay of recorded judgments for the fictional Maya QA case. Identifiers and times sanitized; model outputs and probability distributions preserved. Not a fresh provider evaluation."
+}

@@ -1,0 +1,264 @@
+{
+  "version": 1,
+  "status": "Frozen before rework prompt changes; expectations are acceptance specifications, not passed evaluations. Held-out cases must not be used to tune prompts; log any exposure-driven changes and add fresh cases before live evaluation.",
+  "cases": [
+    {
+      "id": "maya-correction",
+      "split": "development",
+      "checkpoint": 3,
+      "input_sequence": [
+        "My daughter Maya enjoys swimming.",
+        "My daughter Maya now enjoys tennis instead of swimming."
+      ],
+      "expected": "Link the explicit correction to the same daughter only with sufficient identity evidence; tennis current, swimming historical, both sources retained.",
+      "forbidden": "No parallel authoritative current preferences caused by uncertain relation."
+    },
+    {
+      "id": "uncertain-replacement",
+      "split": "development",
+      "checkpoint": 1,
+      "input_sequence": [
+        "My daughter enjoys tennis instead of swimming now."
+      ],
+      "expected": "Persist unresolved replacement and candidate links; do not force current-new or supersession.",
+      "forbidden": "Do not assume an unnamed daughter is Maya."
+    },
+    {
+      "id": "other-daughter",
+      "split": "development",
+      "checkpoint": 3,
+      "input_sequence": [
+        "My daughter Maya enjoys swimming.",
+        "My other daughter Maya enjoys tennis."
+      ],
+      "expected": "Keep distinct people; no replacement.",
+      "forbidden": "Shared name must not merge entities."
+    },
+    {
+      "id": "different-relationship",
+      "split": "development",
+      "checkpoint": 3,
+      "input_sequence": [
+        "My daughter Maya swims.",
+        "My colleague Maya plays tennis."
+      ],
+      "expected": "Keep distinct relationship-qualified mentions.",
+      "forbidden": "No supersession across people."
+    },
+    {
+      "id": "additional-interest",
+      "split": "development",
+      "checkpoint": 3,
+      "input_sequence": [
+        "Maya enjoys swimming.",
+        "Maya also enjoys tennis."
+      ],
+      "expected": "Preserve both interests when identity is supported.",
+      "forbidden": "Addition is not correction."
+    },
+    {
+      "id": "unknown-speaker",
+      "split": "development",
+      "checkpoint": 3,
+      "input_sequence": [
+        "I am training for a marathon."
+      ],
+      "expected": "Keep statement tied to unresolved recorded speaker.",
+      "forbidden": "Account ownership does not establish speaker identity."
+    },
+    {
+      "id": "quote",
+      "split": "development",
+      "checkpoint": 3,
+      "input_sequence": [
+        "Alex said, \"I dislike swimming.\""
+      ],
+      "expected": "Attribute to quoted Alex, retain modality and source.",
+      "forbidden": "Not an account-owner preference."
+    },
+    {
+      "id": "hypothetical",
+      "split": "development",
+      "checkpoint": 3,
+      "input_sequence": [
+        "If I liked tennis, I would join the club."
+      ],
+      "expected": "Do not create a stated tennis preference.",
+      "forbidden": "Hypothetical is not fact."
+    },
+    {
+      "id": "old-paraphrase",
+      "split": "development",
+      "checkpoint": 5,
+      "input_sequence": [
+        "The user enjoys sketching sparrows.",
+        "Nine newer unrelated household facts.",
+        "Question: Suggest a relaxing creative activity."
+      ],
+      "expected": "Relevant old capture enters candidates and can ground answer.",
+      "forbidden": "Recent unrelated captures must not crowd it out."
+    },
+    {
+      "id": "old-correction-target",
+      "split": "development",
+      "checkpoint": 3,
+      "input_sequence": [
+        "Old preference plus 51 later unrelated claims.",
+        "Correction of the old preference."
+      ],
+      "expected": "Retrieve relevant prior target before limits.",
+      "forbidden": "No latest-50-only correction pool."
+    },
+    {
+      "id": "oversized-job",
+      "split": "development",
+      "checkpoint": 2,
+      "input_sequence": [
+        "Accepted source over extraction request limit.",
+        "Valid queued source immediately afterward."
+      ],
+      "expected": "Bounded chunks or explicit per-source failure; following source learns.",
+      "forbidden": "One source must not halt independent work."
+    },
+    {
+      "id": "deleted-source",
+      "split": "development",
+      "checkpoint": 4,
+      "input_sequence": [
+        "Capture a fact.",
+        "Delete its only supporting recording.",
+        "Ask again."
+      ],
+      "expected": "Invalidate dependent facts, identity links and context; citation unavailable.",
+      "forbidden": "No replay or chat-summary resurrection."
+    },
+    {
+      "id": "temporary-today",
+      "split": "development",
+      "checkpoint": 4,
+      "input_sequence": [
+        "I am staying at home today."
+      ],
+      "expected": "Resolve limited validity using capture date/timezone; keep unknown speaker unknown.",
+      "forbidden": "Do not retain as permanent routine."
+    },
+    {
+      "id": "same-name-friends",
+      "split": "held_out",
+      "checkpoint": 3,
+      "input_sequence": [
+        "My friend Jordan lives in Boston.",
+        "A different friend, also Jordan, lives in Seattle."
+      ],
+      "expected": "Keep distinct people and source links.",
+      "forbidden": "No merge based on name."
+    },
+    {
+      "id": "pet-replacement",
+      "split": "held_out",
+      "checkpoint": 3,
+      "input_sequence": [
+        "My dog Pepper eats salmon food.",
+        "Pepper, my dog, switched to chicken food."
+      ],
+      "expected": "Supported same-pet change: current chicken, historical salmon.",
+      "forbidden": "No requirement for exact phrase instead of."
+    },
+    {
+      "id": "past-only",
+      "split": "held_out",
+      "checkpoint": 3,
+      "input_sequence": [
+        "My sister Leila liked running as a child."
+      ],
+      "expected": "Historical preference only with source evidence.",
+      "forbidden": "Not a present-day preference."
+    },
+    {
+      "id": "conflicting-evidence",
+      "split": "held_out",
+      "checkpoint": 1,
+      "input_sequence": [
+        "Sam prefers mornings.",
+        "Sam prefers evenings."
+      ],
+      "expected": "Preserve conflict when identity/time/change cannot be resolved.",
+      "forbidden": "Recency alone is not proof of supersession."
+    },
+    {
+      "id": "duplicate-support",
+      "split": "held_out",
+      "checkpoint": 4,
+      "input_sequence": [
+        "Two independent sources support the same established preference.",
+        "Delete one source."
+      ],
+      "expected": "Consolidate supports; retain claim supported by surviving source.",
+      "forbidden": "Do not erase all support or double-count as separate facts."
+    },
+    {
+      "id": "relative-weekday",
+      "split": "held_out",
+      "checkpoint": 4,
+      "input_sequence": [
+        "Available until Friday, captured near a timezone boundary."
+      ],
+      "expected": "Resolve against supplied source time/timezone and document boundary semantics.",
+      "forbidden": "No server-local date assumption."
+    },
+    {
+      "id": "ambiguous-semester",
+      "split": "held_out",
+      "checkpoint": 4,
+      "input_sequence": [
+        "I am studying biology this semester."
+      ],
+      "expected": "Preserve temporal expression; unresolved end date unless supplied.",
+      "forbidden": "Do not invent school calendar."
+    },
+    {
+      "id": "owner-isolation",
+      "split": "held_out",
+      "checkpoint": 5,
+      "input_sequence": [
+        "Two owners have matching names and query words."
+      ],
+      "expected": "Only authenticated owner evidence enters context.",
+      "forbidden": "Zero cross-owner leakage."
+    },
+    {
+      "id": "main-chat-reopen",
+      "split": "held_out",
+      "checkpoint": "6A",
+      "input_sequence": [
+        "Ask a question.",
+        "Reopen app and ask a follow-up."
+      ],
+      "expected": "Same main conversation and bounded relevant history.",
+      "forbidden": "No automatic new thread."
+    },
+    {
+      "id": "attach-recording",
+      "split": "held_out",
+      "checkpoint": "6B",
+      "input_sequence": [
+        "Draft a message.",
+        "Open a past recording and Ask about this.",
+        "Open source citation."
+      ],
+      "expected": "Draft retained, visible attachment, citation opens original passage.",
+      "forbidden": "No new thread or silent exclusive memory scope."
+    },
+    {
+      "id": "capture-navigation",
+      "split": "held_out",
+      "checkpoint": 7,
+      "input_sequence": [
+        "Capture while chatting.",
+        "Switch to library and back while speaking."
+      ],
+      "expected": "Capture continues; status and stop control accessible; new transcript persists.",
+      "forbidden": "Requires physical-device evidence, not only replay."
+    }
+  ]
+}
