@@ -51,3 +51,59 @@ class ReworkBudgetTests(unittest.TestCase):
             with self.assertRaisesRegex(Rejected,'budget_limit'):provision_multisource_allowance(global_path,memory_path)
             self.assertEqual(admission.db.execute('SELECT count(*),sum(reserved) FROM request').fetchone(),before)
             self.assertEqual(ProfileBudget(memory_path,include_rework_allowance=True,include_consolidation_allowance=True).cap,2_200_000)
+
+class RolloutBudgetTests(unittest.TestCase):
+    def fixture(self,folder):
+        from service_policy import STT,ASK,RETIRED_JEV
+        paths=Path(folder)/'usage.sqlite',Path(folder)/'budget.sqlite'
+        admission=Admission(paths[0],total_microusd=5_000_000,limits={'stt':STT,'ask':ASK,'jev':RETIRED_JEV})
+        admission.enroll();self.addCleanup(admission.close)
+        provision(*paths);provision_rework_allowance(*paths);provision_consolidation_allowance(*paths);provision_multisource_allowance(*paths)
+        return paths,admission
+
+    def test_explicit_redistribution_is_idempotent_and_startup_preserves_it(self):
+        import os
+        from unittest.mock import patch
+        from profile_budget import provision_rollout_allowance
+        from service_policy import open_ledger,ROLLOUT_POLICIES
+        from hosted import validate_rework_allocations
+        with tempfile.TemporaryDirectory() as folder:
+            paths,admission=self.fixture(folder)
+            before=admission.db.execute('SELECT * FROM request ORDER BY id').fetchall()
+            provision_rollout_allowance(*paths);provision_rollout_allowance(*paths)
+            self.assertEqual(admission.db.execute('SELECT cap FROM budget').fetchone(),(5_000_000,))
+            self.assertEqual(admission.db.execute('SELECT sum(reserved) FROM request').fetchone(),(2_900_000,))
+            self.assertEqual(dict((r[0],tuple(r[1:])) for r in admission.db.execute('SELECT * FROM policy')),ROLLOUT_POLICIES)
+            for row in before:self.assertEqual(admission.db.execute('SELECT * FROM request WHERE id=?',(row[0],)).fetchone(),row)
+            validate_rework_allocations(admission,rollout=True)
+            old=ProfileBudget(paths[1],include_rework_allowance=True,include_consolidation_allowance=True,include_multisource_allowance=True)
+            self.assertEqual(old.cap,2_400_000)
+            new=ProfileBudget(paths[1],include_rework_allowance=True,include_consolidation_allowance=True,include_multisource_allowance=True,include_rollout_allowance=True)
+            for i in range(290):new.reserve(str(i),'gpt-6-luna')
+            with self.assertRaisesRegex(Rejected,'profile_budget_limit'):new.reserve('over','gpt-6-luna')
+            with self.assertRaisesRegex(Rejected,'paid_retry'):new.reserve('0','gpt-6-luna')
+            with patch.dict(os.environ,{'VOICE_DATA_DIR':folder,'VOICE_ENABLE_ASK':'1'}):
+                reopened=open_ledger(migrate=True)
+                self.assertEqual(reopened.usage(),admission.usage());reopened.close()
+
+    def test_conflicting_reservation_rolls_back_policy_and_exposes_no_allowance(self):
+        from profile_budget import provision_rollout_allowance,ROLLOUT_APPROVAL_ID
+        with tempfile.TemporaryDirectory() as folder:
+            paths,admission=self.fixture(folder)
+            credential=admission.db.execute('SELECT id FROM credential').fetchone()[0]
+            admission.db.execute('INSERT INTO request VALUES(?,?,?,?,?,?)',(ROLLOUT_APPROVAL_ID+':jev',credential,'jev',0,1,'completed'))
+            before=admission.db.execute('SELECT * FROM policy').fetchall()
+            with self.assertRaisesRegex(ValueError,'Allowance conflicts'):provision_rollout_allowance(*paths)
+            self.assertEqual(admission.db.execute('SELECT * FROM policy').fetchall(),before)
+            import sqlite3
+            with sqlite3.connect(paths[1]) as db:self.assertIsNone(db.execute("SELECT name FROM sqlite_master WHERE name='profile_rollout_allowance'").fetchone())
+
+    def test_recording_usage_cannot_be_erased_to_make_room(self):
+        from profile_budget import provision_rollout_allowance
+        with tempfile.TemporaryDirectory() as folder:
+            paths,admission=self.fixture(folder)
+            credential=admission.db.execute('SELECT id FROM credential').fetchone()[0]
+            admission.db.execute('INSERT INTO request VALUES(?,?,?,?,?,?)',('previous',credential,'stt',0,1_500_001,'completed'))
+            before=admission.db.execute('SELECT * FROM policy').fetchall()
+            with self.assertRaisesRegex(ValueError,'Existing usage'):provision_rollout_allowance(*paths)
+            self.assertEqual(admission.db.execute('SELECT * FROM policy').fetchall(),before)

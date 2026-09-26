@@ -21,7 +21,7 @@ from memory_store import MemoryStore
 from memory_budget import MemoryBudget, reserve_global_allocation
 import profile_budget
 from relay import Relay
-from service_policy import STT, ASK, RETIRED_JEV
+from service_policy import STT, ASK, RETIRED_JEV, ROLLOUT_POLICIES
 
 FLAGS={name:'1' for name in ('VOICE_ENABLE_MEMORY_REWORK','VOICE_ENABLE_COMPANION','VOICE_ENABLE_MEMORY',
     'VOICE_ENABLE_PERSONAL_LEARNING','VOICE_ENABLE_MEMORY_LEARNING','VOICE_ENABLE_MEMORY_RECALL','VOICE_ENABLE_ASK')}
@@ -72,7 +72,8 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
             profile_budget.provision_rework_allowance(global_path,budget_path)
             profile_budget.provision_consolidation_allowance(global_path,budget_path)
             profile_budget.provision_multisource_allowance(global_path,budget_path)
-            validate_rework_allocations(admission)
+            profile_budget.provision_rollout_allowance(global_path,budget_path)
+            validate_rework_allocations(admission,rollout=True)
             before=admission.usage();admission.close()
             cache=os.environ.get('VOICE_TEST_EMBEDDING_CACHE')
             from local_embeddings import CONTRACT
@@ -87,7 +88,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
             with socket.socket() as sock:
                 sock.bind(('127.0.0.1',0));port=sock.getsockname()[1]
             env={k:v for k,v in os.environ.items() if not k.startswith('VOICE_ENABLE_')}
-            env.update(FLAGS,VOICE_DATA_DIR=folder,XAI_API_KEY='unused',OPENAI_API_KEY='unused',TYPESAFE_API_KEY='unused',PORT=str(port))
+            env.update(FLAGS,VOICE_ENABLE_ROLLOUT_QA='1',VOICE_DATA_DIR=folder,XAI_API_KEY='unused',OPENAI_API_KEY='unused',TYPESAFE_API_KEY='unused',PORT=str(port))
             if cache:env.update(VOICE_ENABLE_SEMANTIC_INDEX='1',VOICE_EMBEDDING_CACHE=cache,HF_HUB_OFFLINE='1')
             process=subprocess.Popen([sys.executable,str(Path(__file__).with_name('hosted.py'))],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
             try:
@@ -115,7 +116,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
                     with memory.connect() as db:self.assertEqual(db.execute('SELECT count(*) FROM memory_embedding').fetchone()[0],1)
                 with urlopen(f'http://127.0.0.1:{port}/health/learning') as response:
                     self.assertEqual(json.load(response)['state'],'idle')
-                admission=Admission(global_path,total_microusd=5_000_000,limits={'stt':STT,'ask':ASK,'jev':RETIRED_JEV})
+                admission=Admission(global_path,total_microusd=5_000_000,limits=ROLLOUT_POLICIES)
                 self.assertEqual(admission.usage(),before);admission.close()
                 self.assertEqual(profile_budget.ProfileBudget(budget_path,include_rework_allowance=True,
                     include_consolidation_allowance=True,include_multisource_allowance=True).report(),[])

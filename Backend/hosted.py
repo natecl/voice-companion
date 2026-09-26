@@ -30,11 +30,13 @@ def rework_settings(env):
     return rework,companion,semantic
 
 
-def validate_rework_allocations(admission):
+def validate_rework_allocations(admission, *, rollout=False):
     import profile_budget as profile
-    for approval,amount in ((profile.REWORK_APPROVAL_ID,profile.REWORK_ALLOWANCE),
+    allocations=[(profile.REWORK_APPROVAL_ID,profile.REWORK_ALLOWANCE),
             (profile.CONSOLIDATION_APPROVAL_ID,profile.CONSOLIDATION_ALLOWANCE),
-            (profile.MULTISOURCE_APPROVAL_ID,profile.MULTISOURCE_ALLOWANCE)):
+            (profile.MULTISOURCE_APPROVAL_ID,profile.MULTISOURCE_ALLOWANCE)]
+    if rollout:allocations.append((profile.ROLLOUT_APPROVAL_ID,profile.ROLLOUT_ALLOWANCE))
+    for approval,amount in allocations:
         rows=admission.db.execute('SELECT category,reserved FROM request WHERE id IN (?,?,?)',
             (approval,approval+':ask',approval+':jev')).fetchall()
         if not rows or any(row[0] not in ('ask','jev') for row in rows) or sum(row[1] for row in rows)!=amount:
@@ -43,6 +45,9 @@ def validate_rework_allocations(admission):
 
 async def main():
     rework_enabled,companion_enabled,semantic_enabled=rework_settings(os.environ)
+    rollout_qa=os.environ.get('VOICE_ENABLE_ROLLOUT_QA','0')
+    if rollout_qa not in ('0','1') or (rollout_qa=='1' and not rework_enabled):
+        raise ValueError('Rollout QA requires memory rework')
     os.umask(0o077)
     directory = Path(os.environ['VOICE_DATA_DIR'])
     # Keep this descriptor open until all connections and the ledger are closed.
@@ -96,9 +101,9 @@ async def main():
                     allocation = store.db.execute('SELECT category,reserved FROM request WHERE id=?', (PROFILE_APPROVAL_ID,)).fetchone()
                     if allocation is None or tuple(allocation) != ('ask', PROFILE_ALLOCATION):
                         raise ValueError('Profile QA allocation is not reserved')
-                    if rework_enabled:validate_rework_allocations(store)
+                    if rework_enabled:validate_rework_allocations(store,rollout=rollout_qa=='1')
                     budget = ProfileBudget(directory / 'memory-budget.sqlite',include_rework_allowance=rework_enabled,
-                        include_consolidation_allowance=rework_enabled,include_multisource_allowance=rework_enabled)
+                        include_consolidation_allowance=rework_enabled,include_multisource_allowance=rework_enabled,include_rollout_allowance=rollout_qa=='1')
                 models = MemoryModels(answer_key, os.environ['TYPESAFE_API_KEY'])
                 if learning_enabled:
                     if rework_enabled:
