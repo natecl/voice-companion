@@ -116,7 +116,9 @@ def pair_evidence(pair,role):
     for e in previous_evidence:
         passage=e['passage'];prior_excerpts=[passage['text']]
         proposal=e.get('proposal') or previous.get('proposal')
-        if len(passage['text'])>2000 and proposal:
+        if passage.get('retained_excerpts') and proposal:
+            prior_excerpts=[e['quote'] for e in proposal['evidence'] if e['passage']==passage['id']]
+        elif len(passage['text'])>2000 and proposal:
             spans=[s for s in proposal['spans'] if s['passage']==passage['id']]
             # Exact original spans plus bounded neighboring text, never a generated summary.
             if spans:prior_excerpts=[passage['text'][max(0,s['start']-200):s['end']+200] for s in spans]

@@ -58,12 +58,20 @@ def description(value):
 
 
 def live_passage(db, owner, ref):
+    """Internal support: live passage or committed excerpts retained at deletion.
+
+    This is not the user-facing source endpoint and cannot reopen a transcript.
+    """
     if (not isinstance(ref, dict) or set(ref) != {'session', 'revision', 'passage'}
             or not isinstance(ref['session'], str) or not isinstance(ref['passage'], str)
             or type(ref['revision']) is not int):
         raise Rejected('invalid_identity_evidence')
     row = db.execute('SELECT revision,payload,deleted FROM source WHERE owner=? AND session=?',
                      (owner, ref['session'])).fetchone()
+    if row and row['deleted']:
+        from memory_retention import supporting_passage
+        retained = supporting_passage(db, owner, ref)
+        if retained is not None:return retained
     if not row or row['deleted'] or row['revision'] != ref['revision']:
         raise Rejected('stale_identity_evidence')
     passage = next((p for p in json.loads(row['payload'])['passages'] if p['id'] == ref['passage']), None)

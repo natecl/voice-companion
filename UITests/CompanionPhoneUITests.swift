@@ -3,6 +3,28 @@ import XCTest
 #if os(iOS)
 @MainActor
 final class CompanionPhoneUITests: XCTestCase {
+    func testRetainedMemoryReferenceAfterReopen() throws {
+        continueAfterFailure = false
+        let config = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"])
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--companion-ui-fixture"]
+        app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = config
+        app.launch()
+        defer { app.terminate() }
+        XCTAssertTrue(app.staticTexts["retainedMemoryReference"].firstMatch.waitForExistence(timeout: 8))
+        XCTAssertFalse(app.buttons["companionSource"].exists)
+        XCTAssertTrue(app.staticTexts["companionAnswer"].firstMatch.label.contains("community center"))
+        let image = XCTAttachment(screenshot: app.screenshot())
+        image.name = "Retained memory — recording deleted, no broken source button"
+        image.lifetime = .keepAlways
+        add(image)
+        app.terminate()
+        app.launchArguments = ["--ui-testing", "--companion-ui-fixture"]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["retainedMemoryReference"].firstMatch.waitForExistence(timeout: 8))
+        XCTAssertFalse(app.buttons["companionSource"].exists)
+    }
+
     func testCompanionAndCaptureNavigation() throws {
         continueAfterFailure = false
         let config = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"], "Launch with the isolated local companion fixture configuration")

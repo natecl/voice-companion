@@ -51,3 +51,5 @@ The enrolled iPhone can synchronize session evidence and ask with source-linked 
 ## Companion rework rollout
 
 The reviewed memory/main-chat backend is enabled on the existing Render Starter plan. Fresh migration/backup, budget accounting, constrained embedding capacity and authenticated hosted access have been verified. The matching physical iPhone checks now cover capture while chatting, saved-source recall, correction answers, attachment/follow-up and deletion surviving relaunch. The response-wording, named-project location and independent recording-verification fixes are deployed. A bounded [hosted check](docs/verification-rollout.md) verified retention of a fragmented preference and sourced recall; this is not a general memory-accuracy guarantee. See [internal rollout evidence and limits](docs/companion-internal-rollout.md); earlier acceptance documents describe their historical checkpoints.
+
+The [recording-deletion retention candidate](docs/retained-recording-memory.md) preserves learned knowledge separately from removed transcripts. Local replay and simulator QA pass; live provider QA and deployment remain pending.

@@ -42,7 +42,7 @@ def scrub(db,owner,turn):
 
 def invalidate_source(db,owner,session,*,deleting=True):
     # Dependents inherit every source used by previous answers in their context.
-    turns=db.execute("SELECT DISTINCT turn FROM companion_dependency WHERE owner=? AND session=? AND (? OR json_extract(reference,'$.snapshot_id') IS NULL)",(owner,session,deleting)).fetchall()
+    turns=db.execute("SELECT DISTINCT turn FROM companion_dependency WHERE owner=? AND session=? AND json_extract(reference,'$.retained_claim_id') IS NULL AND (? OR json_extract(reference,'$.snapshot_id') IS NULL)",(owner,session,deleting)).fetchall()
     for row in turns:scrub(db,owner,row['turn'])
 
 
@@ -50,6 +50,7 @@ def reference(item):
     keys=('session_id','revision','passage_id','text_start','text_end')
     ref={key:item[key] for key in keys}
     if 'snapshot_id' in item:ref['snapshot_id']=item['snapshot_id']
+    if 'retained_claim_id' in item:ref['retained_claim_id']=item['retained_claim_id']
     return json.dumps(ref,sort_keys=True,separators=(',',':'))
 
 
@@ -155,7 +156,7 @@ class CompanionChat:
             self._validate_turn(db,owner,row)
             row=db.execute('SELECT * FROM companion_turn WHERE owner=? AND id=?',(owner,turn_id)).fetchone()
             ref=next((c['source'] for c in json.loads(row['citations']) if c['id']==citation_id),None)
-            if ref is None:raise Rejected('source_unavailable')
+            if ref is None or 'retained_claim_id' in ref:raise Rejected('source_unavailable')
             item=memory_context.hydrate(self.store,db,owner,ref,self.store.clock())
             if item is None:raise Rejected('source_unavailable')
             return dict(id=citation_id,**item)

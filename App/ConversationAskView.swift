@@ -44,8 +44,14 @@ struct ConversationAskView: View {
                     if answer.state == .completed {
                         ForEach(answer.references, id: \.self) { reference in
                             if let passage = (answer.question.passages + (answer.pastSources ?? [])).first(where: { $0.id == reference }) {
-                                Button(String(format: passage.session_id == nil ? "Source %@ · %.1fs" : "Past source %@ · %.1fs", reference, passage.start)) { source = passage }
-                                    .accessibilityIdentifier("answerSource")
+                                if passage.retained_claim_id != nil {
+                                    Text("Memory \(reference) · recording deleted")
+                                        .font(.caption).foregroundStyle(.secondary)
+                                        .accessibilityIdentifier("retainedMemoryReference")
+                                } else {
+                                    Button(String(format: passage.session_id == nil ? "Source %@ · %.1fs" : "Past source %@ · %.1fs", reference, passage.start)) { source = passage }
+                                        .accessibilityIdentifier("answerSource")
+                                }
                             }
                         }
                     }

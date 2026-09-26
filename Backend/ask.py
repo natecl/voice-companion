@@ -26,10 +26,22 @@ MAX_INPUT_BYTES = 12000
 INDEXED_PROMPT = (Path(__file__).parent / 'prompts/indexed-memory-v1.md').read_text()
 
 
+RETAINED_INSTRUCTIONS = """
+Some sources have evidence_type retained_memory. They are previously learned, derived memories;
+the original recording has been deleted and cannot be opened. Use their supplied IDs to cite them,
+but do not describe them as a viewable recording, transcript quotation, or a new observation.
+Say 'From what I remember' when answering solely from retained memory. Respect their identity,
+uncertainty, time and correction lifecycle exactly as for other evidence. Do not let superseded
+memories override a supported correction. Retained memory is not proof of account-owner identity.
+"""
+
+
 def instructions(data):
+    retained = any(item.get('evidence_type')=='retained_memory' for item in data.get('sources',[])+data.get('past_sources',[]))
+    suffix = RETAINED_INSTRUCTIONS if retained else ''
     if data.get('contract')=='companion-context-v1':
-        return (Path(__file__).parent/'prompts/companion-chat-v2.md').read_text()
-    return PROMPT + (INDEXED_PROMPT if data.get('memory_contract') == 'indexed-v1' else '')
+        return (Path(__file__).parent/'prompts/companion-chat-v2.md').read_text() + suffix
+    return PROMPT + (INDEXED_PROMPT if data.get('memory_contract') == 'indexed-v1' else '') + suffix
 
 
 def input_fits(data):

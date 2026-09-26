@@ -16,7 +16,7 @@ from websockets.asyncio.server import serve
 from admission import Admission
 from companion_chat import CompanionChat
 from companion_service import CompanionService
-from hosted import rework_settings, validate_rework_allocations, independent_verification_setting
+from hosted import rework_settings, validate_rework_allocations, independent_verification_setting, retention_setting
 from memory_store import MemoryStore
 from memory_budget import MemoryBudget, reserve_global_allocation
 import profile_budget
@@ -40,6 +40,12 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
         for value,rework in [('yes',True),('1',False)]:
             with self.assertRaises(ValueError):
                 independent_verification_setting({'VOICE_ENABLE_INDEPENDENT_VERIFICATION':value},rework)
+
+    def test_retention_enablement_requires_companion(self):
+        self.assertFalse(retention_setting({},True))
+        self.assertTrue(retention_setting({'VOICE_RETAIN_RECORDING_MEMORIES':'1'},True))
+        for value,enabled in [('yes',True),('1',False)]:
+            with self.assertRaises(ValueError):retention_setting({'VOICE_RETAIN_RECORDING_MEMORIES':value},enabled)
 
     async def test_route_requires_enablement_and_authorization_without_stt(self):
         with tempfile.TemporaryDirectory() as folder:

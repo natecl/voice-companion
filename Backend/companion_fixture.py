@@ -21,7 +21,10 @@ async def main(directory):
     os.umask(0o077)
     ledger = Admission(directory/'usage.sqlite', total_microusd=30000, limits={'ask':(30000,3000,20)})
     credential, token = ledger.enroll()
-    store = MemoryStore(directory/'memory.sqlite')
+    store = MemoryStore(directory/'memory.sqlite',retain_recording_memories='--retained' in sys.argv)
+    if '--retained' in sys.argv:
+        from retention_fixture import seed
+        await seed(store,store.owner_for(credential),directory/'retention')
     service = CompanionService(ledger, store, Provider())
     memory=MemoryService(ledger,store)
     async def handle(socket):
