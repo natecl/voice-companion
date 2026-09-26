@@ -130,6 +130,8 @@ Delivery split: **5A** adds transactional owner-scoped lexical indexing and boun
 
 ### Checkpoint 6A — persistent main companion chat
 
+Delivery split: **6A1** adds durable owner-scoped main-chat storage, duplicate-safe turn states and source-derived history invalidation; see [storage QA and integration limits](companion-chat-store.md). Context assembly, service/native integration and live conversational QA remain pending.
+
 **Outcome:** one obvious place to talk, independent of recording selection, with reliable conversational continuity.
 
 - Add a durable owner-scoped main conversation with stable conversation/message/question IDs. Reopen it across app launches; do not create a new thread on each visit or capture. Chat works with an empty recording library. Reserve the data boundary for future side conversations without building their UI, branching or management features now.

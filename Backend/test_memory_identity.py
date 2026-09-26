@@ -183,7 +183,7 @@ class IdentityTests(unittest.TestCase):
         self.assertEqual(self.store.owner_for('owner-a'), self.owner)
         self.assertEqual(self.store.put_source(self.owner, source('deleted'))['status'], 'deleted')
         with self.store.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 12)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 13)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0], 'ok')
             self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(), [])
         MemoryStore(self.path)
