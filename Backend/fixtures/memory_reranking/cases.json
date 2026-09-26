@@ -1,0 +1,11 @@
+{
+  "distractors": [
+    "The school handout describes food allergy reactions in children, but does not name anyone's allergies.",
+    "At the veterinary talk, the presenter discussed how to give dogs medicine, without prescribing a schedule.",
+    "My aunt recommended a documentary about cities; she did not say where she lives.",
+    "The running magazine lists marathon and half marathon training distances.",
+    "My father bought a telephone with a louder ring.",
+    "The science department offers spoken exams, but this announcement does not contain my timetable."
+  ],
+  "irrelevant_queries": ["Write a haiku about Saturn.", "How do I reverse a list in Python?", "What is the capital of France?"]
+}
