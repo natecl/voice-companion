@@ -30,6 +30,13 @@ def rework_settings(env):
     return rework,companion,semantic
 
 
+def independent_verification_setting(env, rework_enabled):
+    value=env.get('VOICE_ENABLE_INDEPENDENT_VERIFICATION','0')
+    if value not in ('0','1') or (value=='1' and not rework_enabled):
+        raise ValueError('Independent verification requires memory rework')
+    return value=='1'
+
+
 def validate_rework_allocations(admission, *, rollout=False):
     import profile_budget as profile
     allocations=[(profile.REWORK_APPROVAL_ID,profile.REWORK_ALLOWANCE),
@@ -45,6 +52,7 @@ def validate_rework_allocations(admission, *, rollout=False):
 
 async def main():
     rework_enabled,companion_enabled,semantic_enabled=rework_settings(os.environ)
+    independent_verification=independent_verification_setting(os.environ,rework_enabled)
     rollout_qa=os.environ.get('VOICE_ENABLE_ROLLOUT_QA','0')
     if rollout_qa not in ('0','1') or (rollout_qa=='1' and not rework_enabled):
         raise ValueError('Rollout QA requires memory rework')
@@ -103,13 +111,14 @@ async def main():
                         raise ValueError('Profile QA allocation is not reserved')
                     if rework_enabled:validate_rework_allocations(store,rollout=rollout_qa=='1')
                     budget = ProfileBudget(directory / 'memory-budget.sqlite',include_rework_allowance=rework_enabled,
-                        include_consolidation_allowance=rework_enabled,include_multisource_allowance=rework_enabled,include_rollout_allowance=rollout_qa=='1')
+                        include_consolidation_allowance=rework_enabled,include_multisource_allowance=rework_enabled,include_rollout_allowance=rollout_qa=='1',
+                        independent_source_verification=independent_verification)
                 models = MemoryModels(answer_key, os.environ['TYPESAFE_API_KEY'])
                 if learning_enabled:
                     if rework_enabled:
                         from memory_evidence_writer import EvidenceWriter
                         writer=EvidenceWriter(memory_store,models,budget,chunking=True,semantic_boundaries=True,
-                            expiry=True,consolidation=True)
+                            expiry=True,consolidation=True,independent_source_verification=independent_verification)
                     else:writer = MemoryWriter(memory_store, models, budget)
                     learning_worker = MemoryWorker(writer, store)
 

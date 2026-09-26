@@ -53,8 +53,9 @@ def provision(global_path, memory_path):
 
 
 class ProfileBudget:
-    def __init__(self, path, *, include_rework_allowance=False, include_consolidation_allowance=False, include_multisource_allowance=False, include_rollout_allowance=False, include_preference_allowance=False):
+    def __init__(self, path, *, include_rework_allowance=False, include_consolidation_allowance=False, include_multisource_allowance=False, include_rollout_allowance=False, include_preference_allowance=False, independent_source_verification=False):
         self.path = Path(path)
+        self.independent_source_verification = independent_source_verification
         self.cap = ALLOCATION
         if not self.path.exists(): raise ValueError('Provision the canonical profile allocation first')
         with database(self.path) as db:
@@ -89,15 +90,18 @@ class ProfileBudget:
                 self.cap += PREFERENCE_ALLOWANCE
 
     def reserve(self, key, model):
-        if model not in MODELS: raise Rejected('unapproved_profile_model')
+        from memory_source_verification import MODEL, RESERVATION
+        independent = model == MODEL and self.independent_source_verification
+        if model not in MODELS and not independent: raise Rejected('unapproved_profile_model')
+        reservation = RESERVATION if independent else PER_CALL
         with database(self.path, isolation_level=None, timeout=2) as db:
             db.execute('BEGIN IMMEDIATE')
             try:
                 if db.execute('SELECT 1 FROM profile_attempt WHERE id=?',(key,)).fetchone():
                     raise Rejected('paid_retry_requires_review')
                 used = db.execute('SELECT coalesce(sum(reserved),0) FROM profile_attempt').fetchone()[0]
-                if used + PER_CALL > self.cap: raise Rejected('profile_budget_limit')
-                db.execute('INSERT INTO profile_attempt VALUES(?,?,?,?,NULL)',(key,model,PER_CALL,'reserved'))
+                if used + reservation > self.cap: raise Rejected('profile_budget_limit')
+                db.execute('INSERT INTO profile_attempt VALUES(?,?,?,?,NULL)',(key,model,reservation,'reserved'))
                 db.execute('COMMIT')
             except BaseException:
                 db.execute('ROLLBACK'); raise
