@@ -312,18 +312,18 @@ class MemoryStore:
             memory_transitions.reopen_invalid(db, owner)
             db.execute("UPDATE job SET state='done',lease=NULL WHERE id=?", (live['id'],))
 
-    def chunk_plan(self, job):
+    def chunk_plan(self, job, *, planner=memory_chunks):
         with self.transaction() as db:
             self._chunk_job(db, job)
             rows = db.execute('SELECT plan,claims FROM memory_chunk WHERE job=? ORDER BY ordinal', (job['id'],)).fetchall()
             row = db.execute('SELECT payload FROM source WHERE owner=? AND session=?', (job['owner'],job['session'])).fetchone()
             if rows:
                 chunks = [dict(json.loads(r['plan']), claims=json.loads(r['claims']) if r['claims'] is not None else None) for r in rows]
-                current_contract = memory_chunks.contract(json.loads(row['payload']))
+                current_contract = planner.contract(json.loads(row['payload']))
                 if any(c.get('contract') != current_contract for c in chunks):
                     raise Rejected('chunk_contract_changed')
                 return chunks
-            chunks = memory_chunks.plan(json.loads(row['payload']))
+            chunks = planner.plan(json.loads(row['payload']))
             for ordinal, chunk in enumerate(chunks):
                 db.execute('INSERT INTO memory_chunk VALUES(?,?,?,?,NULL)', (job['id'],ordinal,chunk['id'],json.dumps(chunk)))
             return [dict(c,claims=None) for c in chunks]
@@ -334,11 +334,11 @@ class MemoryStore:
           AND s.deleted=0 AND s.revision=j.revision AND j.revision=?""", (job['id'],job['owner'],job['session'],job['lease'],job['revision'])).fetchone()
         if not row: raise Rejected('stale_job')
 
-    def replace_chunk_plan(self, job, chunks):
+    def replace_chunk_plan(self, job, chunks, *, planner=memory_chunks):
         with self.transaction() as db:
             self._chunk_job(db,job)
             row=db.execute('SELECT payload FROM source WHERE owner=? AND session=?',(job['owner'],job['session'])).fetchone()
-            memory_chunks.validate_plan(json.loads(row['payload']),chunks)
+            planner.validate_plan(json.loads(row['payload']),chunks)
             if db.execute('SELECT 1 FROM memory_chunk WHERE job=? AND claims IS NOT NULL',(job['id'],)).fetchone():
                 raise Rejected('chunk_plan_already_started')
             if db.execute("SELECT 1 FROM job_result WHERE job=? AND stage NOT LIKE 'boundary:%'",(job['id'],)).fetchone():

@@ -29,7 +29,7 @@ class EvidenceWriterTests(unittest.IsolatedAsyncioTestCase):
             async def judge(self,request):
                 outer.calls.append('judge');labels={}
                 for key,q in request['questions'].items():
-                    if 'author' in q['criteria']:labels[key]=q['instructions']['aspect_value']['scope']
+                    if 'named' in q['criteria']:labels[key]=q['instructions']['aspect_value']['scope']
                     elif 'supported' in q['criteria']:labels[key]='supported'
                     elif 'current_change' in q['criteria']:labels[key]='current_change'
                     else:

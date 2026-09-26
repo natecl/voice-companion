@@ -218,7 +218,7 @@ class MemoryWriter:
 # budget, storage and unknown failures still stop paid work for review.
 LOCAL_JOB_FAILURES = frozenset({
     'memory_extraction_too_large', 'memory_support_too_large',
-    'memory_judgment_too_large', 'memory_chunk_limit', 'memory_chunk_too_large', 'stale_job', 'stale_relation_target',
+    'memory_judgment_too_large', 'memory_identity_too_large', 'memory_chunk_limit', 'memory_chunk_too_large', 'stale_job', 'stale_relation_target',
 })
 GLOBAL_FAILURE_CODES = frozenset({
     'memory_budget_limit', 'profile_budget_limit', 'budget_limit',

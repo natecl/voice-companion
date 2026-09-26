@@ -4,17 +4,22 @@ from admission import Rejected
 import memory_atomic
 import memory_candidates
 import memory_evidence
+import memory_evidence_chunks
 import memory_judgments
 import memory_identity_model
+import memory_recording_identity
+from profile_identity import personal
 from memory_models import metered
 from memory_writer import bounded_batches
 
 
 class EvidenceWriter:
-    def __init__(self,store,models,budget,*,luna_identity=True):
+    def __init__(self,store,models,budget,*,luna_identity=True,chunking=False,semantic_boundaries=False):
         self.store,self.models,self.budget=store,models,budget
         self.lock=asyncio.Lock()
         self.luna_identity=luna_identity
+        self.chunking,self.semantic_boundaries=chunking,semantic_boundaries
+        if semantic_boundaries and not chunking:raise ValueError("Semantic boundaries require chunking")
 
     async def process_next(self,owner):
         async with self.lock:
@@ -22,21 +27,36 @@ class EvidenceWriter:
             if job is None:return None
             try:
                 source=await asyncio.to_thread(self.store.source,owner,job['session'])
+                if source is None or source['revision']!=job['revision']:raise Rejected('stale_job')
                 if not source['passages']:
                     await asyncio.to_thread(memory_atomic.commit,self.store,job,[])
                     return dict(job=job['id'],accepted=0,claims=[],decisions=[])
-                request=memory_evidence.extraction_request(source)
-                response=await metered(self.store,self.budget,job,'evidence-extract:v2',request,self.models.extract)
-                proposals=memory_evidence.parse(response['data'],source)
-                verified={}
-                batches=bounded_batches(proposals,lambda a,b:memory_judgments.verify_proposals(source,proposals[a:b]),'memory_judgment_too_large')
-                for start,end,request in batches:
-                    response=await metered(self.store,self.budget,job,f'evidence-support:{start}',request,self.models.judge)
-                    for key,value in memory_judgments.decisions(response['data'],request).items():
-                        aspect,index=key.rsplit('_',1);verified[f'{aspect}_{start+int(index)}']=value
+                chunks=await asyncio.to_thread(self.store.chunk_plan,job,planner=memory_evidence_chunks) if self.chunking else []
+                if chunks and self.semantic_boundaries and chunks[0]['strategy']!='jev_boundary_overlap':
+                    async def evaluate(request):
+                        return await metered(self.store,self.budget,job,'boundary:evidence:v1',request,self.models.judge)
+                    refined=await memory_evidence_chunks.semantic_plan(source,evaluate)
+                    await asyncio.to_thread(self.store.replace_chunk_plan,job,refined,planner=memory_evidence_chunks)
+                    chunks=[dict(c,claims=None) for c in refined]
+                if chunks:
+                    parts=[]
+                    for chunk in chunks:
+                        part=chunk['claims']
+                        if part is None:
+                            part=await self.extract_verified(job,chunk['source'],chunk['id']+':')
+                            mapped=[]
+                            for entry in part:
+                                proposal=memory_evidence_chunks.original_proposal(source,chunk,entry['proposal'])
+                                if proposal is not None:mapped.append(dict(entry,proposal=proposal))
+                            part=mapped
+                            await asyncio.to_thread(self.store.complete_chunk,job,chunk['id'],part)
+                        parts.extend(part)
+                    parts=memory_evidence_chunks.unique(parts)
+                else:
+                    parts=await self.extract_verified(job,source)
                 items=[];audit=[]
-                for index,p in enumerate(proposals):
-                    checks={aspect:verified[f'{aspect}_{index}'] for aspect in ('support','subject','modality','time')}
+                for index,part in enumerate(parts):
+                    p,checks=part['proposal'],part['checks']
                     if not all(checks[a]['accepted'] and checks[a]['label']=='supported' for a in ('support','modality','time')):
                         audit.append(dict(candidate=index,result='rejected',checks=checks));continue
                     pool=await asyncio.to_thread(memory_candidates.related,self.store,owner,p)
@@ -73,11 +93,31 @@ class EvidenceWriter:
                 await asyncio.to_thread(self.store.finish_failed,job,code)
                 raise
 
+    async def extract_verified(self,job,source,prefix=''):
+        request=memory_evidence.extraction_request(source)
+        response=await metered(self.store,self.budget,job,prefix+'evidence-extract:v2',request,self.models.extract)
+        proposals=memory_evidence.parse(response['data'],source)
+        verified={}
+        recording_identity=self.luna_identity and not personal(source)
+        batches=bounded_batches(proposals,lambda a,b:memory_judgments.verify_proposals(source,proposals[a:b],include_subject=not recording_identity),'memory_judgment_too_large')
+        for start,end,request in batches:
+            response=await metered(self.store,self.budget,job,prefix+f'evidence-support:{start}',request,self.models.judge)
+            for key,value in memory_judgments.decisions(response['data'],request).items():
+                aspect,index=key.rsplit('_',1);verified[f'{aspect}_{start+int(index)}']=value
+        if recording_identity:
+            for start,end,request in bounded_batches(proposals,lambda a,b:memory_recording_identity.request(proposals[a:b]),'memory_identity_too_large'):
+                response=await metered(self.store,self.budget,job,prefix+f'recording-identity:{start}',request,self.models.extract)
+                for key,value in memory_recording_identity.decisions(response['data'],request).items():
+                    verified[f'subject_{start+int(key.rsplit("_",1)[1])}']=value
+        return [dict(proposal=p,checks={aspect:verified[f'{aspect}_{i}'] for aspect in ('support','subject','modality','time')})
+                for i,p in enumerate(proposals)]
+
     @staticmethod
     def select(proposal,pool,checks,identity,relations,applicability=None):
         applicability=applicability or {}
         attributed=checks['subject']['accepted'] and checks['subject']['label']==proposal['scope'] and proposal['scope']!='unresolved'
         rubric=memory_judgments.VERSION
+        if checks['subject'].get('rubric')==memory_recording_identity.VERSION:rubric+='+'+memory_recording_identity.VERSION
         if any(d.get('rubric')==memory_identity_model.VERSION for d in identity.values()):rubric+='+'+memory_identity_model.VERSION
         item=dict(proposal=proposal,action='new',rubric=rubric,
                   identity_verified=attributed,profile_verified=attributed,possible_targets=[],possible_target_items=[],
@@ -154,5 +194,5 @@ class EvidenceWriter:
                 valid_from=source['captured_at'] if p['time']['status']=='current' or item.get('current_change') else None,
                 identity_status='established' if identified else 'unresolved',entity_id=item['_entity'] if identified else None,
                 identity_links=[dict(id=f'batch_{i}')] if identified else [],
-                evidence=[dict(ref=r,passage=passages[r['passage']],origin=source.get('origin','recording')) for r in refs]))
+                evidence=[dict(ref=r,passage=passages[r['passage']],origin=source.get('origin','recording'),captured_at=source['captured_at']) for r in refs]))
         return result

@@ -67,3 +67,7 @@ The final paid gates ran in isolated synthetic stores on Render, using code unde
 Cross-role identity aliases are not yet represented by the ledger: a differing descriptor retains the new fact unresolved rather than failing the source or bypassing the guard. Long-source chunk integration, consolidation and later rework checkpoints remain pending. This checkpoint is the bounded writer only.
 
 Canonical ledger after these gates: **156 calls, $1.56 conservatively reserved; $0.44 remains of the approved $2** (Luna 58 calls/$0.58; Jev 98 calls/$0.98). Reservations are not invoices. There were no automatic retries or extra allowances.
+
+## Subsequent long-source integration
+
+The next checkpoint connects this writer to persisted contextual chunks and extends Luna’s identity role to recording subject attribution. See [current implementation, QA and remaining budget](memory-chunk-writer.md). The earlier bounded-writer results and failures above remain historical evidence; hosted enablement is still pending.

@@ -46,7 +46,7 @@ def commit(store,job,items):
         for item in items:
             proposal=item['proposal']
             raw={key:proposal[key] for key in memory_evidence.FIELDS}
-            if memory_evidence.parse(dict(memories=[raw]),source)[0]!=proposal:raise Rejected('invalid_evidence_extraction')
+            if memory_evidence.parse(dict(memories=[raw]),source,exact_spans=proposal.get('spans'))[0]!=proposal:raise Rejected('invalid_evidence_extraction')
             action=item['action']
             if action not in ('new','unresolved','correct'):raise Rejected('invalid_relation')
             target=item.get('target')
