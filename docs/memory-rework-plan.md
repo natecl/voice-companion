@@ -12,7 +12,7 @@ Two primary actions: **Capture meeting note** and **Talk to companion**. Voice n
 
 Scope: shared Swift/SwiftUI app and Python/SQLite service; iPhone leads physical acceptance and shared Mac functionality remains working. Keep Luna for extraction and responses, Jev for bounded independent judgments. Preserve the verified storage/sync foundation. No Supermemory integration, mandatory graph database, autonomous external actions, unsolicited interruptions, silent always-on recording, voice enrollment, or full visual redesign. Typed ongoing chat is the first interaction implementation; speech-to-speech companion conversation/TTS is a separate slice, not silently included by the label “Talk.”
 
-Use the [Jev article](https://x.com/dhravyashah/status/2103314339239428201) as the agreed design baseline: background learning, contextual chunks, bounded harness decisions and relevance ranking; preserve meaning rather than aggressively discarding sentences. Its reported findings guide role selection. Acceptance still requires evidence from this implementation; the article does not establish our entity matching or thresholds.
+For the entire memory harness, use the [Jev article](https://x.com/dhravyashah/status/2103314339239428201) as the agreed design baseline: background learning, contextual chunks, bounded harness decisions and relevance ranking; preserve meaning rather than aggressively discarding sentences. Its reported findings guide role selection. Acceptance still requires evidence from this implementation; the article does not establish our entity matching or thresholds.
 
 ## Revised interaction and source model
 
@@ -100,6 +100,8 @@ Delivery split: **2A** isolates known job-local failures and exposes learner sta
 Delivery split: **3A** validates versioned evidence extraction and exact source spans with recorded live responses; **3B** supplies evidence-aware candidate lookup and independent atomic Jev judgments; **3C** adopts those decisions through the identity/correction ledger in the writer and runs the full positive/negative gate. Extraction proposals alone never authorize identity or lifecycle writes. The bounded atomic writer and its long-source chunk integration are verified backend checkpoints; [memory-chunk-writer.md](memory-chunk-writer.md) records the source-attribution role comparison, exact-span mapping and acceptance. Consolidation and rollout remain separate gates.
 
 ### Checkpoint 4 — temporal understanding and internal forgetting
+
+Delivery split: **4A** makes validity qualification consistent across current search, historical search and source evidence, with controlled-clock storage QA. Relative-time normalization, event-time modeling, consolidation and broader derivative invalidation remain subsequent slices. See [read-time validity](memory-temporal-reads.md).
 
 **Outcome:** changes and temporary circumstances are handled without a memory-management chore.
 

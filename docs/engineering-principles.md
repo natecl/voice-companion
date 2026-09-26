@@ -163,3 +163,16 @@ Founder clarification: consider edge cases and the user experience when designin
 Founder-approved refinement, September 26, 2026: evaluate and adopt Luna for source-only identity resolution when bounded evidence supports it, while keeping Jev as the independent fact and lifecycle verifier. The final bounded writer uses low reasoning for identity only. Do not infer authorization to move all verification to Luna, weaken identity guards, or change extraction/answer settings. Preserve failed comparisons and require explicit target claims when matching subjects in multi-person passages.
 
 Implementation application of the approved identity role: recording-subject attribution now uses Luna with low reasoning after the bounded comparison in [memory-chunk-writer.md](memory-chunk-writer.md). Jev continues independent fact, modality, time and lifecycle verification; authenticated personal-text attribution retains its earlier Jev path. This is an evidence-based implementation choice, not authorization to remove independent fact verification or infer account ownership from a recording.
+
+## Memory-system design baseline
+
+Founder decision, September 26, 2026: build and control our own memory system; do not adopt gbrain. Apply the [Dhravya Shah article](https://x.com/DhravyaShah/status/2103314339239428201) across the whole harness, not only the Jev adapter or retrieval checkpoint. Use its findings as the agreed design baseline, including its negative findings. QA establishes whether our implementation delivers that baseline for the companion.
+
+- Learn outside the main answer loop; preserve original source evidence separately from derived memories.
+- Chunk with contextual continuity. Use bounded Jev boundary decisions where useful; do not prune individual sentences before learning and lose their dependencies.
+- Retrieve relevant evidence and assemble bounded context in the harness rather than relying exclusively on the answering model to request memories.
+- Prefer ranking to destructive relevance gates. Keep deterministic ownership, deletion and evidence-integrity rules separate from probabilistic usefulness.
+- Use Jev for bounded decisions, not every task by default. The article favors dedicated rerankers on its measured cost-quality tradeoff; select retrieval roles accordingly and verify our integration.
+- Preserve uncertainty and sources throughout storage, lifecycle handling, retrieval and answer context. Expiry retires current applicability without erasing the original recording or implying a planned event occurred.
+
+The final bullet applies these principles to our agreed product lifecycle; the article does not itself specify our identity rules, expiry semantics or database schema. Keep that distinction explicit in implementation evidence.
