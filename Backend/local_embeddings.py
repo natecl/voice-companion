@@ -10,10 +10,10 @@ class LocalEmbeddings:
     contract=CONTRACT
     dimensions=384
 
-    def __init__(self,cache):
+    def __init__(self,cache,*,offline=False):
         from fastembed import TextEmbedding
         from huggingface_hub import snapshot_download
-        path=snapshot_download('Qdrant/bge-small-en-v1.5-onnx-Q',revision=REVISION,cache_dir=str(cache),
+        path=snapshot_download('Qdrant/bge-small-en-v1.5-onnx-Q',revision=REVISION,cache_dir=str(cache),local_files_only=offline,
             allow_patterns=['model_optimized.onnx','tokenizer.json','tokenizer_config.json','config.json','special_tokens_map.json'])
         self.model=TextEmbedding(MODEL,specific_model_path=path,threads=2,providers=['CPUExecutionProvider'])
 

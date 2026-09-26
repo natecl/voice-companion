@@ -6,7 +6,9 @@ services:
     region: virginia
     numInstances: 1
     autoDeployTrigger: off
-    buildCommand: pip install -r Backend/requirements.txt
+    buildCommand: >-
+      pip install -r Backend/requirements.txt &&
+      if [ "$VOICE_INSTALL_SEMANTIC" = "1" ]; then pip install -r Backend/requirements-semantic.txt; fi
     startCommand: python Backend/hosted.py
     healthCheckPath: /health
     disk:

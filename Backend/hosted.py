@@ -18,7 +18,31 @@ from memory_recall import MemoryRecall
 from websockets.asyncio.server import serve
 
 
+def rework_settings(env):
+    names=('VOICE_ENABLE_MEMORY_REWORK','VOICE_ENABLE_COMPANION','VOICE_ENABLE_SEMANTIC_INDEX')
+    if any(env.get(name,'0') not in ('0','1') for name in names):raise ValueError('Invalid rework feature flag')
+    rework,companion,semantic=(env.get(name)=='1' for name in names)
+    if rework and any(env.get(name)!='1' for name in ('VOICE_ENABLE_MEMORY','VOICE_ENABLE_PERSONAL_LEARNING',
+            'VOICE_ENABLE_MEMORY_LEARNING','VOICE_ENABLE_MEMORY_RECALL','VOICE_ENABLE_ASK')):
+        raise ValueError('Memory rework requires memory, personal learning, learning, recall and Ask')
+    if (companion or semantic) and not rework:raise ValueError('Companion and semantic indexing require memory rework')
+    if semantic and not env.get('VOICE_EMBEDDING_CACHE'):raise ValueError('Semantic indexing requires a prewarmed cache')
+    return rework,companion,semantic
+
+
+def validate_rework_allocations(admission):
+    import profile_budget as profile
+    for approval,amount in ((profile.REWORK_APPROVAL_ID,profile.REWORK_ALLOWANCE),
+            (profile.CONSOLIDATION_APPROVAL_ID,profile.CONSOLIDATION_ALLOWANCE),
+            (profile.MULTISOURCE_APPROVAL_ID,profile.MULTISOURCE_ALLOWANCE)):
+        rows=admission.db.execute('SELECT category,reserved FROM request WHERE id IN (?,?,?)',
+            (approval,approval+':ask',approval+':jev')).fetchall()
+        if not rows or any(row[0] not in ('ask','jev') for row in rows) or sum(row[1] for row in rows)!=amount:
+            raise ValueError('Rework allocation is not reserved in the global ledger')
+
+
 async def main():
+    rework_enabled,companion_enabled,semantic_enabled=rework_settings(os.environ)
     os.umask(0o077)
     directory = Path(os.environ['VOICE_DATA_DIR'])
     # Keep this descriptor open until all connections and the ledger are closed.
@@ -30,6 +54,10 @@ async def main():
         store = open_ledger(migrate=True)
         learning_task = None
         learning_worker = None
+        indexing_worker = None
+        indexing_task = None
+        embedder = None
+        companion = None
         try:
             store.recover_interrupted()
             answer_key = os.environ.get('OPENAI_API_KEY', '').strip()
@@ -42,7 +70,12 @@ async def main():
                 raise ValueError('Personal learning requires memory learning')
             memory = None
             if os.environ.get('VOICE_ENABLE_MEMORY') == '1':
-                memory_store = MemoryStore(directory / 'memory.sqlite', personal_learning=personal_enabled)
+                if semantic_enabled:
+                    from local_embeddings import LocalEmbeddings
+                    # Loading is explicitly enabled; startup cannot download model files.
+                    embedder=await asyncio.to_thread(LocalEmbeddings,os.environ['VOICE_EMBEDDING_CACHE'],offline=True)
+                memory_store = MemoryStore(directory / 'memory.sqlite', personal_learning=personal_enabled,
+                    embedding_model=embedder.contract if embedder else None)
                 memory_store.recover_jobs()
                 memory_store.maintain()
                 memory = MemoryService(store, memory_store)
@@ -63,24 +96,48 @@ async def main():
                     allocation = store.db.execute('SELECT category,reserved FROM request WHERE id=?', (PROFILE_APPROVAL_ID,)).fetchone()
                     if allocation is None or tuple(allocation) != ('ask', PROFILE_ALLOCATION):
                         raise ValueError('Profile QA allocation is not reserved')
-                    budget = ProfileBudget(directory / 'memory-budget.sqlite')
+                    if rework_enabled:validate_rework_allocations(store)
+                    budget = ProfileBudget(directory / 'memory-budget.sqlite',include_rework_allowance=rework_enabled,
+                        include_consolidation_allowance=rework_enabled,include_multisource_allowance=rework_enabled)
                 models = MemoryModels(answer_key, os.environ['TYPESAFE_API_KEY'])
                 if learning_enabled:
-                    writer = MemoryWriter(memory_store, models, budget)
+                    if rework_enabled:
+                        from memory_evidence_writer import EvidenceWriter
+                        writer=EvidenceWriter(memory_store,models,budget,chunking=True,semantic_boundaries=True,
+                            expiry=True,consolidation=True)
+                    else:writer = MemoryWriter(memory_store, models, budget)
                     learning_worker = MemoryWorker(writer, store)
-                    learning_task = asyncio.create_task(learning_worker.run())
+
                 if recall_enabled:
                     if ask is None:
                         raise ValueError('Recall requires Ask enabled')
-                    ask.recall = MemoryRecall(memory_store, models, budget)
+                    if rework_enabled:
+                        from indexed_recall import IndexedMemoryRecall
+                        ask.recall=IndexedMemoryRecall(memory_store,models,budget,embedder,multi_source=True)
+                    else:ask.recall = MemoryRecall(memory_store, models, budget)
+            if semantic_enabled:
+                from memory_indexing import IndexWorker
+                indexing_worker=IndexWorker(memory_store,embedder,store)
+                indexing_worker.recover()
+
+            if companion_enabled:
+                from companion_service import CompanionService
+                companion=CompanionService(store,memory_store,Luna(answer_key),ask.recall)
+                companion.chat.recover_interrupted()
             relay = Relay(key, admission=store, ask=ask, memory=memory,
-                          learning_status=learning_worker.status if learning_worker else None)
+                          learning_status=learning_worker.status if learning_worker else None,companion=companion,
+                          indexing_status=indexing_worker.status if indexing_worker else None)
             async with serve(relay.handle, '0.0.0.0', int(os.environ.get('PORT', '10000')),
                              process_request=relay.authorize, max_size=64000, max_queue=8,
                              close_timeout=2, server_header=None):
+                if learning_worker:learning_task=asyncio.create_task(learning_worker.run())
+                if indexing_worker:indexing_task=asyncio.create_task(indexing_worker.run())
                 print('Internal transcription service ready', flush=True)
                 await asyncio.Future()
         finally:
+            if indexing_task is not None:
+                indexing_task.cancel()
+                with suppress(asyncio.CancelledError):await indexing_task
             if learning_task is not None:
                 learning_task.cancel()
                 with suppress(asyncio.CancelledError):

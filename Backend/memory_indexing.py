@@ -34,7 +34,7 @@ def coverage(store,owner,model):
 class IndexWorker:
     def __init__(self,store,embedder,admission):
         self.store,self.embedder,self.admission=store,embedder,admission
-        self.state='starting';self.completed=0;self.failed=0
+        self.state='starting';self.completed=0;self.failed=0;self.last_failure=None
 
     def recover(self):
         # Operator calls once under the service's exclusive process lock. Pure local work
@@ -42,8 +42,8 @@ class IndexWorker:
         with self.store.transaction() as db:
             db.execute("UPDATE memory_index_job SET state='queued',lease=NULL WHERE model=? AND state='running'",(self.embedder.contract,))
 
-    def claim(self):
-        credentials=set(self.admission.active_credentials())
+    def claim(self,credentials=None):
+        if credentials is None:credentials=set(self.admission.active_credentials())
         with self.store.transaction() as db:
             owners={r['owner'] for r in db.execute('SELECT credential,owner FROM credential_owner') if r['credential'] in credentials}
             rows=db.execute("SELECT rowid,* FROM memory_index_job WHERE model=? AND state='queued' ORDER BY rowid",(self.embedder.contract,))
@@ -60,7 +60,9 @@ class IndexWorker:
             return changed==1
 
     async def step(self):
-        job=await asyncio.to_thread(self.claim)
+        # Admission owns a thread-affine SQLite connection. Snapshot credentials on its event loop.
+        credentials=set(self.admission.active_credentials())
+        job=await asyncio.to_thread(self.claim,credentials)
         if job is None:return False
         self.state='running'
         try:
@@ -81,7 +83,7 @@ class IndexWorker:
             self.state='halted';raise
 
     def status(self):
-        return dict(state=self.state,completed=self.completed,failed=self.failed)
+        return dict(state=self.state,completed=self.completed,failed=self.failed,last_failure=self.last_failure)
 
     async def run(self):
         try:
@@ -91,4 +93,4 @@ class IndexWorker:
         except asyncio.CancelledError:
             self.state='stopped';raise
         except Exception:
-            self.state='halted'
+            self.state='halted';self.last_failure='index_service_failure'
