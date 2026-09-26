@@ -19,6 +19,7 @@ Canonical product/engineering documents retain authority. Maps describe verified
 | Feature | Current boundary | Detail |
 | --- | --- | --- |
 | Microphone capture and live transcript | Internal Mac/iPhone flow; speaker labels best-effort | [Capture](features.md#capture-and-live-transcript) |
+| Transcript-derived notes | Storage foundation only; generation and UI pending | [Notes plan](../recording-notes-plan.md) |
 | Recording library and evidence sync | Local saved transcripts; backend evidence outbox, not full cross-device library sync | [Library](features.md#recording-library-and-evidence-sync) |
 | Persistent companion chat | One main chat; typed questions during/after capture and across recordings | [Companion](features.md#companion-chat-and-source-navigation) |
 | Automatic learning | Background evidence extraction, independent verification, atomic writes | [Learning](features.md#automatic-memory-learning) |
@@ -54,7 +55,7 @@ These are data dependencies, not a guarantee that background learning has finish
 
 ## What is not delivered by these maps
 
-Voice recognition/enrollment; silent continuous recording; proactive spoken participation; Mac computer-audio capture; generated meeting summaries and note editing; side chats; full recording-library synchronization between devices; public account/subscription/distribution operations; explicit memory-erasure UX. These need their own approved slices. Recording remains user-started and internally capped. Do not infer launch readiness from the bounded harness acceptance.
+Voice recognition/enrollment; silent continuous recording; proactive spoken participation; Mac computer-audio capture; note editing (summary generation is now authorized, not delivered); side chats; full recording-library synchronization between devices; public account/subscription/distribution operations; explicit memory-erasure UX. These need their own approved slices. Recording remains user-started and internally capped. Do not infer launch readiness from the bounded harness acceptance.
 
 ## Keep context useful
 

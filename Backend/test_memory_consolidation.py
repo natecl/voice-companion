@@ -77,7 +77,7 @@ class ConsolidationTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual([tuple(r) for r in db.execute('SELECT * FROM memory_fact_evidence')],before)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0],'ok')
             self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(),[])
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],16)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],17)
         self.assertIsNone(reopened.claim_job(self.owner))
 
     async def test_exact_live_consolidation_replay(self):
