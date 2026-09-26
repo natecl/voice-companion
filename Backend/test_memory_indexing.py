@@ -18,6 +18,19 @@ class IndexingTests(unittest.IsolatedAsyncioTestCase):
             def active_credentials(self):return ['qa']
         self.worker=IndexWorker(self.store,self.model,Admission())
 
+    async def test_real_thread_affine_admission_works_with_background_storage(self):
+        from admission import Admission
+        admission=Admission(self.path.with_name('usage.sqlite'),total_microusd=30000,limits={'ask':(30000,3000,20)})
+        try:
+            credential,_=admission.enroll()
+            owner=self.store.owner_for(credential)
+            self.store.put_source(owner,source())
+            worker=IndexWorker(self.store,self.model,admission)
+            self.assertTrue(await worker.step())
+            self.assertEqual(coverage(self.store,owner,self.model.contract),{'done':1})
+            self.assertEqual(admission.usage(),[])
+        finally:admission.close()
+
     async def test_source_queue_worker_cache_and_deletion(self):
         self.store.put_source(self.owner,source())
         self.assertEqual(coverage(self.store,self.owner,self.model.contract),{'queued':1})

@@ -157,6 +157,8 @@ Delivery split: **6A1** adds durable owner-scoped main-chat storage, duplicate-s
 
 ### Checkpoint 7 — internal rollout and physical acceptance
 
+Runtime wiring is implemented behind default-off flags; see [local runtime QA and rollout prerequisites](companion-hosted-runtime.md). Hosted deployment, resource acceptance and the physical gate are not yet complete.
+
 **Outcome:** the complete agreed experience works on the founder's iPhone with a recoverable deployment.
 
 - Review the exact commit, migration, flags, queued work, daily admission and remaining budget. Back up canonical databases consistently, preserve ledgers/identity, and verify migration on a copy before approved hosted rollout. Do not leave failed experimental handlers enabled as a purported success.
