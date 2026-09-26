@@ -14,8 +14,9 @@ import memory_transitions
 import memory_chunks
 import memory_atomic
 import memory_time
+import memory_search
 
-VERSION = 9
+VERSION = 10
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -75,7 +76,7 @@ class MemoryStore:
         self.personal_learning = personal_learning
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, VERSION):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -153,6 +154,8 @@ class MemoryStore:
                 db.executescript(memory_atomic.SCHEMA)
             if version < 9:
                 db.executescript(memory_atomic.MULTI_SOURCE_SCHEMA)
+            if version < 10:
+                memory_search.migrate(db)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)
@@ -198,6 +201,7 @@ class MemoryStore:
             return existing_owner
 
     def _invalidate_source(self, db, owner, session):
+        db.execute('DELETE FROM memory_passage_index WHERE owner=? AND session=?',(owner,session))
         db.execute('DELETE FROM memory_fact_evidence WHERE owner=? AND session=?', (owner,session))
         db.execute('DELETE FROM memory_chunk WHERE job IN (SELECT id FROM job WHERE owner=? AND session=?)', (owner,session))
         memory_identity.invalidate_source(db, owner, session)
@@ -235,6 +239,7 @@ class MemoryStore:
                 if db.execute('SELECT count(*) FROM source WHERE owner=? AND deleted=0', (owner,)).fetchone()[0] >= 1000:
                     raise Rejected('memory_storage_limit')
                 db.execute('INSERT INTO source VALUES(?,?,?,?,?,0)', (owner, session, revision, digest, payload))
+            memory_search.index_source(db,owner,source)
             db.execute('INSERT INTO job(id,owner,session,revision,extractor,state,lease) VALUES(?,?,?,?,?,?,NULL)', (str(uuid.uuid4()), owner, session, revision, EXTRACTOR_VERSION, 'profile_pending' if source.get('origin') == 'personal_text' and not self.personal_learning else 'queued'))
             return {'status': 'stored', 'revision': revision}
 

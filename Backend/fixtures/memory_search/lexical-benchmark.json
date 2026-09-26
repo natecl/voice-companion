@@ -1,0 +1,26 @@
+{
+  "python": "3.13.7",
+  "sqlite": "3.50.4",
+  "platform": "Darwin",
+  "candidate_method": "lexical_only",
+  "results": [
+    {
+      "sources": 10,
+      "target_recalled": true,
+      "p95_ms": 0.247,
+      "target_met": true
+    },
+    {
+      "sources": 100,
+      "target_recalled": true,
+      "p95_ms": 0.258,
+      "target_met": true
+    },
+    {
+      "sources": 1000,
+      "target_recalled": true,
+      "p95_ms": 0.272,
+      "target_met": true
+    }
+  ]
+}
