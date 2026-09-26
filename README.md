@@ -46,3 +46,8 @@ See [development commands and foundation QA](docs/development.md). The shared Sw
 ## Internal memory checkpoint
 
 The enrolled iPhone can synchronize session evidence and ask with source-linked past context. Final corrected recall and saved-source reopening are verified; Luna extracts and Jev independently verifies. See [acceptance](docs/memory-recall.md#final-physical-acceptance-and-checkpoint-review) for the recovered correction, bounded tests, and known conservative retention miss. The $0.28 memory QA allocation is exhausted; more provider-backed memory work requires a newly approved allowance. This is an internal trial, not a public release.
+
+
+## Companion rework rollout
+
+The reviewed memory/main-chat backend is enabled on the existing Render Starter plan. Fresh migration/backup, budget accounting, constrained embedding capacity and authenticated hosted access have been verified. The matching physical-iPhone installation and capture/chat acceptance remain pending founder readiness. See [internal rollout evidence and limits](docs/companion-internal-rollout.md); earlier acceptance documents describe their historical checkpoints.
