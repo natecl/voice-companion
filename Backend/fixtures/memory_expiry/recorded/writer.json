@@ -1,0 +1,84 @@
+{
+  "source": {
+    "session_id": "writer",
+    "revision": 1,
+    "origin": "personal_text",
+    "captured_at": 1790424000.0,
+    "timezone": "America/New_York",
+    "completed": true,
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 1.0,
+        "speakers": [],
+        "text": "I am staying in Boston through 2026-09-30."
+      }
+    ]
+  },
+  "result": {
+    "job": "eceec500-91a9-48d4-9441-73473adf2ab6",
+    "accepted": 1,
+    "claims": [
+      "352c546c-1e5a-41e8-b7d2-f79814e7e75f"
+    ],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "new"
+      }
+    ]
+  },
+  "rows": [
+    {
+      "id": "352c546c-1e5a-41e8-b7d2-f79814e7e75f",
+      "owner": "f6e340bf-e3ff-4aa3-ab9b-4eb876feabc9",
+      "text": "The author is staying in Boston through 2026-09-30.",
+      "subject": "user",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790424001.0,
+      "valid_from": 1790424000.0,
+      "valid_until": 1790827200.0,
+      "state": "active",
+      "reason": "supported",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.5",
+      "profile_link": 0,
+      "temporal_evidence": {
+        "version": "calendar-reference-v2",
+        "expression": "through 2026-09-30",
+        "captured_at": 1790424000.0,
+        "timezone": "America/New_York",
+        "resolution": "unresolved",
+        "date": null,
+        "reason": "ambiguous_or_unsupported",
+        "reported_status": "current",
+        "basis": "stated",
+        "session": "writer",
+        "revision": 1
+      },
+      "identity_status": "established",
+      "entity_id": "ab00e40f-4fb9-4029-ba2c-77c42922c456",
+      "sources": [
+        {
+          "session": "writer",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "temporary": true,
+    "access": true,
+    "nearby": true,
+    "negation": true,
+    "event": true,
+    "quote": true,
+    "writer_expiry": true,
+    "expired_current": true,
+    "historical_preserved": true,
+    "source_preserved": true
+  }
+}

@@ -101,7 +101,7 @@ Delivery split: **3A** validates versioned evidence extraction and exact source 
 
 ### Checkpoint 4 — temporal understanding and internal forgetting
 
-Delivery split: **4A** makes validity qualification consistent across current search, historical search and source evidence, with controlled-clock storage QA. **4B** adds conservative source-relative calendar references for today/yesterday/tomorrow and ISO dates; see [scope and QA](memory-relative-dates.md). **4C** adds explicit weekday/week phrases with ambiguity and temporal-contradiction guards, documented in the same evidence file. Expiry interpretation, broader conversational date understanding, richer event-time modeling, consolidation and broader derivative invalidation remain subsequent slices. See [read-time validity](memory-temporal-reads.md).
+Delivery split: **4A** makes validity qualification consistent across current search, historical search and source evidence, with controlled-clock storage QA. **4B** adds conservative source-relative calendar references for today/yesterday/tomorrow and ISO dates; see [scope and QA](memory-relative-dates.md). **4C** adds explicit weekday/week phrases with ambiguity and temporal-contradiction guards, documented in the same evidence file. **4D** adds opt-in independent verification and atomic expiry for explicit ISO through-dates; see [live QA and allowance](memory-expiry.md). Broader conversational expiry/date understanding, richer event-time modeling, consolidation and broader derivative invalidation remain subsequent slices. See [read-time validity](memory-temporal-reads.md).
 
 **Outcome:** changes and temporary circumstances are handled without a memory-management chore.
 

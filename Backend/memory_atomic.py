@@ -3,6 +3,7 @@ import json
 import uuid
 from admission import Rejected
 import memory_evidence
+import memory_expiry
 import memory_identity
 import memory_transitions
 from memory_models import fingerprint
@@ -68,7 +69,8 @@ def commit(store,job,items):
             state_action='new' if action=='new' and current else 'unresolved'
             claim=dict(text=proposal['text'],kind=proposal['kind'],basis=proposal['basis'],subject=subject,
                 passages=list(dict.fromkeys(r['passage'] for r in proposal['spans'])),
-                valid_from=source['captured_at'] if current else None,valid_until=None,
+                valid_from=source['captured_at'] if current else None,
+                valid_until=memory_expiry.verified_boundary(source,proposal,item.get('expiry')),
                 judgment_version=memory_evidence.VERSION,relation=state_action,
                 profile_link=item.get('profile_verified',True) and identified and proposal['scope']=='related_to_author')
             possible=list(item.get('possible_targets',[]))
@@ -98,7 +100,7 @@ def commit(store,job,items):
                     link=memory_identity.link_in_transaction(db,owner,mention['id'],evidence,rubric=item['rubric'],anchor=first)
                     if first is None:first=link['id']
             db.execute('INSERT INTO memory_fact_evidence VALUES(?,?,?,?,?,?)',
-                       (identifier,owner,session,revision,json.dumps(proposal),json.dumps(dict(item['judgments'],current_change=current_change))))
+                       (identifier,owner,session,revision,json.dumps(proposal),json.dumps(dict(item['judgments'],current_change=current_change,expiry=item.get('expiry')))))
             if action=='correct':
                 context=memory_transitions.context(db,owner,identifier,target)
                 memory_transitions.apply_in_transaction(db,owner,identifier,target,evidence_token=context['token'],rubric=item['rubric'],now=store.clock())

@@ -37,3 +37,5 @@ The final backend suite passed **200 tests** with `cd Backend && python3 -m unit
 Canonical ledger: **191 provider calls, $1.91 conservatively reserved of the approved $2; $0.09 remains**. Luna: 73 calls/$0.73. Jev: 118 calls/$1.18. Reservations are not verified invoices. This checkpoint required no additional allowance and made no automatic paid retries.
 
 Still pending: semantic duplicate consolidation, richer temporal validity and internal forgetting, semantic retrieval, main companion chat/library integration and approved hosted/physical acceptance. Cross-role identity aliases remain unresolved rather than forced into the current ledger. Long-recording backend success is not a claim that the installed app has received this rework.
+
+Subsequent expiry QA used four more calls; see [current allowance](memory-expiry.md). The $0.09 balance above is historical.
