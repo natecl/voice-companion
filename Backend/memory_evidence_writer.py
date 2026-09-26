@@ -120,7 +120,7 @@ class EvidenceWriter:
     async def extract_verified(self,job,source,prefix=''):
         request=memory_evidence.extraction_request(source)
         response=await metered(self.store,self.budget,job,prefix+'evidence-extract:v2',request,self.models.extract)
-        proposals=memory_evidence.parse(response['data'],source)
+        proposals=memory_evidence.parse_recording_extraction(response['data'],source)
         verified={}
         recording_identity=self.luna_identity and not personal(source)
         batches=bounded_batches(proposals,lambda a,b:memory_judgments.verify_proposals(source,proposals[a:b],include_subject=not recording_identity),'memory_judgment_too_large')

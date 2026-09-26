@@ -2,12 +2,15 @@ import copy
 import json
 from pathlib import Path
 import unittest
+from unittest.mock import patch
+import memory_recording_identity
 from admission import Rejected
 from memory_recording_identity import request,decisions
 
 class RecordingIdentityTests(unittest.TestCase):
     def record(self):return json.loads((Path(__file__).parent/'fixtures/memory_evidence_chunks/recording-identity/result.json').read_text())
 
+    @patch('memory_recording_identity.PROMPT',memory_recording_identity.BASE_PROMPT)
     def test_frozen_positive_and_negative_provider_results(self):
         r=self.record();req=request([c['proposal'] for c in r['cases']]);self.assertEqual(req,r['request'])
         result=decisions(r['response']['data'],req)
@@ -28,3 +31,10 @@ class RecordingIdentityTests(unittest.TestCase):
         result=decisions({'subject_0':dict(label='uncertain',quote=None)},req)
         self.assertFalse(result['subject_0']['accepted'])
         self.assertNotIn('probabilities',result['subject_0'])
+
+    def test_adjacent_quote_preserves_uncertainty_and_rejects_new_words(self):
+        req={'input':json.dumps({'subject_0':dict(scope='named',excerpts=['Team Aspen.','Prefers evenings.'])})}
+        value={'subject_0':dict(label='uncertain',quote='Team Aspen. Prefers evenings.')}
+        self.assertFalse(decisions(value,req)['subject_0']['accepted'])
+        value['subject_0']['quote']='Team Aspen prefers mornings.'
+        with self.assertRaisesRegex(Rejected,'invalid_recording_identity_quote'):decisions(value,req)

@@ -47,3 +47,8 @@ Profile/rework reservations reached **$2.58 of $2.90**, leaving **$0.32**. Physi
 Final global reservations: Ask $2.779, Jev $0.553, STT $0.340, total $3.672 of the unchanged $5 cap. No paid retries or refunds were performed by the agent. Read-only final inspection found no failed learning jobs and zero memory-limit/OOM events. No further paid test was run to close this evidence checkpoint.
 
 Rollback must not restore old source databases or resurrect deleted material. Do not run a schema-3 binary against schema 15. Disable new feature flags on a compatible reviewed binary if containment is necessary; disabling semantic retrieval is a reported degraded state, not equivalent acceptance.
+
+
+## Focused quality follow-up
+
+The subsequent [subject and answer-quality checkpoint](companion-subject-quality.md) verifies named-project location correction and relevant identity-warning wording on isolated source fixtures. It preserves the remaining short-fragment preference rejection and does not retroactively repair existing unresolved records. Its 21 additional conservative reservations leave $0.11 of the profile QA allocation.

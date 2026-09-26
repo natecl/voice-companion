@@ -1,0 +1,599 @@
+[
+  {
+    "candidate": "v1",
+    "failure": {
+      "error": "invalid_mention_speaker"
+    },
+    "responses": [
+      {
+        "memories": [
+          {
+            "text": "An unidentified subject prefers morning meetings.",
+            "kind": "preference",
+            "basis": "stated",
+            "mention": {
+              "name": null,
+              "relationship": null,
+              "qualifiers": [],
+              "speaker_label": 0
+            },
+            "scope": "unresolved",
+            "evidence": [
+              {
+                "passage": "p1",
+                "quote": "Project Juniper."
+              },
+              {
+                "passage": "p2",
+                "quote": "Prefers morning meetings."
+              }
+            ],
+            "time": {
+              "status": "current",
+              "expression": null
+            },
+            "change": {
+              "kind": "none",
+              "previous_text": null
+            }
+          },
+          {
+            "text": "The meeting location for Project Juniper is the library.",
+            "kind": "fact",
+            "basis": "stated",
+            "mention": {
+              "name": null,
+              "relationship": null,
+              "qualifiers": [],
+              "speaker_label": 0
+            },
+            "scope": "unresolved",
+            "evidence": [
+              {
+                "passage": "p1",
+                "quote": "Project Juniper."
+              },
+              {
+                "passage": "p3",
+                "quote": "The meeting location is the library."
+              }
+            ],
+            "time": {
+              "status": "current",
+              "expression": null
+            },
+            "change": {
+              "kind": "none",
+              "previous_text": null
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "candidate": "v2",
+    "failure": {
+      "type": "Rejected",
+      "error": "invalid_mention_speaker"
+    },
+    "responses": [
+      {
+        "memories": [
+          {
+            "text": "Project Juniper prefers morning meetings.",
+            "kind": "preference",
+            "basis": "stated",
+            "mention": {
+              "name": "Project Juniper",
+              "relationship": null,
+              "qualifiers": [],
+              "speaker_label": 0
+            },
+            "scope": "named",
+            "evidence": [
+              {
+                "passage": "p1",
+                "quote": "Project Juniper."
+              },
+              {
+                "passage": "p2",
+                "quote": "Prefers morning meetings."
+              }
+            ],
+            "time": {
+              "status": "current",
+              "expression": null
+            },
+            "change": {
+              "kind": "none",
+              "previous_text": null
+            }
+          },
+          {
+            "text": "The meeting location is the library.",
+            "kind": "fact",
+            "basis": "stated",
+            "mention": {
+              "name": null,
+              "relationship": null,
+              "qualifiers": [],
+              "speaker_label": 0
+            },
+            "scope": "unresolved",
+            "evidence": [
+              {
+                "passage": "p3",
+                "quote": "The meeting location is the library."
+              }
+            ],
+            "time": {
+              "status": "current",
+              "expression": null
+            },
+            "change": {
+              "kind": "none",
+              "previous_text": null
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "candidate": "v3",
+    "failure": {
+      "type": "Rejected",
+      "error": "invalid_recording_identity_quote"
+    },
+    "responses": [
+      {
+        "memories": [
+          {
+            "text": "Project Juniper prefers morning meetings.",
+            "kind": "preference",
+            "basis": "stated",
+            "mention": {
+              "name": "Project Juniper",
+              "relationship": null,
+              "qualifiers": [],
+              "speaker_label": 0
+            },
+            "scope": "named",
+            "evidence": [
+              {
+                "passage": "p1",
+                "quote": "Project Juniper."
+              },
+              {
+                "passage": "p2",
+                "quote": "Prefers morning meetings."
+              }
+            ],
+            "time": {
+              "status": "uncertain",
+              "expression": null
+            },
+            "change": {
+              "kind": "none",
+              "previous_text": null
+            }
+          },
+          {
+            "text": "Project Juniper's meeting location is the library.",
+            "kind": "fact",
+            "basis": "stated",
+            "mention": {
+              "name": "Project Juniper",
+              "relationship": null,
+              "qualifiers": [],
+              "speaker_label": 0
+            },
+            "scope": "named",
+            "evidence": [
+              {
+                "passage": "p1",
+                "quote": "Project Juniper."
+              },
+              {
+                "passage": "p3",
+                "quote": "The meeting location is the library."
+              }
+            ],
+            "time": {
+              "status": "current",
+              "expression": null
+            },
+            "change": {
+              "kind": "none",
+              "previous_text": null
+            }
+          }
+        ]
+      },
+      {
+        "model": "jev-1.13.0",
+        "answers": {
+          "support_0": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.11,
+            "probabilities": {
+              "unsupported": 0.28,
+              "supported": 0.39999999999999997,
+              "uncertain": 0.32
+            }
+          },
+          "modality_0": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.46,
+            "probabilities": {
+              "unsupported": 0.3,
+              "supported": 0.65,
+              "uncertain": 0.05
+            }
+          },
+          "time_0": {
+            "type": "choice",
+            "choice": "unsupported",
+            "confidence": 0.28,
+            "probabilities": {
+              "unsupported": 0.52,
+              "supported": 0.23,
+              "uncertain": 0.25
+            }
+          },
+          "support_1": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.72,
+            "probabilities": {
+              "unsupported": 0.04,
+              "supported": 0.81,
+              "uncertain": 0.14
+            }
+          },
+          "modality_1": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.98,
+            "probabilities": {
+              "unsupported": 0.01,
+              "supported": 0.99,
+              "uncertain": 0.0
+            }
+          },
+          "time_1": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.79,
+            "probabilities": {
+              "unsupported": 0.08,
+              "supported": 0.85,
+              "uncertain": 0.07
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 2219,
+          "output_tokens": 239
+        }
+      },
+      {
+        "subject_0": {
+          "label": "uncertain",
+          "quote": "Project Juniper. Prefers morning meetings."
+        },
+        "subject_1": {
+          "label": "uncertain",
+          "quote": "Project Juniper. The meeting location is the library."
+        }
+      }
+    ]
+  },
+  {
+    "candidate": "v4",
+    "failure": {
+      "type": "AssertionError",
+      "error": "Split subject was not retained as two attributed facts"
+    },
+    "responses": [
+      {
+        "memories": [
+          {
+            "text": "Project Juniper prefers morning meetings.",
+            "kind": "preference",
+            "basis": "stated",
+            "mention": {
+              "name": "Project Juniper",
+              "relationship": null,
+              "qualifiers": [],
+              "speaker_label": 0
+            },
+            "scope": "named",
+            "evidence": [
+              {
+                "passage": "p1",
+                "quote": "Project Juniper."
+              },
+              {
+                "passage": "p2",
+                "quote": "Prefers morning meetings."
+              }
+            ],
+            "time": {
+              "status": "current",
+              "expression": null
+            },
+            "change": {
+              "kind": "none",
+              "previous_text": null
+            }
+          },
+          {
+            "text": "Project Juniper's meeting location is the library.",
+            "kind": "fact",
+            "basis": "stated",
+            "mention": {
+              "name": "Project Juniper",
+              "relationship": null,
+              "qualifiers": [],
+              "speaker_label": 0
+            },
+            "scope": "named",
+            "evidence": [
+              {
+                "passage": "p1",
+                "quote": "Project Juniper."
+              },
+              {
+                "passage": "p3",
+                "quote": "The meeting location is the library."
+              }
+            ],
+            "time": {
+              "status": "current",
+              "expression": null
+            },
+            "change": {
+              "kind": "none",
+              "previous_text": null
+            }
+          }
+        ]
+      },
+      {
+        "model": "jev-1.13.0",
+        "answers": {
+          "support_0": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.12,
+            "probabilities": {
+              "supported": 0.41,
+              "uncertain": 0.33,
+              "unsupported": 0.26
+            }
+          },
+          "modality_0": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.53,
+            "probabilities": {
+              "supported": 0.69,
+              "uncertain": 0.05,
+              "unsupported": 0.26
+            }
+          },
+          "time_0": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.15,
+            "probabilities": {
+              "supported": 0.43,
+              "uncertain": 0.14,
+              "unsupported": 0.43
+            }
+          },
+          "support_1": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.76,
+            "probabilities": {
+              "supported": 0.84,
+              "uncertain": 0.12,
+              "unsupported": 0.04
+            }
+          },
+          "modality_1": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.98,
+            "probabilities": {
+              "supported": 0.99,
+              "uncertain": 0.0,
+              "unsupported": 0.01
+            }
+          },
+          "time_1": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.82,
+            "probabilities": {
+              "supported": 0.88,
+              "uncertain": 0.06,
+              "unsupported": 0.06
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 2217,
+          "output_tokens": 239
+        }
+      },
+      {
+        "subject_0": {
+          "label": "supported",
+          "quote": "Project Juniper. Prefers morning meetings."
+        },
+        "subject_1": {
+          "label": "supported",
+          "quote": "Project Juniper. The meeting location is the library."
+        }
+      }
+    ]
+  },
+  {
+    "candidate": "v5",
+    "failure": {
+      "type": "AssertionError",
+      "error": "Split subject was not retained as two attributed facts"
+    },
+    "responses": [
+      {
+        "memories": [
+          {
+            "text": "Project Juniper prefers morning meetings.",
+            "kind": "preference",
+            "basis": "stated",
+            "mention": {
+              "name": "Project Juniper",
+              "relationship": null,
+              "qualifiers": [],
+              "speaker_label": null
+            },
+            "scope": "named",
+            "evidence": [
+              {
+                "passage": "p1",
+                "quote": "Project Juniper."
+              },
+              {
+                "passage": "p2",
+                "quote": "Prefers morning meetings."
+              }
+            ],
+            "time": {
+              "status": "current",
+              "expression": null
+            },
+            "change": {
+              "kind": "none",
+              "previous_text": null
+            }
+          },
+          {
+            "text": "Project Juniper's meeting location is the library.",
+            "kind": "fact",
+            "basis": "stated",
+            "mention": {
+              "name": "Project Juniper",
+              "relationship": null,
+              "qualifiers": [],
+              "speaker_label": 0
+            },
+            "scope": "named",
+            "evidence": [
+              {
+                "passage": "p1",
+                "quote": "Project Juniper."
+              },
+              {
+                "passage": "p3",
+                "quote": "The meeting location is the library."
+              }
+            ],
+            "time": {
+              "status": "current",
+              "expression": null
+            },
+            "change": {
+              "kind": "none",
+              "previous_text": null
+            }
+          }
+        ]
+      },
+      {
+        "model": "jev-1.13.0",
+        "answers": {
+          "support_0": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.48,
+            "probabilities": {
+              "supported": 0.66,
+              "unsupported": 0.13,
+              "uncertain": 0.21
+            }
+          },
+          "modality_0": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.66,
+            "probabilities": {
+              "supported": 0.77,
+              "unsupported": 0.17,
+              "uncertain": 0.06
+            }
+          },
+          "time_0": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.34,
+            "probabilities": {
+              "supported": 0.56,
+              "unsupported": 0.3,
+              "uncertain": 0.14
+            }
+          },
+          "support_1": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.9,
+            "probabilities": {
+              "supported": 0.93,
+              "unsupported": 0.02,
+              "uncertain": 0.05
+            }
+          },
+          "modality_1": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.97,
+            "probabilities": {
+              "supported": 0.98,
+              "unsupported": 0.02,
+              "uncertain": 0.0
+            }
+          },
+          "time_1": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.88,
+            "probabilities": {
+              "supported": 0.92,
+              "unsupported": 0.03,
+              "uncertain": 0.05
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 2187,
+          "output_tokens": 239
+        }
+      },
+      {
+        "subject_0": {
+          "label": "supported",
+          "quote": "Project Juniper. Prefers morning meetings."
+        },
+        "subject_1": {
+          "label": "supported",
+          "quote": "Project Juniper. The meeting location is the library."
+        }
+      }
+    ]
+  }
+]

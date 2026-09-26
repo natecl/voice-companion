@@ -9,7 +9,7 @@ from admission import Rejected
 from memory_models import extraction_request, JEV, RUBRIC
 from profile_identity import PROFILE_RUBRIC
 
-VERSION = 'turn-chunks-v2'  # Includes semantic-boundary rubric v1.
+VERSION = 'turn-chunks-v3'  # Reserves prompt overhead when bounding source pieces.
 TARGET_REQUEST_BYTES = 10000
 MAX_CHUNKS = 32
 
@@ -26,14 +26,14 @@ def request_size(source, *, extraction=extraction_request):
     return len(json.dumps(extraction(source), ensure_ascii=False).encode())
 
 
-def pieces(source):
+def pieces(source, *, max_bytes=2000):
     for passage in source['passages']:
         text, start = passage['text'], 0
         while start < len(text):
             lo, hi = 1, len(text)-start
             while lo < hi:
                 mid = (lo+hi+1)//2
-                if len(json.dumps(text[start:start+mid], ensure_ascii=False).encode()) <= 2000:
+                if len(json.dumps(text[start:start+mid], ensure_ascii=False).encode()) <= max_bytes:
                     lo = mid
                 else:
                     hi = mid-1
@@ -68,7 +68,9 @@ def plan(source, *, extraction=extraction_request, rubric=None):
         chunks.append(dict(id=digest,version=VERSION,contract=contract(source,extraction=extraction,rubric=rubric),source=view,ranges=ranges,strategy='deterministic_turn_overlap'))
         if len(chunks) > MAX_CHUNKS: raise Rejected('memory_chunk_limit')
 
-    for passage,start,end in pieces(source):
+    available=TARGET_REQUEST_BYTES-request_size(dict(source,passages=[]),extraction=extraction)-1024
+    if available<256:raise Rejected('memory_chunk_too_large')
+    for passage,start,end in pieces(source,max_bytes=min(2000,available)):
         entry = (passage,start,end,True)
         candidate,_ = build(current+[entry])
         if current and request_size(candidate,extraction=extraction) > TARGET_REQUEST_BYTES:
