@@ -28,15 +28,17 @@ def scrub(db,owner,turn):
     db.execute('DELETE FROM companion_dependency WHERE owner=? AND turn=?',(owner,turn))
 
 
-def invalidate_source(db,owner,session):
+def invalidate_source(db,owner,session,*,deleting=True):
     # Dependents inherit every source used by previous answers in their context.
-    turns=db.execute('SELECT DISTINCT turn FROM companion_dependency WHERE owner=? AND session=?',(owner,session)).fetchall()
+    turns=db.execute("SELECT DISTINCT turn FROM companion_dependency WHERE owner=? AND session=? AND (? OR json_extract(reference,'$.snapshot_id') IS NULL)",(owner,session,deleting)).fetchall()
     for row in turns:scrub(db,owner,row['turn'])
 
 
 def reference(item):
     keys=('session_id','revision','passage_id','text_start','text_end')
-    return json.dumps({key:item[key] for key in keys},sort_keys=True,separators=(',',':'))
+    ref={key:item[key] for key in keys}
+    if 'snapshot_id' in item:ref['snapshot_id']=item['snapshot_id']
+    return json.dumps(ref,sort_keys=True,separators=(',',':'))
 
 
 class CompanionChat:

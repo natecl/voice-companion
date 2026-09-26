@@ -8,6 +8,9 @@ import memory_related
 
 
 def hydrate(store, db, owner, ref, now):
+    if 'snapshot_id' in ref:
+        import companion_snapshots
+        return companion_snapshots.hydrate(db,owner,ref)
     row = db.execute('SELECT payload FROM source WHERE owner=? AND session=? AND revision=? AND deleted=0',
                      (owner, ref['session_id'], ref['revision'])).fetchone()
     if row is None: return None
@@ -45,7 +48,7 @@ def select(store, owner, ranked, *, limit=12):
     with store.transaction() as db:
         items = []; seen = set(); now = store.clock()
         for ref in ranked:
-            key = (ref['session_id'], ref['revision'], ref['passage_id'], ref.get('text_start'), ref.get('text_end'))
+            key = (ref.get('snapshot_id'), ref['session_id'], ref['revision'], ref['passage_id'], ref.get('text_start'), ref.get('text_end'))
             if key in seen: continue
             seen.add(key)
             item = hydrate(store, db, owner, ref, now)

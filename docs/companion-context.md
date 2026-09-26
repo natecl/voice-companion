@@ -1,6 +1,6 @@
 # Bounded companion context assembly
 
-September 26, 2026. Checkpoint 6A2 is an internal context constructor; it does not change the hosted Ask route, native interface or model prompt. It requires no inference. Live snapshot persistence and conversational model integration remain necessary before serving this contract.
+September 26, 2026. Checkpoint 6A2 is an internal context constructor; it does not change the hosted Ask route, native interface or model prompt. It requires no inference. Live snapshot persistence is now supplied by [checkpoint 6A3](companion-live-snapshots.md); conversational model/service integration remains necessary before serving this contract.
 
 `companion_context.assemble` combines the question, server-loaded recent main-chat history, an explicitly attached finalized recording, a fixed live-capture snapshot and a validated past-evidence packet. Each source group is labelled separately. An empty library produces a valid empty-source context. The service must resolve the authenticated owner and retrieve past evidence before supplying that packet; clients cannot supply trusted past memories or assistant history.
 
@@ -16,9 +16,9 @@ The constructor caps the serialized payload at 12,000 bytes and twelve sources. 
 
 Explicit `use_memory=False` and supported direct requests such as “Only use this transcript” suppress past context before reading chat history. A supplied past packet under that restriction is rejected. The eventual service must apply the same opt-out before initiating retrieval/inference; this constructor cannot undo a call made earlier by a caller.
 
-## Live persistence is deliberately not implied
+## Live persistence refinement
 
-A live snapshot is not written as a finalized memory source. Doing so would make subsequent transcript revisions invalidate earlier chat answers during ordinary capture. The return value includes the immutable snapshot and `requires_live_persistence=True`; an integrating service must persist and validate its provenance before committing the answer. Passing only the returned finalized-source packets to chat storage would be incomplete and is not an accepted integration. No serving route calls this constructor yet.
+A live snapshot is not written as a finalized memory source. Doing so would make subsequent transcript revisions invalidate earlier chat answers during ordinary capture. Checkpoint 6A3 now freezes the selected live excerpts and includes their durable evidence packet in the return value (`requires_live_persistence=False`). An integrating service must commit all returned packets and release unused snapshots after generation failure. No serving route calls this constructor yet.
 
 ## QA
 
@@ -26,4 +26,4 @@ On the development Mac/Python 3.13, the full backend suite passed **280 tests**.
 
 A separate assembly run selected “The access code is cobalt” near the end of an approximately 12 KB synthetic lecture while retaining a separate fixed live question snapshot. The assembled payload was 2,909 bytes, attached coverage was partial, and later mutation of the caller's speech did not change the prepared input. The live recording was absent from canonical memory. Receipt: `Backend/fixtures/companion-context-qa.json`. No provider calls, no new transcription, no hosted mutation or physical-device claim.
 
-Next: durable live-snapshot provenance, the actual persistent-chat streaming service and a bounded live conversational response gate; then native main-chat/library wiring and approved rollout/physical acceptance.
+Next: the actual persistent-chat streaming service and a bounded live conversational response gate; then native main-chat/library wiring and approved rollout/physical acceptance.
