@@ -1,6 +1,6 @@
 # Companion memory rework — implementation plan
 
-Status: implementation authorized by the founder. Checkpoint 0 baseline evidence is recorded in [memory-rework-baseline.md](memory-rework-baseline.md); later checkpoints remain pending. Hosted rollout still requires approval of the concrete deployment. Follow [engineering principles](engineering-principles.md). This replaces the remaining personal-profile plan as the delivery direction; its completed work and failed QA remain part of the evidence.
+Status: implementation authorized by the founder. Checkpoint 0 baseline evidence is recorded in [memory-rework-baseline.md](memory-rework-baseline.md); checkpoint 1 is split into the bounded storage change below and the remaining identity foundation. Later checkpoints remain pending. Hosted rollout still requires approval of the concrete deployment. Follow [engineering principles](engineering-principles.md). This replaces the remaining personal-profile plan as the delivery direction; its completed work and failed QA remain part of the evidence.
 
 ## Product outcome
 
@@ -55,6 +55,8 @@ Each checkpoint produces a focused PR with a bounded behavior, real-path QA, rev
 **Gate:** reproduce the failed Maya transition and audit failures without inference; capture baseline behavior and proposed pass criteria. No provider calls, migration or deployment.
 
 ### Checkpoint 1 — structured identity, uncertainty and transactional lifecycle
+
+Delivery split: **1A** persists unresolved lifecycle proposals and prevents the known new-fact fallback; see [implementation and evidence](memory-uncertainty.md). **1B** delivers structured entities/mentions and evidence-backed identity links with the remaining migration and lifecycle gates below. Completing 1A does not establish correction-model quality or completion of checkpoint 1.
 
 **Outcome:** stored memory can represent the world without forcing ambiguous evidence into a current fact.
 

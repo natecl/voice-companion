@@ -75,6 +75,7 @@ def select_claims(source, candidates, judgments, related, support):
                      passages=c['source_ids'], valid_from=valid_from, valid_until=until,
                      judgment_version=PROFILE_RUBRIC if personal(source) else RUBRIC, relation='new')
         if profile_link: claim['profile_link'] = True
+        unresolved_subject = claim['subject']
         relation = judgments[f'relation_{i}']
         label = relation['choice']
         if subject is not None and label.startswith(('duplicate_', 'update_')) and accepted(relation,label):
@@ -90,6 +91,10 @@ def select_claims(source, candidates, judgments, related, support):
                     claim.update(relation='duplicate', target=target['id'], valid_from=target['valid_from'])
                 elif label.startswith('update_') and valid_from is not None and target['valid_from'] is not None and source['captured_at'] >= target['valid_from']:
                     claim.update(relation='supersedes', target=target['id'])
+        # Support and attribution do not establish a safe lifecycle transition.
+        # Keep uncertain or incompatible replacements out of the current profile.
+        if claim['relation'] == 'new' and not accepted(relation, 'new'):
+            claim.update(relation='unresolved', subject=unresolved_subject, proposed_targets=[p['id'] for p in related[i]])
         claims.append(claim)
         decision.update(result='accepted', reason=claim['relation'])
     return claims, decisions
