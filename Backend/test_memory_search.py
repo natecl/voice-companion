@@ -56,3 +56,9 @@ class SearchTests(unittest.TestCase):
         hits=retrieve(self.store,self.owner,'underwater hockey',limit=8)
         self.assertEqual([h['session_id'] for h in hits],['oldest'])
         self.assertEqual(len(self.store.recall_snapshot(self.owner)),1000)
+
+    def test_function_words_do_not_create_false_lexical_matches(self):
+        self.store.put_source(self.owner,source(text='My physics examination is on Thursday.'))
+        self.assertEqual(retrieve(self.store,self.owner,'When is a good time to ring my father?'),[])
+        self.assertEqual(retrieve(self.store,self.owner,'When is my physics examination?')[0]['text'],
+                         'My physics examination is on Thursday.')

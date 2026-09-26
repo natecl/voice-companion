@@ -4,6 +4,9 @@ import re
 from admission import Rejected
 import memory_time
 
+# Query weighting only: original evidence is never pruned. Preserve negation and names.
+STOP_WORDS=set('a an the is are was were be been being i me my we our you your it its this that of to for in on at by and or what which when where how why do does did can should would could please tell'.split())
+
 
 def migrate(db):
     db.execute('BEGIN IMMEDIATE')
@@ -27,7 +30,7 @@ def index_source(db,owner,source):
 def retrieve(store,owner,query,*,limit=12,exclude_session=None):
     if not isinstance(query,str) or len(query)>1000 or type(limit) is not int or not 1<=limit<=50:
         raise Rejected('invalid_query')
-    terms=list(dict.fromkeys(re.findall(r'\w+',query.casefold())))[:24]
+    terms=[term for term in dict.fromkeys(re.findall(r'\w+',query.casefold())) if term not in STOP_WORDS][:24]
     if not terms:return []
     match=' OR '.join('"'+term+'"' for term in terms)
     now=store.clock()

@@ -96,6 +96,6 @@ class AtomicTests(unittest.TestCase):
         with reopened.connect() as db:
             self.assertEqual(db.execute('SELECT count(*) FROM memory_fact_evidence').fetchone()[0],0)
             self.assertEqual(db.execute('SELECT count(*) FROM claim').fetchone()[0],1)
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],11)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],12)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0],'ok')
         self.assertIsNone(reopened.claim_job(self.owner))

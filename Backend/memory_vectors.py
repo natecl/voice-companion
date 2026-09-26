@@ -23,9 +23,10 @@ def normalized(values,dimensions):
     return [v/norm for v in values]
 
 
-def index_source(store,owner,session,embedder):
+def index_source(store,owner,session,embedder,*,expected_revision=None):
     source=store.source(owner,session)
-    if source is None:raise Rejected('stale_embedding_source')
+    if source is None or (expected_revision is not None and source['revision']!=expected_revision):
+        raise Rejected('stale_embedding_source')
     pieces=[]
     for passage in source['passages']:
         for start,end,text in embedder.windows(passage['text']):
