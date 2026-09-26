@@ -94,7 +94,7 @@ def assemble(store,owner,question,*,attachment=None,live=None,past=None,memory_s
             group_ids[name]=[]
             for item in items:
                 # Keep live capture distinct even if an old stored passage has the same session ID.
-                key=(name=='live',item['session_id'],item['revision'],item['passage_id'],item['text_start'],item['text_end'])
+                key=(item.get('snapshot_id'),item['evidence_type']=='live_snapshot',item['session_id'],item['revision'],item['passage_id'],item['text_start'],item['text_end'])
                 if key not in seen:
                     seen[key]=f'p{len(sources)+1}';sources.append(dict(item,id=seen[key]))
                 group_ids[name].append(seen[key])
@@ -103,7 +103,7 @@ def assemble(store,owner,question,*,attachment=None,live=None,past=None,memory_s
             mapping={}
             for citation in turn['citations']:
                 ref=citation['source']
-                key=(False,ref['session_id'],ref['revision'],ref['passage_id'],ref['text_start'],ref['text_end'])
+                key=(ref.get('snapshot_id'),'snapshot_id' in ref,ref['session_id'],ref['revision'],ref['passage_id'],ref['text_start'],ref['text_end'])
                 if key not in seen:raise Rejected('chat_history_changed')
                 mapping[citation['id']]=seen[key]
             turn['assistant']=re.sub(r'\[\[([^\[\]]+)\]\]',lambda match:'[['+mapping[match.group(1)]+']]',turn['assistant'])
@@ -117,5 +117,15 @@ def assemble(store,owner,question,*,attachment=None,live=None,past=None,memory_s
         raise Rejected('companion_context_too_large')
     for packet in packets+[history_packet]:
         if not valid(store,owner,packet):raise Rejected('memory_context_changed')
+    if snapshot is not None and groups['live']:
+        from companion_snapshots import freeze
+        live_packet=freeze(store,owner,snapshot,groups['live'])
+        packets.append(live_packet)
+        replacements={identifier:item for identifier,item in zip(data['source_groups']['live'],live_packet['items'])}
+        data['sources']=[dict(replacements[item['id']],id=item['id']) if item['id'] in replacements else item for item in data['sources']]
+        if size(data)>MAX_BYTES:
+            from companion_snapshots import release
+            release(store,owner,live_packet['items'][0]['snapshot_id'])
+            raise Rejected('companion_context_too_large')
     return dict(data=data,packets=packets,history_ids=history_ids,
-                live_snapshot=snapshot,requires_live_persistence=snapshot is not None,context_digest=fingerprint([data]))
+                live_snapshot=snapshot,requires_live_persistence=False,context_digest=fingerprint([data]))

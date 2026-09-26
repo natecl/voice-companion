@@ -18,8 +18,9 @@ import memory_search
 import memory_vectors
 import memory_indexing
 import companion_chat
+import companion_snapshots
 
-VERSION = 13
+VERSION = 14
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -82,7 +83,7 @@ class MemoryStore:
         self.embedding_model = embedding_model
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, VERSION):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -168,6 +169,8 @@ class MemoryStore:
                 db.executescript(memory_indexing.SCHEMA)
             if version < 13:
                 db.executescript(companion_chat.SCHEMA)
+            if version < 14:
+                db.executescript(companion_snapshots.SCHEMA)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)
@@ -212,8 +215,9 @@ class MemoryStore:
             db.execute('INSERT INTO credential_owner VALUES(?,?)', (credential, existing_owner))
             return existing_owner
 
-    def _invalidate_source(self, db, owner, session):
-        companion_chat.invalidate_source(db,owner,session)
+    def _invalidate_source(self, db, owner, session, *, deleting=False):
+        companion_chat.invalidate_source(db,owner,session,deleting=deleting)
+        if deleting:db.execute('DELETE FROM companion_snapshot WHERE owner=? AND session=?',(owner,session))
         db.execute("UPDATE memory_index_job SET state='obsolete',lease=NULL,error=NULL WHERE owner=? AND session=?",(owner,session))
         db.execute('DELETE FROM memory_embedding WHERE owner=? AND session=?',(owner,session))
         db.execute('DELETE FROM memory_passage_index WHERE owner=? AND session=?',(owner,session))
@@ -254,6 +258,7 @@ class MemoryStore:
                 if db.execute('SELECT count(*) FROM source WHERE owner=? AND deleted=0', (owner,)).fetchone()[0] >= 1000:
                     raise Rejected('memory_storage_limit')
                 db.execute('INSERT INTO source VALUES(?,?,?,?,?,0)', (owner, session, revision, digest, payload))
+            companion_snapshots.reconcile(db,owner,source)
             memory_search.index_source(db,owner,source)
             memory_indexing.enqueue(db,owner,source,self.embedding_model)
             db.execute('INSERT INTO job(id,owner,session,revision,extractor,state,lease) VALUES(?,?,?,?,?,?,NULL)', (str(uuid.uuid4()), owner, session, revision, EXTRACTOR_VERSION, 'profile_pending' if source.get('origin') == 'personal_text' and not self.personal_learning else 'queued'))
@@ -262,7 +267,7 @@ class MemoryStore:
     def delete_source(self, owner, session):
         identifier(session)
         with self.transaction() as db:
-            self._invalidate_source(db, owner, session)
+            self._invalidate_source(db, owner, session, deleting=True)
             db.execute('''INSERT INTO source VALUES(?,?,0,NULL,NULL,1)
               ON CONFLICT(owner,session) DO UPDATE SET payload=NULL,digest=NULL,deleted=1''', (owner, session))
         return {'status': 'deleted'}

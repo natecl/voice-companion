@@ -1,0 +1,13 @@
+{
+  "reopened": true,
+  "append_and_finalize_states": [
+    "complete",
+    "complete"
+  ],
+  "after_deletion_states": [
+    "invalidated",
+    "invalidated"
+  ],
+  "remaining_snapshots": 0,
+  "provider_calls": 0
+}

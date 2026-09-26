@@ -63,7 +63,8 @@ class CompanionContextTests(unittest.TestCase):
         self.assertIsNone(self.store.source(self.owner,'current'))
         self.assertNotEqual(result['data']['source_groups']['live'],result['data']['source_groups']['attached'])
         self.assertEqual(result['data']['recordings']['live']['cutoff_seconds'],2.)
-        self.assertTrue(all(item['session_id']!='current' for packet in result['packets'] for item in packet['items']))
+        self.assertFalse(result['requires_live_persistence'])
+        self.assertTrue(any(item.get('snapshot_id') for packet in result['packets'] for item in packet['items']))
 
     def test_whole_history_trim_and_explicit_overflow(self):
         for i in range(8):
