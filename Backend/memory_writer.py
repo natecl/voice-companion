@@ -4,6 +4,7 @@ from datetime import datetime
 import hashlib
 import json
 from admission import Rejected
+import memory_chunks
 from profile_identity import personal, profile_subject, PROFILE_RUBRIC, rank_related
 from memory_models import (RUBRIC, extraction_request, judgment_request,
                            parse_candidates, parse_judgments, metered, expiry_options,
@@ -104,10 +105,29 @@ def select_claims(source, candidates, judgments, related, support):
     return claims, decisions
 
 
+def bounded_batches(items, build, size_error):
+    """Plan every batch before spending; never truncate candidate evidence."""
+    batches, start = [], 0
+    while start < len(items):
+        end = start + 1
+        request = build(start, end)  # A single oversized item remains an explicit failure.
+        while end < len(items):
+            try:
+                expanded = build(start, end + 1)
+            except Rejected as error:
+                if str(error) != size_error: raise
+                break
+            request, end = expanded, end + 1
+        batches.append((start, end, request))
+        start = end
+    return batches
+
+
 class MemoryWriter:
-    def __init__(self, store, models, budget):
+    def __init__(self, store, models, budget, *, chunking=False):
         self.store, self.models, self.budget = store, models, budget
         self.lock = asyncio.Lock()
+        self.chunking = chunking
 
     async def process_next(self, owner):
         async with self.lock:
@@ -119,33 +139,20 @@ class MemoryWriter:
                 if not source['passages']:
                     await asyncio.to_thread(self.store.commit_claims, job, [])
                     return {'job':job['id'], 'accepted':0, 'reason':'empty_source'}
-                request = extraction_request(source)
-                extracted = await metered(self.store, self.budget, job, 'extract', request, self.models.extract)
-                candidates = parse_candidates(extracted['data'], source)
-                if not candidates:
-                    await asyncio.to_thread(self.store.commit_claims, job, [])
-                    return {'job':job['id'], 'accepted':0, 'reason':'no_candidates'}
-                request = support_request(source, candidates)
-                verified = await metered(self.store, self.budget, job, 'support', request, self.models.verify_support)
-                support = parse_support(verified['data'], request)
-                if 'supported' not in support:
-                    await asyncio.to_thread(self.store.commit_claims, job, [])
-                    return {'job':job['id'], 'accepted':0, 'reason':'source_support'}
-                related = []
-                for c in candidates:
-                    identity = profile_subject(source, c) if personal(source) and c['subject_scope'] in ('user','related') else subject_key(c['subject_name'])
-                    pool = await asyncio.to_thread(self.store.profile, owner) if personal(source) else await asyncio.to_thread(self.store.search, owner, (c['subject_name'] or c['text'])[:1000], limit=50)
-                    if personal(source) and c['subject_scope'] == 'related':
-                        terms = (c['subject_name'].casefold(), c['subject_relation'].casefold())
-                        related.append(rank_related(c, [p for p in pool if p['profile_link'] and p['kind'] == c['kind']
-                                        and all(t in p['text'].casefold() for t in terms)]))
-                    else:
-                        matches = [p for p in pool if identity is not None and p['subject'] == identity and p['kind'] == c['kind']]
-                        related.append(rank_related(c, matches) if personal(source) else matches[:4])
-                request = judgment_request(source, candidates, related)
-                judged = await metered(self.store, self.budget, job, 'judge', request, self.models.judge)
-                judgments = parse_judgments(judged['data'], request)
-                claims, decisions = select_claims(source, candidates, judgments, related, support)
+                chunks = await asyncio.to_thread(self.store.chunk_plan, job) if self.chunking else []
+                if chunks:
+                    claims, decisions = [], []
+                    for chunk in chunks:
+                        part = chunk['claims']
+                        if part is None:
+                            part, judged = await self._learn_source(job, chunk['source'], chunk['id']+':')
+                            part = memory_chunks.original_claims(chunk,part)
+                            await asyncio.to_thread(self.store.complete_chunk,job,chunk['id'],part)
+                            decisions.extend(judged)
+                        claims.extend(part)
+                    claims = memory_chunks.deduplicate(claims)
+                else:
+                    claims, decisions = await self._learn_source(job,source)
                 await asyncio.to_thread(self.store.commit_claims, job, claims)
                 await asyncio.to_thread(self.store.maintain)
                 return {'job':job['id'], 'accepted':len(claims), 'decisions':decisions}
@@ -153,6 +160,42 @@ class MemoryWriter:
                 code = str(error) if isinstance(error, Rejected) else 'learning_interrupted' if isinstance(error, asyncio.CancelledError) else 'learning_failed'
                 await asyncio.to_thread(self.store.finish_failed, job, code)
                 raise
+
+    async def _learn_source(self, job, source, prefix=''):
+        request = extraction_request(source)
+        extracted = await metered(self.store, self.budget, job, prefix+'extract', request, self.models.extract)
+        candidates = parse_candidates(extracted['data'], source)
+        if not candidates:
+            return [], []
+        batches = bounded_batches(candidates, lambda a,b: support_request(source,candidates[a:b]), 'memory_support_too_large')
+        support = []
+        for start,end,request in batches:
+            stage = 'support' if len(batches)==1 else f'support-{start}'
+            verified = await metered(self.store, self.budget, job, prefix+stage, request, self.models.verify_support)
+            support.extend(parse_support(verified['data'],request))
+        if 'supported' not in support:
+            return [], []
+        related = []
+        for c in candidates:
+            identity = profile_subject(source, c) if personal(source) and c['subject_scope'] in ('user','related') else subject_key(c['subject_name'])
+            pool = await asyncio.to_thread(self.store.profile, job['owner']) if personal(source) else await asyncio.to_thread(self.store.search, job['owner'], (c['subject_name'] or c['text'])[:1000], limit=50)
+            if personal(source) and c['subject_scope'] == 'related':
+                terms = (c['subject_name'].casefold(), c['subject_relation'].casefold())
+                related.append(rank_related(c, [p for p in pool if p['profile_link'] and p['kind'] == c['kind']
+                                and all(t in p['text'].casefold() for t in terms)]))
+            else:
+                matches = [p for p in pool if identity is not None and p['subject'] == identity and p['kind'] == c['kind']]
+                related.append(rank_related(c, matches) if personal(source) else matches[:4])
+        batches = bounded_batches(candidates, lambda a,b: judgment_request(source,candidates[a:b],related[a:b]), 'memory_judgment_too_large')
+        claims, decisions = [], []
+        for start,end,request in batches:
+            stage = 'judge' if len(batches)==1 else f'judge-{start}'
+            judged = await metered(self.store,self.budget,job,prefix+stage,request,self.models.judge)
+            judgments = parse_judgments(judged['data'],request)
+            part, details = select_claims(source,candidates[start:end],judgments,related[start:end],support[start:end])
+            claims.extend(part)
+            decisions.extend(dict(d,candidate=d['candidate']+start) for d in details)
+        return claims, decisions
 
     async def drain(self, owner, limit=16):
         results = []
@@ -167,7 +210,7 @@ class MemoryWriter:
 # budget, storage and unknown failures still stop paid work for review.
 LOCAL_JOB_FAILURES = frozenset({
     'memory_extraction_too_large', 'memory_support_too_large',
-    'memory_judgment_too_large', 'stale_job', 'stale_relation_target',
+    'memory_judgment_too_large', 'memory_chunk_limit', 'memory_chunk_too_large', 'stale_job', 'stale_relation_target',
 })
 GLOBAL_FAILURE_CODES = frozenset({
     'memory_budget_limit', 'profile_budget_limit', 'budget_limit',
