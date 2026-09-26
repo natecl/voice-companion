@@ -10,7 +10,7 @@ import uuid
 
 from admission import Rejected
 
-VERSION = 3
+VERSION = 4
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -70,7 +70,7 @@ class MemoryStore:
         self.personal_learning = personal_learning
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, VERSION):
+            if version not in (0, 1, 2, 3, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -119,6 +119,17 @@ class MemoryStore:
                     PRAGMA user_version=3;
                     COMMIT;
                 ''')
+            if version < 4:
+                db.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE IF NOT EXISTS claim_relation_proposal(
+                      claim TEXT NOT NULL REFERENCES claim(id),
+                      target TEXT NOT NULL REFERENCES claim(id),
+                      PRIMARY KEY(claim,target));
+                    CREATE INDEX IF NOT EXISTS relation_proposal_target ON claim_relation_proposal(target);
+                    PRAGMA user_version=4;
+                    COMMIT;
+                """)
         self.path.chmod(0o600)
 
     @contextmanager
@@ -166,6 +177,7 @@ class MemoryStore:
         db.execute('DELETE FROM support WHERE owner=? AND session=?', (owner, session))
         # Unsupported content is scrubbed; IDs/state remain for stale-write diagnostics.
         db.execute("UPDATE claim SET state='invalid',reason='source_changed',text=NULL,subject=NULL WHERE owner=? AND NOT EXISTS(SELECT 1 FROM support WHERE support.claim=claim.id)", (owner,))
+        db.execute("DELETE FROM claim_relation_proposal WHERE claim IN (SELECT id FROM claim WHERE owner=? AND state='invalid') OR target IN (SELECT id FROM claim WHERE owner=? AND state='invalid')", (owner, owner))
         db.execute("UPDATE job SET state='obsolete',lease=NULL WHERE owner=? AND session=?", (owner, session))
 
     def put_source(self, owner, source):
@@ -311,10 +323,18 @@ class MemoryStore:
             raise Rejected('invalid_interval')
         version = identifier(c.get('judgment_version'))
         relation, target = c.get('relation', 'new'), c.get('target')
-        if relation not in ('new', 'duplicate', 'supersedes') or (relation == 'new' and target is not None):
+        if relation not in ('new', 'duplicate', 'supersedes', 'unresolved') or (relation in ('new', 'unresolved') and target is not None):
             raise Rejected('invalid_relation')
+        proposals = c.get('proposed_targets', [])
+        if (not isinstance(proposals, list) or len(proposals) > 50
+                or any(not isinstance(value, str) for value in proposals)
+                or (relation != 'unresolved' and proposals)):
+            raise Rejected('invalid_relation')
+        for proposed in proposals:
+            if not db.execute("SELECT 1 FROM claim WHERE id=? AND owner=? AND state!='invalid'", (proposed, owner)).fetchone():
+                raise Rejected('stale_relation_target')
         previous = None
-        if relation != 'new':
+        if relation in ('duplicate', 'supersedes'):
             previous = db.execute("SELECT * FROM claim WHERE id=? AND owner=? AND state!='invalid'", (target, owner)).fetchone()
             if subject is None or not previous or previous['subject'] != subject or previous['kind'] != c['kind'] or bool(previous['profile_link']) != profile_link:
                 raise Rejected('invalid_relation')
@@ -328,11 +348,15 @@ class MemoryStore:
                 raise Rejected('ambiguous_update')
             claim_id = str(uuid.uuid4())
             state = 'expired' if c.get('valid_until') is not None and c['valid_until'] <= self.clock() else 'active'
+            if relation == 'unresolved':
+                state = 'unresolved'
             db.execute('INSERT INTO claim VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                        (claim_id, owner, c['text'], subject, c['kind'], c['basis'], self.clock(),
-                        c.get('valid_from'), c.get('valid_until'), state, 'supported', target, version, int(profile_link)))
+                        c.get('valid_from'), c.get('valid_until'), state, 'relation_unresolved' if relation == 'unresolved' else 'supported', target, version, int(profile_link)))
             if relation == 'supersedes':
                 db.execute("UPDATE claim SET state='superseded',reason='corrected' WHERE id=?", (target,))
+        for proposed in set(proposals):
+            db.execute('INSERT INTO claim_relation_proposal VALUES(?,?)', (claim_id, proposed))
         for passage in set(refs):
             db.execute('INSERT OR IGNORE INTO support VALUES(?,?,?,?,?)', (claim_id, owner, session, revision, passage))
 
@@ -340,7 +364,7 @@ class MemoryStore:
         with self.transaction() as db:
             db.execute("UPDATE claim SET state='expired',reason='validity_ended' WHERE state='active' AND valid_until<=?", (self.clock(),))
 
-    def search(self, owner, query='', *, historical=False, limit=20, profile_only=False):
+    def search(self, owner, query='', *, historical=False, limit=20, profile_only=False, unresolved_only=False):
         """Bounded lexical baseline. Result provenance/lifecycle is mandatory for downstream recall."""
         if not isinstance(query, str) or len(query) > 1000 or type(limit) is not int or not 1 <= limit <= 50:
             raise Rejected('invalid_query')
@@ -350,12 +374,16 @@ class MemoryStore:
             result = []
             for row in rows:
                 item = dict(row)
+                if (item['state'] == 'unresolved') != unresolved_only:
+                    continue
                 if profile_only and ((item['subject'] != 'user' and not item['profile_link']) or item['basis'] == 'inferred'):
                     continue
-                if not historical and (item['state'] != 'active' or (item['valid_until'] is not None and item['valid_until'] <= self.clock()) or (item['valid_from'] is not None and item['valid_from'] > self.clock())):
+                if not historical and not unresolved_only and (item['state'] != 'active' or (item['valid_until'] is not None and item['valid_until'] <= self.clock()) or (item['valid_from'] is not None and item['valid_from'] > self.clock())):
                     continue
                 if terms and not any(t in item['text'].casefold() for t in terms):
                     continue
+                if unresolved_only:
+                    item['proposed_targets'] = [r['target'] for r in db.execute('SELECT target FROM claim_relation_proposal WHERE claim=? ORDER BY target', (item['id'],))]
                 item['sources'] = [dict(r) for r in db.execute('SELECT session,revision,passage FROM support WHERE claim=?', (item['id'],))]
                 result.append(item)
                 if len(result) >= limit:
