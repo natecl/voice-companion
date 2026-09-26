@@ -15,8 +15,9 @@ import memory_chunks
 import memory_atomic
 import memory_time
 import memory_search
+import memory_vectors
 
-VERSION = 10
+VERSION = 11
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -76,7 +77,7 @@ class MemoryStore:
         self.personal_learning = personal_learning
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, VERSION):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -156,6 +157,8 @@ class MemoryStore:
                 db.executescript(memory_atomic.MULTI_SOURCE_SCHEMA)
             if version < 10:
                 memory_search.migrate(db)
+            if version < 11:
+                db.executescript(memory_vectors.SCHEMA)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)
@@ -201,6 +204,7 @@ class MemoryStore:
             return existing_owner
 
     def _invalidate_source(self, db, owner, session):
+        db.execute('DELETE FROM memory_embedding WHERE owner=? AND session=?',(owner,session))
         db.execute('DELETE FROM memory_passage_index WHERE owner=? AND session=?',(owner,session))
         db.execute('DELETE FROM memory_fact_evidence WHERE owner=? AND session=?', (owner,session))
         db.execute('DELETE FROM memory_chunk WHERE job IN (SELECT id FROM job WHERE owner=? AND session=?)', (owner,session))

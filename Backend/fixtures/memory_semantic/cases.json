@@ -1,0 +1,8 @@
+[
+ {"id":"allergy","text":"My daughter Lena has a peanut allergy.","query":"Which food can cause my child an allergic reaction?"},
+ {"id":"medicine","text":"The vet said Biscuit needs his antibiotic every twelve hours.","query":"How often should I give the dog his medicine?"},
+ {"id":"family","text":"My aunt Rose lives in Portland, Oregon.","query":"Which city is my aunt based in?"},
+ {"id":"running","text":"I am preparing for a half marathon in November.","query":"What distance running race am I training for?"},
+ {"id":"calls","text":"Dad prefers that I telephone him on Sunday evenings.","query":"When is a good time to ring my father?"},
+ {"id":"study","text":"My physics oral examination is on Thursday at two in the afternoon.","query":"When do I have to take the spoken science exam?"}
+]

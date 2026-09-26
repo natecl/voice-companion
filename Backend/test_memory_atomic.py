@@ -91,11 +91,11 @@ class AtomicTests(unittest.TestCase):
     def test_schema7_migration_adds_no_automatic_fact_metadata_or_jobs(self):
         self.seed()
         with self.store.connect() as db:
-            db.execute('DROP TABLE memory_fact_evidence');db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('PRAGMA user_version=7')
+            db.execute('DROP TABLE memory_fact_evidence');db.execute('DROP TABLE IF EXISTS memory_embedding');db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('PRAGMA user_version=7')
         reopened=MemoryStore(self.path)
         with reopened.connect() as db:
             self.assertEqual(db.execute('SELECT count(*) FROM memory_fact_evidence').fetchone()[0],0)
             self.assertEqual(db.execute('SELECT count(*) FROM claim').fetchone()[0],1)
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],10)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],11)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0],'ok')
         self.assertIsNone(reopened.claim_job(self.owner))
