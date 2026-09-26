@@ -1,0 +1,16 @@
+{
+  "reopened_exactly": true,
+  "duplicate_created": false,
+  "after_deletion_states": [
+    "invalidated",
+    "invalidated"
+  ],
+  "remaining_answer_texts": [
+    null,
+    null
+  ],
+  "history_empty": true,
+  "provider_calls": 0,
+  "remaining_dependencies": 0,
+  "schema": 13
+}
