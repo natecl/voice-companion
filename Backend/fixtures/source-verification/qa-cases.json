@@ -1,0 +1,8 @@
+[
+  {"id":"named-family","passages":["Mia is my sister.","She prefers evening walks."],"claim":"Mia prefers evening walks.","basis":"stated","time":"current","expected_support":true,"expected_admission":true},
+  {"id":"student-continuity","passages":["Eli is a student.","He prefers studying in quiet rooms."],"claim":"Eli prefers studying in quiet rooms.","basis":"stated","time":"current","expected_support":true,"expected_admission":true},
+  {"id":"negation","passages":["Milo cannot eat chicken; the vet confirmed a chicken allergy."],"claim":"Milo can eat chicken.","basis":"stated","time":"current","expected_support":false,"expected_admission":false},
+  {"id":"unknown-owner","passages":["Our dog Milo cannot eat chicken."],"claim":"Milo belongs to the account owner.","basis":"stated","time":"current","expected_support":false,"expected_admission":false},
+  {"id":"quoted-person","passages":["Nora read a line from a novel: 'I moved to Boston.'","Nora lives in Miami."],"claim":"Nora moved to Boston.","basis":"stated","time":"past","expected_support":false,"expected_admission":false},
+  {"id":"future-metadata","passages":["Ari will start night shifts next month."],"claim":"Ari will start night shifts next month.","basis":"stated","time":"current","expected_support":true,"expected_admission":false}
+]

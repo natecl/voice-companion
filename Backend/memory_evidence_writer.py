@@ -9,14 +9,16 @@ import memory_evidence_chunks
 import memory_judgments
 import memory_identity_model
 import memory_recording_identity
+import memory_source_verification
 from profile_identity import personal
 from memory_models import metered
 from memory_writer import bounded_batches
 
 
 class EvidenceWriter:
-    def __init__(self,store,models,budget,*,luna_identity=True,chunking=False,semantic_boundaries=False,expiry=False,consolidation=False):
+    def __init__(self,store,models,budget,*,luna_identity=True,chunking=False,semantic_boundaries=False,expiry=False,consolidation=False,independent_source_verification=False):
         self.store,self.models,self.budget=store,models,budget
+        self.independent_source_verification=independent_source_verification
         self.lock=asyncio.Lock()
         self.consolidation=consolidation
         self.expiry=expiry
@@ -45,6 +47,10 @@ class EvidenceWriter:
                     parts=[]
                     for chunk in chunks:
                         part=chunk['claims']
+                        if part is not None:
+                            independent=self.independent_source_verification and self.luna_identity and not personal(chunk['source'])
+                            if any((entry['checks']['support'].get('rubric')==memory_source_verification.VERSION)!=independent for entry in part):
+                                raise Rejected('verification_contract_changed')
                         if part is None:
                             part=await self.extract_verified(job,chunk['source'],chunk['id']+':')
                             mapped=[]
@@ -123,11 +129,27 @@ class EvidenceWriter:
         proposals=memory_evidence.parse_recording_extraction(response['data'],source)
         verified={}
         recording_identity=self.luna_identity and not personal(source)
-        batches=bounded_batches(proposals,lambda a,b:memory_judgments.verify_proposals(source,proposals[a:b],include_subject=not recording_identity),'memory_judgment_too_large')
-        for start,end,request in batches:
-            response=await metered(self.store,self.budget,job,prefix+f'evidence-support:{start}',request,self.models.judge)
-            for key,value in memory_judgments.decisions(response['data'],request).items():
-                aspect,index=key.rsplit('_',1);verified[f'{aspect}_{start+int(index)}']=value
+        if self.independent_source_verification and recording_identity:
+            def build_support(a,b):
+                cases=memory_source_verification.support_cases(source,proposals[a:b])
+                return memory_source_verification.support_request(cases)[0]
+            for start,end,request in bounded_batches(proposals,build_support,'source_verification_too_large'):
+                response=await metered(self.store,self.budget,job,
+                    prefix+f'{memory_source_verification.VERSION}:support:{start}',request,self.models.extract)
+                for key,value in memory_source_verification.support_decisions(response['data'],source,proposals[start:end]).items():
+                    verified[f'support_{start+int(key.rsplit("_",1)[1])}']=value
+            for start,end,request in bounded_batches(proposals,
+                    lambda a,b:memory_source_verification.metadata_request(source,proposals[a:b]),'memory_judgment_too_large'):
+                response=await metered(self.store,self.budget,job,
+                    prefix+f'{memory_source_verification.VERSION}:metadata:{start}',request,self.models.judge)
+                for key,value in memory_source_verification.metadata_decisions(response['data'],request,proposals[start:end]).items():
+                    aspect,index=key.rsplit('_',1);verified[f'{aspect}_{start+int(index)}']=value
+        else:
+            batches=bounded_batches(proposals,lambda a,b:memory_judgments.verify_proposals(source,proposals[a:b],include_subject=not recording_identity),'memory_judgment_too_large')
+            for start,end,request in batches:
+                response=await metered(self.store,self.budget,job,prefix+f'evidence-support:{start}',request,self.models.judge)
+                for key,value in memory_judgments.decisions(response['data'],request).items():
+                    aspect,index=key.rsplit('_',1);verified[f'{aspect}_{start+int(index)}']=value
         if recording_identity:
             for start,end,request in bounded_batches(proposals,lambda a,b:memory_recording_identity.request(proposals[a:b]),'memory_identity_too_large'):
                 response=await metered(self.store,self.budget,job,prefix+f'recording-identity:{start}',request,self.models.extract)
@@ -141,6 +163,7 @@ class EvidenceWriter:
         applicability=applicability or {}
         attributed=checks['subject']['accepted'] and checks['subject']['label']==proposal['scope'] and proposal['scope']!='unresolved'
         rubric=memory_judgments.VERSION
+        if checks['support'].get('rubric')==memory_source_verification.VERSION:rubric+='+'+memory_source_verification.VERSION
         if checks['subject'].get('rubric')==memory_recording_identity.VERSION:rubric+='+'+memory_recording_identity.VERSION
         if any(d.get('rubric')==memory_identity_model.VERSION for d in identity.values()):rubric+='+'+memory_identity_model.VERSION
         item=dict(proposal=proposal,action='new',rubric=rubric,
