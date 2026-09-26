@@ -1,0 +1,8 @@
+[
+ {"id":"question_answer","left":"Which appointment did Maya move?","right":"She moved her dentist appointment to Thursday.","split":false},
+ {"id":"correction","left":"Project Maple meets in the morning.","right":"Actually, I meant afternoon. Please correct that.","split":false},
+ {"id":"story","left":"My brother finally opened his birthday present.","right":"He was delighted to find the guitar he had wanted.","split":false},
+ {"id":"new_topic","left":"That concludes our discussion of the dog's vaccination appointment.","right":"Changing subjects entirely: what is the derivative of x squared?","split":true},
+ {"id":"separate_activity","left":"We have finished planning the kitchen renovation.","right":"On an unrelated note, let us discuss the rules of chess.","split":true},
+ {"id":"ambiguous","left":"I discussed it with them.","right":"That was the important part.","split":false}
+]

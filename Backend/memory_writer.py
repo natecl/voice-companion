@@ -124,10 +124,12 @@ def bounded_batches(items, build, size_error):
 
 
 class MemoryWriter:
-    def __init__(self, store, models, budget, *, chunking=False):
+    def __init__(self, store, models, budget, *, chunking=False, semantic_boundaries=False):
         self.store, self.models, self.budget = store, models, budget
         self.lock = asyncio.Lock()
         self.chunking = chunking
+        self.semantic_boundaries = semantic_boundaries
+        if semantic_boundaries and not chunking: raise ValueError("Semantic boundaries require chunking")
 
     async def process_next(self, owner):
         async with self.lock:
@@ -140,6 +142,12 @@ class MemoryWriter:
                     await asyncio.to_thread(self.store.commit_claims, job, [])
                     return {'job':job['id'], 'accepted':0, 'reason':'empty_source'}
                 chunks = await asyncio.to_thread(self.store.chunk_plan, job) if self.chunking else []
+                if chunks and self.semantic_boundaries and chunks[0]['strategy']!='jev_boundary_overlap':
+                    async def evaluate(request):
+                        return await metered(self.store,self.budget,job,'boundary:v1',request,self.models.judge)
+                    refined=await memory_chunks.semantic_plan(source,evaluate)
+                    await asyncio.to_thread(self.store.replace_chunk_plan,job,refined)
+                    chunks=[dict(c,claims=None) for c in refined]
                 if chunks:
                     claims, decisions = [], []
                     for chunk in chunks:
