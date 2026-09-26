@@ -32,7 +32,7 @@ def freeze(store,owner,source,refs):
         items.append(dict(session_id=source['session_id'],revision=source['revision'],passage_id=p['id'],
             text_start=start,text_end=end,text=p['text'][start:end],start=p['start'],speakers=p['speakers'],
             captured_at=source['captured_at'],timezone=source['timezone'],evidence_type='live_snapshot',
-            origin='recording',scope='historical_capture_cutoff'))
+            origin='recording',scope='capture_cutoff',speaker_identity='unidentified_recording_speaker'))
     payload=json.dumps(items,sort_keys=True,ensure_ascii=False)
     if len(payload.encode())>9000:raise Rejected('live_snapshot_too_large')
     snapshot_id=hashlib.sha256(payload.encode()).hexdigest()

@@ -75,6 +75,7 @@ async def run(directory,budget_path):
             _,anonymous=admission.enroll()
             unknown=source('anonymous',text='I am an endurance runner.');unknown['completed']=False
             text,_,refs=await call(url,anonymous,question('unknown',question='Am I an endurance runner?',live=unknown))
+            assert any(word in text.casefold() for word in ('speaker','who said','was you','were you','your voice')), 'Must explain uncertain speaker identity, not just temporal uncertainty'
             assert any(word in text.casefold() for word in ('unknown','cannot',"can't",'can’t','unclear',"don't know",'doesn’t identify','does not identify','not clear',"can't tell",'can’t tell','not enough','unidentified'))
             assert refs
             assert len(CompanionChat(store).page(owner)['turns'])==3
