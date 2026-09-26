@@ -1,0 +1,1166 @@
+{
+  "upstream": "46ad5153a362815e4bd7a21f804561d492816fc5",
+  "scope": "keyless explicit-fact storage; no automatic extraction",
+  "startup_ms": 1076.296875,
+  "calls": [
+    {
+      "name": "put_page",
+      "params": {
+        "slug": "recordings/split-subject",
+        "content": "---\ntitle: split-subject\ntype: meeting\n---\n\n[p1] Project Juniper.\n[p2] Prefers morning meetings.\n[p3] The meeting location is the library."
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "noop": false,
+        "slug": "recordings/split-subject",
+        "chunks": 1,
+        "status": "created_or_updated",
+        "revision": "548d8774-2ab2-4019-a710-0f7f967230e4",
+        "source_id": "default",
+        "auto_links": {
+          "hint": "Body wikilinks are saved as text but NOT reconciled into the graph. A stdio `gbrain serve` sweeps them at startup + on idle; `gbrain serve --http` does not self-sweep — run `gbrain sweep --once` (delegates to a live serve over IPC), use trusted local capture/put_page for inline link extraction, or add_link for edges needed now.",
+          "skipped": "remote"
+        },
+        "persistence": {
+          "mode": "database"
+        },
+        "write_through": {
+          "skipped": "no_repo_configured",
+          "warning": "put_page wrote only to the database for source 'default': no repo/local_path is configured, so no durable markdown file was created. Bind this MCP server/token to a git-backed source or configure source local_path/sync.repo_path before relying on the write.",
+          "written": false
+        },
+        "facts_backstop": {
+          "queued": true
+        },
+        "embedding_state": "queued",
+        "outcome": {
+          "noop": false,
+          "slug": "recordings/split-subject",
+          "chunks": 1,
+          "status": "created_or_updated",
+          "revision": "548d8774-2ab2-4019-a710-0f7f967230e4",
+          "source_id": "default",
+          "auto_links": {
+            "hint": "Body wikilinks are saved as text but NOT reconciled into the graph. A stdio `gbrain serve` sweeps them at startup + on idle; `gbrain serve --http` does not self-sweep — run `gbrain sweep --once` (delegates to a live serve over IPC), use trusted local capture/put_page for inline link extraction, or add_link for edges needed now.",
+            "skipped": "remote"
+          },
+          "persistence": {
+            "mode": "database"
+          },
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "warning": "put_page wrote only to the database for source 'default': no repo/local_path is configured, so no durable markdown file was created. Bind this MCP server/token to a git-backed source or configure source local_path/sync.repo_path before relying on the write.",
+            "written": false
+          },
+          "facts_backstop": {
+            "queued": true
+          },
+          "embedding_state": "queued"
+        },
+        "request_id": "e2cd1672-4700-4ceb-9094-0e849b1b4bd8",
+        "state": "committed",
+        "retry_after_ms": null,
+        "created_at": "2026-09-26T19:58:22.166Z",
+        "updated_at": "2026-09-26T19:58:22.246Z",
+        "write_request": {
+          "noop": false,
+          "slug": "recordings/split-subject",
+          "chunks": 1,
+          "status": "created_or_updated",
+          "revision": "548d8774-2ab2-4019-a710-0f7f967230e4",
+          "source_id": "default",
+          "auto_links": {
+            "hint": "Body wikilinks are saved as text but NOT reconciled into the graph. A stdio `gbrain serve` sweeps them at startup + on idle; `gbrain serve --http` does not self-sweep — run `gbrain sweep --once` (delegates to a live serve over IPC), use trusted local capture/put_page for inline link extraction, or add_link for edges needed now.",
+            "skipped": "remote"
+          },
+          "persistence": {
+            "mode": "database"
+          },
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "warning": "put_page wrote only to the database for source 'default': no repo/local_path is configured, so no durable markdown file was created. Bind this MCP server/token to a git-backed source or configure source local_path/sync.repo_path before relying on the write.",
+            "written": false
+          },
+          "facts_backstop": {
+            "queued": true
+          },
+          "embedding_state": "queued",
+          "outcome": {
+            "noop": false,
+            "slug": "recordings/split-subject",
+            "chunks": 1,
+            "status": "created_or_updated",
+            "revision": "548d8774-2ab2-4019-a710-0f7f967230e4",
+            "source_id": "default",
+            "auto_links": {
+              "hint": "Body wikilinks are saved as text but NOT reconciled into the graph. A stdio `gbrain serve` sweeps them at startup + on idle; `gbrain serve --http` does not self-sweep — run `gbrain sweep --once` (delegates to a live serve over IPC), use trusted local capture/put_page for inline link extraction, or add_link for edges needed now.",
+              "skipped": "remote"
+            },
+            "persistence": {
+              "mode": "database"
+            },
+            "write_through": {
+              "skipped": "no_repo_configured",
+              "warning": "put_page wrote only to the database for source 'default': no repo/local_path is configured, so no durable markdown file was created. Bind this MCP server/token to a git-backed source or configure source local_path/sync.repo_path before relying on the write.",
+              "written": false
+            },
+            "facts_backstop": {
+              "queued": true
+            },
+            "embedding_state": "queued"
+          },
+          "request_id": "e2cd1672-4700-4ceb-9094-0e849b1b4bd8",
+          "state": "committed",
+          "retry_after_ms": null,
+          "created_at": "2026-09-26T19:58:22.166Z",
+          "updated_at": "2026-09-26T19:58:22.246Z"
+        }
+      },
+      "ms": 132.5139999999999
+    },
+    {
+      "name": "put_page",
+      "params": {
+        "slug": "recordings/correction",
+        "content": "---\ntitle: correction\ntype: meeting\n---\n\n[p1] Project Juniper has changed its meeting location. It now meets at the community center instead of the library."
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "noop": false,
+        "slug": "recordings/correction",
+        "chunks": 1,
+        "status": "created_or_updated",
+        "revision": "e994e462-c8a5-4461-8f9e-dd533f125528",
+        "source_id": "default",
+        "auto_links": {
+          "hint": "Body wikilinks are saved as text but NOT reconciled into the graph. A stdio `gbrain serve` sweeps them at startup + on idle; `gbrain serve --http` does not self-sweep — run `gbrain sweep --once` (delegates to a live serve over IPC), use trusted local capture/put_page for inline link extraction, or add_link for edges needed now.",
+          "skipped": "remote"
+        },
+        "persistence": {
+          "mode": "database"
+        },
+        "write_through": {
+          "skipped": "no_repo_configured",
+          "warning": "put_page wrote only to the database for source 'default': no repo/local_path is configured, so no durable markdown file was created. Bind this MCP server/token to a git-backed source or configure source local_path/sync.repo_path before relying on the write.",
+          "written": false
+        },
+        "facts_backstop": {
+          "queued": true
+        },
+        "embedding_state": "queued",
+        "outcome": {
+          "noop": false,
+          "slug": "recordings/correction",
+          "chunks": 1,
+          "status": "created_or_updated",
+          "revision": "e994e462-c8a5-4461-8f9e-dd533f125528",
+          "source_id": "default",
+          "auto_links": {
+            "hint": "Body wikilinks are saved as text but NOT reconciled into the graph. A stdio `gbrain serve` sweeps them at startup + on idle; `gbrain serve --http` does not self-sweep — run `gbrain sweep --once` (delegates to a live serve over IPC), use trusted local capture/put_page for inline link extraction, or add_link for edges needed now.",
+            "skipped": "remote"
+          },
+          "persistence": {
+            "mode": "database"
+          },
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "warning": "put_page wrote only to the database for source 'default': no repo/local_path is configured, so no durable markdown file was created. Bind this MCP server/token to a git-backed source or configure source local_path/sync.repo_path before relying on the write.",
+            "written": false
+          },
+          "facts_backstop": {
+            "queued": true
+          },
+          "embedding_state": "queued"
+        },
+        "request_id": "456447b3-ec33-42d7-8940-3da63e7e6634",
+        "state": "committed",
+        "retry_after_ms": null,
+        "created_at": "2026-09-26T19:58:22.292Z",
+        "updated_at": "2026-09-26T19:58:22.326Z",
+        "write_request": {
+          "noop": false,
+          "slug": "recordings/correction",
+          "chunks": 1,
+          "status": "created_or_updated",
+          "revision": "e994e462-c8a5-4461-8f9e-dd533f125528",
+          "source_id": "default",
+          "auto_links": {
+            "hint": "Body wikilinks are saved as text but NOT reconciled into the graph. A stdio `gbrain serve` sweeps them at startup + on idle; `gbrain serve --http` does not self-sweep — run `gbrain sweep --once` (delegates to a live serve over IPC), use trusted local capture/put_page for inline link extraction, or add_link for edges needed now.",
+            "skipped": "remote"
+          },
+          "persistence": {
+            "mode": "database"
+          },
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "warning": "put_page wrote only to the database for source 'default': no repo/local_path is configured, so no durable markdown file was created. Bind this MCP server/token to a git-backed source or configure source local_path/sync.repo_path before relying on the write.",
+            "written": false
+          },
+          "facts_backstop": {
+            "queued": true
+          },
+          "embedding_state": "queued",
+          "outcome": {
+            "noop": false,
+            "slug": "recordings/correction",
+            "chunks": 1,
+            "status": "created_or_updated",
+            "revision": "e994e462-c8a5-4461-8f9e-dd533f125528",
+            "source_id": "default",
+            "auto_links": {
+              "hint": "Body wikilinks are saved as text but NOT reconciled into the graph. A stdio `gbrain serve` sweeps them at startup + on idle; `gbrain serve --http` does not self-sweep — run `gbrain sweep --once` (delegates to a live serve over IPC), use trusted local capture/put_page for inline link extraction, or add_link for edges needed now.",
+              "skipped": "remote"
+            },
+            "persistence": {
+              "mode": "database"
+            },
+            "write_through": {
+              "skipped": "no_repo_configured",
+              "warning": "put_page wrote only to the database for source 'default': no repo/local_path is configured, so no durable markdown file was created. Bind this MCP server/token to a git-backed source or configure source local_path/sync.repo_path before relying on the write.",
+              "written": false
+            },
+            "facts_backstop": {
+              "queued": true
+            },
+            "embedding_state": "queued"
+          },
+          "request_id": "456447b3-ec33-42d7-8940-3da63e7e6634",
+          "state": "committed",
+          "retry_after_ms": null,
+          "created_at": "2026-09-26T19:58:22.292Z",
+          "updated_at": "2026-09-26T19:58:22.326Z"
+        }
+      },
+      "ms": 65.53641700000003
+    },
+    {
+      "name": "remember",
+      "params": {
+        "fact": "Project Juniper's meeting location is the library.",
+        "entity": "projects/juniper",
+        "provenance": "recordings/split-subject#p1,p3"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "id": "1",
+        "status": "inserted",
+        "entity_slug": "projects/juniper",
+        "persistence": {
+          "mode": "database"
+        },
+        "status_text": "remembered as fact #1",
+        "valid_until": null,
+        "write_through": {
+          "skipped": "no_repo_configured",
+          "written": false
+        },
+        "degraded_dedup": true,
+        "protocol_version": 1,
+        "outcome": {
+          "id": "1",
+          "status": "inserted",
+          "entity_slug": "projects/juniper",
+          "persistence": {
+            "mode": "database"
+          },
+          "status_text": "remembered as fact #1",
+          "valid_until": null,
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "written": false
+          },
+          "degraded_dedup": true,
+          "protocol_version": 1
+        },
+        "request_id": "72501a64-abf4-4a21-b67b-077cc9ee0d2d",
+        "state": "committed",
+        "retry_after_ms": null,
+        "created_at": "2026-09-26T19:58:22.382Z",
+        "updated_at": "2026-09-26T19:58:22.633Z",
+        "write_request": {
+          "id": "1",
+          "status": "inserted",
+          "entity_slug": "projects/juniper",
+          "persistence": {
+            "mode": "database"
+          },
+          "status_text": "remembered as fact #1",
+          "valid_until": null,
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "written": false
+          },
+          "degraded_dedup": true,
+          "protocol_version": 1,
+          "outcome": {
+            "id": "1",
+            "status": "inserted",
+            "entity_slug": "projects/juniper",
+            "persistence": {
+              "mode": "database"
+            },
+            "status_text": "remembered as fact #1",
+            "valid_until": null,
+            "write_through": {
+              "skipped": "no_repo_configured",
+              "written": false
+            },
+            "degraded_dedup": true,
+            "protocol_version": 1
+          },
+          "request_id": "72501a64-abf4-4a21-b67b-077cc9ee0d2d",
+          "state": "committed",
+          "retry_after_ms": null,
+          "created_at": "2026-09-26T19:58:22.382Z",
+          "updated_at": "2026-09-26T19:58:22.633Z"
+        }
+      },
+      "ms": 294.8157080000001
+    },
+    {
+      "name": "recall",
+      "params": {
+        "entity": "projects/juniper"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "facts": [
+          {
+            "id": 1,
+            "fact": "Project Juniper's meeting location is the library.",
+            "kind": "fact",
+            "entity_slug": "projects/juniper",
+            "visibility": "world",
+            "notability": "medium",
+            "valid_from": "2026-09-26T19:58:22.381Z",
+            "valid_until": null,
+            "expired_at": null,
+            "superseded_by": null,
+            "consolidated_at": null,
+            "consolidated_into": null,
+            "source": "recordings/split-subject#p1,p3",
+            "source_session": null,
+            "context": null,
+            "confidence": 1,
+            "created_at": "2026-09-26T19:58:22.633Z",
+            "fact_id": "1",
+            "provenance": "recordings/split-subject#p1,p3"
+          }
+        ],
+        "total": 1,
+        "protocol_version": 1
+      },
+      "ms": 4.439457999999831
+    },
+    {
+      "name": "remember",
+      "params": {
+        "fact": "Project Juniper now meets at the community center instead of the library.",
+        "entity": "projects/juniper",
+        "provenance": "recordings/correction#p1"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "id": "2",
+        "status": "inserted",
+        "entity_slug": "projects/juniper",
+        "persistence": {
+          "mode": "database"
+        },
+        "status_text": "remembered as fact #2",
+        "valid_until": null,
+        "write_through": {
+          "skipped": "no_repo_configured",
+          "written": false
+        },
+        "degraded_dedup": true,
+        "protocol_version": 1,
+        "outcome": {
+          "id": "2",
+          "status": "inserted",
+          "entity_slug": "projects/juniper",
+          "persistence": {
+            "mode": "database"
+          },
+          "status_text": "remembered as fact #2",
+          "valid_until": null,
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "written": false
+          },
+          "degraded_dedup": true,
+          "protocol_version": 1
+        },
+        "request_id": "1beb02b4-dce8-42ff-a918-052c70efd6ef",
+        "state": "committed",
+        "retry_after_ms": null,
+        "created_at": "2026-09-26T19:58:22.658Z",
+        "updated_at": "2026-09-26T19:58:22.671Z",
+        "write_request": {
+          "id": "2",
+          "status": "inserted",
+          "entity_slug": "projects/juniper",
+          "persistence": {
+            "mode": "database"
+          },
+          "status_text": "remembered as fact #2",
+          "valid_until": null,
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "written": false
+          },
+          "degraded_dedup": true,
+          "protocol_version": 1,
+          "outcome": {
+            "id": "2",
+            "status": "inserted",
+            "entity_slug": "projects/juniper",
+            "persistence": {
+              "mode": "database"
+            },
+            "status_text": "remembered as fact #2",
+            "valid_until": null,
+            "write_through": {
+              "skipped": "no_repo_configured",
+              "written": false
+            },
+            "degraded_dedup": true,
+            "protocol_version": 1
+          },
+          "request_id": "1beb02b4-dce8-42ff-a918-052c70efd6ef",
+          "state": "committed",
+          "retry_after_ms": null,
+          "created_at": "2026-09-26T19:58:22.658Z",
+          "updated_at": "2026-09-26T19:58:22.671Z"
+        }
+      },
+      "ms": 60.38891599999988
+    },
+    {
+      "name": "recall",
+      "params": {
+        "entity": "projects/juniper"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "facts": [
+          {
+            "id": 2,
+            "fact": "Project Juniper now meets at the community center instead of the library.",
+            "kind": "fact",
+            "entity_slug": "projects/juniper",
+            "visibility": "world",
+            "notability": "medium",
+            "valid_from": "2026-09-26T19:58:22.658Z",
+            "valid_until": null,
+            "expired_at": null,
+            "superseded_by": null,
+            "consolidated_at": null,
+            "consolidated_into": null,
+            "source": "recordings/correction#p1",
+            "source_session": null,
+            "context": null,
+            "confidence": 1,
+            "created_at": "2026-09-26T19:58:22.671Z",
+            "fact_id": "2",
+            "provenance": "recordings/correction#p1"
+          },
+          {
+            "id": 1,
+            "fact": "Project Juniper's meeting location is the library.",
+            "kind": "fact",
+            "entity_slug": "projects/juniper",
+            "visibility": "world",
+            "notability": "medium",
+            "valid_from": "2026-09-26T19:58:22.381Z",
+            "valid_until": null,
+            "expired_at": null,
+            "superseded_by": null,
+            "consolidated_at": null,
+            "consolidated_into": null,
+            "source": "recordings/split-subject#p1,p3",
+            "source_session": null,
+            "context": null,
+            "confidence": 1,
+            "created_at": "2026-09-26T19:58:22.633Z",
+            "fact_id": "1",
+            "provenance": "recordings/split-subject#p1,p3"
+          }
+        ],
+        "total": 2,
+        "protocol_version": 1
+      },
+      "ms": 2.668042000000014
+    },
+    {
+      "name": "get_page",
+      "params": {
+        "slug": "recordings/correction"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "id": 2,
+        "slug": "recordings/correction",
+        "type": "meeting",
+        "title": "correction",
+        "compiled_truth": "[p1] Project Juniper has changed its meeting location. It now meets at the community center instead of the library.",
+        "timeline": "",
+        "frontmatter": {},
+        "content_hash": "46853f0f52abf51b963ccafadcd40c3a2461b9fa77d824b6c71f93b7e2392b45",
+        "source_path": null,
+        "knowledge_revision": "e994e462-c8a5-4461-8f9e-dd533f125528",
+        "text_projection_revision": "e994e462-c8a5-4461-8f9e-dd533f125528",
+        "emotional_weight": 0,
+        "created_at": "2026-09-26T19:58:22.326Z",
+        "updated_at": "2026-09-26T19:58:22.326Z",
+        "deleted_at": null,
+        "effective_date": "2026-09-26T19:58:22.332Z",
+        "effective_date_source": "fallback",
+        "import_filename": "correction",
+        "salience_touched_at": null,
+        "source_kind": "mcp:put_page",
+        "source_uri": null,
+        "ingested_via": "mcp:put_page",
+        "ingested_at": "2026-09-26T19:58:22.333Z",
+        "contextual_retrieval_mode": "title",
+        "source_id": "default",
+        "revision": "e994e462-c8a5-4461-8f9e-dd533f125528",
+        "tags": []
+      },
+      "ms": 3.150833000000148
+    },
+    {
+      "name": "delete_page",
+      "params": {
+        "slug": "recordings/correction",
+        "expected_revision": "e994e462-c8a5-4461-8f9e-dd533f125528"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "noop": false,
+        "slug": "recordings/correction",
+        "status": "soft_deleted",
+        "revision": "299a83f0-fb40-4503-b2cc-6d1aee1305b0",
+        "source_id": "default",
+        "persistence": {
+          "mode": "database"
+        },
+        "write_through": {
+          "skipped": "no_repo_configured",
+          "written": false
+        },
+        "recoverable_until": "now + 72h via restore_page (remove immediately instead: gbrain delete <slug> --purge, local CLI only)",
+        "outcome": {
+          "noop": false,
+          "slug": "recordings/correction",
+          "status": "soft_deleted",
+          "revision": "299a83f0-fb40-4503-b2cc-6d1aee1305b0",
+          "source_id": "default",
+          "persistence": {
+            "mode": "database"
+          },
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "written": false
+          },
+          "recoverable_until": "now + 72h via restore_page (remove immediately instead: gbrain delete <slug> --purge, local CLI only)"
+        },
+        "request_id": "736192e5-fb3a-457b-9002-de0fa72d3c70",
+        "state": "committed",
+        "retry_after_ms": null,
+        "created_at": "2026-09-26T19:58:22.726Z",
+        "updated_at": "2026-09-26T19:58:22.957Z",
+        "write_request": {
+          "noop": false,
+          "slug": "recordings/correction",
+          "status": "soft_deleted",
+          "revision": "299a83f0-fb40-4503-b2cc-6d1aee1305b0",
+          "source_id": "default",
+          "persistence": {
+            "mode": "database"
+          },
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "written": false
+          },
+          "recoverable_until": "now + 72h via restore_page (remove immediately instead: gbrain delete <slug> --purge, local CLI only)",
+          "outcome": {
+            "noop": false,
+            "slug": "recordings/correction",
+            "status": "soft_deleted",
+            "revision": "299a83f0-fb40-4503-b2cc-6d1aee1305b0",
+            "source_id": "default",
+            "persistence": {
+              "mode": "database"
+            },
+            "write_through": {
+              "skipped": "no_repo_configured",
+              "written": false
+            },
+            "recoverable_until": "now + 72h via restore_page (remove immediately instead: gbrain delete <slug> --purge, local CLI only)"
+          },
+          "request_id": "736192e5-fb3a-457b-9002-de0fa72d3c70",
+          "state": "committed",
+          "retry_after_ms": null,
+          "created_at": "2026-09-26T19:58:22.726Z",
+          "updated_at": "2026-09-26T19:58:22.957Z"
+        }
+      },
+      "ms": 253.97000000000003
+    },
+    {
+      "name": "recall",
+      "params": {
+        "entity": "projects/juniper"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "facts": [
+          {
+            "id": 2,
+            "fact": "Project Juniper now meets at the community center instead of the library.",
+            "kind": "fact",
+            "entity_slug": "projects/juniper",
+            "visibility": "world",
+            "notability": "medium",
+            "valid_from": "2026-09-26T19:58:22.658Z",
+            "valid_until": null,
+            "expired_at": null,
+            "superseded_by": null,
+            "consolidated_at": null,
+            "consolidated_into": null,
+            "source": "recordings/correction#p1",
+            "source_session": null,
+            "context": null,
+            "confidence": 1,
+            "created_at": "2026-09-26T19:58:22.671Z",
+            "fact_id": "2",
+            "provenance": "recordings/correction#p1"
+          },
+          {
+            "id": 1,
+            "fact": "Project Juniper's meeting location is the library.",
+            "kind": "fact",
+            "entity_slug": "projects/juniper",
+            "visibility": "world",
+            "notability": "medium",
+            "valid_from": "2026-09-26T19:58:22.381Z",
+            "valid_until": null,
+            "expired_at": null,
+            "superseded_by": null,
+            "consolidated_at": null,
+            "consolidated_into": null,
+            "source": "recordings/split-subject#p1,p3",
+            "source_session": null,
+            "context": null,
+            "confidence": 1,
+            "created_at": "2026-09-26T19:58:22.633Z",
+            "fact_id": "1",
+            "provenance": "recordings/split-subject#p1,p3"
+          }
+        ],
+        "total": 2,
+        "protocol_version": 1
+      },
+      "ms": 3.545708000000104
+    },
+    {
+      "name": "forget",
+      "params": {
+        "id": "2",
+        "reason": "Synthetic withdrawal check"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "id": "2",
+        "reason": "Synthetic withdrawal check",
+        "expired": true,
+        "persistence": {
+          "mode": "database"
+        },
+        "protocol_version": 1,
+        "outcome": {
+          "id": "2",
+          "reason": "Synthetic withdrawal check",
+          "expired": true,
+          "persistence": {
+            "mode": "database"
+          },
+          "protocol_version": 1
+        },
+        "request_id": "459e4f42-2102-43fd-800d-035e3a44d290",
+        "state": "committed",
+        "retry_after_ms": null,
+        "created_at": "2026-09-26T19:58:22.980Z",
+        "updated_at": "2026-09-26T19:58:22.980Z",
+        "write_request": {
+          "id": "2",
+          "reason": "Synthetic withdrawal check",
+          "expired": true,
+          "persistence": {
+            "mode": "database"
+          },
+          "protocol_version": 1,
+          "outcome": {
+            "id": "2",
+            "reason": "Synthetic withdrawal check",
+            "expired": true,
+            "persistence": {
+              "mode": "database"
+            },
+            "protocol_version": 1
+          },
+          "request_id": "459e4f42-2102-43fd-800d-035e3a44d290",
+          "state": "committed",
+          "retry_after_ms": null,
+          "created_at": "2026-09-26T19:58:22.980Z",
+          "updated_at": "2026-09-26T19:58:22.980Z"
+        }
+      },
+      "ms": 16.580708000000186
+    },
+    {
+      "name": "recall",
+      "params": {
+        "entity": "projects/juniper"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "facts": [
+          {
+            "id": 1,
+            "fact": "Project Juniper's meeting location is the library.",
+            "kind": "fact",
+            "entity_slug": "projects/juniper",
+            "visibility": "world",
+            "notability": "medium",
+            "valid_from": "2026-09-26T19:58:22.381Z",
+            "valid_until": null,
+            "expired_at": null,
+            "superseded_by": null,
+            "consolidated_at": null,
+            "consolidated_into": null,
+            "source": "recordings/split-subject#p1,p3",
+            "source_session": null,
+            "context": null,
+            "confidence": 1,
+            "created_at": "2026-09-26T19:58:22.633Z",
+            "fact_id": "1",
+            "provenance": "recordings/split-subject#p1,p3"
+          }
+        ],
+        "total": 1,
+        "protocol_version": 1
+      },
+      "ms": 2.476916000000074
+    },
+    {
+      "name": "remember",
+      "params": {
+        "fact": "Project Juniper now meets at the community center instead of the library.",
+        "entity": "projects/juniper",
+        "provenance": "synthetic stale reimport"
+      },
+      "sourceId": "default",
+      "isError": true,
+      "body": {
+        "error": "invalid_params",
+        "message": "The write did not commit. Inspect its durable request on the source host.",
+        "suggestion": "Resolve the reported write failure before starting a corrected attempt. Submit any corrected write with a new request_id. Reusing this request_id returns the same outcome.",
+        "detail": "invalid_params",
+        "protocol_version": 1,
+        "write_request": {
+          "request_id": "536a63f7-4330-4f9c-9ba6-07bdde573255",
+          "state": "failed",
+          "retry_after_ms": null,
+          "outcome": {},
+          "created_at": "2026-09-26T19:58:23.002Z",
+          "updated_at": "2026-09-26T19:58:23.041Z"
+        },
+        "write_error": "invalid_params"
+      },
+      "ms": 63.73870799999986
+    },
+    {
+      "name": "put_page",
+      "params": {
+        "slug": "recordings/structured",
+        "content": "---\ntitle: Structured provenance probe\ntype: meeting\n---\n\nMaya enjoys swimming."
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "noop": false,
+        "slug": "recordings/structured",
+        "chunks": 1,
+        "status": "created_or_updated",
+        "revision": "fbd4e8d8-b65f-4fef-b3d1-aaeca3febcc3",
+        "source_id": "default",
+        "auto_links": {
+          "hint": "Body wikilinks are saved as text but NOT reconciled into the graph. A stdio `gbrain serve` sweeps them at startup + on idle; `gbrain serve --http` does not self-sweep — run `gbrain sweep --once` (delegates to a live serve over IPC), use trusted local capture/put_page for inline link extraction, or add_link for edges needed now.",
+          "skipped": "remote"
+        },
+        "persistence": {
+          "mode": "database"
+        },
+        "write_through": {
+          "skipped": "no_repo_configured",
+          "warning": "put_page wrote only to the database for source 'default': no repo/local_path is configured, so no durable markdown file was created. Bind this MCP server/token to a git-backed source or configure source local_path/sync.repo_path before relying on the write.",
+          "written": false
+        },
+        "facts_backstop": {
+          "skipped": "too_short"
+        },
+        "embedding_state": "queued",
+        "outcome": {
+          "noop": false,
+          "slug": "recordings/structured",
+          "chunks": 1,
+          "status": "created_or_updated",
+          "revision": "fbd4e8d8-b65f-4fef-b3d1-aaeca3febcc3",
+          "source_id": "default",
+          "auto_links": {
+            "hint": "Body wikilinks are saved as text but NOT reconciled into the graph. A stdio `gbrain serve` sweeps them at startup + on idle; `gbrain serve --http` does not self-sweep — run `gbrain sweep --once` (delegates to a live serve over IPC), use trusted local capture/put_page for inline link extraction, or add_link for edges needed now.",
+            "skipped": "remote"
+          },
+          "persistence": {
+            "mode": "database"
+          },
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "warning": "put_page wrote only to the database for source 'default': no repo/local_path is configured, so no durable markdown file was created. Bind this MCP server/token to a git-backed source or configure source local_path/sync.repo_path before relying on the write.",
+            "written": false
+          },
+          "facts_backstop": {
+            "skipped": "too_short"
+          },
+          "embedding_state": "queued"
+        },
+        "request_id": "e3163838-4ea5-46d1-bc45-d83bb4ec9326",
+        "state": "committed",
+        "retry_after_ms": null,
+        "created_at": "2026-09-26T19:58:23.065Z",
+        "updated_at": "2026-09-26T19:58:23.349Z",
+        "write_request": {
+          "noop": false,
+          "slug": "recordings/structured",
+          "chunks": 1,
+          "status": "created_or_updated",
+          "revision": "fbd4e8d8-b65f-4fef-b3d1-aaeca3febcc3",
+          "source_id": "default",
+          "auto_links": {
+            "hint": "Body wikilinks are saved as text but NOT reconciled into the graph. A stdio `gbrain serve` sweeps them at startup + on idle; `gbrain serve --http` does not self-sweep — run `gbrain sweep --once` (delegates to a live serve over IPC), use trusted local capture/put_page for inline link extraction, or add_link for edges needed now.",
+            "skipped": "remote"
+          },
+          "persistence": {
+            "mode": "database"
+          },
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "warning": "put_page wrote only to the database for source 'default': no repo/local_path is configured, so no durable markdown file was created. Bind this MCP server/token to a git-backed source or configure source local_path/sync.repo_path before relying on the write.",
+            "written": false
+          },
+          "facts_backstop": {
+            "skipped": "too_short"
+          },
+          "embedding_state": "queued",
+          "outcome": {
+            "noop": false,
+            "slug": "recordings/structured",
+            "chunks": 1,
+            "status": "created_or_updated",
+            "revision": "fbd4e8d8-b65f-4fef-b3d1-aaeca3febcc3",
+            "source_id": "default",
+            "auto_links": {
+              "hint": "Body wikilinks are saved as text but NOT reconciled into the graph. A stdio `gbrain serve` sweeps them at startup + on idle; `gbrain serve --http` does not self-sweep — run `gbrain sweep --once` (delegates to a live serve over IPC), use trusted local capture/put_page for inline link extraction, or add_link for edges needed now.",
+              "skipped": "remote"
+            },
+            "persistence": {
+              "mode": "database"
+            },
+            "write_through": {
+              "skipped": "no_repo_configured",
+              "warning": "put_page wrote only to the database for source 'default': no repo/local_path is configured, so no durable markdown file was created. Bind this MCP server/token to a git-backed source or configure source local_path/sync.repo_path before relying on the write.",
+              "written": false
+            },
+            "facts_backstop": {
+              "skipped": "too_short"
+            },
+            "embedding_state": "queued"
+          },
+          "request_id": "e3163838-4ea5-46d1-bc45-d83bb4ec9326",
+          "state": "committed",
+          "retry_after_ms": null,
+          "created_at": "2026-09-26T19:58:23.065Z",
+          "updated_at": "2026-09-26T19:58:23.349Z"
+        }
+      },
+      "ms": 311.66608399999996
+    },
+    {
+      "name": "recall",
+      "params": {
+        "entity": "people/maya"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "facts": [
+          {
+            "id": 3,
+            "fact": "Maya enjoys swimming.",
+            "kind": "preference",
+            "entity_slug": "people/maya",
+            "visibility": "world",
+            "notability": "medium",
+            "valid_from": "2026-09-26T19:58:23.373Z",
+            "valid_until": null,
+            "expired_at": null,
+            "superseded_by": null,
+            "consolidated_at": null,
+            "consolidated_into": null,
+            "source": "conversation",
+            "source_session": "structured",
+            "context": "recordings/structured",
+            "confidence": 1,
+            "created_at": "2026-09-26T19:58:23.373Z",
+            "fact_id": "3",
+            "provenance": "conversation"
+          }
+        ],
+        "total": 1,
+        "protocol_version": 1
+      },
+      "ms": 1.713832999999795
+    },
+    {
+      "name": "get_page",
+      "params": {
+        "slug": "recordings/structured"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "id": 3,
+        "slug": "recordings/structured",
+        "type": "meeting",
+        "title": "Structured provenance probe",
+        "compiled_truth": "Maya enjoys swimming.",
+        "timeline": "",
+        "frontmatter": {},
+        "content_hash": "95063b8c4c01d855abaa2642acdd0902296b681786523a68251198650cd7fd3b",
+        "source_path": null,
+        "knowledge_revision": "fbd4e8d8-b65f-4fef-b3d1-aaeca3febcc3",
+        "text_projection_revision": "fbd4e8d8-b65f-4fef-b3d1-aaeca3febcc3",
+        "emotional_weight": 0,
+        "created_at": "2026-09-26T19:58:23.349Z",
+        "updated_at": "2026-09-26T19:58:23.349Z",
+        "deleted_at": null,
+        "effective_date": "2026-09-26T19:58:23.354Z",
+        "effective_date_source": "fallback",
+        "import_filename": "structured",
+        "salience_touched_at": null,
+        "source_kind": "mcp:put_page",
+        "source_uri": null,
+        "ingested_via": "mcp:put_page",
+        "ingested_at": "2026-09-26T19:58:23.355Z",
+        "contextual_retrieval_mode": "title",
+        "source_id": "default",
+        "revision": "fbd4e8d8-b65f-4fef-b3d1-aaeca3febcc3",
+        "tags": []
+      },
+      "ms": 1.7049580000002607
+    },
+    {
+      "name": "delete_page",
+      "params": {
+        "slug": "recordings/structured",
+        "expected_revision": "fbd4e8d8-b65f-4fef-b3d1-aaeca3febcc3"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "noop": false,
+        "slug": "recordings/structured",
+        "status": "soft_deleted",
+        "revision": "bc8ab37a-09a8-4dcd-886e-bece633b73fa",
+        "source_id": "default",
+        "persistence": {
+          "mode": "database"
+        },
+        "write_through": {
+          "skipped": "no_repo_configured",
+          "written": false
+        },
+        "recoverable_until": "now + 72h via restore_page (remove immediately instead: gbrain delete <slug> --purge, local CLI only)",
+        "outcome": {
+          "noop": false,
+          "slug": "recordings/structured",
+          "status": "soft_deleted",
+          "revision": "bc8ab37a-09a8-4dcd-886e-bece633b73fa",
+          "source_id": "default",
+          "persistence": {
+            "mode": "database"
+          },
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "written": false
+          },
+          "recoverable_until": "now + 72h via restore_page (remove immediately instead: gbrain delete <slug> --purge, local CLI only)"
+        },
+        "request_id": "90b6ccb5-3e4c-4e0d-bedc-9271c65e8666",
+        "state": "committed",
+        "retry_after_ms": null,
+        "created_at": "2026-09-26T19:58:23.383Z",
+        "updated_at": "2026-09-26T19:58:23.403Z",
+        "write_request": {
+          "noop": false,
+          "slug": "recordings/structured",
+          "status": "soft_deleted",
+          "revision": "bc8ab37a-09a8-4dcd-886e-bece633b73fa",
+          "source_id": "default",
+          "persistence": {
+            "mode": "database"
+          },
+          "write_through": {
+            "skipped": "no_repo_configured",
+            "written": false
+          },
+          "recoverable_until": "now + 72h via restore_page (remove immediately instead: gbrain delete <slug> --purge, local CLI only)",
+          "outcome": {
+            "noop": false,
+            "slug": "recordings/structured",
+            "status": "soft_deleted",
+            "revision": "bc8ab37a-09a8-4dcd-886e-bece633b73fa",
+            "source_id": "default",
+            "persistence": {
+              "mode": "database"
+            },
+            "write_through": {
+              "skipped": "no_repo_configured",
+              "written": false
+            },
+            "recoverable_until": "now + 72h via restore_page (remove immediately instead: gbrain delete <slug> --purge, local CLI only)"
+          },
+          "request_id": "90b6ccb5-3e4c-4e0d-bedc-9271c65e8666",
+          "state": "committed",
+          "retry_after_ms": null,
+          "created_at": "2026-09-26T19:58:23.383Z",
+          "updated_at": "2026-09-26T19:58:23.403Z"
+        }
+      },
+      "ms": 59.640915999999834
+    },
+    {
+      "name": "recall",
+      "params": {
+        "entity": "people/maya"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "facts": [
+          {
+            "id": 3,
+            "fact": "Maya enjoys swimming.",
+            "kind": "preference",
+            "entity_slug": "people/maya",
+            "visibility": "world",
+            "notability": "medium",
+            "valid_from": "2026-09-26T19:58:23.373Z",
+            "valid_until": null,
+            "expired_at": null,
+            "superseded_by": null,
+            "consolidated_at": null,
+            "consolidated_into": null,
+            "source": "conversation",
+            "source_session": "structured",
+            "context": "recordings/structured",
+            "confidence": 1,
+            "created_at": "2026-09-26T19:58:23.373Z",
+            "fact_id": "3",
+            "provenance": "conversation"
+          }
+        ],
+        "total": 1,
+        "protocol_version": 1
+      },
+      "ms": 1.9301250000003165
+    },
+    {
+      "name": "recall",
+      "params": {
+        "entity": "projects/juniper"
+      },
+      "sourceId": "other-user",
+      "isError": false,
+      "body": {
+        "facts": [],
+        "total": 0,
+        "protocol_version": 1
+      },
+      "ms": 1.451499999999669
+    },
+    {
+      "name": "recall",
+      "params": {
+        "entity": "projects/juniper"
+      },
+      "sourceId": "default",
+      "isError": false,
+      "body": {
+        "facts": [
+          {
+            "id": 1,
+            "fact": "Project Juniper's meeting location is the library.",
+            "kind": "fact",
+            "entity_slug": "projects/juniper",
+            "visibility": "world",
+            "notability": "medium",
+            "valid_from": "2026-09-26T19:58:22.381Z",
+            "valid_until": null,
+            "expired_at": null,
+            "superseded_by": null,
+            "consolidated_at": null,
+            "consolidated_into": null,
+            "source": "recordings/split-subject#p1,p3",
+            "source_session": null,
+            "context": null,
+            "confidence": 1,
+            "created_at": "2026-09-26T19:58:22.633Z",
+            "fact_id": "1",
+            "provenance": "recordings/split-subject#p1,p3"
+          }
+        ],
+        "total": 1,
+        "protocol_version": 1
+      },
+      "ms": 3.28445899999997
+    }
+  ],
+  "checks": {
+    "explicit_fact_recall": true,
+    "provenance_present": true,
+    "automatic_correction": false,
+    "recording_delete_invalidates_derived_fact": false,
+    "explicit_withdrawal": true,
+    "withdrawal_blocks_reinsert": true,
+    "structured_fact_visible_before_delete": true,
+    "structured_recording_delete_invalidates_fact": false,
+    "source_scope_isolation": true,
+    "restart_preserves_withdrawal": true
+  },
+  "provider_attempts": 0,
+  "max_rss": 1639710720
+}
