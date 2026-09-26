@@ -10,8 +10,9 @@ import uuid
 
 from admission import Rejected
 import memory_identity
+import memory_transitions
 
-VERSION = 5
+VERSION = 6
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -71,7 +72,7 @@ class MemoryStore:
         self.personal_learning = personal_learning
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, VERSION):
+            if version not in (0, 1, 2, 3, 4, 5, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -133,8 +134,11 @@ class MemoryStore:
                 """)
             if version < 5:
                 db.executescript(memory_identity.SCHEMA)
+            if version < 6:
+                db.executescript(memory_transitions.SCHEMA)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
+        self.transitions = memory_transitions.MemoryTransitions(self)
 
     @contextmanager
     def connect(self):
@@ -183,6 +187,7 @@ class MemoryStore:
         # Unsupported content is scrubbed; IDs/state remain for stale-write diagnostics.
         db.execute("UPDATE claim SET state='invalid',reason='source_changed',text=NULL,subject=NULL WHERE owner=? AND NOT EXISTS(SELECT 1 FROM support WHERE support.claim=claim.id)", (owner,))
         db.execute("DELETE FROM claim_relation_proposal WHERE claim IN (SELECT id FROM claim WHERE owner=? AND state='invalid') OR target IN (SELECT id FROM claim WHERE owner=? AND state='invalid')", (owner, owner))
+        memory_transitions.reopen_invalid(db, owner)
         db.execute("UPDATE job SET state='obsolete',lease=NULL WHERE owner=? AND session=?", (owner, session))
 
     def put_source(self, owner, source):
@@ -288,6 +293,7 @@ class MemoryStore:
                 claim_id = self._write_claim(db, c, owner, session, revision, passages)
                 if 'mention' in c:
                     memory_identity.add_mentions(db, owner, claim_id, session, revision, c['passages'], c['mention'])
+            memory_transitions.reopen_invalid(db, owner)
             db.execute("UPDATE job SET state='done',lease=NULL WHERE id=?", (live['id'],))
 
     def finish_failed(self, job, code):

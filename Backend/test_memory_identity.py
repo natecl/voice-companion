@@ -171,7 +171,7 @@ class IdentityTests(unittest.TestCase):
         a, _ = self.write('old')
         self.store.delete_source(self.owner, 'deleted')
         with self.store.connect() as db:
-            for table in ['memory_identity_support','memory_identity_link','memory_mention','memory_entity']:
+            for table in ['memory_correction_link','memory_correction','memory_identity_support','memory_identity_link','memory_mention','memory_entity']:
                 db.execute('DROP TABLE '+table)
             db.execute('PRAGMA user_version=4')
         self.store = MemoryStore(self.path)
@@ -183,7 +183,7 @@ class IdentityTests(unittest.TestCase):
         self.assertEqual(self.store.owner_for('owner-a'), self.owner)
         self.assertEqual(self.store.put_source(self.owner, source('deleted'))['status'], 'deleted')
         with self.store.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 5)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 6)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0], 'ok')
             self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(), [])
         MemoryStore(self.path)
