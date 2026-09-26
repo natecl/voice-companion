@@ -7,7 +7,7 @@ final class CompanionPhoneUITests: XCTestCase {
         continueAfterFailure = false
         let config = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"], "Launch with the isolated local companion fixture configuration")
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "--companion-ui", "--companion-ui-fixture"]
+        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--companion-ui-fixture"]
         app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = config
         app.launch()
         defer { app.terminate() }
@@ -34,7 +34,9 @@ final class CompanionPhoneUITests: XCTestCase {
         image.name = "iPhone companion navigation — synthetic capture and local service"
         image.lifetime = .keepAlways
         add(image)
-        app.terminate(); app.launch()
+        app.terminate()
+        app.launchArguments = ["--ui-testing", "--companion-ui-fixture"]
+        app.launch()
         XCTAssertTrue(app.buttons["companionSource"].firstMatch.waitForExistence(timeout: 5))
     }
 }

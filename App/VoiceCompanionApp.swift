@@ -3,9 +3,23 @@ import AVFoundation
 
 @main
 struct VoiceCompanionApp: App {
+    private let companionEnabled: Bool
+    init() {
+        let arguments = ProcessInfo.processInfo.arguments
+        var key = "companionEnabled"
+        if arguments.contains("--ui-testing") {
+            // Isolate test activation from the installed user's preference and other fixtures.
+            let raw = ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"] ?? ""
+            let owner = (try? JSONDecoder().decode(RelayConfiguration.self, from: Data(raw.utf8)))?.memoryOwnerID
+            key = "companion-ui-qa-" + (owner ?? UUID().uuidString)
+        }
+        if arguments.contains("--enable-companion-ui") { UserDefaults.standard.set(true, forKey: key) }
+        if arguments.contains("--disable-companion-ui") { UserDefaults.standard.set(false, forKey: key) }
+        companionEnabled = arguments.contains("--companion-ui") || UserDefaults.standard.bool(forKey: key)
+    }
     var body: some Scene {
         WindowGroup {
-            if ProcessInfo.processInfo.arguments.contains("--companion-ui") {
+            if companionEnabled {
                 CompanionRootView()
             } else { SessionsView() }
         }

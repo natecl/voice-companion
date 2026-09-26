@@ -20,7 +20,7 @@ final class CompanionUITests: XCTestCase {
         let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in FileManager.default.fileExists(atPath: config.path) }, object: nil)
         XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 5), .completed)
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "--companion-ui", "--companion-ui-fixture"]
+        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--companion-ui-fixture"]
         app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = try String(contentsOf: config, encoding: .utf8)
         app.launch()
         defer { app.terminate() }
@@ -55,7 +55,9 @@ final class CompanionUITests: XCTestCase {
         attachment.name = "Companion main chat — real local service, synthetic provider and capture"
         attachment.lifetime = .keepAlways
         add(attachment)
-        app.terminate(); app.launch()
+        app.terminate()
+        app.launchArguments = ["--ui-testing", "--companion-ui-fixture"]
+        app.launch()
         XCTAssertTrue(app.buttons["companionSource"].firstMatch.waitForExistence(timeout: 5))
         app.buttons["companionSource"].firstMatch.tap()
         XCTAssertTrue(app.staticTexts["citedPassage"].waitForExistence(timeout: 5))
