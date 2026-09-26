@@ -51,7 +51,7 @@ final class MemoryUITests: XCTestCase {
         }, object: nil)
         XCTAssertEqual(XCTWaiter.wait(for: [synced], timeout: 5), .completed)
         if personal {
-            XCTAssertTrue(app.staticTexts["Saved and synced. Personal learning is not enabled yet."].waitForExistence(timeout: 3))
+            XCTAssertTrue(app.staticTexts["Saved and synced."].waitForExistence(timeout: 3))
             XCTAssertFalse(app.staticTexts["Speaker pending"].exists)
             let value = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: report)) as? [String: Any])
             let payload = try XCTUnwrap((value["sources"] as? [[String: Any]])?.first?["payload"] as? String)

@@ -57,6 +57,35 @@ class AskTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(provider.calls,2)
             self.assertTrue(provider.closed.is_set())
 
+    async def test_done_releases_admission_after_slow_accounting(self):
+        import time
+        class Budget:
+            def __init__(self): self.finished = []
+            def reserve(self, key, model): pass
+            def finish(self, key, usage):
+                time.sleep(.05)  # Reproduce asynchronous accounting after generation.
+                self.finished.append(key)
+        with tempfile.TemporaryDirectory() as directory:
+            store = Admission(Path(directory)/'ledger', total_microusd=6000,
+                              limits={'ask':(6000,3000,2)})
+            self.addCleanup(store.close)
+            _, token = store.enroll()
+            budget = Budget()
+            provider = FakeLuna()
+            async with serve(AskService(store, provider, qa_budget=budget).handle, '127.0.0.1', 0) as server:
+                url = f'ws://127.0.0.1:{server.sockets[0].getsockname()[1]}'
+                for count in (1, 2):
+                    async with connect(url, additional_headers={'Authorization':'Bearer '+token}) as socket:
+                        await socket.send(json.dumps(QUESTION))
+                        while True:
+                            event = json.loads(await socket.recv())
+                            if event['type'] in ('done', 'error'): break
+                        self.assertEqual(event['type'], 'done')
+                        self.assertEqual(len(budget.finished), count)
+                        self.assertEqual(store.db.execute("SELECT count(*) FROM request WHERE state='active'").fetchone()[0], 0)
+                        self.assertTrue(provider.closed.is_set())
+                self.assertEqual(provider.calls, 2)
+
     async def test_invalid_request_never_calls_provider(self):
         async with self.service() as (store,owner,token,provider,url):
             for bad in ({'question':'no passages'}, {**QUESTION,'question':'x'*13000}):
