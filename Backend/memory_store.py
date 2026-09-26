@@ -13,6 +13,7 @@ import memory_identity
 import memory_transitions
 import memory_chunks
 import memory_atomic
+import memory_time
 
 VERSION = 8
 EXTRACTOR_VERSION = 'memory-v1'
@@ -496,6 +497,7 @@ class MemoryStore:
                     continue
                 if unresolved_only:
                     item['proposed_targets'] = [r['target'] for r in db.execute('SELECT target FROM claim_relation_proposal WHERE claim=? ORDER BY target', (item['id'],))]
+                memory_time.annotate(db,owner,item)
                 item.update(memory_identity.claim_identity(db, owner, item['id']))
                 item['sources'] = [dict(r) for r in db.execute('SELECT session,revision,passage FROM support WHERE claim=?', (item['id'],))]
                 result.append(item)
@@ -515,6 +517,7 @@ class MemoryStore:
                 passage['claims'] = [dict(r) for r in db.execute('''SELECT c.id,c.state,c.valid_from,c.valid_until,c.replaces FROM claim c
                   JOIN support s ON s.claim=c.id WHERE s.owner=? AND s.session=? AND s.revision=? AND s.passage=?''', (owner, session, row['revision'], passage['id']))]
                 for claim in passage['claims']:
+                    memory_time.annotate(db,owner,claim)
                     self._qualify_time(claim,now)
                     self._qualify_pending(db,owner,claim)
             return source
@@ -536,6 +539,7 @@ class MemoryStore:
                         WHERE s.owner=? AND s.session=? AND s.revision=? AND s.passage=? ORDER BY c.id""",
                         (owner, row['session'], row['revision'], passage['id']))]
                     for claim in claims:
+                        memory_time.annotate(db,owner,claim)
                         self._qualify_time(claim,now)
                         self._qualify_pending(db,owner,claim)
                     passage['claims'] = claims
