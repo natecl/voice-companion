@@ -147,6 +147,19 @@ class CompanionChat:
         with self.store.transaction() as db:
             db.execute("UPDATE companion_turn SET state='failed',answer=NULL WHERE owner=? AND id=? AND state='pending'",(owner,question_id))
 
+    def citation(self,owner,turn_id,citation_id):
+        """Resolve only a citation already saved on this owner's turn, never an arbitrary client ref."""
+        with self.store.transaction() as db:
+            row=db.execute('SELECT * FROM companion_turn WHERE owner=? AND id=?',(owner,turn_id)).fetchone()
+            if row is None:raise Rejected('source_unavailable')
+            self._validate_turn(db,owner,row)
+            row=db.execute('SELECT * FROM companion_turn WHERE owner=? AND id=?',(owner,turn_id)).fetchone()
+            ref=next((c['source'] for c in json.loads(row['citations']) if c['id']==citation_id),None)
+            if ref is None:raise Rejected('source_unavailable')
+            item=memory_context.hydrate(self.store,db,owner,ref,self.store.clock())
+            if item is None:raise Rejected('source_unavailable')
+            return dict(id=citation_id,**item)
+
     def page(self,owner,*,before=None,limit=30):
         if type(limit) is not int or not 1<=limit<=50 or (before is not None and (type(before) is not int or before<1)):
             raise Rejected('invalid_chat_page')

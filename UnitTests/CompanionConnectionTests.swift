@@ -84,6 +84,11 @@ final class CompanionConnectionTests: XCTestCase {
         let liveTurn = try XCTUnwrap(events.first?.turns?.first(where: { $0.id == liveQuestion.question_id }))
         XCTAssertNotNil(liveTurn.citations.first?.source.snapshot_id)
         XCTAssertEqual(liveTurn.citations.first?.source.session_id, capture.id.uuidString)
+        events = []
+        try await reopened.run(.source(turnID: liveQuestion.question_id, citationID: "p1")) { events.append($0) }
+        XCTAssertEqual(events.first?.source?.text, "Maya swims.")
+        XCTAssertEqual(events.first?.source?.session_id, capture.id.uuidString)
+        XCTAssertNotNil(events.first?.source?.snapshot_id)
         let owner = try XCTUnwrap(config.memoryOwnerID)
         let controller = CompanionController(owner: owner, makeConnection: { CompanionSocketConnection(configuration: { config }) })
         controller.draft = "A new companion question"

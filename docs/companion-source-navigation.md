@@ -1,0 +1,7 @@
+# Reopening exact companion evidence
+
+September 26, 2026. The opt-in companion service now accepts a read-only `source` operation containing a saved turn ID and citation ID. The server derives ownership from authentication, resolves only a citation already stored on that owner's turn, revalidates the turn and hydrates the original evidence. Clients cannot submit arbitrary source references to bypass the saved citation boundary.
+
+The response includes the exact selected text, original recording/passage identifiers, timestamp and optional frozen-live snapshot ID. Append/finalization preserves the original cited cutoff. Deleted or revised unavailable evidence returns `source_unavailable`; it is never replaced with whatever text happens to occupy the same local position. Source reads do not reserve inference budget or invoke providers. The shared Swift connection validates the requested turn/citation in the response and exposes a specific unavailable-source message.
+
+QA: 27 companion backend tests and seven native connection/controller tests passed. Actual local Swift socket execution reopened a frozen live citation. Backend execution verified exact text after finalization/appending, foreign-owner rejection, nonexistent-citation rejection, deletion, and unchanged one-call admission/provider counts. Phone simulator compilation is also checked. All provider events were synthetic; no paid calls. This adds the source-navigation contract, not the recording-detail UI or hosted route.

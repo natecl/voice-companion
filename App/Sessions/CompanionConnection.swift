@@ -53,6 +53,11 @@ struct CompanionEvidence: Decodable {
     let id: String
     let text: String
     let start: Double
+    let session_id: String?
+    let revision: Int?
+    let passage_id: String?
+    let captured_at: Double?
+    let snapshot_id: String?
 }
 struct CompanionTurn: Decodable, Identifiable {
     enum State: String, Decodable { case pending, complete, failed, outdated, invalidated }
@@ -77,14 +82,22 @@ struct CompanionEvent: Decodable {
     let turn: CompanionTurn?
     let turns: [CompanionTurn]?
     let next_before: Int?
+    let turn_id: String?
+    let source: CompanionEvidence?
 }
 
 enum CompanionCommand: Encodable {
     case ask(CompanionQuestion)
     case history(before: Int? = nil)
-    private enum CodingKeys: String, CodingKey { case operation, before }
+    case source(turnID: String, citationID: String)
+    private enum CodingKeys: String, CodingKey { case operation, before, turn_id, citation_id }
     func encode(to encoder: Encoder) throws {
         switch self {
+        case .source(let turnID, let citationID):
+            var values = encoder.container(keyedBy: CodingKeys.self)
+            try values.encode("source", forKey: .operation)
+            try values.encode(turnID, forKey: .turn_id)
+            try values.encode(citationID, forKey: .citation_id)
         case .ask(let question): try question.encode(to: encoder)
         case .history(let before):
             guard before == nil || before! > 0 else { throw CompanionFailure.invalidRequest }
@@ -96,9 +109,10 @@ enum CompanionCommand: Encodable {
 }
 
 enum CompanionFailure: LocalizedError {
-    case invalidRequest, invalidResponse, requestConflict, unavailable
+    case invalidRequest, invalidResponse, requestConflict, unavailable, sourceUnavailable
     var errorDescription: String? {
         switch self {
+        case .sourceUnavailable: "This source was deleted, changed, or is no longer available."
         case .invalidRequest: "This chat request could not be sent."
         case .unavailable: "The companion connection could not finish. Refresh the chat to check what was saved."
         case .invalidResponse: "The companion connection ended without a verified saved answer. Reload the chat to check its status."
@@ -116,6 +130,7 @@ struct CompanionEventSequence {
     mutating func accept(_ event: CompanionEvent) throws -> Bool {
         if event.type == "error" {
             switch event.message {
+            case "source_unavailable": throw CompanionFailure.sourceUnavailable
             case "question_id_conflict": throw CompanionFailure.requestConflict
             case "chat_busy": throw AskFailure.busy
             case "companion_context_too_large": throw AskFailure.contextTooLarge
@@ -125,6 +140,11 @@ struct CompanionEventSequence {
             }
         }
         switch command {
+        case .source(let turnID, let citationID):
+            guard event.type == "source", event.turn_id == turnID, let source = event.source,
+                  source.id == citationID, source.session_id != nil, source.revision != nil,
+                  source.passage_id != nil else { throw CompanionFailure.invalidResponse }
+            return true
         case .history:
             guard event.type == "history", event.conversation_id != nil, event.turns != nil else {
                 throw CompanionFailure.invalidResponse
