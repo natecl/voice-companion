@@ -1,0 +1,22 @@
+[
+  {
+    "id": "split-subject",
+    "captured_at": "2026-09-26T12:00:00Z",
+    "text": "Speaker A (0.0s): Project Juniper.\nSpeaker A (5.0s): Prefers morning meetings.\nSpeaker A (10.0s): The meeting location is the library."
+  },
+  {
+    "id": "correction",
+    "captured_at": "2026-09-26T12:00:00Z",
+    "text": "Speaker A (0.0s): Project Juniper has changed its meeting location. It now meets at the community center instead of the library."
+  },
+  {
+    "id": "everyday",
+    "captured_at": "2026-09-26T13:00:00Z",
+    "text": "Speaker A (0s): Maya is my daughter. Maya enjoys swimming. Our dog Milo cannot eat chicken; the vet confirmed a chicken allergy.\nSpeaker A (12s): My friend Sam studies biology at the University of Florida. Sam prefers afternoon classes."
+  },
+  {
+    "id": "uncertainty",
+    "captured_at": "2026-09-26T14:00:00Z",
+    "text": "Speaker A (0s): I prefer tea, but you do not know my name.\nSpeaker B (4s): Nora said, \"I might move to Boston.\" She has not decided.\nSpeaker A (9s): Leo does not like swimming. Maya is the one who enjoys swimming.\nSpeaker B (14s): Hypothetically, if Sam quit university, he could travel. He has not quit."
+  }
+]

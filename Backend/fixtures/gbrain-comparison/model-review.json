@@ -1,0 +1,25 @@
+{
+  "scope": "Four synthetic cases, Luna none, OpenAI embeddings; not default Sonnet or hosted readiness",
+  "checks": {
+    "relevant_recording_first": true,
+    "retained_correction_after_recording_delete": true,
+    "latest_location_only": false,
+    "fragment_subject_preserved": false,
+    "anonymous_owner_attribution_preserved": false
+  },
+  "review": {
+    "latest_location_only": "All four recall results include both library and community-center facts. No supersession was reported.",
+    "fragment_subject_preserved": "Raw extraction: Prefers morning meetings. with entity=null. Account identity is unknown; named project continuity was lost.",
+    "anonymous_owner_attribution_preserved": "Raw and stored fact says The user's dog Milo although source speaker is anonymous.",
+    "uncertainty": "Nora might move retains not decided; Leo does not like swimming preserves negation; hypothetical Sam quitting omitted.",
+    "entity_resolution": "All stored entity fields are null in this DB-only setup, without pre-existing canonical entity cards; raw proposals include entity names. Entity resolution/fence-backed configuration not proven.",
+    "retrieval": "Relevant page ranked first in four questions; recall fact arm includes all twelve recent facts. This is not evidence of selective answer-context assembly."
+  },
+  "control": "Current extractor proposals preserve fragment subject and unknown speaker ownership. Existing full-writer replay still misses the preference at later admission. No new full-writer everyday comparison.",
+  "provider_calls": {
+    "luna": 8,
+    "embedding": 19
+  },
+  "reserved_microusd": 38868,
+  "global_reserved_microusd": 4010868
+}

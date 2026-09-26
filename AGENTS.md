@@ -37,3 +37,5 @@ Read README.md, docs/product-source-of-truth.md, docs/v0-scope.md, and docs/engi
 - Keep implementation simple and neat: clear names, focused responsibilities, consistent structure, minimal necessary dependencies and abstractions, and cleanup scoped to the current change. Preserve explicit error handling and observability.
 
 - Before manual QA that needs the founder, explain the steps and wait for their explicit readiness before starting the check.
+
+- Ordinary recording deletion may retain learned memories for answers (founder revision September 26). Deleted transcripts must not remain linked as viewable sources. Preserve correction/identity rules and distinguish the approved contract from the older deployed deletion cascade.

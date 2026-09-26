@@ -81,3 +81,9 @@ The separate personal-note creation path is an interim QA mechanism, not the nor
 Founder decision: default to one persistent main companion chat; optional side conversations come later, with separate discussion histories and shared relevant personal memory. Starting a capture or returning to the app does not start a new chat. Keep a recording library with one item per capture. “Ask about this” opens the main chat with that recording visibly attached; citations return to the original recording passage. Capture stays available across chat and library, and navigation preserves recording, drafts and reading position.
 
 Eventually each recording will offer notes/summary and its transcript. For the current rework, deliver existing transcript access, deletion and chat connections; defer summary generation, note editing and side-conversation UI. Generated summaries are derived views, not independent factual evidence. The Manus Companion/Workspace pill toggle is a layout reference, not a required visual design. The one-liner and PBN remain unchanged.
+
+## Recording deletion and retained memory — September 26, 2026
+
+Founder decision: deleting a recording removes the recording/transcript from the library but may retain already learned memories, which remain usable in companion answers. Recording deletion is not a request to forget learned knowledge. Remove links to unavailable passages; never present retained memory as a still-viewable original source. Preserve corrections, identity uncertainty and temporal qualifications. Communicate this distinction in deletion copy. This supersedes earlier source-deletion cascade requirements for ordinary recording deletion. Explicit memory erasure is a distinct future behavior; do not infer that it is already implemented.
+
+This is an approved contract change, not a claim about the current deployed backend, which still invalidates dependent memory on source deletion.

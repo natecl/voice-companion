@@ -1,0 +1,292 @@
+{
+  "ledger": [
+    [
+      "completed",
+      27,
+      38868
+    ]
+  ],
+  "global_reserved_microusd": 4010868,
+  "calls": [
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 5,
+        "total_tokens": 5
+      },
+      "reserved_microusd": 13
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 5,
+        "total_tokens": 5
+      },
+      "reserved_microusd": 13
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 7,
+        "total_tokens": 7
+      },
+      "reserved_microusd": 13
+    },
+    {
+      "model": "gpt-6-luna",
+      "usage": {
+        "input_tokens": 1115,
+        "input_tokens_details": {
+          "cache_write_tokens": 1112,
+          "cached_tokens": 0
+        },
+        "output_tokens": 103,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1218
+      },
+      "reserved_microusd": 4744
+    },
+    {
+      "model": "gpt-6-luna",
+      "usage": {
+        "input_tokens": 1446,
+        "input_tokens_details": {
+          "cache_write_tokens": 109,
+          "cached_tokens": 1334
+        },
+        "output_tokens": 141,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1587
+      },
+      "reserved_microusd": 4844
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 8,
+        "total_tokens": 8
+      },
+      "reserved_microusd": 13
+    },
+    {
+      "model": "gpt-6-luna",
+      "usage": {
+        "input_tokens": 1104,
+        "input_tokens_details": {
+          "cache_write_tokens": 46,
+          "cached_tokens": 1055
+        },
+        "output_tokens": 67,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1171
+      },
+      "reserved_microusd": 4742
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 16,
+        "total_tokens": 16
+      },
+      "reserved_microusd": 14
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 4,
+        "total_tokens": 4
+      },
+      "reserved_microusd": 13
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 6,
+        "total_tokens": 6
+      },
+      "reserved_microusd": 13
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 14,
+        "total_tokens": 14
+      },
+      "reserved_microusd": 14
+    },
+    {
+      "model": "gpt-6-luna",
+      "usage": {
+        "input_tokens": 1501,
+        "input_tokens_details": {
+          "cache_write_tokens": 164,
+          "cached_tokens": 1334
+        },
+        "output_tokens": 385,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1886
+      },
+      "reserved_microusd": 4888
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 49,
+        "total_tokens": 49
+      },
+      "reserved_microusd": 16
+    },
+    {
+      "model": "gpt-6-luna",
+      "usage": {
+        "input_tokens": 1158,
+        "input_tokens_details": {
+          "cache_write_tokens": 100,
+          "cached_tokens": 1055
+        },
+        "output_tokens": 198,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1356
+      },
+      "reserved_microusd": 4787
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 6,
+        "total_tokens": 6
+      },
+      "reserved_microusd": 13
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 5,
+        "total_tokens": 5
+      },
+      "reserved_microusd": 13
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 9,
+        "total_tokens": 9
+      },
+      "reserved_microusd": 14
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 37,
+        "total_tokens": 37
+      },
+      "reserved_microusd": 16
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 8,
+        "total_tokens": 8
+      },
+      "reserved_microusd": 13
+    },
+    {
+      "model": "gpt-6-luna",
+      "usage": {
+        "input_tokens": 1126,
+        "input_tokens_details": {
+          "cache_write_tokens": 68,
+          "cached_tokens": 1055
+        },
+        "output_tokens": 244,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1370
+      },
+      "reserved_microusd": 4769
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 9,
+        "total_tokens": 9
+      },
+      "reserved_microusd": 14
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 59,
+        "total_tokens": 59
+      },
+      "reserved_microusd": 18
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 91,
+        "total_tokens": 91
+      },
+      "reserved_microusd": 20
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 5,
+        "total_tokens": 5
+      },
+      "reserved_microusd": 13
+    },
+    {
+      "model": "gpt-6-luna",
+      "usage": {
+        "input_tokens": 1592,
+        "input_tokens_details": {
+          "cache_write_tokens": 255,
+          "cached_tokens": 1334
+        },
+        "output_tokens": 376,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1968
+      },
+      "reserved_microusd": 4943
+    },
+    {
+      "model": "gpt-6-luna",
+      "usage": {
+        "input_tokens": 1512,
+        "input_tokens_details": {
+          "cache_write_tokens": 1509,
+          "cached_tokens": 0
+        },
+        "output_tokens": 216,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1728
+      },
+      "reserved_microusd": 4881
+    },
+    {
+      "model": "text-embedding-3-small",
+      "usage": {
+        "prompt_tokens": 16,
+        "total_tokens": 16
+      },
+      "reserved_microusd": 14
+    }
+  ]
+}
