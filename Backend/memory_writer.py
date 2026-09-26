@@ -163,25 +163,60 @@ class MemoryWriter:
         return results
 
 
+# Only known job-local conditions may advance the queue. Provider/schema/auth,
+# budget, storage and unknown failures still stop paid work for review.
+LOCAL_JOB_FAILURES = frozenset({
+    'memory_extraction_too_large', 'memory_support_too_large',
+    'memory_judgment_too_large', 'stale_job', 'stale_relation_target',
+})
+GLOBAL_FAILURE_CODES = frozenset({
+    'memory_budget_limit', 'profile_budget_limit', 'budget_limit',
+    'paid_retry_requires_review', 'unapproved_profile_model',
+})
+
+
 class MemoryWorker:
-    """One background consumer. Any processing failure halts paid work until operator review."""
+    """Continue past quarantined local failures; never retry a failed paid job."""
     def __init__(self, writer, admission):
         self.writer, self.admission = writer, admission
+        self.state = 'starting'
+        self.last_failure = None
+        self.completed = 0
+        self.quarantined = 0
+
+    def status(self):
+        return dict(state=self.state, last_failure=self.last_failure,
+                    completed=self.completed, quarantined=self.quarantined)
 
     async def run(self):
-        while True:
-            owners = await asyncio.to_thread(self.writer.store.pending_owners, self.admission.active_credentials())
-            if not owners:
-                await asyncio.sleep(1)
-                continue
-            for owner in owners:
-                try:
-                    result = await self.writer.process_next(owner)
-                    if result:
-                        print(json.dumps({'event':'memory_learned', 'job':result['job'], 'accepted':result['accepted']}), flush=True)
-                except asyncio.CancelledError:
-                    raise
-                except Exception:
-                    # Persisted job holds the sanitized reason. Never log source/provider exception bodies.
-                    print(json.dumps({'event':'memory_learning_halted'}), flush=True)
-                    return
+        try:
+            while True:
+                owners = await asyncio.to_thread(self.writer.store.pending_owners, self.admission.active_credentials())
+                if not owners:
+                    self.state = 'idle'
+                    await asyncio.sleep(1)
+                    continue
+                for owner in owners:
+                    self.state = 'running'
+                    try:
+                        result = await self.writer.process_next(owner)
+                        if result:
+                            self.completed += 1
+                            print(json.dumps({'event':'memory_learned', 'job':result['job'], 'accepted':result['accepted']}), flush=True)
+                    except Rejected as error:
+                        code = str(error)
+                        if code not in LOCAL_JOB_FAILURES:
+                            raise
+                        # Writer already failed/obsoleted this job. No requeue, quota
+                        # reset, model retry or source truncation happens here.
+                        self.quarantined += 1
+                        self.last_failure = code
+                        print(json.dumps({'event':'memory_job_quarantined', 'reason':code}), flush=True)
+        except asyncio.CancelledError:
+            self.state = 'stopped'
+            raise
+        except Exception as error:
+            self.state = 'halted'
+            code = str(error) if isinstance(error, Rejected) else None
+            self.last_failure = code if code in GLOBAL_FAILURE_CODES else 'learning_service_failure'
+            print(json.dumps({'event':'memory_learning_halted', 'reason':self.last_failure}), flush=True)

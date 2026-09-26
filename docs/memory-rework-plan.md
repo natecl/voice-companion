@@ -71,6 +71,8 @@ Delivery split: **1A** persists unresolved lifecycle proposals and prevents the 
 
 ### Checkpoint 2 — resilient background learning and contextual chunks
 
+Delivery split: **2A** isolates known job-local failures and exposes learner state; see [implementation and evidence](memory-worker-isolation.md). **2B** implements context-preserving chunk jobs, bounded processing, deduplication and reviewed recovery. Oversized sources remain failed after 2A; do not claim chunk learning or trigger automatic paid reprocessing.
+
 **Outcome:** every accepted source has a bounded processing path, and one bad job cannot stop the rest.
 
 - Align source admission, serialization overhead and model input limits. Preserve local capture if cloud processing is unavailable. Never silently truncate a source.

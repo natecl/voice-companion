@@ -29,6 +29,7 @@ async def main():
             raise ValueError('Missing provider key')
         store = open_ledger(migrate=True)
         learning_task = None
+        learning_worker = None
         try:
             store.recover_interrupted()
             answer_key = os.environ.get('OPENAI_API_KEY', '').strip()
@@ -66,12 +67,14 @@ async def main():
                 models = MemoryModels(answer_key, os.environ['TYPESAFE_API_KEY'])
                 if learning_enabled:
                     writer = MemoryWriter(memory_store, models, budget)
-                    learning_task = asyncio.create_task(MemoryWorker(writer, store).run())
+                    learning_worker = MemoryWorker(writer, store)
+                    learning_task = asyncio.create_task(learning_worker.run())
                 if recall_enabled:
                     if ask is None:
                         raise ValueError('Recall requires Ask enabled')
                     ask.recall = MemoryRecall(memory_store, models, budget)
-            relay = Relay(key, admission=store, ask=ask, memory=memory)
+            relay = Relay(key, admission=store, ask=ask, memory=memory,
+                          learning_status=learning_worker.status if learning_worker else None)
             async with serve(relay.handle, '0.0.0.0', int(os.environ.get('PORT', '10000')),
                              process_request=relay.authorize, max_size=64000, max_queue=8,
                              close_timeout=2, server_header=None):
