@@ -71,13 +71,13 @@ class ConsolidationTests(unittest.IsolatedAsyncioTestCase):
                 INSERT INTO memory_fact_evidence SELECT * FROM evidence9;
                 DROP TABLE evidence9;
                 CREATE INDEX fact_evidence_source ON memory_fact_evidence(owner,session);
-                PRAGMA user_version=8; COMMIT;''')
+                DROP TABLE IF EXISTS memory_passage_index; PRAGMA user_version=8; COMMIT;''')
         reopened=MemoryStore(self.store.path,clock=lambda:300.)
         with reopened.connect() as db:
             self.assertEqual([tuple(r) for r in db.execute('SELECT * FROM memory_fact_evidence')],before)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0],'ok')
             self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(),[])
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],9)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],10)
         self.assertIsNone(reopened.claim_job(self.owner))
 
     async def test_exact_live_consolidation_replay(self):

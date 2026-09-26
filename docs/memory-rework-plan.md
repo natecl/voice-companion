@@ -115,6 +115,8 @@ Delivery split: **4A** makes validity qualification consistent across current se
 
 ### Checkpoint 5 — relevant retrieval and bounded context assembly
 
+Delivery split: **5A** adds transactional owner-scoped lexical indexing and bounded passage candidates; see [QA and limitations](memory-indexed-search.md). Semantic candidates, ranking and final context assembly remain pending.
+
 **Outcome:** the companion can find older relevant information without dumping a biography into every answer.
 
 - Add keyword plus semantic candidate retrieval behind a small interface. Use indexed owner-scoped lookup and source/version-scoped embedding caches; keep the canonical store independent of the embedding provider. Select the embedding model/runtime from current documentation and a narrow cost/quality evaluation before integration. No new provider is presumed free or already authorized.

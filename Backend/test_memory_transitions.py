@@ -149,13 +149,13 @@ class TransitionTests(unittest.TestCase):
         with self.store.connect() as db:
             db.execute('DROP TABLE memory_correction_link')
             db.execute('DROP TABLE memory_correction')
-            db.execute('PRAGMA user_version=5')
+            db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('PRAGMA user_version=5')
         self.store=MemoryStore(self.path,clock=lambda:300.)
         self.assertEqual(self.store.owner_for('test-owner'),self.owner)
         self.apply()
         self.assertEqual(self.store.put_source(self.owner,source('deleted'))['status'],'deleted')
         with self.store.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],9)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],10)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0],'ok')
             self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(),[])
 

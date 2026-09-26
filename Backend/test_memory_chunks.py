@@ -182,7 +182,7 @@ class ChunkTests(unittest.IsolatedAsyncioTestCase):
     def test_schema6_migration_keeps_sources_and_no_automatic_plans(self):
         self.store.put_source(self.owner,self.large)
         with self.store.connect() as db:
-            db.execute('DROP TABLE memory_chunk');db.execute('PRAGMA user_version=6')
+            db.execute('DROP TABLE memory_chunk');db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('PRAGMA user_version=6')
         migrated=MemoryStore(self.path)
         self.assertEqual(migrated.source(self.owner,'large'),self.large)
         with migrated.connect() as db:

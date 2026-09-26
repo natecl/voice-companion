@@ -188,13 +188,13 @@ class MemoryTests(unittest.TestCase):
         self.write(source(), [candidate()])
         with self.store.connect() as db:
             db.execute('ALTER TABLE claim DROP COLUMN profile_link')
-            db.execute('PRAGMA user_version=2')
+            db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('PRAGMA user_version=2')
         migrated = MemoryStore(self.path, clock=lambda: self.now[0])
         self.assertEqual(migrated.source(self.owner, 'session-a'), source())
         self.assertEqual(len(migrated.search(self.owner)), 1)
         self.assertEqual(migrated.profile(self.owner), [])
         with migrated.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 9)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 10)
 
     def test_personal_sources_are_held_and_origin_cannot_be_rewritten(self):
         note = dict(source(), origin='personal_text')
@@ -249,7 +249,7 @@ class MemoryTests(unittest.TestCase):
                 self.store.delete_source(self.owner, 'session-a')
             lock.execute('ROLLBACK')
         self.assertIsNotNone(self.store.source(self.owner, 'session-a'))
-        with self.store.connect() as db: db.execute('PRAGMA user_version=999')
+        with self.store.connect() as db: db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('PRAGMA user_version=999')
         with self.assertRaisesRegex(ValueError, 'Unsupported memory schema'): MemoryStore(self.path)
 
 
