@@ -6,7 +6,7 @@ from memory_identity import description
 from memory_models import LUNA
 from profile_identity import personal
 
-VERSION = 'memory-evidence-v2.1'
+VERSION = 'memory-evidence-v2.2'
 PROMPT = (Path(__file__).parent/'prompts/memory-evidence-v2.md').read_text()
 
 

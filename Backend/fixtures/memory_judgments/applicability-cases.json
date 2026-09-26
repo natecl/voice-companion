@@ -1,0 +1,512 @@
+[
+  {
+    "id": "exposed_household",
+    "current": true,
+    "pair": {
+      "incoming": {
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "Tessa, my roommate, changed to unscented laundry detergent."
+            }
+          ]
+        },
+        "proposal": {
+          "text": "Tessa, my roommate, changed to unscented laundry detergent.",
+          "kind": "event",
+          "basis": "stated",
+          "time": {
+            "status": "past",
+            "expression": null
+          }
+        }
+      },
+      "previous": {
+        "text": "My roommate Tessa uses lavender laundry detergent.",
+        "kind": "fact",
+        "state": "active",
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My roommate Tessa uses lavender laundry detergent."
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "passage": {
+              "id": "p1",
+              "text": "My roommate Tessa uses lavender laundry detergent."
+            },
+            "origin": "personal_text"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "fresh_routine",
+    "current": true,
+    "pair": {
+      "incoming": {
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My dad Arun switched his regular commute to cycling."
+            }
+          ]
+        },
+        "proposal": {
+          "text": "My dad Arun switched his regular commute to cycling.",
+          "kind": "event",
+          "basis": "stated",
+          "time": {
+            "status": "past",
+            "expression": null
+          }
+        }
+      },
+      "previous": {
+        "text": "My dad Arun takes the bus to work.",
+        "kind": "fact",
+        "state": "active",
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My dad Arun takes the bus to work."
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "passage": {
+              "id": "p1",
+              "text": "My dad Arun takes the bus to work."
+            },
+            "origin": "personal_text"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "explicit_current",
+    "current": true,
+    "pair": {
+      "incoming": {
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My sister Noor switched to tea and still drinks it every morning."
+            }
+          ]
+        },
+        "proposal": {
+          "text": "My sister Noor switched to tea and still drinks it every morning.",
+          "kind": "event",
+          "basis": "stated",
+          "time": {
+            "status": "past",
+            "expression": null
+          }
+        }
+      },
+      "previous": {
+        "text": "My sister Noor drinks coffee in the morning.",
+        "kind": "fact",
+        "state": "active",
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My sister Noor drinks coffee in the morning."
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "passage": {
+              "id": "p1",
+              "text": "My sister Noor drinks coffee in the morning."
+            },
+            "origin": "personal_text"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "historical_episode",
+    "current": false,
+    "pair": {
+      "incoming": {
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My dad Arun cycled to work for a week ten years ago."
+            }
+          ]
+        },
+        "proposal": {
+          "text": "My dad Arun cycled to work for a week ten years ago.",
+          "kind": "event",
+          "basis": "stated",
+          "time": {
+            "status": "past",
+            "expression": null
+          }
+        }
+      },
+      "previous": {
+        "text": "My dad Arun takes the bus to work.",
+        "kind": "fact",
+        "state": "active",
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My dad Arun takes the bus to work."
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "passage": {
+              "id": "p1",
+              "text": "My dad Arun takes the bus to work."
+            },
+            "origin": "personal_text"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "temporary_completed",
+    "current": false,
+    "pair": {
+      "incoming": {
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My sister Noor switched to tea last weekend, then went back to coffee."
+            }
+          ]
+        },
+        "proposal": {
+          "text": "My sister Noor switched to tea last weekend, then went back to coffee.",
+          "kind": "event",
+          "basis": "stated",
+          "time": {
+            "status": "past",
+            "expression": null
+          }
+        }
+      },
+      "previous": {
+        "text": "My sister Noor drinks coffee in the morning.",
+        "kind": "fact",
+        "state": "active",
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My sister Noor drinks coffee in the morning."
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "passage": {
+              "id": "p1",
+              "text": "My sister Noor drinks coffee in the morning."
+            },
+            "origin": "personal_text"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "future_plan",
+    "current": false,
+    "pair": {
+      "incoming": {
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My roommate Tessa plans to change to unscented detergent next month."
+            }
+          ]
+        },
+        "proposal": {
+          "text": "My roommate Tessa plans to change to unscented detergent next month.",
+          "kind": "event",
+          "basis": "stated",
+          "time": {
+            "status": "past",
+            "expression": null
+          }
+        }
+      },
+      "previous": {
+        "text": "My roommate Tessa uses lavender laundry detergent.",
+        "kind": "fact",
+        "state": "active",
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My roommate Tessa uses lavender laundry detergent."
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "passage": {
+              "id": "p1",
+              "text": "My roommate Tessa uses lavender laundry detergent."
+            },
+            "origin": "personal_text"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "tentative",
+    "current": false,
+    "pair": {
+      "incoming": {
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My dad Arun might switch to cycling, but has not decided."
+            }
+          ]
+        },
+        "proposal": {
+          "text": "My dad Arun might switch to cycling, but has not decided.",
+          "kind": "event",
+          "basis": "stated",
+          "time": {
+            "status": "past",
+            "expression": null
+          }
+        }
+      },
+      "previous": {
+        "text": "My dad Arun takes the bus to work.",
+        "kind": "fact",
+        "state": "active",
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My dad Arun takes the bus to work."
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "passage": {
+              "id": "p1",
+              "text": "My dad Arun takes the bus to work."
+            },
+            "origin": "personal_text"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "hypothetical",
+    "current": false,
+    "pair": {
+      "incoming": {
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "If my sister Noor switched to tea, she might sleep better."
+            }
+          ]
+        },
+        "proposal": {
+          "text": "If my sister Noor switched to tea, she might sleep better.",
+          "kind": "event",
+          "basis": "stated",
+          "time": {
+            "status": "past",
+            "expression": null
+          }
+        }
+      },
+      "previous": {
+        "text": "My sister Noor drinks coffee in the morning.",
+        "kind": "fact",
+        "state": "active",
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My sister Noor drinks coffee in the morning."
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "passage": {
+              "id": "p1",
+              "text": "My sister Noor drinks coffee in the morning."
+            },
+            "origin": "personal_text"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "added_activity",
+    "current": false,
+    "pair": {
+      "incoming": {
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My dad Arun started cycling for fun on weekends."
+            }
+          ]
+        },
+        "proposal": {
+          "text": "My dad Arun started cycling for fun on weekends.",
+          "kind": "event",
+          "basis": "stated",
+          "time": {
+            "status": "past",
+            "expression": null
+          }
+        }
+      },
+      "previous": {
+        "text": "My dad Arun takes the bus to work.",
+        "kind": "fact",
+        "state": "active",
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My dad Arun takes the bus to work."
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "passage": {
+              "id": "p1",
+              "text": "My dad Arun takes the bus to work."
+            },
+            "origin": "personal_text"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "reverted_current",
+    "current": false,
+    "pair": {
+      "incoming": {
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My roommate Tessa tried unscented detergent and went back to lavender."
+            }
+          ]
+        },
+        "proposal": {
+          "text": "My roommate Tessa tried unscented detergent and went back to lavender.",
+          "kind": "event",
+          "basis": "stated",
+          "time": {
+            "status": "past",
+            "expression": null
+          }
+        }
+      },
+      "previous": {
+        "text": "My roommate Tessa uses lavender laundry detergent.",
+        "kind": "fact",
+        "state": "active",
+        "source": {
+          "origin": "personal_text",
+          "captured_at": 1790337600.0,
+          "passages": [
+            {
+              "id": "p1",
+              "text": "My roommate Tessa uses lavender laundry detergent."
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "passage": {
+              "id": "p1",
+              "text": "My roommate Tessa uses lavender laundry detergent."
+            },
+            "origin": "personal_text"
+          }
+        ]
+      }
+    }
+  }
+]

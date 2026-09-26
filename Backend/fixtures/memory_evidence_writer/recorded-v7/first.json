@@ -1,0 +1,65 @@
+{
+  "source": {
+    "session_id": "first",
+    "revision": 1,
+    "captured_at": 1790337600.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "My cousin Eli uses a paper planner to organize his week.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "b42da058-f633-4e47-9688-4bcb7781a8ff",
+    "accepted": 1,
+    "claims": [
+      "22e4ce4e-372c-4d10-a3ab-ef66c351d065"
+    ],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "new"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "22e4ce4e-372c-4d10-a3ab-ef66c351d065",
+      "owner": "bb4f65b8-d036-4b04-8b06-f12f91bf4f39",
+      "text": "Eli uses a paper planner to organize his week.",
+      "subject": "mention_2886ceaa1ec649009e2352273f904901",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790395648.362729,
+      "valid_from": 1790337600.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "supported",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "6f2b4498-b3d5-4284-a044-8ce801a90eef",
+      "sources": [
+        {
+          "session": "first",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "checks": {
+    "no_unresolved": true,
+    "expected_count": true,
+    "first_active": true
+  }
+}

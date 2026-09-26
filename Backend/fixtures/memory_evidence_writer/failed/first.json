@@ -1,0 +1,87 @@
+{
+  "source": {
+    "session_id": "first",
+    "revision": 1,
+    "captured_at": 1790337600.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "My daughter Maya enjoys swimming.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "c7c05800-54a8-4b92-91a0-f85765d22dd6",
+    "accepted": 0,
+    "claims": [],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "rejected",
+        "checks": {
+          "support": {
+            "label": "supported",
+            "accepted": true,
+            "probabilities": {
+              "supported": 1.0,
+              "unsupported": 0.0,
+              "uncertain": 0.0
+            },
+            "confidence": 0.99,
+            "policy": "support",
+            "rubric": "evidence-judgments-v3"
+          },
+          "subject": {
+            "label": "supported",
+            "accepted": false,
+            "probabilities": {
+              "supported": 0.91,
+              "unsupported": 0.08,
+              "uncertain": 0.01
+            },
+            "confidence": 0.86,
+            "policy": "subject",
+            "rubric": "evidence-judgments-v3"
+          },
+          "modality": {
+            "label": "supported",
+            "accepted": true,
+            "probabilities": {
+              "supported": 1.0,
+              "unsupported": 0.0,
+              "uncertain": 0.0
+            },
+            "confidence": 1.0,
+            "policy": "modality",
+            "rubric": "evidence-judgments-v3"
+          },
+          "time": {
+            "label": "supported",
+            "accepted": true,
+            "probabilities": {
+              "supported": 0.98,
+              "unsupported": 0.01,
+              "uncertain": 0.01
+            },
+            "confidence": 0.97,
+            "policy": "time",
+            "rubric": "evidence-judgments-v3"
+          }
+        }
+      }
+    ]
+  },
+  "claims": [],
+  "unresolved": [],
+  "checks": {
+    "no_unresolved": true,
+    "expected_count": false,
+    "first_active": false
+  }
+}

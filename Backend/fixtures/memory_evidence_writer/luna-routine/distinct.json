@@ -1,0 +1,119 @@
+{
+  "source": {
+    "session_id": "distinct",
+    "revision": 1,
+    "captured_at": 1790337602.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "My other cousin Eli uses a whiteboard to organize his week.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "8af1218a-1bce-45f2-abcd-5a619b66681e",
+    "accepted": 1,
+    "claims": [
+      "41394602-cf3c-436e-b358-7b89667bea42"
+    ],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "new"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "41394602-cf3c-436e-b358-7b89667bea42",
+      "owner": "ddc8fe9c-3d60-4f4a-ba7b-aecc2018c969",
+      "text": "Eli uses a whiteboard to organize his week.",
+      "subject": "mention_dc9729e1b8394965a2710156270e8529",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790397439.7875144,
+      "valid_from": 1790337602.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "supported",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "7339e2ff-a399-4d4c-a92e-91515bbd4b8f",
+      "sources": [
+        {
+          "session": "distinct",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    },
+    {
+      "id": "d9fec1b2-8391-4add-b64b-bcffcf760865",
+      "owner": "ddc8fe9c-3d60-4f4a-ba7b-aecc2018c969",
+      "text": "Eli switched from his paper planner to a digital calendar and now uses it to organize his week.",
+      "subject": "mention_f88fd98ce37e49eda05628d3af64a9c3",
+      "kind": "event",
+      "basis": "stated",
+      "observed": 1790397438.3424935,
+      "valid_from": 1790337601.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "identity_supported_correction",
+      "replaces": "5fe4bb26-b250-45eb-ad29-271ca453aa56",
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "81217533-813d-4eca-8da3-e31f16c74f42",
+      "sources": [
+        {
+          "session": "correction",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    },
+    {
+      "id": "5fe4bb26-b250-45eb-ad29-271ca453aa56",
+      "owner": "ddc8fe9c-3d60-4f4a-ba7b-aecc2018c969",
+      "text": "Eli uses a paper planner to organize his week.",
+      "subject": "mention_6e07cd6051344eef99c5aa2d62f47e32",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790397434.9911485,
+      "valid_from": 1790337600.0,
+      "valid_until": null,
+      "state": "superseded",
+      "reason": "identity_supported_correction",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "81217533-813d-4eca-8da3-e31f16c74f42",
+      "sources": [
+        {
+          "session": "first",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "checks": {
+    "no_unresolved": true,
+    "expected_count": true,
+    "old_historical": true,
+    "correction_active": true,
+    "same_identity": true,
+    "other_active": true,
+    "different_identity": true
+  }
+}

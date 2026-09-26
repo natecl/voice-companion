@@ -1,0 +1,101 @@
+{
+  "pairs": {
+    "friend_target": {
+      "incoming": {
+        "excerpts": [
+          "My sister Bea said her friend Bea likes swimming."
+        ],
+        "origin": "personal_text",
+        "captured_at": 200.0,
+        "claim": "Bea, my sister's friend, likes swimming.",
+        "extracted_mention": {
+          "name": "Bea",
+          "relationship": "sister's friend",
+          "qualifiers": [],
+          "speaker_label": null
+        }
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My sister Bea likes running.",
+            "origin": "personal_text",
+            "captured_at": 100.0,
+            "speakers": []
+          }
+        ],
+        "claim": "My sister Bea likes running.",
+        "extracted_mention": {
+          "name": "Bea",
+          "relationship": "sister",
+          "qualifiers": [],
+          "speaker_label": null
+        }
+      }
+    },
+    "reporter_target": {
+      "incoming": {
+        "excerpts": [
+          "My sister Bea said her friend Bea likes swimming."
+        ],
+        "origin": "personal_text",
+        "captured_at": 200.0,
+        "claim": "My sister Bea said her friend likes swimming.",
+        "extracted_mention": {
+          "name": "Bea",
+          "relationship": "sister",
+          "qualifiers": [],
+          "speaker_label": null
+        }
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My sister Bea likes running.",
+            "origin": "personal_text",
+            "captured_at": 100.0,
+            "speakers": []
+          }
+        ],
+        "claim": "My sister Bea likes running.",
+        "extracted_mention": {
+          "name": "Bea",
+          "relationship": "sister",
+          "qualifiers": [],
+          "speaker_label": null
+        }
+      }
+    },
+    "unspecified_target": {
+      "incoming": {
+        "excerpts": [
+          "My sister Bea said her friend Bea likes swimming."
+        ],
+        "origin": "personal_text",
+        "captured_at": 200.0
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My sister Bea likes running.",
+            "origin": "personal_text",
+            "captured_at": 100.0,
+            "speakers": []
+          }
+        ],
+        "claim": "My sister Bea likes running.",
+        "extracted_mention": {
+          "name": "Bea",
+          "relationship": "sister",
+          "qualifiers": [],
+          "speaker_label": null
+        }
+      }
+    }
+  },
+  "expected": {
+    "friend_target": "different",
+    "reporter_target": "same",
+    "unspecified_target": "uncertain"
+  }
+}

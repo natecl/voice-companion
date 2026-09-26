@@ -1,0 +1,92 @@
+{
+  "source": {
+    "session_id": "correction",
+    "revision": 1,
+    "captured_at": 1790337601.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "Tessa, my roommate, changed to unscented laundry detergent.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "f0dd56b3-8bfc-46e9-bbc7-e8657a633070",
+    "accepted": 1,
+    "claims": [
+      "0db80334-c244-40ff-ad23-432d73f56190"
+    ],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "correct"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "0db80334-c244-40ff-ad23-432d73f56190",
+      "owner": "3694df51-0a5c-4e52-a881-9276c37d034b",
+      "text": "Tessa changed to unscented laundry detergent.",
+      "subject": "mention_b26702ab2fc143b386dd7ca6cacef328",
+      "kind": "event",
+      "basis": "stated",
+      "observed": 1790398369.9095914,
+      "valid_from": 1790337601.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "identity_supported_correction",
+      "replaces": "9aeaf800-5517-4a9c-a1fc-bbb13973010d",
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 0,
+      "identity_status": "established",
+      "entity_id": "ec2b3e92-7b73-4a31-9480-12d0173f8654",
+      "sources": [
+        {
+          "session": "correction",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    },
+    {
+      "id": "9aeaf800-5517-4a9c-a1fc-bbb13973010d",
+      "owner": "3694df51-0a5c-4e52-a881-9276c37d034b",
+      "text": "Tessa uses lavender laundry detergent.",
+      "subject": "mention_c04d0550d9ce45c0baca05f930d8bf53",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790398366.9566274,
+      "valid_from": 1790337600.0,
+      "valid_until": null,
+      "state": "superseded",
+      "reason": "identity_supported_correction",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "ec2b3e92-7b73-4a31-9480-12d0173f8654",
+      "sources": [
+        {
+          "session": "first",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "checks": {
+    "no_unresolved": true,
+    "expected_count": true,
+    "old_historical": true,
+    "correction_active": true,
+    "same_identity": true
+  }
+}

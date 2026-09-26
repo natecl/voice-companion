@@ -1,6 +1,6 @@
 # Companion memory rework — implementation plan
 
-Status: implementation authorized by the founder. Checkpoint 0 baseline evidence is recorded in [memory-rework-baseline.md](memory-rework-baseline.md); checkpoint 1 is split into the bounded storage change below and the remaining identity foundation. Later checkpoints remain pending. Hosted rollout still requires approval of the concrete deployment. Follow [engineering principles](engineering-principles.md). This replaces the remaining personal-profile plan as the delivery direction; its completed work and failed QA remain part of the evidence.
+Status: implementation authorized by the founder. Checkpoint 0 baseline evidence is recorded in [memory-rework-baseline.md](memory-rework-baseline.md); checkpoint 1 is split into the bounded storage change below and the remaining identity foundation. Storage, chunk-boundary and extraction/judgment foundations have since merged through PR 40. The bounded atomic writer within 3C is described in [memory-atomic-writer.md](memory-atomic-writer.md); full chunk/writer integration and later product checkpoints remain pending. Hosted rollout still requires approval of the concrete deployment. Follow [engineering principles](engineering-principles.md). This replaces the remaining personal-profile plan as the delivery direction; its completed work and failed QA remain part of the evidence.
 
 ## Product outcome
 
@@ -90,7 +90,7 @@ Delivery split: **2A** isolates known job-local failures and exposes learner sta
 
 - Version Luna's structured output to preserve mentions, explicit relationship qualifiers, modality, source spans, possible changes and temporal expressions. Do not turn an attributed relationship into an account-owner fact.
 - Retrieve possible entities and prior facts by evidence and relevance before limiting results; remove the “latest 50 profile claims only” dependency. Expose explicit absence/ambiguity, not a deceptively complete candidate list.
-- Give Jev atomic, evidence-specific questions for support, attribution, identity compatibility/distinction, and semantic replacement. Include original source evidence and prior supporting evidence needed to decide. Batch independent questions; do not ask one question to infer another question's output in the same request.
+- Give Jev atomic, evidence-specific questions for support, attribution and semantic replacement. The founder-approved bounded writer uses a separate Luna low-reasoning identity resolver after comparative QA; see [evidence and limits](memory-atomic-writer.md). Include original source evidence and prior supporting evidence needed to decide. Batch independent questions; do not ask one question to infer another question's output in the same request.
 - Define separate acceptance policies for support, identity writes, lifecycle writes and ranking. Preserve distributions/reasons in diagnostics. Confidence is not a second independent verification; empirical error costs determine thresholds.
 - Apply accepted proposals through checkpoint 1 rules. An uncertain/unsupported link cannot overwrite an established entity. Do not substitute Luna verifying itself or lower a threshold to fit Maya.
 - Cap re-evaluation per new evidence event and stop futile repeated judgments. Maintain independence between extraction and verification.
@@ -164,7 +164,7 @@ Delivery split: **3A** validates versioned evidence extraction and exact source 
 
 ## QA, costs and completion rules
 
-The prior approved profile QA ledger has $0.62 reserved across 62 calls, leaving **$0.38 of the $1 cap** at the last audit. Read the canonical ledger again before spending. This is not a new allowance, not a per-checkpoint allowance, and not a promise that the entire rework fits the remainder. No provider calls are required to write this plan.
+The founder subsequently approved an additional $1, bringing the canonical profile/rework QA cap to **$2**. See the latest reservations and evidence in [memory-atomic-writer.md](memory-atomic-writer.md). Read the canonical ledger again before spending. This is not a new allowance, not a per-checkpoint allowance, and not a promise that the entire rework fits the remainder. No provider calls are required to write this plan.
 
 For each live gate, first state the unanswered question, frozen cases, providers, maximum attempts, expected token/embedding/audio volume and conservative reservation. Reuse cached synthetic results for development, time/lifecycle/identity rules, rendering and network replay. Give new provider integrations their own bounded validation. Stop before exceeding the approved total; request a concrete additional allowance only if it is needed. No automatic paid retries, quota resets or bulk historical model reprocessing. Do not spend on STT to debug memory state or answer rendering.
 

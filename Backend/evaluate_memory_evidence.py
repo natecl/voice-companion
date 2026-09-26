@@ -22,9 +22,9 @@ def checks(case,candidates):
     return bool(candidates) and all(matches(c) for c in candidates)
 
 
-async def run(directory,budget_path,selected=None):
+async def run(directory,budget_path,selected=None,cases_path=None):
     os.umask(0o077);directory.mkdir(parents=True,exist_ok=False)
-    canonical=ProfileBudget(budget_path)
+    canonical=ProfileBudget(budget_path,include_rework_allowance=True)
     class Budget:
         count=0
         def reserve(self,key,model):
@@ -33,7 +33,7 @@ async def run(directory,budget_path,selected=None):
         def finish(self,*args):canonical.finish(*args)
     budget=Budget();models=MemoryModels(os.environ['OPENAI_API_KEY'],os.environ['TYPESAFE_API_KEY'])
     store=MemoryStore(directory/'synthetic.sqlite',personal_learning=True);owner=store.owner_for('evidence-contract-qa')
-    cases=json.loads((Path(__file__).parent/'fixtures/memory_evidence/cases.json').read_text())
+    cases=json.loads((cases_path or (Path(__file__).parent/'fixtures/memory_evidence/cases.json')).read_text())
     if selected is not None:
         if not set(selected)<=set(c['id'] for c in cases):raise ValueError('Unknown case')
         cases=[c for c in cases if c['id'] in selected]
@@ -54,5 +54,5 @@ async def run(directory,budget_path,selected=None):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('directory',type=Path)
-    parser.add_argument('--budget',type=Path,required=True);parser.add_argument('--cases',nargs='+');args=parser.parse_args()
-    asyncio.run(run(args.directory,args.budget,args.cases))
+    parser.add_argument('--budget',type=Path,required=True);parser.add_argument('--cases',nargs='+');parser.add_argument('--case-file',type=Path);args=parser.parse_args()
+    asyncio.run(run(args.directory,args.budget,args.cases,args.case_file))

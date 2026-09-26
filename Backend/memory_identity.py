@@ -125,55 +125,59 @@ class IdentityStore:
             return [dict(row) | {'description': json.loads(row['description'])} for row in rows]
 
     def link(self, owner, mention, evidence, *, rubric, anchor=None):
-        """Persist an accepted identity decision; never exposed as a client API.
-
-        No anchor creates a fresh opaque entity, not an identified account owner.
-        Linking to an existing entity requires an active anchor link and live
-        evidence for both mentions. Matching names alone never calls this method.
-        Explicitly distinct qualifiers/relationships are conservatively rejected.
-        """
-        if not isinstance(rubric, str) or not rubric or len(rubric) > 100:
-            raise Rejected('invalid_identity_rubric')
-        if not isinstance(evidence, list) or not 1 <= len(evidence) <= 20:
-            raise Rejected('invalid_identity_evidence')
         with self.store.transaction() as db:
-            row = db.execute("SELECT * FROM memory_mention WHERE id=? AND owner=? AND state='live'", (mention, owner)).fetchone()
-            if not row:
-                raise Rejected('stale_identity_mention')
-            refs = set()
-            for ref in evidence:
-                live_passage(db, owner, ref)
-                refs.add((ref['session'], ref['revision'], ref['passage']))
-            if (row['session'], row['revision'], row['passage']) not in refs:
-                raise Rejected('missing_mention_evidence')
-            current = db.execute("SELECT * FROM memory_identity_link WHERE mention=? AND state='active'", (mention,)).fetchone()
-            # A retry may reuse a decision, but may not rewrite it or change its support.
-            if current:
-                old_refs = {tuple(r) for r in db.execute('SELECT session,revision,passage FROM memory_identity_support WHERE link=?', (current['id'],))}
-                if current['anchor'] != anchor or current['rubric'] != rubric or old_refs != refs:
-                    raise Rejected('identity_link_conflict')
-                return dict(current)
-            if anchor is None:
-                entity = str(uuid.uuid4())
-                db.execute('INSERT INTO memory_entity VALUES(?,?)', (entity, owner))
-            else:
-                prior = db.execute("""SELECT l.entity,m.* FROM memory_identity_link l
-                  JOIN memory_mention m ON m.id=l.mention
-                  WHERE l.id=? AND l.owner=? AND l.state='active' AND m.state='live'""", (anchor, owner)).fetchone()
-                if not prior:
-                    raise Rejected('stale_identity_anchor')
-                if (prior['session'], prior['revision'], prior['passage']) not in refs:
-                    raise Rejected('missing_anchor_evidence')
-                old, new = json.loads(prior['description']), json.loads(row['description'])
-                # This is a guard, not an identity classifier. Unknown metadata stays unresolved.
-                if old['qualifiers'] is None or new['qualifiers'] is None:
-                    raise Rejected('incomplete_identity_metadata')
-                if old['relationship'] != new['relationship'] or set(old['qualifiers']) != set(new['qualifiers']):
-                    raise Rejected('identity_distinction')
-                entity = prior['entity']
-            link = dict(id=str(uuid.uuid4()), owner=owner, mention=mention, entity=entity,
-                        anchor=anchor, state='active', rubric=rubric)
-            db.execute('INSERT INTO memory_identity_link VALUES(:id,:owner,:mention,:entity,:anchor,:state,:rubric)', link)
-            for session, revision, passage in refs:
-                db.execute('INSERT INTO memory_identity_support VALUES(?,?,?,?,?)', (link['id'], owner, session, revision, passage))
-            return link
+            return link_in_transaction(db, owner, mention, evidence, rubric=rubric, anchor=anchor)
+
+
+def link_in_transaction(db, owner, mention, evidence, *, rubric, anchor=None):
+    """Persist an accepted identity decision; never exposed as a client API.
+
+    No anchor creates a fresh opaque entity, not an identified account owner.
+    Linking to an existing entity requires an active anchor link and live
+    evidence for both mentions. Matching names alone never calls this method.
+    Explicitly distinct qualifiers/relationships are conservatively rejected.
+    """
+    if not isinstance(rubric, str) or not rubric or len(rubric) > 100:
+        raise Rejected('invalid_identity_rubric')
+    if not isinstance(evidence, list) or not 1 <= len(evidence) <= 20:
+        raise Rejected('invalid_identity_evidence')
+    row = db.execute("SELECT * FROM memory_mention WHERE id=? AND owner=? AND state='live'", (mention, owner)).fetchone()
+    if not row:
+        raise Rejected('stale_identity_mention')
+    refs = set()
+    for ref in evidence:
+        live_passage(db, owner, ref)
+        refs.add((ref['session'], ref['revision'], ref['passage']))
+    if (row['session'], row['revision'], row['passage']) not in refs:
+        raise Rejected('missing_mention_evidence')
+    current = db.execute("SELECT * FROM memory_identity_link WHERE mention=? AND state='active'", (mention,)).fetchone()
+    # A retry may reuse a decision, but may not rewrite it or change its support.
+    if current:
+        old_refs = {tuple(r) for r in db.execute('SELECT session,revision,passage FROM memory_identity_support WHERE link=?', (current['id'],))}
+        if current['anchor'] != anchor or current['rubric'] != rubric or old_refs != refs:
+            raise Rejected('identity_link_conflict')
+        return dict(current)
+    if anchor is None:
+        entity = str(uuid.uuid4())
+        db.execute('INSERT INTO memory_entity VALUES(?,?)', (entity, owner))
+    else:
+        prior = db.execute("""SELECT l.entity,m.* FROM memory_identity_link l
+          JOIN memory_mention m ON m.id=l.mention
+          WHERE l.id=? AND l.owner=? AND l.state='active' AND m.state='live'""", (anchor, owner)).fetchone()
+        if not prior:
+            raise Rejected('stale_identity_anchor')
+        if (prior['session'], prior['revision'], prior['passage']) not in refs:
+            raise Rejected('missing_anchor_evidence')
+        old, new = json.loads(prior['description']), json.loads(row['description'])
+        # This is a guard, not an identity classifier. Unknown metadata stays unresolved.
+        if old['qualifiers'] is None or new['qualifiers'] is None:
+            raise Rejected('incomplete_identity_metadata')
+        if old['relationship'] != new['relationship'] or set(old['qualifiers']) != set(new['qualifiers']):
+            raise Rejected('identity_distinction')
+        entity = prior['entity']
+    link = dict(id=str(uuid.uuid4()), owner=owner, mention=mention, entity=entity,
+                anchor=anchor, state='active', rubric=rubric)
+    db.execute('INSERT INTO memory_identity_link VALUES(:id,:owner,:mention,:entity,:anchor,:state,:rubric)', link)
+    for session, revision, passage in refs:
+        db.execute('INSERT INTO memory_identity_support VALUES(?,?,?,?,?)', (link['id'], owner, session, revision, passage))
+    return link

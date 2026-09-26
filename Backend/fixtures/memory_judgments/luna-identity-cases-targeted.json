@@ -1,0 +1,459 @@
+{
+  "pairs": {
+    "explicit_correction": {
+      "incoming": {
+        "excerpts": [
+          "My daughter Maya now enjoys tennis instead of swimming."
+        ],
+        "origin": "personal_text",
+        "captured_at": 1790337600.0,
+        "extracted_mention": {
+          "name": "Maya",
+          "relationship": "daughter",
+          "qualifiers": [],
+          "speaker_label": null
+        },
+        "claim": "My daughter Maya now enjoys tennis instead of swimming."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My daughter Maya enjoys swimming.",
+            "origin": "personal_text",
+            "speakers": [],
+            "captured_at": null
+          }
+        ],
+        "extracted_mention": {
+          "name": "Maya",
+          "relationship": "daughter",
+          "qualifiers": [],
+          "speaker_label": null
+        },
+        "claim": "My daughter Maya enjoys swimming."
+      }
+    },
+    "other_person": {
+      "incoming": {
+        "excerpts": [
+          "My other daughter Maya enjoys tennis."
+        ],
+        "origin": "personal_text",
+        "captured_at": 1790337600.0,
+        "extracted_mention": {
+          "name": "Maya",
+          "relationship": "daughter",
+          "qualifiers": [
+            "other"
+          ],
+          "speaker_label": null
+        },
+        "claim": "My other daughter Maya enjoys tennis."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My daughter Maya enjoys swimming.",
+            "origin": "personal_text",
+            "speakers": [],
+            "captured_at": null
+          }
+        ],
+        "extracted_mention": {
+          "name": "Maya",
+          "relationship": "daughter",
+          "qualifiers": [],
+          "speaker_label": null
+        },
+        "claim": "My daughter Maya enjoys swimming."
+      }
+    },
+    "name_only": {
+      "incoming": {
+        "excerpts": [
+          "Maya likes tennis."
+        ],
+        "origin": "recording",
+        "captured_at": null,
+        "extracted_mention": null,
+        "claim": "Maya likes tennis."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "Maya likes swimming.",
+            "origin": "recording",
+            "speakers": [],
+            "captured_at": null
+          }
+        ],
+        "extracted_mention": null,
+        "claim": "Maya likes swimming."
+      }
+    },
+    "anonymous": {
+      "incoming": {
+        "excerpts": [
+          "I am training for a marathon."
+        ],
+        "origin": "recording",
+        "captured_at": 1790337600.0,
+        "extracted_mention": {
+          "name": null,
+          "relationship": null,
+          "qualifiers": [],
+          "speaker_label": 0
+        },
+        "claim": "I am training for a marathon."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "I like running.",
+            "origin": "recording",
+            "speakers": [
+              0
+            ],
+            "captured_at": null
+          }
+        ],
+        "extracted_mention": null,
+        "claim": "I like running."
+      }
+    },
+    "household_0": {
+      "incoming": {
+        "excerpts": [
+          "Tessa, my roommate, changed to unscented laundry detergent."
+        ],
+        "origin": "personal_text",
+        "captured_at": 1790337601.0,
+        "extracted_mention": {
+          "name": "Tessa",
+          "relationship": "roommate",
+          "qualifiers": [],
+          "speaker_label": null
+        },
+        "claim": "Tessa, my roommate, changed to unscented laundry detergent."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My roommate Tessa uses lavender laundry detergent.",
+            "origin": "personal_text",
+            "speakers": [],
+            "captured_at": 1790337600.0
+          }
+        ],
+        "extracted_mention": {
+          "name": "Tessa",
+          "relationship": "roommate",
+          "qualifiers": [],
+          "speaker_label": null
+        },
+        "claim": "My roommate Tessa uses lavender laundry detergent."
+      }
+    },
+    "household_1": {
+      "incoming": {
+        "excerpts": [
+          "My other roommate Tessa uses citrus laundry detergent."
+        ],
+        "origin": "personal_text",
+        "captured_at": 1790337602.0,
+        "extracted_mention": {
+          "name": "Tessa",
+          "relationship": "roommate",
+          "qualifiers": [
+            "other"
+          ],
+          "speaker_label": null
+        },
+        "claim": "My other roommate Tessa uses citrus laundry detergent."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "Tessa, my roommate, changed to unscented laundry detergent.",
+            "origin": "personal_text",
+            "speakers": [],
+            "captured_at": 1790337601.0
+          }
+        ],
+        "extracted_mention": {
+          "name": "Tessa",
+          "relationship": "roommate",
+          "qualifiers": [],
+          "speaker_label": null
+        },
+        "claim": "Tessa, my roommate, changed to unscented laundry detergent."
+      }
+    },
+    "fresh_change": {
+      "incoming": {
+        "excerpts": [
+          "My brother Omar now cycles to work instead of taking the bus."
+        ],
+        "origin": "personal_text",
+        "captured_at": 200.0,
+        "claim": "My brother Omar now cycles to work instead of taking the bus."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My brother Omar takes the bus to work.",
+            "origin": "personal_text",
+            "captured_at": 100.0,
+            "speakers": []
+          }
+        ],
+        "claim": "My brother Omar takes the bus to work."
+      }
+    },
+    "fresh_other": {
+      "incoming": {
+        "excerpts": [
+          "My other brother Omar cycles to work."
+        ],
+        "origin": "personal_text",
+        "captured_at": 200.0,
+        "claim": "My other brother Omar cycles to work."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My brother Omar takes the bus to work.",
+            "origin": "personal_text",
+            "captured_at": 100.0,
+            "speakers": []
+          }
+        ],
+        "claim": "My brother Omar takes the bus to work."
+      }
+    },
+    "name_collision": {
+      "incoming": {
+        "excerpts": [
+          "Jordan likes soccer."
+        ],
+        "origin": "recording",
+        "captured_at": 200.0,
+        "claim": "Jordan likes soccer."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "Jordan likes chess.",
+            "origin": "recording",
+            "captured_at": 100.0,
+            "speakers": []
+          }
+        ],
+        "claim": "Jordan likes chess."
+      }
+    },
+    "anonymous_collision": {
+      "incoming": {
+        "excerpts": [
+          "I now prefer afternoons."
+        ],
+        "origin": "recording",
+        "captured_at": 200.0,
+        "claim": "I now prefer afternoons."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "I prefer morning appointments.",
+            "origin": "recording",
+            "captured_at": 100.0,
+            "speakers": []
+          }
+        ],
+        "claim": "I prefer morning appointments."
+      }
+    },
+    "relationship_distinction": {
+      "incoming": {
+        "excerpts": [
+          "My cousin Alex enjoys hiking."
+        ],
+        "origin": "personal_text",
+        "captured_at": 200.0,
+        "claim": "My cousin Alex enjoys hiking."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My teacher Alex enjoys hiking.",
+            "origin": "personal_text",
+            "captured_at": 100.0,
+            "speakers": []
+          }
+        ],
+        "claim": "My teacher Alex enjoys hiking."
+      }
+    },
+    "dual_role_ambiguous": {
+      "incoming": {
+        "excerpts": [
+          "My coworker Riley likes chess."
+        ],
+        "origin": "personal_text",
+        "captured_at": 200.0,
+        "claim": "My coworker Riley likes chess."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My roommate Riley likes jazz.",
+            "origin": "personal_text",
+            "captured_at": 100.0,
+            "speakers": []
+          }
+        ],
+        "claim": "My roommate Riley likes jazz."
+      }
+    },
+    "dual_role_explicit": {
+      "incoming": {
+        "excerpts": [
+          "My roommate Riley is also my coworker and now prefers blues to jazz."
+        ],
+        "origin": "personal_text",
+        "captured_at": 200.0,
+        "claim": "My roommate Riley is also my coworker and now prefers blues to jazz."
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My roommate Riley likes jazz.",
+            "origin": "personal_text",
+            "captured_at": 100.0,
+            "speakers": []
+          }
+        ],
+        "claim": "My roommate Riley likes jazz."
+      }
+    },
+    "friend_target": {
+      "incoming": {
+        "excerpts": [
+          "My sister Bea said her friend Bea likes swimming."
+        ],
+        "origin": "personal_text",
+        "captured_at": 200.0,
+        "claim": "Bea, my sister's friend, likes swimming.",
+        "extracted_mention": {
+          "name": "Bea",
+          "relationship": "sister's friend",
+          "qualifiers": [],
+          "speaker_label": null
+        }
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My sister Bea likes running.",
+            "origin": "personal_text",
+            "captured_at": 100.0,
+            "speakers": []
+          }
+        ],
+        "claim": "My sister Bea likes running.",
+        "extracted_mention": {
+          "name": "Bea",
+          "relationship": "sister",
+          "qualifiers": [],
+          "speaker_label": null
+        }
+      }
+    },
+    "reporter_target": {
+      "incoming": {
+        "excerpts": [
+          "My sister Bea said her friend Bea likes swimming."
+        ],
+        "origin": "personal_text",
+        "captured_at": 200.0,
+        "claim": "My sister Bea said her friend likes swimming.",
+        "extracted_mention": {
+          "name": "Bea",
+          "relationship": "sister",
+          "qualifiers": [],
+          "speaker_label": null
+        }
+      },
+      "previous": {
+        "evidence": [
+          {
+            "text": "My sister Bea likes running.",
+            "origin": "personal_text",
+            "captured_at": 100.0,
+            "speakers": []
+          }
+        ],
+        "claim": "My sister Bea likes running.",
+        "extracted_mention": {
+          "name": "Bea",
+          "relationship": "sister",
+          "qualifiers": [],
+          "speaker_label": null
+        }
+      }
+    },
+    "pipeline_distinct": {
+      "incoming": {
+        "claim": "Tessa uses citrus laundry detergent.",
+        "excerpts": [
+          "My other roommate Tessa uses citrus laundry detergent."
+        ],
+        "origin": "personal_text",
+        "captured_at": 1790337602.0,
+        "extracted_mention": {
+          "name": "Tessa",
+          "relationship": "roommate",
+          "qualifiers": [
+            "other"
+          ],
+          "speaker_label": null
+        }
+      },
+      "previous": {
+        "claim": "Tessa changed to unscented laundry detergent.",
+        "evidence": [
+          {
+            "text": "Tessa, my roommate, changed to unscented laundry detergent.",
+            "origin": "personal_text",
+            "speakers": [],
+            "captured_at": 1790337601.0
+          }
+        ],
+        "extracted_mention": {
+          "name": "Tessa",
+          "relationship": "roommate",
+          "qualifiers": [],
+          "speaker_label": null
+        }
+      }
+    }
+  },
+  "expected": {
+    "explicit_correction": "same",
+    "other_person": "different",
+    "name_only": "no_same",
+    "anonymous": "no_same",
+    "household_0": "same",
+    "household_1": "different",
+    "fresh_change": "same",
+    "fresh_other": "different",
+    "name_collision": "uncertain",
+    "anonymous_collision": "uncertain",
+    "relationship_distinction": "uncertain",
+    "dual_role_ambiguous": "uncertain",
+    "dual_role_explicit": "same",
+    "friend_target": "different",
+    "reporter_target": "same",
+    "pipeline_distinct": "different"
+  }
+}

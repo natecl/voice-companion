@@ -1,0 +1,6 @@
+[
+  {"id":"original-scope","origin":"personal_text","text":"My daughter Maya now enjoys tennis instead of swimming.","expected":{"scope":"related_to_author","name":"Maya","relationship":"daughter","change":"correction","contains":"tennis"}},
+  {"id":"compound-subject","origin":"personal_text","text":"My cat Nori eats salmon food.","expected":{"scope":"related_to_author","name":"Nori","relationship":"cat","contains":"salmon"}},
+  {"id":"anonymous-speaker","origin":"recording","text":"I am training for a marathon.","expected":{"scope":"unresolved","name":null,"contains":"marathon"}},
+  {"id":"quoted-relative","origin":"personal_text","text":"My colleague Imani said, \"I prefer quiet rooms.\"","expected":{"scope":"related_to_author","name":"Imani","relationship":"colleague","contains":"quiet"}}
+]

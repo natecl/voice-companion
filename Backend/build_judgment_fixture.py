@@ -15,11 +15,11 @@ def build():
     wrong=copy.deepcopy(current);wrong['scope']='author'
     request=verify_proposals(source,[current,wrong])
     cases=[dict(id='source-subject',role=None,request=request,
-        expected={'support_0':'supported','subject_0':'supported','modality_0':'supported','time_0':'supported','subject_1':'reject'})]
+        expected={'support_0':'supported','subject_0':'related_to_author','modality_0':'supported','time_0':'supported','subject_1':'reject'})]
     anonymous_source,anonymous=recorded('anonymous-speaker')
     claimed=copy.deepcopy(anonymous);claimed['scope']='author';claimed['text']='The user is training for a marathon.'
     cases.append(dict(id='unknown-owner',role=None,request=verify_proposals(anonymous_source,[anonymous,claimed]),
-                      expected={'support_0':'supported','subject_0':'supported','subject_1':'reject'}))
+                      expected={'support_0':'supported','subject_0':'unresolved','subject_1':'reject'}))
     prior=dict(source=dict(origin='personal_text',session_id='prior',passages=[dict(id='p1',text='My daughter Maya enjoys swimming.',speakers=[])]),
                memory=dict(text='The author’s daughter Maya enjoys swimming.',mention=dict(name='Maya',relationship='daughter',qualifiers=[],speaker_label=None)))
     other_source,other=recorded('qualified-person')

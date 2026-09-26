@@ -1,0 +1,5 @@
+[
+  ["first", "My cat Nori eats salmon food."],
+  ["correction", "Nori, my cat, switched to chicken food."],
+  ["distinct", "My other cat Nori eats beef food."]
+]

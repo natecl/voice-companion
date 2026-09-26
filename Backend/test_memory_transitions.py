@@ -155,7 +155,7 @@ class TransitionTests(unittest.TestCase):
         self.apply()
         self.assertEqual(self.store.put_source(self.owner,source('deleted'))['status'],'deleted')
         with self.store.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],7)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],8)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0],'ok')
             self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(),[])
 

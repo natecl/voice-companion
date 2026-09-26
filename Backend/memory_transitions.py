@@ -59,13 +59,27 @@ def eligible(db, owner, evidence):
     new, old = evidence['claims']
     reviewed = bool(db.execute("SELECT 1 FROM memory_correction WHERE owner=? AND incoming=? AND target=? AND state='reopened'",
                                (owner, new['id'], old['id'])).fetchone())
-    if (new['kind'] != old['kind'] or new['basis'] != 'stated' or old['basis'] == 'inferred'
+    if ((new['kind'] != old['kind'] and not verified_current_change(db,new,old)) or new['basis'] != 'stated' or old['basis'] == 'inferred'
             or new['state'] not in ('active', 'expired', 'unresolved')
             or old['state'] not in (('active', 'expired', 'unresolved') if reviewed else ('active', 'expired'))
             or new['valid_from'] is None or old['valid_from'] is None
             or new['valid_from'] < old['valid_from']
             or (new['replaces'] is not None and not (reviewed and new['replaces'] == old['id']))):
         raise Rejected('incompatible_correction')
+
+
+def verified_current_change(db,new,old):
+    """Narrow opt-in exception: retain event wording, with separately checked applicability."""
+    if new['kind'] not in ('fact','preference','event','decision') or old['kind'] not in ('fact','preference','event','decision'):return False
+    if not db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='memory_fact_evidence'").fetchone():return False
+    row=db.execute('SELECT proposal,judgments FROM memory_fact_evidence WHERE claim=? AND owner=?',(new['id'],new['owner'])).fetchone()
+    if row is None:return False
+    proposal,judgments=json.loads(row[0]),json.loads(row[1])
+    decision=judgments.get('current_change') or {}
+    return (proposal['time']['status'] in ('past','current') and proposal['basis']=='stated'
+            and decision.get('accepted') is True and decision.get('label')=='current_change'
+            and decision.get('policy')=='applicability'
+            and decision.get('probabilities',{}).get('current_change',0)>=.95)
 
 
 def reopen_invalid(db, owner):
@@ -116,30 +130,35 @@ class MemoryTransitions:
             return evidence
 
     def apply_correction(self, owner, incoming, target, *, evidence_token, rubric):
-        if not isinstance(rubric, str) or not rubric or len(rubric) > 100:
-            raise Rejected('invalid_correction_rubric')
-        if not isinstance(evidence_token, str) or len(evidence_token) != 64:
-            raise Rejected('invalid_correction_token')
         with self.store.transaction() as db:
-            reopen_invalid(db, owner)
-            prior = db.execute('SELECT * FROM memory_correction WHERE owner=? AND incoming=? AND target=? AND evidence_token=?',
-                               (owner, incoming, target, evidence_token)).fetchone()
-            if prior:
-                if prior['state'] != 'active' or prior['rubric'] != rubric:
-                    raise Rejected('stale_correction_decision')
-                return dict(prior)
-            evidence = context(db, owner, incoming, target)
-            if evidence['token'] != evidence_token:
-                raise Rejected('stale_correction_decision')
-            eligible(db, owner, evidence)
-            new, old = evidence['claims']
-            row = dict(id=str(uuid.uuid4()), owner=owner, incoming=incoming, target=target,
-                       entity=evidence['entity'], state='active', rubric=rubric, evidence_token=evidence_token)
-            db.execute('INSERT INTO memory_correction VALUES(:id,:owner,:incoming,:target,:entity,:state,:rubric,:evidence_token)', row)
-            for link in evidence['links']:
-                db.execute('INSERT INTO memory_correction_link VALUES(?,?)', (row['id'], link))
-            state = 'expired' if new['valid_until'] is not None and new['valid_until'] <= self.store.clock() else 'active'
-            db.execute("UPDATE claim SET state=?,reason='identity_supported_correction',replaces=? WHERE id=?", (state, target, incoming))
-            db.execute("UPDATE claim SET state='superseded',reason='identity_supported_correction' WHERE id=?", (target,))
-            db.execute('DELETE FROM claim_relation_proposal WHERE claim=?', (incoming,))
-            return row
+            return apply_in_transaction(db, owner, incoming, target, evidence_token=evidence_token,
+                                        rubric=rubric, now=self.store.clock())
+
+
+def apply_in_transaction(db, owner, incoming, target, *, evidence_token, rubric, now):
+    if not isinstance(rubric, str) or not rubric or len(rubric) > 100:
+        raise Rejected('invalid_correction_rubric')
+    if not isinstance(evidence_token, str) or len(evidence_token) != 64:
+        raise Rejected('invalid_correction_token')
+    reopen_invalid(db, owner)
+    prior = db.execute('SELECT * FROM memory_correction WHERE owner=? AND incoming=? AND target=? AND evidence_token=?',
+                       (owner, incoming, target, evidence_token)).fetchone()
+    if prior:
+        if prior['state'] != 'active' or prior['rubric'] != rubric:
+            raise Rejected('stale_correction_decision')
+        return dict(prior)
+    evidence = context(db, owner, incoming, target)
+    if evidence['token'] != evidence_token:
+        raise Rejected('stale_correction_decision')
+    eligible(db, owner, evidence)
+    new, old = evidence['claims']
+    row = dict(id=str(uuid.uuid4()), owner=owner, incoming=incoming, target=target,
+               entity=evidence['entity'], state='active', rubric=rubric, evidence_token=evidence_token)
+    db.execute('INSERT INTO memory_correction VALUES(:id,:owner,:incoming,:target,:entity,:state,:rubric,:evidence_token)', row)
+    for link in evidence['links']:
+        db.execute('INSERT INTO memory_correction_link VALUES(?,?)', (row['id'], link))
+    state = 'expired' if new['valid_until'] is not None and new['valid_until'] <= now else 'active'
+    db.execute("UPDATE claim SET state=?,reason='identity_supported_correction',replaces=? WHERE id=?", (state, target, incoming))
+    db.execute("UPDATE claim SET state='superseded',reason='identity_supported_correction' WHERE id=?", (target,))
+    db.execute('DELETE FROM claim_relation_proposal WHERE claim=?', (incoming,))
+    return row

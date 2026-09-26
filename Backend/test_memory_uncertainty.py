@@ -153,7 +153,7 @@ class UncertaintyTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(migrated.profile(self.owner)[0]['id'], self.old['id'])
         self.assertEqual(migrated.put_source(self.owner, source('deleted'))['status'], 'deleted')
         with migrated.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 7)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 8)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0], 'ok')
             self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(), [])
         self.write(self.selected())

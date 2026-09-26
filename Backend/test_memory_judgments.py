@@ -57,16 +57,16 @@ class JudgmentTests(unittest.TestCase):
     def test_separate_source_aspects_and_role_thresholds(self):
         request=verify_proposals(source(),[proposal()])
         self.assertEqual(set(request['questions']),{'support_0','subject_0','modality_0','time_0'})
-        data=answers(request,{key:'supported' for key in request['questions']})
+        data=answers(request,{key:('related_to_author' if key.startswith('subject') else 'supported') for key in request['questions']})
         result=decisions(data,request)
         self.assertTrue(all(x['accepted'] for x in result.values()))
         for key in request['questions']:
-            self.assertIn('independently',request['questions'][key]['instructions']['rule'])
-        data['answers']['subject_0'].update(choice='supported',probabilities={'supported':.92,'unsupported':.04,'uncertain':.04},confidence=1.)
+            if not key.startswith('support'):self.assertIn('independently',request['questions'][key]['instructions']['rule'])
+        data['answers']['subject_0'].update(choice='related_to_author',probabilities={'author':.02,'related_to_author':.92,'named':.02,'unresolved':.02,'wrong':.02},confidence=1.)
         self.assertFalse(decisions(data,request)['subject_0']['accepted'])
 
     def test_pair_keys_are_in_instructions_and_roles_do_not_share_answers(self):
-        pair=dict(incoming=proposal(),previous=dict(text='Maya enjoys swimming.'))
+        pair=dict(incoming=dict(source=source(),proposal=proposal()),previous=dict(text='Maya enjoys swimming.'))
         for role in ('identity','relation'):
             request=pair_questions({'old_target':pair},role=role)
             self.assertIn('old_target',request['questions']['old_target']['instructions'])
@@ -84,3 +84,36 @@ class JudgmentTests(unittest.TestCase):
             record=json.loads((directory/(name+'.json')).read_text())
             case=record['case']
             self.assertTrue(all(check(case,decisions(record['response']['data'],case['request'],case['role'])).values()),name)
+
+    def test_pair_judgments_ignore_model_hints_and_database_state(self):
+        p=proposal();s=source(text=p['evidence'][0]['quote'])
+        pair=dict(incoming=dict(source=s,proposal=p),previous=dict(text='Maya enjoys swimming.',
+            evidence=[dict(passage=dict(text='My daughter Maya enjoys swimming.'),origin='personal_text')]))
+        before=pair_questions({'one':pair},role='relation')
+        p['change']['kind']='none';p['kind']='event';p['scope']='unresolved'
+        pair['previous'].update(identity_status='established',entity_id='untrusted-hint',state='superseded')
+        self.assertEqual(before,pair_questions({'one':pair},role='relation'))
+        p['evidence'][0]['quote']='My OTHER daughter Maya enjoys tennis.'
+        self.assertNotEqual(before,pair_questions({'one':pair},role='relation'))
+
+    def test_current_recorded_independent_and_temporal_gates(self):
+        from evaluate_memory_judgments import check
+        root=Path(__file__).parent/'fixtures/memory_judgments'
+        for name in ['identity','lifecycle','explicit-state-change']:
+            record=json.loads((root/'independent-evidence-recorded'/(name+'.json')).read_text())
+            case=record['case']
+            self.assertTrue(all(check(case,decisions(record['response']['data'],case['request'],case['role'])).values()),name)
+        record=json.loads((root/'applicability-recorded-v7/result.json').read_text())
+        result=decisions(record['response']['data'],record['request'],'applicability')
+        for case in record['cases']:
+            decision=result[case['id']]
+            self.assertEqual(decision['accepted'] and decision['label']=='current_change',case['current'],case['id'])
+
+    def test_identity_retains_qualifiers_but_not_action_or_storage_hints(self):
+        p=proposal();p['mention']['qualifiers']=['other']
+        pair=dict(incoming=dict(source=source(text='My other daughter Maya enjoys tennis.'),proposal=p),
+            previous=dict(text='Maya enjoys swimming.',proposal=proposal(),evidence=[]))
+        req=pair_questions({'one':pair},role='identity')
+        self.assertEqual(req['state']['pairs']['one']['incoming']['extracted_mention']['qualifiers'],['other'])
+        p['change']['kind']='none';pair['previous']['state']='superseded'
+        self.assertEqual(req,pair_questions({'one':pair},role='identity'))
