@@ -1,4 +1,6 @@
-# Independent source verification — verified opt-in, not deployed
+# Independent source verification — verified internal rollout
+
+Current status: enabled internally after the separately approved funding and [hosted rollout check](verification-rollout.md). The preparation and QA history below records the earlier checkpoint boundary.
 
 Founder direction: keep our backend and fix supported memories being rejected. Ordinary recording deletion retaining memory remains a separately approved, unimplemented change.
 
