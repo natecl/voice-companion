@@ -16,7 +16,7 @@ Completion records references and fingerprints of all canonical evidence supplie
 
 Stored citations contain canonical source locations, not duplicated transcript text. Citation IDs must match the answer and supplied source dependencies. A source deletion/revision atomically scrubs affected answer text, citations and dependency rows. Follow-ups are scrubbed too because they inherited the same dependencies. Original user questions remain their own authored messages. IDs and invalidated states remain so the future UI can show an unavailable-answer placeholder.
 
-Other evidence changes, such as corrections, identity or validity transitions, are detected by canonical rehydration on page/history reads and before completing a pending answer. Outdated answers cannot silently enter new context. An in-flight answer with changed evidence fails completion; no stale answer is saved. A bounded fifty-dependency ceiling fails explicitly instead of dropping provenance.
+Other evidence changes, such as corrections, identity or validity transitions, are detected by canonical rehydration on page/history reads and before completing a pending answer. These qualification changes mark an answer `outdated`: visible historical answer text and citation locations remain, but the turn cannot enter new context. Dependencies remain so a later source deletion still scrubs the content. Outdated answers cannot silently enter new context. An in-flight answer with changed evidence fails completion; no stale answer is saved. A bounded fifty-dependency ceiling fails explicitly instead of dropping provenance.
 
 ## QA
 

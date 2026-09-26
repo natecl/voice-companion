@@ -84,8 +84,14 @@ class CompanionChatTests(unittest.TestCase):
         old=self.store.search(self.owner)[0]['id']
         self.store.put_source(self.owner,source('new',text='Maya now enjoys tennis.'))
         self.store.commit_claims(self.store.claim_job(self.owner),[candidate('Maya enjoys tennis.',relation='supersedes',target=old)])
-        self.assertEqual(self.chat.page(self.owner)['turns'][0]['state'],'invalidated')
+        turn=self.chat.page(self.owner)['turns'][0]
+        self.assertEqual(turn['state'],'outdated')
+        self.assertEqual(turn['answer'],'Hello back')
         self.assertEqual(self.chat.context(self.owner)['turns'],[])
+        self.store.delete_source(self.owner,'s')
+        turn=self.chat.page(self.owner)['turns'][0]
+        self.assertEqual(turn['state'],'invalidated')
+        self.assertIsNone(turn['answer'])
 
     def test_citations_must_match_canonical_evidence(self):
         packet=self.evidence();self.chat.start(self.owner,'a','What sport?')

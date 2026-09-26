@@ -130,7 +130,7 @@ Delivery split: **5A** adds transactional owner-scoped lexical indexing and boun
 
 ### Checkpoint 6A — persistent main companion chat
 
-Delivery split: **6A1** adds durable owner-scoped main-chat storage, duplicate-safe turn states and source-derived history invalidation; see [storage QA and integration limits](companion-chat-store.md). Context assembly, service/native integration and live conversational QA remain pending.
+Delivery split: **6A1** adds durable owner-scoped main-chat storage, duplicate-safe turn states and source-derived history invalidation; see [storage QA and integration limits](companion-chat-store.md). **6A2** adds bounded source-labelled context assembly with canonical history evidence and fixed live input; see [QA and live-persistence boundary](companion-context.md). Live-snapshot persistence, service/native integration and live conversational QA remain pending.
 
 **Outcome:** one obvious place to talk, independent of recording selection, with reliable conversational continuity.
 
