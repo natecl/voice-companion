@@ -107,3 +107,25 @@ class RolloutBudgetTests(unittest.TestCase):
             before=admission.db.execute('SELECT * FROM policy').fetchall()
             with self.assertRaisesRegex(ValueError,'Existing usage'):provision_rollout_allowance(*paths)
             self.assertEqual(admission.db.execute('SELECT * FROM policy').fetchall(),before)
+
+    def test_preference_allowance_remains_opt_in_and_survives_restart(self):
+        import os
+        from unittest.mock import patch
+        from profile_budget import provision_rollout_allowance,provision_preference_allowance
+        from service_policy import open_ledger,PREFERENCE_POLICIES
+        with tempfile.TemporaryDirectory() as folder:
+            paths,admission=self.fixture(folder);provision_rollout_allowance(*paths)
+            before=admission.db.execute('SELECT * FROM request ORDER BY id').fetchall()
+            provision_preference_allowance(*paths);provision_preference_allowance(*paths)
+            self.assertEqual(admission.db.execute('SELECT sum(reserved) FROM request').fetchone(),(3_200_000,))
+            self.assertEqual(admission.db.execute('SELECT cap FROM budget').fetchone(),(5_000_000,))
+            for row in before:self.assertEqual(admission.db.execute('SELECT * FROM request WHERE id=?',(row[0],)).fetchone(),row)
+            options=dict(include_rework_allowance=True,include_consolidation_allowance=True,include_multisource_allowance=True,include_rollout_allowance=True)
+            self.assertEqual(ProfileBudget(paths[1],**options).cap,2_900_000)
+            new=ProfileBudget(paths[1],include_preference_allowance=True,**options)
+            for i in range(320):new.reserve(str(i),'jev-1.13.0')
+            with self.assertRaisesRegex(Rejected,'profile_budget_limit'):new.reserve('over','jev-1.13.0')
+            with patch.dict(os.environ,{'VOICE_DATA_DIR':folder,'VOICE_ENABLE_ASK':'1'}):
+                reopened=open_ledger(migrate=True)
+                self.assertEqual(dict((r[0],tuple(r[1:])) for r in reopened.db.execute('SELECT * FROM policy')),PREFERENCE_POLICIES)
+                self.assertEqual(reopened.usage(),admission.usage());reopened.close()
