@@ -20,7 +20,7 @@ import memory_indexing
 import companion_chat
 import companion_snapshots
 
-VERSION = 14
+VERSION = 15
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -83,7 +83,7 @@ class MemoryStore:
         self.embedding_model = embedding_model
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, VERSION):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -171,6 +171,8 @@ class MemoryStore:
                 db.executescript(companion_chat.SCHEMA)
             if version < 14:
                 db.executescript(companion_snapshots.SCHEMA)
+            if version < 15:
+                db.executescript(companion_chat.REQUEST_SCHEMA)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)

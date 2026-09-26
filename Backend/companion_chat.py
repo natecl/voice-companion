@@ -1,5 +1,6 @@
 """Durable main chat and source-derived answer invalidation; no model calls."""
 import json
+import hashlib
 import re
 import uuid
 from admission import Rejected
@@ -21,6 +22,17 @@ CREATE TABLE IF NOT EXISTS companion_dependency(
  FOREIGN KEY(owner,turn) REFERENCES companion_turn(owner,id));
 CREATE INDEX IF NOT EXISTS companion_source ON companion_dependency(owner,session);
 PRAGMA user_version=13; COMMIT;'''
+
+
+REQUEST_SCHEMA="""BEGIN IMMEDIATE;
+CREATE TABLE IF NOT EXISTS companion_request(
+ owner TEXT NOT NULL, turn TEXT NOT NULL, digest TEXT NOT NULL,
+ PRIMARY KEY(owner,turn), FOREIGN KEY(owner,turn) REFERENCES companion_turn(owner,id));
+PRAGMA user_version=15; COMMIT;"""
+
+
+def request_digest(question,context):
+    return hashlib.sha256(json.dumps([question,context],sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 
 
 def scrub(db,owner,turn):
@@ -52,15 +64,18 @@ class CompanionChat:
     def main(self,owner):
         with self.store.transaction() as db:return self._main(db,owner)
 
-    def start(self,owner,question_id,question):
+    def start(self,owner,question_id,question,*,context=None):
         from memory_store import identifier
         identifier(question_id)
         if not isinstance(question,str) or not question.strip() or len(question)>1000:raise Rejected('invalid_question')
+        digest=request_digest(question,context)
         with self.store.transaction() as db:
             conversation=self._main(db,owner)
             prior=db.execute('SELECT * FROM companion_turn WHERE owner=? AND id=?',(owner,question_id)).fetchone()
             if prior:
-                if prior['question']!=question:raise Rejected('question_id_conflict')
+                stored=db.execute('SELECT digest FROM companion_request WHERE owner=? AND turn=?',(owner,question_id)).fetchone()
+                expected=stored[0] if stored else request_digest(prior['question'],None)
+                if prior['question']!=question or digest!=expected:raise Rejected('question_id_conflict')
                 self._validate_turn(db,owner,prior)
                 prior=db.execute('SELECT * FROM companion_turn WHERE owner=? AND id=?',(owner,question_id)).fetchone()
                 return dict(conversation_id=conversation,created=False,turn=dict(prior))
@@ -69,6 +84,7 @@ class CompanionChat:
             count,sequence=db.execute('SELECT count(*),coalesce(max(sequence),0)+1 FROM companion_turn WHERE owner=?',(owner,)).fetchone()
             if count>=2000:raise Rejected('chat_storage_limit')
             db.execute("INSERT INTO companion_turn(owner,id,sequence,question,state,answer,created_at) VALUES(?,?,?,?,'pending',NULL,?)",(owner,question_id,sequence,question,self.store.clock()))
+            db.execute('INSERT INTO companion_request VALUES(?,?,?)',(owner,question_id,digest))
             return dict(conversation_id=conversation,created=True,turn=dict(db.execute('SELECT * FROM companion_turn WHERE owner=? AND id=?',(owner,question_id)).fetchone()))
 
     def _dependencies(self,db,owner,turn):
@@ -174,3 +190,10 @@ class CompanionChat:
             if len(items)>50:raise Rejected('chat_context_too_large')
             values=list(items.values())
             return dict(version='selected-evidence-v1',owner=owner,items=values,digest=memory_context.fingerprint(values))
+
+    def recover_interrupted(self):
+        """Startup only while holding the service's exclusive process lock; no inference retries."""
+        with self.store.transaction() as db:
+            count=db.execute("UPDATE companion_turn SET state='failed' WHERE state='pending'").rowcount
+            db.execute("DELETE FROM companion_snapshot WHERE NOT EXISTS(SELECT 1 FROM companion_dependency WHERE owner=companion_snapshot.owner AND json_extract(reference,'$.snapshot_id')=companion_snapshot.id)")
+            return count
