@@ -109,7 +109,7 @@ def pair_evidence(pair,role):
     previous_evidence=previous.get('evidence') or [dict(passage=p,origin=previous_source.get('origin','recording'),captured_at=previous_source.get('captured_at')) for p in previous_source.get('passages',[])]
     for e in previous_evidence:
         passage=e['passage'];prior_excerpts=[passage['text']]
-        proposal=previous.get('proposal')
+        proposal=e.get('proposal') or previous.get('proposal')
         if len(passage['text'])>2000 and proposal:
             spans=[s for s in proposal['spans'] if s['passage']==passage['id']]
             # Exact original spans plus bounded neighboring text, never a generated summary.

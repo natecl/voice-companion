@@ -2,7 +2,7 @@ import tempfile
 from pathlib import Path
 import unittest
 from admission import Admission,Rejected
-from profile_budget import provision,provision_rework_allowance,ProfileBudget
+from profile_budget import provision,provision_rework_allowance,provision_consolidation_allowance,ProfileBudget
 
 class ReworkBudgetTests(unittest.TestCase):
     def test_allowance_is_idempotent_bounded_and_not_automatic_for_old_callers(self):
@@ -19,3 +19,11 @@ class ReworkBudgetTests(unittest.TestCase):
             self.assertEqual(ProfileBudget(memory_path).cap,1_000_000)
             self.assertEqual(admission.db.execute('SELECT count(*) FROM request').fetchone()[0],2)
             self.assertEqual(admission.db.execute('SELECT sum(reserved) FROM request').fetchone()[0],2_000_000)
+
+            provision_consolidation_allowance(global_path,memory_path)
+            provision_consolidation_allowance(global_path,memory_path)
+            expanded=ProfileBudget(memory_path,include_rework_allowance=True,include_consolidation_allowance=True)
+            for i in range(20):expanded.reserve('additional-'+str(i),'jev-1.13.0')
+            with self.assertRaisesRegex(Rejected,'profile_budget_limit'):expanded.reserve('overflow2','jev-1.13.0')
+            self.assertEqual(ProfileBudget(memory_path,include_rework_allowance=True).cap,2_000_000)
+            self.assertEqual(admission.db.execute('SELECT sum(reserved) FROM request').fetchone()[0],2_200_000)

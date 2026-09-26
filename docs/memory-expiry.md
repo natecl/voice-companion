@@ -19,3 +19,5 @@ Local macOS/Python 3.13: exact-request replay through real writer/SQLite reprodu
 ## Limits and next work
 
 This first verified path supports explicit ISO through-dates only. Month-name dates without a year, weekdays, `until` boundaries, compound expressions and richer conversational expiry remain unresolved; no regex guesses a missing year. Future or tentative plans do not acquire expiry through this path. Consolidation and the reworked retrieval/context assembly are still pending. The complete memory rework is not deployed.
+
+Subsequent consolidation work has a newly approved allowance and updated balance; see [current QA ledger](memory-consolidation.md).

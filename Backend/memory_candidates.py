@@ -38,7 +38,8 @@ def related(store,owner,proposal,*,limit=4):
                 passage=live_passage(db,owner,ref)
                 source=db.execute('SELECT payload FROM source WHERE owner=? AND session=?',(owner,ref['session'])).fetchone()
                 origin=json.loads(source['payload']).get('origin','recording')
-                evidence.append(dict(ref=ref,passage=passage,origin=origin,captured_at=json.loads(source['payload']).get('captured_at')))
+                own=db.execute('SELECT proposal FROM memory_fact_evidence WHERE owner=? AND claim=? AND session=? AND revision=?',(owner,item['id'],ref['session'],ref['revision'])).fetchone()
+                evidence.append(dict(proposal=json.loads(own[0]) if own else None,ref=ref,passage=passage,origin=origin,captured_at=json.loads(source['payload']).get('captured_at')))
             item.update(claim_identity(db,owner,item['id']))
             item['evidence_token']=snapshot(db,owner,item['id'])
             item['identity_links']=[dict(r) for r in db.execute("SELECT l.* FROM memory_identity_link l JOIN memory_mention m ON m.id=l.mention WHERE m.owner=? AND m.claim=? AND l.state='active' ORDER BY l.id",(owner,item['id']))]
