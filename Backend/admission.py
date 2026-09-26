@@ -42,6 +42,7 @@ class Admission:
                 category TEXT NOT NULL REFERENCES policy(category), started REAL NOT NULL,
                 reserved INTEGER NOT NULL, state TEXT NOT NULL
                     CHECK(state IN ('active','completed','failed','interrupted')));
+            CREATE TABLE IF NOT EXISTS allocation_request (id TEXT PRIMARY KEY REFERENCES request(id));
             CREATE UNIQUE INDEX IF NOT EXISTS one_active_category
                 ON request(category) WHERE state='active';
             CREATE TABLE IF NOT EXISTS recording_qa_grant (
@@ -119,7 +120,7 @@ class Admission:
             row = self.db.execute('SELECT attempts FROM recording_qa_day WHERE day_start=?', (day_start,)).fetchone()
             if replace_consumed:
                 base = self.db.execute("SELECT daily FROM policy WHERE category='stt'").fetchone()
-                used = self.db.execute("SELECT count(*) FROM request WHERE category='stt' AND started>=?", (day_start,)).fetchone()[0]
+                used = self.db.execute("SELECT count(*) FROM request WHERE category='stt' AND id NOT IN (SELECT id FROM allocation_request) AND started>=?", (day_start,)).fetchone()[0]
                 active = self.db.execute("SELECT 1 FROM request WHERE category='stt' AND state='active'").fetchone()
                 if row != (1,) or base is None or used != base[0] + 1 or active:
                     raise ValueError('Replacement requires exactly one consumed allowance and no active recording')
@@ -180,7 +181,7 @@ class Admission:
                 daily += self.db.execute('SELECT count(*) FROM recording_qa_grant WHERE day_start=?', (day_start,)).fetchone()[0]
             if category == 'ask':
                 daily += self.db.execute('SELECT count(*) FROM ask_qa_grant WHERE day_start=?', (day_start,)).fetchone()[0]
-            if self.db.execute('SELECT count(*) FROM request WHERE category=? AND started>=?',
+            if self.db.execute("SELECT count(*) FROM request WHERE category=? AND id NOT IN (SELECT id FROM allocation_request) AND started>=?",
                                (category, day_start)).fetchone()[0] >= daily:
                 raise Rejected('daily_limit')
             category_used = self.db.execute('SELECT coalesce(sum(reserved),0) FROM request WHERE category=?',

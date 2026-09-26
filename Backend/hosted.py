@@ -37,12 +37,18 @@ def independent_verification_setting(env, rework_enabled):
     return value=='1'
 
 
-def validate_rework_allocations(admission, *, rollout=False):
+def validate_rework_allocations(admission, *, rollout=False, verification=False):
     import profile_budget as profile
     allocations=[(profile.REWORK_APPROVAL_ID,profile.REWORK_ALLOWANCE),
             (profile.CONSOLIDATION_APPROVAL_ID,profile.CONSOLIDATION_ALLOWANCE),
             (profile.MULTISOURCE_APPROVAL_ID,profile.MULTISOURCE_ALLOWANCE)]
     if rollout:allocations.append((profile.ROLLOUT_APPROVAL_ID,profile.ROLLOUT_ALLOWANCE))
+    if verification:
+        if not rollout:raise ValueError("Verification requires rollout allocation")
+        allocations.append((profile.PREFERENCE_APPROVAL_ID,profile.PREFERENCE_ALLOWANCE))
+        row=admission.db.execute("SELECT category,reserved FROM request WHERE id=?",(profile.VERIFICATION_APPROVAL_ID,)).fetchone()
+        if row is None or tuple(row)!=("stt",profile.VERIFICATION_ALLOWANCE):
+            raise ValueError("Verification rollout allocation is not reserved")
     for approval,amount in allocations:
         rows=admission.db.execute('SELECT category,reserved FROM request WHERE id IN (?,?,?)',
             (approval,approval+':ask',approval+':jev')).fetchall()
@@ -109,10 +115,11 @@ async def main():
                     allocation = store.db.execute('SELECT category,reserved FROM request WHERE id=?', (PROFILE_APPROVAL_ID,)).fetchone()
                     if allocation is None or tuple(allocation) != ('ask', PROFILE_ALLOCATION):
                         raise ValueError('Profile QA allocation is not reserved')
-                    if rework_enabled:validate_rework_allocations(store,rollout=rollout_qa=='1')
+                    if rework_enabled:validate_rework_allocations(store,rollout=rollout_qa=='1',verification=independent_verification)
                     budget = ProfileBudget(directory / 'memory-budget.sqlite',include_rework_allowance=rework_enabled,
                         include_consolidation_allowance=rework_enabled,include_multisource_allowance=rework_enabled,include_rollout_allowance=rollout_qa=='1',
-                        independent_source_verification=independent_verification)
+                        independent_source_verification=independent_verification,
+                        include_preference_allowance=independent_verification,include_verification_allowance=independent_verification)
                 models = MemoryModels(answer_key, os.environ['TYPESAFE_API_KEY'])
                 if learning_enabled:
                     if rework_enabled:
