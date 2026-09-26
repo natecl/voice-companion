@@ -1,0 +1,8 @@
+[
+ {"id":"temporary","text":"Maya is staying in Boston through 2026-09-30.","claim":"Maya is staying in Boston through 2026-09-30.","accept":true},
+ {"id":"access","text":"Maya has temporary studio access through 2026-09-30.","claim":"Maya has temporary studio access through 2026-09-30.","accept":true},
+ {"id":"nearby","text":"Maya enjoys swimming. Her pool pass is valid through 2026-09-30.","claim":"Maya enjoys swimming.","accept":false},
+ {"id":"negation","text":"Maya is not staying in Boston through 2026-09-30; her end date is unknown.","claim":"Maya is staying in Boston.","accept":false},
+ {"id":"event","text":"Maya likes theater. A theater festival runs through 2026-09-30.","claim":"Maya likes theater.","accept":false},
+ {"id":"quote","text":"Maya quoted an example, 'I am staying in Boston through 2026-09-30.' She is actually in Seattle.","claim":"Maya is staying in Boston.","accept":false}
+]

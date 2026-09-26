@@ -2,6 +2,7 @@
 import asyncio
 from admission import Rejected
 import memory_atomic
+import memory_expiry
 import memory_candidates
 import memory_evidence
 import memory_evidence_chunks
@@ -14,9 +15,10 @@ from memory_writer import bounded_batches
 
 
 class EvidenceWriter:
-    def __init__(self,store,models,budget,*,luna_identity=True,chunking=False,semantic_boundaries=False):
+    def __init__(self,store,models,budget,*,luna_identity=True,chunking=False,semantic_boundaries=False,expiry=False):
         self.store,self.models,self.budget=store,models,budget
         self.lock=asyncio.Lock()
+        self.expiry=expiry
         self.luna_identity=luna_identity
         self.chunking,self.semantic_boundaries=chunking,semantic_boundaries
         if semantic_boundaries and not chunking:raise ValueError("Semantic boundaries require chunking")
@@ -84,6 +86,11 @@ class EvidenceWriter:
                             response=await metered(self.store,self.budget,job,f'evidence-applicability:{index}:{begin}',request,self.models.judge)
                             applicability.update(memory_judgments.decisions(response['data'],request,'applicability'))
                     item=self.select(p,pool,checks,identity,relations,applicability)
+                    if self.expiry:
+                        requested=memory_expiry.request(source,p)
+                        if requested is not None:
+                            response=await metered(self.store,self.budget,job,f'expiry:{memory_expiry.VERSION}:{index}',requested,self.models.judge)
+                            item['expiry']=memory_expiry.decision(response['data'],requested)
                     item['_entity']=item.get('_entity',f'batch_{len(items)}')
                     items.append(item);audit.append(dict(candidate=index,result=item['action']))
                 ids=await asyncio.to_thread(memory_atomic.commit,self.store,job,items)
