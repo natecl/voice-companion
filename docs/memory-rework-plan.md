@@ -97,6 +97,8 @@ Delivery split: **2A** isolates known job-local failures and exposes learner sta
 
 **Gate:** full writer execution first with cached responses, then a frozen live development/held-out subset within the approved allowance. Designated positives must create the expected facts and corrections; critical negatives must produce no unsupported entity merge, false user attribution or false supersession. Inspect stored results and history. A failed negative blocks this checkpoint; do not label it a passing “limitation.”
 
+Delivery split: **3A** validates versioned evidence extraction and exact source spans with recorded live responses; **3B** supplies evidence-aware candidate lookup and independent atomic Jev judgments; **3C** adopts those decisions through the identity/correction ledger in the writer and runs the full positive/negative gate. Extraction proposals alone never authorize identity or lifecycle writes.
+
 ### Checkpoint 4 — temporal understanding and internal forgetting
 
 **Outcome:** changes and temporary circumstances are handled without a memory-management chore.
