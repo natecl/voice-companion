@@ -1,6 +1,6 @@
 # Personal profile recall — checkpoint 3
 
-Status: implemented and locally/provider verified; hosted rollout and physical iPhone acceptance pending. This checkpoint must remain unmerged until device acceptance. Checkpoints 1–2 are merged in PRs 29–30. No public release is implied.
+Status: implemented and locally/provider verified; hosted rollout complete; physical iPhone acceptance pending. This checkpoint must remain unmerged until device acceptance. Checkpoints 1–2 are merged in PRs 29–30. No public release is implied.
 
 ## Behavior
 
@@ -54,3 +54,11 @@ After rollout authorization:
 5. Record physical results, final spend and deployed/native commits in this document and PR. Review and merge only after acceptance passes.
 
 Rollback: disable both personal flags to isolate the feature while retaining source data and the current-schema binary. Do not deploy the old schema-2 binary against schema 3. A database restore requires review of post-backup changes, especially deletions; never silently resurrect deleted content. Prefer a forward fix. Hosted rollout and physical QA remain outstanding, not passing by proxy from local tests.
+
+## Approved rollout — September 25, 2026
+
+Founder approved deployment in the task. Deployed implementation `85e72cd8dd630c529b9fc7a043e7cc0b9cc5f229`, Render deployment `dep-darh9k0jo6nc73fvindg`. Both personal flags are enabled; automatic deployment remains off. The running process reports that exact commit, `/health` returns 200, memory schema is 3 and SQLite integrity is `ok`. Existing owner mapping is unchanged. Jobs remain five done/one obsolete; no active or queued work was carried into rollout.
+
+All three canonical databases were backed up with SQLite's backup API to `/var/data/voice-companion/backups/personal-profile-85e72cd` before migration, and each backup passed integrity checking. Usage history and the canonical profile allocation were preserved. There were zero Asks today under the existing 20/day policy, so the planned two questions need no grant. Profile spend is unchanged at 38 calls/$0.38 reserved.
+
+Built and installed the matching signed `ai.voicecompanion.phone` app on the existing physical iPhone 16 Pro without re-enrollment. Evidence: `work/profile-phone-device-build.log` and `work/profile-phone-install.log`. Installation is not behavioral acceptance. Waiting for founder readiness before opening or exercising the manual flow; this PR remains draft and unmerged.

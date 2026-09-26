@@ -1,6 +1,6 @@
 # Personal companion profile — implementation plan
 
-Status: checkpoints 1–2 implemented and verified within their bounded scopes; checkpoint 3 implemented with local/provider QA; hosted and physical acceptance pending. See [recall evidence](personal-profile-recall.md). See [learning evidence](personal-profile-learning.md). See [foundation evidence](personal-profile-foundation.md). Founder direction, September 25, 2026. Follow the [engineering principles](engineering-principles.md) and [product source of truth](product-source-of-truth.md). Voice recognition follows this slice.
+Status: checkpoints 1–2 implemented and verified within their bounded scopes; checkpoint 3 implemented with local/provider QA; hosted rollout complete; physical acceptance pending. See [recall evidence](personal-profile-recall.md). See [learning evidence](personal-profile-learning.md). See [foundation evidence](personal-profile-foundation.md). Founder direction, September 25, 2026. Follow the [engineering principles](engineering-principles.md) and [product source of truth](product-source-of-truth.md). Voice recognition follows this slice.
 
 ## Outcome and boundary
 
