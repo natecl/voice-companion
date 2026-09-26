@@ -7,6 +7,7 @@ from memory_models import LUNA
 from profile_identity import personal
 
 VERSION = 'memory-evidence-v2.5'
+RECORDING_CONTINUITY = '\nRead passages in order as one conversation. A named subject can be a project, group, person or pet, not just a speaker. For example, p1="Team Aspen." p2="Prefers evenings." supports named Team Aspen; cite BOTH excerpts. Do not turn a continuing predicate into a speaker preference. A following same-topic detail such as "Its meetings are at the cafe" also concerns that named subject; include the earlier name as evidence instead of extracting the detail in isolation. Carry subjects only across clear discourse, never across competing subjects or topic/quotation changes. If cited excerpts lack one consistent speaker label, use null. A plain present-tense statement is current as reported at capture time, not proof it remains true today. This does not identify the account owner.'
 PROMPT = (Path(__file__).parent/'prompts/memory-evidence-v2.md').read_text()
 
 
@@ -41,6 +42,7 @@ def extraction_request(source):
             variants.append(object_schema(dict(FIELDS,scope=enum(scope),mention=mention)))
         schema=object_schema(dict(memories={'type':'array','items':{'anyOf':variants}}))
         instructions+='\nApplication provenance: these are unidentified recording speakers. Use named when the memory subject has an explicit name, even though cross-source identity is not verified. Use unresolved with null name for an unnamed subject. Never infer an account-owner relationship.'
+        instructions+=RECORDING_CONTINUITY
         view=dict(source,origin='recording')
     request=dict(model=LUNA,reasoning={'effort':'none'},service_tier='default',instructions=instructions,
         input=json.dumps(view,ensure_ascii=False),max_output_tokens=3000,store=False,tools=[],truncation='disabled',
@@ -107,3 +109,24 @@ def parse(data,source,*,exact_spans=None):
         if any(not any(q in r['quote'] for r in c['evidence']) for q in c['mention']['qualifiers']):raise Rejected('unsupported_qualifier')
         result.append(dict(c,spans=spans,contract=VERSION))
     return result
+
+
+def parse_recording_extraction(data,source):
+    """Discard a narrator hint when cited spans mix that label with unlabelled audio.
+
+    Raw provider output remains in the audit cache. Wrong/conflicting speaker labels
+    still fail strict parsing. Missing diarization cannot destroy supported text.
+    """
+    if personal(source):return parse(data,source)
+    normalized=json.loads(json.dumps(data))
+    passages={p['id']:p for p in source['passages']}
+    if isinstance(normalized,dict) and isinstance(normalized.get('memories'),list):
+        for c in normalized['memories']:
+            if not isinstance(c,dict) or not isinstance(c.get('mention'),dict) or not isinstance(c.get('evidence'),list):continue
+            label=c['mention'].get('speaker_label')
+            refs=c['evidence']
+            if type(label) is not int or not refs:continue
+            if any(not isinstance(r,dict) or not isinstance(r.get('passage'),str) or r['passage'] not in passages for r in refs):continue
+            speakers=[passages[r['passage']]['speakers'] for r in refs]
+            if [] in speakers and all(s in ([],[label]) for s in speakers):c['mention']['speaker_label']=None
+    return parse(normalized,source)

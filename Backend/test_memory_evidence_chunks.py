@@ -4,8 +4,10 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 from admission import Rejected
 import memory_evidence
+import memory_recording_identity
 import memory_evidence_chunks as chunks
 from memory_evidence_writer import EvidenceWriter
 from memory_store import MemoryStore
@@ -203,6 +205,9 @@ class EvidenceChunkTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(request['state']['source']['session_id'],data['session_id'])
         self.assertIn(FIRST,request['questions']['support_0']['instructions']['cited_transcript'])
 
+    # This immutable provider fixture exercises the historical prompt, not current quality.
+    @patch('memory_recording_identity.PROMPT',memory_recording_identity.BASE_PROMPT)
+    @patch('memory_evidence.RECORDING_CONTINUITY','')
     async def test_exact_provider_replay_of_final_semantic_writer(self):
         import copy
         directory=Path(__file__).parent/'fixtures/memory_evidence_chunks/recorded'

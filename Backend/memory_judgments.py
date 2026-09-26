@@ -4,7 +4,7 @@ from admission import Rejected
 from memory_models import JEV, choice, parse_judgments
 from profile_identity import identity_rule,personal
 
-VERSION='evidence-judgments-v16'
+VERSION='evidence-judgments-v17'
 POLICIES={'support':.90,'subject':.95,'modality':.90,'time':.90,'identity':.95,'relation':.95,'applicability':.95}
 
 
@@ -55,6 +55,12 @@ def verify_proposals(source,proposals,*,include_subject=True):
     if not personal(source):
         for i,p in enumerate(proposals):
             questions[f'modality_{i}']['instructions']['question']='Does the cited recording present this claim with the proposed basis? Stated means explicitly asserted by a speaker; it does not require independent truth verification or knowing who the speaker is. Tentative means a real possibility or plan explicitly marked uncertain. Hypothetical examples and unaccepted advice do not establish an actual fact or plan. Judge the asserted versus tentative status, not speaker identity or current-world truth.'
+    # A continuous utterance can span diarization passages. Keep original excerpts
+    # in source provenance, but supply their ordered text as a readable statement.
+    for i,p in enumerate(proposals):
+        if len(p['evidence'])>1:
+            for aspect in aspects:
+                questions[f'{aspect}_{i}']['instructions']['cited_transcript']=' '.join(r['quote'] for r in p['evidence'])
     if not include_subject:
         questions={key:value for key,value in questions.items() if not key.startswith('subject_')}
     cited={ref.get('passage') for p in proposals for ref in p['evidence']}

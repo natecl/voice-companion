@@ -95,3 +95,17 @@ class EvidenceTests(unittest.TestCase):
                 record=json.loads((directory/'recorded'/(case['id']+'.json')).read_text())
                 candidates=evidence.parse(record['response']['data'],record['source'])
                 self.assertTrue(checks(case,candidates))
+
+    def test_missing_diarization_drops_hint_without_inventing_identity(self):
+        s=source(text='Project Alder.')
+        s['passages'].append(dict(id='p2',start=2.,duration=3.,text='Prefers evenings.',speakers=[0]))
+        c=candidate();c.update(text='Project Alder prefers evenings.',scope='named',
+            mention=dict(name='Project Alder',relationship=None,qualifiers=[],speaker_label=0),
+            time=dict(status='current',expression=None),evidence=[dict(passage='p1',quote='Project Alder.'),dict(passage='p2',quote='Prefers evenings.')])
+        raw=dict(memories=[c])
+        parsed=evidence.parse_recording_extraction(raw,s)
+        self.assertIsNone(parsed[0]['mention']['speaker_label'])
+        self.assertEqual(raw['memories'][0]['mention']['speaker_label'],0)
+        self.assertEqual(len(parsed[0]['spans']),2)
+        s['passages'][0]['speakers']=[1]
+        with self.assertRaisesRegex(Rejected,'invalid_mention_speaker'):evidence.parse_recording_extraction(raw,s)

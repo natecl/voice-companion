@@ -28,7 +28,7 @@ INDEXED_PROMPT = (Path(__file__).parent / 'prompts/indexed-memory-v1.md').read_t
 
 def instructions(data):
     if data.get('contract')=='companion-context-v1':
-        return (Path(__file__).parent/'prompts/companion-chat-v1.md').read_text()
+        return (Path(__file__).parent/'prompts/companion-chat-v2.md').read_text()
     return PROMPT + (INDEXED_PROMPT if data.get('memory_contract') == 'indexed-v1' else '')
 
 
