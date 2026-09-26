@@ -20,8 +20,9 @@ import memory_indexing
 import companion_chat
 import companion_snapshots
 import memory_retention
+import recording_notes
 
-VERSION = 16
+VERSION = 17
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -85,7 +86,7 @@ class MemoryStore:
         self.embedding_model = embedding_model
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, VERSION):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -177,6 +178,8 @@ class MemoryStore:
                 db.executescript(companion_chat.REQUEST_SCHEMA)
             if version < 16:
                 db.executescript(memory_retention.SCHEMA)
+            if version < 17:
+                db.executescript(recording_notes.SCHEMA)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)
@@ -222,6 +225,7 @@ class MemoryStore:
             return existing_owner
 
     def _invalidate_source(self, db, owner, session, *, deleting=False):
+        recording_notes.invalidate(db,owner,session,deleting=deleting)
         companion_chat.invalidate_source(db,owner,session,deleting=deleting)
         if deleting:db.execute('DELETE FROM companion_snapshot WHERE owner=? AND session=?',(owner,session))
         db.execute("UPDATE memory_index_job SET state='obsolete',lease=NULL,error=NULL WHERE owner=? AND session=?",(owner,session))
