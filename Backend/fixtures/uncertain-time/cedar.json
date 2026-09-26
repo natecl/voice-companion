@@ -1,0 +1,165 @@
+{
+  "source": {
+    "captured_at": 1790461403.5104551,
+    "completed": true,
+    "passages": [
+      {
+        "duration": 4.251,
+        "id": "p1",
+        "speakers": [
+          0
+        ],
+        "start": 1.694,
+        "text": "Project Cedar meet at the garden pavilion."
+      }
+    ],
+    "revision": 1,
+    "session_id": "FA239809-7F41-4726-BBAB-EDAA89C4A608",
+    "timezone": "America/New_York"
+  },
+  "results": [
+    {
+      "stage": "evidence-extract:v2",
+      "request_hash": "b9f251c9a8695f72b34b9a621d1bea5d97e26a637acd8ef3a39c2ac4fb1d814f",
+      "response": {
+        "data": {
+          "memories": [
+            {
+              "text": "Project Cedar meets at the garden pavilion.",
+              "kind": "fact",
+              "basis": "stated",
+              "mention": {
+                "name": "Project Cedar",
+                "relationship": null,
+                "qualifiers": [],
+                "speaker_label": 0
+              },
+              "scope": "named",
+              "evidence": [
+                {
+                  "passage": "p1",
+                  "quote": "Project Cedar meet at the garden pavilion."
+                }
+              ],
+              "time": {
+                "status": "current",
+                "expression": null
+              },
+              "change": {
+                "kind": "none",
+                "previous_text": null
+              }
+            }
+          ]
+        },
+        "usage": {
+          "input_tokens": 1456,
+          "input_tokens_details": {
+            "cache_write_tokens": 1453,
+            "cached_tokens": 0
+          },
+          "output_tokens": 103,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1559
+        },
+        "elapsed_seconds": 4.202321955002844
+      }
+    },
+    {
+      "stage": "independent-source-v2:metadata:0",
+      "request_hash": "74e65f04f82d106a39629f86087eae4c96ef3ede32f47ea75f277849bc4e4991",
+      "response": {
+        "data": {
+          "model": "jev-1.13.0",
+          "answers": {
+            "modality_0": {
+              "type": "choice",
+              "choice": "stated",
+              "confidence": 0.99,
+              "probabilities": {
+                "tentative": 0.0,
+                "hypothetical": 0.0,
+                "absent": 0.0,
+                "stated": 1.0
+              }
+            },
+            "time_0": {
+              "type": "choice",
+              "choice": "current",
+              "confidence": 0.44,
+              "probabilities": {
+                "current": 0.59,
+                "past": 0.0,
+                "uncertain": 0.07,
+                "future": 0.34
+              }
+            }
+          },
+          "usage": {
+            "input_tokens": 638,
+            "output_tokens": 101
+          }
+        },
+        "usage": {
+          "input_tokens": 638,
+          "output_tokens": 101
+        },
+        "elapsed_seconds": 0.2154317582026124
+      }
+    },
+    {
+      "stage": "independent-source-v2:support:0",
+      "request_hash": "219688690759b570d65967467143caf8b88dad271006494aad705fb2fea753b4",
+      "response": {
+        "data": {
+          "case_0": {
+            "verdict": "supported",
+            "passages": [
+              "p1"
+            ]
+          }
+        },
+        "usage": {
+          "input_tokens": 241,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 48,
+          "output_tokens_details": {
+            "reasoning_tokens": 19
+          },
+          "total_tokens": 289
+        },
+        "elapsed_seconds": 1.809013451449573
+      }
+    },
+    {
+      "stage": "recording-identity:0",
+      "request_hash": "c6c5e901d956b058124735053dbb66f714848f6807fc3811e3417a127d437623",
+      "response": {
+        "data": {
+          "subject_0": {
+            "label": "supported",
+            "quote": "Project Cedar meet at the garden pavilion."
+          }
+        },
+        "usage": {
+          "input_tokens": 359,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 29,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 388
+        },
+        "elapsed_seconds": 1.0137499058619142
+      }
+    }
+  ]
+}

@@ -154,7 +154,7 @@ class EvidenceWriterTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(self.store.search(self.owner,unresolved_only=True)),1)
 
     async def test_historical_future_and_uncertain_changes_do_not_replace_current_fact(self):
-        for label,status in [('historical','past'),('future','future'),('uncertain','past'),('current_change','future')]:
+        for label,status in [('historical','past'),('future','future'),('uncertain','past'),('current_change','future'),('current_change','uncertain')]:
             with self.subTest(label=label):
                 self.setUp()
                 await self.run_source('one',[proposal('My daughter Maya enjoys swimming.')])
@@ -170,7 +170,7 @@ class EvidenceWriterTests(unittest.IsolatedAsyncioTestCase):
                 p=proposal('My daughter Maya switched temporarily to tennis.')
                 p['kind']='event';p['time']['status']=status
                 await self.run_source('two',[p])
-                if label=='uncertain':
+                if label=='uncertain' or status=='uncertain':
                     self.assertEqual(self.store.search(self.owner),[])
                     unresolved=self.store.search(self.owner,unresolved_only=True)
                     self.assertEqual(len(unresolved),2)
