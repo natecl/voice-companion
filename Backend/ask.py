@@ -23,6 +23,17 @@ that past context was unavailable; no_match only means this bounded search suppl
 
 '''
 MAX_INPUT_BYTES = 12000
+INDEXED_PROMPT = (Path(__file__).parent / 'prompts/indexed-memory-v1.md').read_text()
+
+
+def instructions(data):
+    return PROMPT + (INDEXED_PROMPT if data.get('memory_contract') == 'indexed-v1' else '')
+
+
+def input_fits(data):
+    size=len(json.dumps(data,ensure_ascii=False).encode())
+    return size<=MAX_INPUT_BYTES and size+len(instructions(data).encode())+1024<=16000
+
 
 
 def validate_request(raw):
@@ -33,7 +44,7 @@ def validate_request(raw):
         if set(data) not in ({'question', 'passages'}, {'question', 'passages', 'memory', 'session_id'}):
             raise ValueError()
         if 'memory' in data:
-            if data['memory'] is not True:
+            if type(data['memory']) is not bool:
                 raise ValueError()
             identifier(data['session_id'])
         question, passages = data['question'], data['passages']
@@ -69,11 +80,12 @@ class Luna:
         self.key = key
 
     async def stream(self, data):
+        if not input_fits(data):raise Rejected('context_too_large')
         from openai import AsyncOpenAI
         async with AsyncOpenAI(api_key=self.key, max_retries=0, timeout=15) as client:
             stream = await client.responses.create(
                 model=MODEL, reasoning={'effort': 'none'}, service_tier='default',
-                instructions=PROMPT, input=json.dumps(data, ensure_ascii=False),
+                instructions=instructions(data), input=json.dumps(data, ensure_ascii=False),
                 max_output_tokens=1000, store=False, stream=True, tools=[], truncation='disabled')
             async with stream:
                 async for event in stream:
@@ -119,6 +131,9 @@ class AskService:
                             status = manifest['status']
                         except Exception:
                             manifest = None
+                    if manifest and manifest.get('contract')=='indexed-v1':
+                        data['memory_contract']='indexed-v1'
+                        data['memory_coverage']=manifest.get('coverage','disabled')
                     data['memory_status'] = status
                     data['past_sources'] = manifest['sources'] if manifest else []
                     await send({'type':'context', 'sources':data['past_sources'], 'memory_status':status})
