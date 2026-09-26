@@ -37,6 +37,7 @@ class MemoryRanker:
         import json
         import uuid
         import memory_context
+        import memory_related
         if not await asyncio.to_thread(memory_context.valid, self.store, owner, packet):
             raise Rejected('memory_context_changed')
         items=packet['items']
@@ -64,5 +65,8 @@ class MemoryRanker:
                     digest=memory_context.fingerprint(selected))
         if not await asyncio.to_thread(memory_context.valid,self.store,owner,chosen):
             raise Rejected('memory_context_changed')
+        chosen=await asyncio.to_thread(memory_related.expand,self.store,owner,chosen)
+        if len(json.dumps(chosen['items'],ensure_ascii=False).encode())>10000:
+            raise Rejected('related_context_too_large')
         return dict(packet=chosen,status='available' if selected else ('context_limited' if skipped else 'no_match'),
                     ranking=ranked,budget_skipped=skipped)
