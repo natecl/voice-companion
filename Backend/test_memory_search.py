@@ -41,7 +41,7 @@ class SearchTests(unittest.TestCase):
         self.store.put_source(self.owner,source(text='Old astronomy note.'))
         self.store.commit_claims(self.store.claim_job(self.owner),[])
         with self.store.connect() as db:
-            db.execute('DROP TABLE memory_passage_index');db.execute('PRAGMA user_version=9')
+            db.execute('DROP TABLE IF EXISTS memory_embedding');db.execute('DROP TABLE memory_passage_index');db.execute('PRAGMA user_version=9')
         reopened=MemoryStore(self.store.path)
         self.assertEqual(retrieve(reopened,self.owner,'astronomy')[0]['text'],'Old astronomy note.')
         self.assertIsNone(reopened.claim_job(self.owner))

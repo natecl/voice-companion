@@ -147,13 +147,13 @@ class UncertaintyTests(unittest.IsolatedAsyncioTestCase):
         self.store.delete_source(self.owner, 'deleted')
         with self.store.connect() as db:
             db.execute('DROP TABLE claim_relation_proposal')
-            db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('PRAGMA user_version=3')
+            db.execute('DROP TABLE IF EXISTS memory_embedding');db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('PRAGMA user_version=3')
         migrated = MemoryStore(self.path, personal_learning=True)
         self.assertEqual(migrated.owner_for('test-owner'), self.owner)
         self.assertEqual(migrated.profile(self.owner)[0]['id'], self.old['id'])
         self.assertEqual(migrated.put_source(self.owner, source('deleted'))['status'], 'deleted')
         with migrated.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 10)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 11)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0], 'ok')
             self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(), [])
         self.write(self.selected())
