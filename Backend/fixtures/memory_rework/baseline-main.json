@@ -1,0 +1,40 @@
+{
+  "backend_commit": "060fd857ba6c5c0b82be9541c93b4b3c5dcd8289",
+  "provider_calls": 0,
+  "interpretation": "Historical failures reproduced; not fixed acceptance.",
+  "results": [
+    {
+      "case": "paraphrase_candidate_loss",
+      "observed": "not_available_on_verified_main"
+    },
+    {
+      "case": "correction_pool_truncation",
+      "observed": "older_target_missing",
+      "pool": 50
+    },
+    {
+      "case": "oversized_source_stops_worker",
+      "observed": "following_job_stalled",
+      "jobs": [
+        {
+          "session": "large",
+          "state": "failed",
+          "error": "memory_extraction_too_large"
+        },
+        {
+          "session": "following",
+          "state": "queued",
+          "error": null
+        }
+      ]
+    },
+    {
+      "case": "uncertain_correction",
+      "observed": "new_claim_different_subject"
+    },
+    {
+      "case": "same_name_key",
+      "observed": "identical_key_without_identity_evidence"
+    }
+  ]
+}

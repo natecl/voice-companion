@@ -66,3 +66,18 @@ Use Jev for bounded memory judgments and relevance assessment of retrieved candi
 Founder decision: personal memory should understand the person across their whole life, including relationships, family, pets, background, interests, routines, preferences, values, goals and changing circumstances. These are flexible kinds of knowledge, not required fields or a work-oriented persona. Journaling, appointments, lectures and everyday conversations are central alongside meetings. The intended feeling is personal intelligence on tap: being remembered well and receiving relevant understanding when needed, without claiming to know everything.
 
 Build the profile memory slice before voice enrollment. Start with explicit personal text as a source of known user authorship; authorship alone does not make every mentioned fact about the user. Unknown recorded speakers remain unknown. Reuse automatic learning, source links, corrections and internal forgetting; no per-memory approval inbox or management screen. Voice recognition is a separate later identity feature. See the [personal-profile plan](personal-profile-plan.md). The agreed one-liner and PBN are unchanged.
+
+## Companion-first interaction refinement — September 26, 2026
+
+Founder-approved ICP: a curious, ambitious, AI-comfortable person who thinks out loud and wants an attentive personal companion that understands their life without repeated explanation. The founder, Mark Pincus and Garry Tan are reference personas; the initial audience is a shared mindset rather than a job title. Whole-life understanding includes family, relationships, interests, goals, studies, work and appointments.
+
+The companion is the primary experience; transcripts and notes supply evidence. Two actions: **Capture meeting note** and **Talk to companion**. Voice notes and meeting recordings are one capture type, not separate memory silos. Chat is ongoing across recordings, works without opening a recording, and stays available while capture continues using the transcript received so far. The desired feeling is talking with an attentive friend, with sources available when useful.
+
+The separate personal-note creation path is an interim QA mechanism, not the normal product workflow. Existing sources retain their provenance. Unknown speakers remain unknown until supported identity evidence exists; voice recognition is a later slice. No memory approval inbox or user-facing forgetting flow. Muse is the founder's interaction reference, not a claim of feature parity or a changed one-liner. Granola remains the Proven. See the [memory rework plan](memory-rework-plan.md) for proposed delivery and acceptance boundaries.
+
+
+### Main chat and recording-library refinement
+
+Founder decision: default to one persistent main companion chat; optional side conversations come later, with separate discussion histories and shared relevant personal memory. Starting a capture or returning to the app does not start a new chat. Keep a recording library with one item per capture. “Ask about this” opens the main chat with that recording visibly attached; citations return to the original recording passage. Capture stays available across chat and library, and navigation preserves recording, drafts and reading position.
+
+Eventually each recording will offer notes/summary and its transcript. For the current rework, deliver existing transcript access, deletion and chat connections; defer summary generation, note editing and side-conversation UI. Generated summaries are derived views, not independent factual evidence. The Manus Companion/Workspace pill toggle is a layout reference, not a required visual design. The one-liner and PBN remain unchanged.
