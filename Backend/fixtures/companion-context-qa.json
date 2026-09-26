@@ -1,0 +1,11 @@
+{
+  "schema": "companion-context-v1",
+  "bytes": 2909,
+  "late_fact_found": true,
+  "attached_coverage": "partial",
+  "live_separate": true,
+  "fixed_live_text": "I would like to ask about the access code.",
+  "live_not_written_to_memory": true,
+  "requires_live_persistence": true,
+  "provider_calls": 0
+}

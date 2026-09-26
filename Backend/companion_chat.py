@@ -155,3 +155,17 @@ class CompanionChat:
                 omitted=True;break
             selected.insert(0,pair)
         return dict(turns=selected,history_ids=[turn['id'] for turn in selected],history_limited=omitted)
+
+    def evidence(self,owner,history_ids):
+        """Canonical evidence behind selected history; never trust assistant prose as a source."""
+        if len(history_ids)>8 or len(set(history_ids))!=len(history_ids):raise Rejected('chat_context_too_large')
+        with self.store.transaction() as db:
+            items={}
+            for turn_id in history_ids:
+                row=db.execute('SELECT * FROM companion_turn WHERE owner=? AND id=?',(owner,turn_id)).fetchone()
+                if not row or not self._validate_turn(db,owner,row):raise Rejected('chat_history_changed')
+                for dep in self._dependencies(db,owner,turn_id):
+                    items[dep['reference']]=memory_context.hydrate(self.store,db,owner,json.loads(dep['reference']),self.store.clock())
+            if len(items)>50:raise Rejected('chat_context_too_large')
+            values=list(items.values())
+            return dict(version='selected-evidence-v1',owner=owner,items=values,digest=memory_context.fingerprint(values))
