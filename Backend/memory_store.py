@@ -9,8 +9,9 @@ import time
 import uuid
 
 from admission import Rejected
+import memory_identity
 
-VERSION = 4
+VERSION = 5
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -70,7 +71,7 @@ class MemoryStore:
         self.personal_learning = personal_learning
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, VERSION):
+            if version not in (0, 1, 2, 3, 4, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -130,7 +131,10 @@ class MemoryStore:
                     PRAGMA user_version=4;
                     COMMIT;
                 """)
+            if version < 5:
+                db.executescript(memory_identity.SCHEMA)
         self.path.chmod(0o600)
+        self.identities = memory_identity.IdentityStore(self)
 
     @contextmanager
     def connect(self):
@@ -173,6 +177,7 @@ class MemoryStore:
             return existing_owner
 
     def _invalidate_source(self, db, owner, session):
+        memory_identity.invalidate_source(db, owner, session)
         db.execute('DELETE FROM job_result WHERE job IN (SELECT id FROM job WHERE owner=? AND session=?)', (owner, session))
         db.execute('DELETE FROM support WHERE owner=? AND session=?', (owner, session))
         # Unsupported content is scrubbed; IDs/state remain for stale-write diagnostics.
@@ -280,7 +285,9 @@ class MemoryStore:
                     raise Rejected('invalid_candidate')
                 if (c.get('subject') == 'user' or c.get('profile_link', False)) and evidence.get('origin') != 'personal_text':
                     raise Rejected('unverified_personal_source')
-                self._write_claim(db, c, owner, session, revision, passages)
+                claim_id = self._write_claim(db, c, owner, session, revision, passages)
+                if 'mention' in c:
+                    memory_identity.add_mentions(db, owner, claim_id, session, revision, c['passages'], c['mention'])
             db.execute("UPDATE job SET state='done',lease=NULL WHERE id=?", (live['id'],))
 
     def finish_failed(self, job, code):
@@ -359,6 +366,7 @@ class MemoryStore:
             db.execute('INSERT INTO claim_relation_proposal VALUES(?,?)', (claim_id, proposed))
         for passage in set(refs):
             db.execute('INSERT OR IGNORE INTO support VALUES(?,?,?,?,?)', (claim_id, owner, session, revision, passage))
+        return claim_id
 
     def maintain(self):
         with self.transaction() as db:
@@ -384,6 +392,7 @@ class MemoryStore:
                     continue
                 if unresolved_only:
                     item['proposed_targets'] = [r['target'] for r in db.execute('SELECT target FROM claim_relation_proposal WHERE claim=? ORDER BY target', (item['id'],))]
+                item.update(memory_identity.claim_identity(db, owner, item['id']))
                 item['sources'] = [dict(r) for r in db.execute('SELECT session,revision,passage FROM support WHERE claim=?', (item['id'],))]
                 result.append(item)
                 if len(result) >= limit:

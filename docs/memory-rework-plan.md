@@ -56,7 +56,7 @@ Each checkpoint produces a focused PR with a bounded behavior, real-path QA, rev
 
 ### Checkpoint 1 — structured identity, uncertainty and transactional lifecycle
 
-Delivery split: **1A** persists unresolved lifecycle proposals and prevents the known new-fact fallback; see [implementation and evidence](memory-uncertainty.md). **1B** delivers structured entities/mentions and evidence-backed identity links with the remaining migration and lifecycle gates below. Completing 1A does not establish correction-model quality or completion of checkpoint 1.
+Delivery split: **1A** persists unresolved lifecycle proposals and prevents the known new-fact fallback; see [implementation and evidence](memory-uncertainty.md). **1B** delivers structured entities/mentions and evidence-backed identity links; see [implementation and evidence](memory-identity.md). **1C** completes identity-dependent lifecycle transitions and their reversal/invalidation gates. The identity ledger is not treated as active model-driven resolution before those integration gates pass. Completing 1A does not establish correction-model quality or completion of checkpoint 1.
 
 **Outcome:** stored memory can represent the world without forcing ambiguous evidence into a current fact.
 

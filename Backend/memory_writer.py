@@ -95,6 +95,10 @@ def select_claims(source, candidates, judgments, related, support):
         # Keep uncertain or incompatible replacements out of the current profile.
         if claim['relation'] == 'new' and not accepted(relation, 'new'):
             claim.update(relation='unresolved', subject=unresolved_subject, proposed_targets=[p['id'] for p in related[i]])
+        # Preserve extracted descriptors independently of the legacy subject key.
+        # The current extractor does not supply qualifiers; unknown is not empty.
+        claim['mention'] = dict(name=c['subject_name'], relationship=c.get('subject_relation'),
+                                qualifiers=None, speaker_label=None)
         claims.append(claim)
         decision.update(result='accepted', reason=claim['relation'])
     return claims, decisions
