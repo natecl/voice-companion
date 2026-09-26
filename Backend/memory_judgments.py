@@ -58,7 +58,7 @@ def verify_proposals(source,proposals,*,include_subject=True):
     # A continuous utterance can span diarization passages. Keep original excerpts
     # in source provenance, but supply their ordered text as a readable statement.
     for i,p in enumerate(proposals):
-        if len(p['evidence'])>1:
+        if not personal(source) and len(p['evidence'])>1:
             for aspect in aspects:
                 questions[f'{aspect}_{i}']['instructions']['cited_transcript']=' '.join(r['quote'] for r in p['evidence'])
     if not include_subject:
