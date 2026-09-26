@@ -20,6 +20,21 @@ struct MemorySource: Codable, Equatable {
     let origin: String?
     let passages: [MemoryPassage]
 
+    /// A frozen Ask cutoff, including interim words; never uploaded as learned memory.
+    init(live session: CaptureSession, revision: Int) {
+        origin = nil
+        session_id = session.id.uuidString
+        self.revision = revision
+        captured_at = session.createdAt.timeIntervalSince1970
+        timezone = session.captureTimezone ?? "unknown"
+        completed = false
+        passages = session.transcript.segments.enumerated().compactMap { index, segment in
+            guard !segment.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+            return MemoryPassage(id: "p\(index + 1)", start: segment.start, duration: segment.duration,
+                                 text: segment.text, speakers: Array(Set(segment.words.compactMap(\.speaker))).sorted())
+        }
+    }
+
     init(_ session: CaptureSession, revision: Int) {
         origin = session.source == "personal_text" ? "personal_text" : nil
         session_id = session.id.uuidString
