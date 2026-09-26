@@ -16,7 +16,7 @@ An iPhone-first companion for everyday conversations, with Mac support. Working 
 
 Start with the [feature map](docs/features/README.md) to locate implemented behavior, code boundaries, targeted QA and [learned lessons](docs/features/lessons.md). It is a navigation aid; the canonical product and engineering documents retain authority.
 
-The next authorized slice is [transcript-derived notes](docs/recording-notes-plan.md). Its storage foundation is implemented; generation and app integration remain pending.
+The next authorized slice is [transcript-derived notes](docs/recording-notes-plan.md). Its storage and bounded generation are verified; app integration remains pending.
 
 ## Knowledge documents
 
