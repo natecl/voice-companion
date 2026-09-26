@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    [
+      "gpt-6-luna",
+      3,
+      10497,
+      "completed"
+    ],
+    [
+      "jev-1.13.0",
+      2,
+      20000,
+      "completed"
+    ]
+  ],
+  "global_reserved_microusd": 4563868,
+  "allocation_excluded_from_daily_count": true
+}

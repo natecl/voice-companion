@@ -1,0 +1,439 @@
+{
+  "owner": [
+    {
+      "id": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29"
+    }
+  ],
+  "source": [
+    {
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "digest": null,
+      "payload": null,
+      "deleted": 1
+    },
+    {
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "correction",
+      "revision": 1,
+      "digest": null,
+      "payload": null,
+      "deleted": 1
+    }
+  ],
+  "claim": [
+    {
+      "id": "2805e7c0-2f91-4118-9995-88740abea6f6",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "text": "Project Juniper prefers morning meetings.",
+      "subject": "mention_e613717e08e4423090c53be1a3d877d7",
+      "kind": "preference",
+      "basis": "stated",
+      "observed": 1790460099.0816698,
+      "valid_from": 1790443517.9455416,
+      "valid_until": null,
+      "state": "active",
+      "reason": "supported",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.5",
+      "profile_link": 0
+    },
+    {
+      "id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "text": "Project Juniper's meeting location is the library.",
+      "subject": "mention_77488991b9b949659626270b9a6d5b03",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790460099.082089,
+      "valid_from": 1790443517.9455416,
+      "valid_until": null,
+      "state": "superseded",
+      "reason": "identity_supported_correction",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.5",
+      "profile_link": 0
+    },
+    {
+      "id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "text": "Project Juniper now meets at the community center instead of the library.",
+      "subject": "mention_d63289561c5243c1b4438c0016f6d05d",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790460099.09375,
+      "valid_from": 1790443639.5839324,
+      "valid_until": null,
+      "state": "active",
+      "reason": "identity_supported_correction",
+      "replaces": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+      "judgment_version": "memory-evidence-v2.5",
+      "profile_link": 0
+    }
+  ],
+  "support": [
+    {
+      "claim": "2805e7c0-2f91-4118-9995-88740abea6f6",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p1"
+    },
+    {
+      "claim": "2805e7c0-2f91-4118-9995-88740abea6f6",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p2"
+    },
+    {
+      "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p1"
+    },
+    {
+      "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p2"
+    },
+    {
+      "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p3"
+    },
+    {
+      "claim": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "correction",
+      "revision": 1,
+      "passage": "p1"
+    }
+  ],
+  "memory_entity": [
+    {
+      "id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29"
+    }
+  ],
+  "memory_mention": [
+    {
+      "id": "2b51fa7d8ab0631744a12295cc1d87648185f6128b0a8a745613c7e0d7e71790",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "claim": "2805e7c0-2f91-4118-9995-88740abea6f6",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p1",
+      "description": "{\"name\": \"Project Juniper\", \"qualifiers\": [], \"relationship\": null, \"speaker_label\": null}",
+      "state": "live"
+    },
+    {
+      "id": "cb312c4ac8597df8352a8daf9a663f67a4725d28ee5a6b4950363b59c95e1d77",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "claim": "2805e7c0-2f91-4118-9995-88740abea6f6",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p2",
+      "description": "{\"name\": \"Project Juniper\", \"qualifiers\": [], \"relationship\": null, \"speaker_label\": null}",
+      "state": "live"
+    },
+    {
+      "id": "e24f74c6cdbc90f2f8887b4cc590e1d65d3fef18a2b336d3b90f1d8c271886b8",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p1",
+      "description": "{\"name\": \"Project Juniper\", \"qualifiers\": [], \"relationship\": null, \"speaker_label\": null}",
+      "state": "live"
+    },
+    {
+      "id": "e48953e29b439a5624258442dd0f4057762dc2c1e0243dcd9064c3ca039cc71b",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p2",
+      "description": "{\"name\": \"Project Juniper\", \"qualifiers\": [], \"relationship\": null, \"speaker_label\": null}",
+      "state": "live"
+    },
+    {
+      "id": "cf457a7c6dcd884635d252307eb8265a4e9aebbf4aeeab0f7930f8055cac319e",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p3",
+      "description": "{\"name\": \"Project Juniper\", \"qualifiers\": [], \"relationship\": null, \"speaker_label\": null}",
+      "state": "live"
+    },
+    {
+      "id": "f92a3a6b7d7454a8157f1e67a0e9ea4639268c0687c6434beeafa2b24392ba09",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "claim": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+      "session": "correction",
+      "revision": 1,
+      "passage": "p1",
+      "description": "{\"name\": \"Project Juniper\", \"qualifiers\": [], \"relationship\": null, \"speaker_label\": null}",
+      "state": "live"
+    }
+  ],
+  "memory_identity_link": [
+    {
+      "id": "7885d3ab-5a46-40ca-ae05-9ba5104648b3",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "mention": "2b51fa7d8ab0631744a12295cc1d87648185f6128b0a8a745613c7e0d7e71790",
+      "entity": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+      "anchor": null,
+      "state": "active",
+      "rubric": "evidence-judgments-v17+independent-source-v2+recording-identity-v2"
+    },
+    {
+      "id": "34dcb07f-02f6-4d1d-97c5-9d2e9fb44609",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "mention": "cb312c4ac8597df8352a8daf9a663f67a4725d28ee5a6b4950363b59c95e1d77",
+      "entity": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+      "anchor": "7885d3ab-5a46-40ca-ae05-9ba5104648b3",
+      "state": "active",
+      "rubric": "evidence-judgments-v17+independent-source-v2+recording-identity-v2"
+    },
+    {
+      "id": "3db1f90d-a8f9-4244-82f9-9955cd3762d0",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "mention": "cf457a7c6dcd884635d252307eb8265a4e9aebbf4aeeab0f7930f8055cac319e",
+      "entity": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+      "anchor": "34dcb07f-02f6-4d1d-97c5-9d2e9fb44609",
+      "state": "active",
+      "rubric": "evidence-judgments-v17+independent-source-v2+recording-identity-v2+luna-identity-v4"
+    },
+    {
+      "id": "0578e17d-9bf9-4914-896c-91a8165010d9",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "mention": "e24f74c6cdbc90f2f8887b4cc590e1d65d3fef18a2b336d3b90f1d8c271886b8",
+      "entity": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+      "anchor": "34dcb07f-02f6-4d1d-97c5-9d2e9fb44609",
+      "state": "active",
+      "rubric": "evidence-judgments-v17+independent-source-v2+recording-identity-v2+luna-identity-v4"
+    },
+    {
+      "id": "9ce13fd0-5de0-4338-b707-6bb05bba3a63",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "mention": "e48953e29b439a5624258442dd0f4057762dc2c1e0243dcd9064c3ca039cc71b",
+      "entity": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+      "anchor": "34dcb07f-02f6-4d1d-97c5-9d2e9fb44609",
+      "state": "active",
+      "rubric": "evidence-judgments-v17+independent-source-v2+recording-identity-v2+luna-identity-v4"
+    },
+    {
+      "id": "ee2a659f-2b83-4e41-a105-d0548755722a",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "mention": "f92a3a6b7d7454a8157f1e67a0e9ea4639268c0687c6434beeafa2b24392ba09",
+      "entity": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+      "anchor": "0578e17d-9bf9-4914-896c-91a8165010d9",
+      "state": "active",
+      "rubric": "evidence-judgments-v17+independent-source-v2+recording-identity-v2+luna-identity-v4"
+    }
+  ],
+  "memory_identity_support": [
+    {
+      "link": "7885d3ab-5a46-40ca-ae05-9ba5104648b3",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p1"
+    },
+    {
+      "link": "7885d3ab-5a46-40ca-ae05-9ba5104648b3",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p2"
+    },
+    {
+      "link": "34dcb07f-02f6-4d1d-97c5-9d2e9fb44609",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p1"
+    },
+    {
+      "link": "34dcb07f-02f6-4d1d-97c5-9d2e9fb44609",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p2"
+    },
+    {
+      "link": "3db1f90d-a8f9-4244-82f9-9955cd3762d0",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p3"
+    },
+    {
+      "link": "3db1f90d-a8f9-4244-82f9-9955cd3762d0",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p1"
+    },
+    {
+      "link": "3db1f90d-a8f9-4244-82f9-9955cd3762d0",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p2"
+    },
+    {
+      "link": "0578e17d-9bf9-4914-896c-91a8165010d9",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p3"
+    },
+    {
+      "link": "0578e17d-9bf9-4914-896c-91a8165010d9",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p1"
+    },
+    {
+      "link": "0578e17d-9bf9-4914-896c-91a8165010d9",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p2"
+    },
+    {
+      "link": "9ce13fd0-5de0-4338-b707-6bb05bba3a63",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p3"
+    },
+    {
+      "link": "9ce13fd0-5de0-4338-b707-6bb05bba3a63",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p1"
+    },
+    {
+      "link": "9ce13fd0-5de0-4338-b707-6bb05bba3a63",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p2"
+    },
+    {
+      "link": "ee2a659f-2b83-4e41-a105-d0548755722a",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p3"
+    },
+    {
+      "link": "ee2a659f-2b83-4e41-a105-d0548755722a",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p2"
+    },
+    {
+      "link": "ee2a659f-2b83-4e41-a105-d0548755722a",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "passage": "p1"
+    },
+    {
+      "link": "ee2a659f-2b83-4e41-a105-d0548755722a",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "correction",
+      "revision": 1,
+      "passage": "p1"
+    }
+  ],
+  "memory_correction": [
+    {
+      "id": "bd79d805-3d76-4ed1-a004-eb9aacf4eebf",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "incoming": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+      "target": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+      "entity": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+      "state": "active",
+      "rubric": "evidence-judgments-v17+independent-source-v2+recording-identity-v2+luna-identity-v4",
+      "evidence_token": "de8dcaea8cea6c76a9dc82e7771a6fc3f2726c5984abc776225f094189640613"
+    }
+  ],
+  "memory_correction_link": [
+    {
+      "correction": "bd79d805-3d76-4ed1-a004-eb9aacf4eebf",
+      "link": "0578e17d-9bf9-4914-896c-91a8165010d9"
+    },
+    {
+      "correction": "bd79d805-3d76-4ed1-a004-eb9aacf4eebf",
+      "link": "3db1f90d-a8f9-4244-82f9-9955cd3762d0"
+    },
+    {
+      "correction": "bd79d805-3d76-4ed1-a004-eb9aacf4eebf",
+      "link": "9ce13fd0-5de0-4338-b707-6bb05bba3a63"
+    },
+    {
+      "correction": "bd79d805-3d76-4ed1-a004-eb9aacf4eebf",
+      "link": "ee2a659f-2b83-4e41-a105-d0548755722a"
+    }
+  ],
+  "claim_relation_proposal": [],
+  "memory_fact_evidence": [
+    {
+      "claim": "2805e7c0-2f91-4118-9995-88740abea6f6",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "proposal": "{\"text\": \"Project Juniper prefers morning meetings.\", \"kind\": \"preference\", \"basis\": \"stated\", \"mention\": {\"name\": \"Project Juniper\", \"relationship\": null, \"qualifiers\": [], \"speaker_label\": null}, \"scope\": \"named\", \"evidence\": [{\"passage\": \"p1\", \"quote\": \"Project Juniper.\"}, {\"passage\": \"p2\", \"quote\": \"Prefers morning meetings.\"}], \"time\": {\"status\": \"current\", \"expression\": null}, \"change\": {\"kind\": \"none\", \"previous_text\": null}, \"spans\": [{\"passage\": \"p1\", \"start\": 0, \"end\": 16}, {\"passage\": \"p2\", \"start\": 0, \"end\": 25}], \"contract\": \"memory-evidence-v2.5\"}",
+      "judgments": "{\"source\": {\"support\": {\"label\": \"supported\", \"accepted\": true, \"verdict\": \"supported\", \"passages\": [\"p1\", \"p2\"], \"rubric\": \"independent-source-v2\"}, \"subject\": {\"label\": \"named\", \"accepted\": true, \"policy\": \"subject\", \"rubric\": \"recording-identity-v2\", \"model\": \"gpt-6-luna\", \"evidence\": {\"label\": \"supported\", \"quote\": \"Project Juniper. Prefers morning meetings.\"}}, \"modality\": {\"label\": \"supported\", \"accepted\": true, \"classification\": \"stated\", \"probability\": 0.99, \"rubric\": \"independent-source-v2\"}, \"time\": {\"label\": \"supported\", \"accepted\": true, \"classification\": \"current\", \"probability\": 0.99, \"rubric\": \"independent-source-v2\"}}, \"identity\": {}, \"relation\": {}, \"applicability\": {}, \"current_change\": null, \"expiry\": null}"
+    },
+    {
+      "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "proposal": "{\"text\": \"Project Juniper's meeting location is the library.\", \"kind\": \"fact\", \"basis\": \"stated\", \"mention\": {\"name\": \"Project Juniper\", \"relationship\": null, \"qualifiers\": [], \"speaker_label\": null}, \"scope\": \"named\", \"evidence\": [{\"passage\": \"p1\", \"quote\": \"Project Juniper.\"}, {\"passage\": \"p2\", \"quote\": \"Prefers morning meetings.\"}, {\"passage\": \"p3\", \"quote\": \"The meeting location is the library.\"}], \"time\": {\"status\": \"current\", \"expression\": null}, \"change\": {\"kind\": \"none\", \"previous_text\": null}, \"spans\": [{\"passage\": \"p1\", \"start\": 0, \"end\": 16}, {\"passage\": \"p2\", \"start\": 0, \"end\": 25}, {\"passage\": \"p3\", \"start\": 0, \"end\": 36}], \"contract\": \"memory-evidence-v2.5\"}",
+      "judgments": "{\"source\": {\"support\": {\"label\": \"supported\", \"accepted\": true, \"verdict\": \"supported\", \"passages\": [\"p1\", \"p2\", \"p3\"], \"rubric\": \"independent-source-v2\"}, \"subject\": {\"label\": \"named\", \"accepted\": true, \"policy\": \"subject\", \"rubric\": \"recording-identity-v2\", \"model\": \"gpt-6-luna\", \"evidence\": {\"label\": \"supported\", \"quote\": \"Project Juniper. Prefers morning meetings. The meeting location is the library.\"}}, \"modality\": {\"label\": \"supported\", \"accepted\": true, \"classification\": \"stated\", \"probability\": 1.0, \"rubric\": \"independent-source-v2\"}, \"time\": {\"label\": \"supported\", \"accepted\": true, \"classification\": \"current\", \"probability\": 0.99, \"rubric\": \"independent-source-v2\"}}, \"identity\": {\"prior_0\": {\"label\": \"same\", \"accepted\": true, \"evidence\": {\"label\": \"same\", \"incoming_quote\": \"Project Juniper.\", \"previous_quote\": \"Project Juniper.\"}, \"policy\": \"identity\", \"rubric\": \"luna-identity-v4\", \"model\": \"gpt-6-luna\"}}, \"relation\": {\"prior_0\": {\"label\": \"addition\", \"accepted\": true, \"probabilities\": {\"replacement\": 0.0, \"conflict\": 0.0, \"addition\": 1.0, \"duplicate\": 0.0, \"uncertain\": 0.0}, \"confidence\": 1.0, \"policy\": \"relation\", \"rubric\": \"evidence-judgments-v17\"}}, \"applicability\": {}, \"current_change\": null, \"expiry\": null}"
+    },
+    {
+      "claim": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "correction",
+      "revision": 1,
+      "proposal": "{\"text\": \"Project Juniper now meets at the community center instead of the library.\", \"kind\": \"fact\", \"basis\": \"stated\", \"mention\": {\"name\": \"Project Juniper\", \"relationship\": null, \"qualifiers\": [], \"speaker_label\": null}, \"scope\": \"named\", \"evidence\": [{\"passage\": \"p1\", \"quote\": \"Project Juniper has changed its meeting location. It now meets at the community center instead of the library.\"}], \"time\": {\"status\": \"current\", \"expression\": \"now\"}, \"change\": {\"kind\": \"correction\", \"previous_text\": \"Project Juniper met at the library.\"}, \"spans\": [{\"passage\": \"p1\", \"start\": 0, \"end\": 110}], \"contract\": \"memory-evidence-v2.5\"}",
+      "judgments": "{\"source\": {\"support\": {\"label\": \"supported\", \"accepted\": true, \"verdict\": \"supported\", \"passages\": [\"p1\"], \"rubric\": \"independent-source-v2\"}, \"subject\": {\"label\": \"named\", \"accepted\": true, \"policy\": \"subject\", \"rubric\": \"recording-identity-v2\", \"model\": \"gpt-6-luna\", \"evidence\": {\"label\": \"supported\", \"quote\": \"Project Juniper has changed its meeting location. It now meets at the community center instead of the library.\"}}, \"modality\": {\"label\": \"supported\", \"accepted\": true, \"classification\": \"stated\", \"probability\": 1.0, \"rubric\": \"independent-source-v2\"}, \"time\": {\"label\": \"supported\", \"accepted\": true, \"classification\": \"current\", \"probability\": 1.0, \"rubric\": \"independent-source-v2\", \"expression\": {\"type\": \"choice\", \"choice\": \"supported\", \"confidence\": 1.0, \"probabilities\": {\"uncertain\": 0.0, \"supported\": 1.0, \"unsupported\": 0.0}}}}, \"identity\": {\"prior_0\": {\"label\": \"same\", \"accepted\": true, \"evidence\": {\"label\": \"same\", \"incoming_quote\": \"Project Juniper has changed its meeting location. It now meets at the community center instead of the library.\", \"previous_quote\": \"Project Juniper.\"}, \"policy\": \"identity\", \"rubric\": \"luna-identity-v4\", \"model\": \"gpt-6-luna\"}, \"prior_1\": {\"label\": \"same\", \"accepted\": true, \"evidence\": {\"label\": \"same\", \"incoming_quote\": \"Project Juniper has changed its meeting location. It now meets at the community center instead of the library.\", \"previous_quote\": \"Project Juniper.\"}, \"policy\": \"identity\", \"rubric\": \"luna-identity-v4\", \"model\": \"gpt-6-luna\"}}, \"relation\": {\"prior_0\": {\"label\": \"replacement\", \"accepted\": true, \"probabilities\": {\"addition\": 0.0, \"replacement\": 0.97, \"duplicate\": 0.0, \"uncertain\": 0.01, \"conflict\": 0.02}, \"confidence\": 0.96, \"policy\": \"relation\", \"rubric\": \"evidence-judgments-v17\"}, \"prior_1\": {\"label\": \"addition\", \"accepted\": true, \"probabilities\": {\"addition\": 0.96, \"replacement\": 0.01, \"uncertain\": 0.03, \"duplicate\": 0.0, \"conflict\": 0.0}, \"confidence\": 0.95, \"policy\": \"relation\", \"rubric\": \"evidence-judgments-v17\"}}, \"applicability\": {\"prior_0\": {\"label\": \"current_change\", \"accepted\": true, \"probabilities\": {\"historical\": 0.0, \"current_change\": 1.0, \"uncertain\": 0.0, \"future\": 0.0}, \"confidence\": 1.0, \"policy\": \"applicability\", \"rubric\": \"evidence-judgments-v17\"}}, \"current_change\": {\"label\": \"current_change\", \"accepted\": true, \"probabilities\": {\"historical\": 0.0, \"current_change\": 1.0, \"uncertain\": 0.0, \"future\": 0.0}, \"confidence\": 1.0, \"policy\": \"applicability\", \"rubric\": \"evidence-judgments-v17\"}, \"expiry\": null}"
+    }
+  ],
+  "retained_recording": [
+    {
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "split-subject",
+      "revision": 1,
+      "captured_at": 1790443517.9455416,
+      "timezone": "UTC",
+      "passages": "{\"p1\": [], \"p2\": [0], \"p3\": [0]}"
+    },
+    {
+      "owner": "d74c7306-e0e2-48e7-b9f0-444e66fb1e29",
+      "session": "correction",
+      "revision": 1,
+      "captured_at": 1790443639.5839324,
+      "timezone": "UTC",
+      "passages": "{\"p1\": []}"
+    }
+  ]
+}

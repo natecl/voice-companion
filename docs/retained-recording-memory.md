@@ -1,6 +1,6 @@
 # Recording deletion and retained knowledge
 
-Status: implementation candidate, September 26, 2026. Local storage/writer replay and iPhone simulator presentation are verified. Live Jev/Luna checks, physical-iPhone acceptance and hosted enablement remain pending. No new paid calls have been made and the deployed service is unchanged.
+Status: verified code checkpoint, September 26, 2026. Storage/writer behavior, live Jev/Luna context handling, saved-chat reopening and iPhone simulator presentation are verified. Physical-iPhone rollout acceptance and hosted enablement remain pending; the deployed service is unchanged.
 
 ## Product contract
 
@@ -20,7 +20,7 @@ The answer prompt adds retained-memory instructions only when such evidence is s
 
 ## Local evidence
 
-- 150 affected backend tests passed (149 in the combined run plus the focused schema-15 upgrade check): retention, writer, identity, corrections, consolidation, temporal rules, migrations, retrieval, main chat, sockets, runtime and independent verification.
+- 151 affected backend tests passed (149 in the combined run, the focused schema-15 upgrade check, and exact live-provider-response replay): retention, writer, identity, corrections, consolidation, temporal rules, migrations, retrieval, main chat, sockets, runtime and independent verification.
 - `python3 Backend/retention_fixture.py <new-output-directory>` ran the actual writer with exact saved provider responses: learn Juniper → delete original → learn correction → delete correction → retrieve → save answer → reopen. The fixture's answer is deliberately injected for storage/UI QA; it does not establish live answer quality.
 - Observed state: morning preference active, library superseded, community center active; both original transcripts unavailable. Saved retained-memory answer reopened as complete. Zero paid calls.
 - Additional cases cover deletion in the opposite order, repeat deletion, owner isolation, deleted-source resurrection attempts, cancelled learning, in-flight original answers, later corrections, future/expired/unresolved claims, unrelated transcript removal and unchanged personal-note deletion.
@@ -29,11 +29,23 @@ The answer prompt adds retained-memory instructions only when such evidence is s
 
 Local artifacts live under ignored `work/retention/`: `offline/report.json`, `backend.log`, `phone-ui.xcresult`, `screenshots/`, and `mac-build.log`. Synthetic reproducible fixtures are checked in. No private conversation or provider credential is included.
 
-## Remaining acceptance and rollout
+## Live provider acceptance
 
-The concrete provider QA input is prepared in `work/retention/provider-qa-inputs.json`: three synthetic questions covering corrected recall, refusal to invent an exact deleted-transcript quote, and no account-owner inference. Proposed upper bound: three Jev rankings plus three Luna answers, no automatic retries, at most $0.05 after approval. Preserve actual requests/responses and repeat locally thereafter. No new extraction or transcription is required.
+The founder approved an additional $0.05, at most six calls, for this QA. The actual companion socket service and indexed recall used two live Jev rankings and three live Luna answers. Generation used the production prompt/settings via a non-streaming operator transport; this validates context and response behavior, not streaming latency. No transcription or extraction was repeated. The service's normal context deadlines remained in force.
 
-Do not merge as a completed feature until the changed model/context interaction is verified. Before physical-iPhone QA, explain the short deletion/recall check and wait for founder readiness. Do not start capture automatically.
+Observed and reviewed answers:
+
+- Corrected recall: community center is current; library is historical. The answer identifies its basis as remembered knowledge and cites a retained-memory reference.
+- Exact quotation request: declines to invent the deleted recording's words and explains that only retained knowledge remains. The follow-up used saved chat evidence after retrieval returned no match.
+- Account ownership: explicitly says the project's morning-meeting preference does not establish the user's personal preference.
+
+All answers persisted through the real service, returned unavailable from the original-source endpoint, and survived a database reopen. The saved responses replay exactly through the same service with network disabled. Synthetic fixtures are in `Backend/fixtures/retained-memory/`; reproduce with `python3 Backend/evaluate_retention.py <new-output-directory> --replay Backend/fixtures/retained-memory/calls.json`.
+
+Accounting: isolated allowance `retained-memory-20260926-005`; $0.05 reserved globally, $0.030497 conservatively reserved for five completed calls ($0.010497 Luna, $0.02 Jev), $0.019503 unused within that allowance. These are reservation ceilings, not an invoice. Global reserved total is $4.563868/$5. Funding is marked as an allocation so it does not consume a recording attempt; application quotas, runtime budget policy and Render plan are unchanged. No failures or automatic paid retries occurred.
+
+## Remaining rollout acceptance
+
+Code acceptance is complete; the physical-device check is a rollout gate, not a claim established by simulator evidence. Before physical-iPhone QA, explain the short deletion/recall check and wait for founder readiness. Do not start capture automatically.
 
 Hosted opt-in is `VOICE_RETAIN_RECORDING_MEMORIES=1`, requiring companion mode. Default is off. Deploy only after review, provider QA and explicit internal rollout approval; install the matching native UI before enabling retention. Keep the existing Render plan and global spend cap.
 

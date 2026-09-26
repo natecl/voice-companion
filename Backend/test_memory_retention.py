@@ -192,3 +192,15 @@ class RetentionTests(unittest.IsolatedAsyncioTestCase):
         with migrated.connect() as db:
             self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],16)
             self.assertEqual(db.execute('SELECT count(*) FROM retained_recording').fetchone()[0],0)
+
+
+class RecordedRetentionAcceptance(unittest.IsolatedAsyncioTestCase):
+    async def test_exact_provider_replay_through_companion_sockets(self):
+        from evaluate_retention import run
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'replay'
+            await run(path,replay=ROOT/'retained-memory/calls.json')
+            summary=json.loads((path/'summary.json').read_text())
+            self.assertEqual(summary['new_paid_calls'],0)
+            self.assertTrue(summary['reopened'])
+            self.assertEqual(summary['answers'],json.loads((ROOT/'retained-memory/summary.json').read_text())['answers'])
