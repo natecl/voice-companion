@@ -286,6 +286,37 @@ final class SessionController {
     }
 
     func close() { guard liveStatus == nil, !isAnswering else { return }; if isReplaying { stop() }; current = nil; answerErrorMessage = nil; reload() }
+    var pendingMemoryDeletion: Bool {
+        guard let memorySync else { return false }
+        _ = memorySync.acknowledgmentCount
+        return (try? memorySync.outbox.entries().contains { $0.operation.operation == "delete" && !$0.acknowledged }) ?? true
+    }
+    func companionAttachment(for session: CaptureSession) -> CompanionAttachment? {
+        guard let memorySync, session.memoryOwnerID == memorySync.outbox.owner else { return nil }
+        _ = memorySync.acknowledgmentCount
+        guard let entry = try? memorySync.outbox.entry(session.id.uuidString), entry.acknowledged,
+              entry.operation.operation == "upsert", let source = entry.operation.source else { return nil }
+        return CompanionAttachment(session_id: source.session_id, revision: source.revision)
+    }
+
+    /// Library selection is independent of current capture. Never delete the active recording.
+    @discardableResult
+    func deleteFromLibrary(_ session: CaptureSession) -> Bool {
+        guard !(isActive && current?.id == session.id), !isAnswering else { return false }
+        do {
+            if let memorySync, session.memoryOwnerID == memorySync.outbox.owner {
+                try memorySync.outbox.delete(session.id)
+            }
+            try store.delete(session.id)
+            if current?.id == session.id { current = nil }
+            reload()
+            memorySync?.kick()
+            return true
+        } catch {
+            errorMessage = "Could not delete session: \(error.localizedDescription)"
+            return false
+        }
+    }
     func deleteCurrent() {
         guard let current, !isActive, !isAnswering else { return }
         do {
