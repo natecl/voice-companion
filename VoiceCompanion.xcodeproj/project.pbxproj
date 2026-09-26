@@ -12,6 +12,7 @@
 		01DBC0625A174ACABD2F3B53 /* RelayConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFB90B5CA243BB3A58F4071 /* RelayConfigurationTests.swift */; };
 		03FA4ADC9F69442A9E86ACB3 /* Transcript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103C8B997E39422BEEFF5D9B /* Transcript.swift */; };
 		03FBD8055C7542F1C44E9E3E /* LiveAskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AC2A636ABED7261B92DF00 /* LiveAskTests.swift */; };
+		0470ED1A1534D608DC5EE888 /* CompanionConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DC5EAF399C9BA0167DE08F /* CompanionConnection.swift */; };
 		04D9F0D8EED3EE48B71BB0C7 /* RelayConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C627D1B94769284B53CA87 /* RelayConfiguration.swift */; };
 		084498F3AD0D23225AE9A03A /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FC567691D4C18C5E45FD1B /* SessionStore.swift */; };
 		09C3FEC872A11562F65FECB0 /* FoundationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */; };
@@ -35,6 +36,7 @@
 		5DAF13B17F8D7D03FDCEC42E /* RecordingConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82134446B9A07E479203081 /* RecordingConnection.swift */; };
 		5E2D19B3C8B069259C1890FD /* Phone-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8329C8BB764901C562FF590B /* Phone-Info.plist */; };
 		5F69531D18A3F88EDF0A0332 /* RelayCredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78DF2FA0976B69003E482D9 /* RelayCredentialStore.swift */; };
+		6254946A7FBE20F879FD5DDE /* CompanionConnectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978F772CA247BC66605A1D33 /* CompanionConnectionTests.swift */; };
 		64FCE961C2FFAB5A4828960B /* SavedRecordingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D820E88D807B0651015E9212 /* SavedRecordingUITests.swift */; };
 		735DCBCF4C782C55CD2DB483 /* RecordingFinalizationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84C0859642B21DF9D960467 /* RecordingFinalizationTask.swift */; };
 		777B22E0271AEF80B05980A4 /* transcript-events.json in Resources */ = {isa = PBXBuildFile; fileRef = F68208B8B28B93C1AEA78F78 /* transcript-events.json */; };
@@ -65,7 +67,9 @@
 		C9F627FE87BE3C93F4B9B15B /* AskUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA776C591198A3D1403607CE /* AskUITests.swift */; };
 		CA45619E139BC346728FF250 /* SessionController+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220AAC839C8995F4A61DD83B /* SessionController+App.swift */; };
 		CDE41D8ECE47CDB51321D5A9 /* RecordingFinalizationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84C0859642B21DF9D960467 /* RecordingFinalizationTask.swift */; };
+		CF683A29AF90105093BA69D2 /* CompanionConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DC5EAF399C9BA0167DE08F /* CompanionConnection.swift */; };
 		CF98D9F5C759893150FD81B1 /* SessionController+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220AAC839C8995F4A61DD83B /* SessionController+App.swift */; };
+		D7AFA0F1877EA170A074738E /* CompanionConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DC5EAF399C9BA0167DE08F /* CompanionConnection.swift */; };
 		DAAA471E7FA8BEC2B00E4318 /* RecordingConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82134446B9A07E479203081 /* RecordingConnection.swift */; };
 		E319A481A74CCCE3F274C3E0 /* ConversationAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D8082C6B31F2C2E959995 /* ConversationAnswer.swift */; };
 		E64A2E54175D0F2712013043 /* LiveTranscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B8059B564CBD204AA70BA6 /* LiveTranscriber.swift */; };
@@ -104,6 +108,7 @@
 		220AAC839C8995F4A61DD83B /* SessionController+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionController+App.swift"; sourceTree = "<group>"; };
 		22C97C3F135EEAFF5858CD5D /* MemorySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySync.swift; sourceTree = "<group>"; };
 		33B8059B564CBD204AA70BA6 /* LiveTranscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTranscriber.swift; sourceTree = "<group>"; };
+		38DC5EAF399C9BA0167DE08F /* CompanionConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionConnection.swift; sourceTree = "<group>"; };
 		43354958B88D6E1A544B8D70 /* PhoneUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PhoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		46DC5370B42C28B61BE40D0D /* MacUITests.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacUITests.entitlements; sourceTree = "<group>"; };
 		58FC567691D4C18C5E45FD1B /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
@@ -115,6 +120,7 @@
 		8DFB90B5CA243BB3A58F4071 /* RelayConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelayConfigurationTests.swift; sourceTree = "<group>"; };
 		91AC2A636ABED7261B92DF00 /* LiveAskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAskTests.swift; sourceTree = "<group>"; };
 		96BE8F0D1257314F735205AE /* TranscriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptTests.swift; sourceTree = "<group>"; };
+		978F772CA247BC66605A1D33 /* CompanionConnectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionConnectionTests.swift; sourceTree = "<group>"; };
 		9C4855C4A183DFEC64AE93D8 /* MacUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A918307E479F9BA8A830B982 /* MemoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryTests.swift; sourceTree = "<group>"; };
 		B2CDFE903F387C5D9A9995AB /* ConversationAnswerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationAnswerTests.swift; sourceTree = "<group>"; };
@@ -188,6 +194,7 @@
 		58064927FE946C80A4E07806 /* Sessions */ = {
 			isa = PBXGroup;
 			children = (
+				38DC5EAF399C9BA0167DE08F /* CompanionConnection.swift */,
 				CF7D8082C6B31F2C2E959995 /* ConversationAnswer.swift */,
 				22C97C3F135EEAFF5858CD5D /* MemorySync.swift */,
 				E84C0859642B21DF9D960467 /* RecordingFinalizationTask.swift */,
@@ -225,6 +232,7 @@
 		F4BE10863EB69BB2CAA33D41 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				978F772CA247BC66605A1D33 /* CompanionConnectionTests.swift */,
 				B2CDFE903F387C5D9A9995AB /* ConversationAnswerTests.swift */,
 				91AC2A636ABED7261B92DF00 /* LiveAskTests.swift */,
 				A918307E479F9BA8A830B982 /* MemoryTests.swift */,
@@ -429,6 +437,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6134A9D853871047550EFB6 /* AudioCapture.swift in Sources */,
+				0470ED1A1534D608DC5EE888 /* CompanionConnection.swift in Sources */,
 				E319A481A74CCCE3F274C3E0 /* ConversationAnswer.swift in Sources */,
 				ECDFC4E9338320EA178ED9FF /* ConversationAskView.swift in Sources */,
 				E64A2E54175D0F2712013043 /* LiveTranscriber.swift in Sources */,
@@ -452,6 +461,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5D2DD411F19A5CB880E5296 /* AudioCapture.swift in Sources */,
+				CF683A29AF90105093BA69D2 /* CompanionConnection.swift in Sources */,
+				6254946A7FBE20F879FD5DDE /* CompanionConnectionTests.swift in Sources */,
 				F6AF624940EE5A378DD8AC7B /* ConversationAnswer.swift in Sources */,
 				F9B6B6930B11FA2766490C9D /* ConversationAnswerTests.swift in Sources */,
 				03FBD8055C7542F1C44E9E3E /* LiveAskTests.swift in Sources */,
@@ -480,6 +491,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D1AC0B45D53467828101DBF /* AudioCapture.swift in Sources */,
+				D7AFA0F1877EA170A074738E /* CompanionConnection.swift in Sources */,
 				822939BAFB8BA3E279430B34 /* ConversationAnswer.swift in Sources */,
 				55EC88DB822DCBAAB3210FCC /* ConversationAskView.swift in Sources */,
 				AA863954E4E818D4E149270B /* LiveTranscriber.swift in Sources */,
