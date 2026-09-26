@@ -1,6 +1,6 @@
 # Recording deletion and retained knowledge
 
-Status: verified code checkpoint, September 26, 2026. Storage/writer behavior, live Jev/Luna context handling, saved-chat reopening and iPhone simulator presentation are verified. Physical-iPhone rollout acceptance and hosted enablement remain pending; the deployed service is unchanged.
+Status: verified code checkpoint, September 26, 2026. Storage/writer behavior, live Jev/Luna context handling, saved-chat reopening and iPhone simulator presentation are verified. The [approved internal rollout](retained-memory-rollout.md) is live with matching native builds. Physical-iPhone rollout acceptance remains pending.
 
 ## Product contract
 
@@ -47,6 +47,6 @@ Accounting: isolated allowance `retained-memory-20260926-005`; $0.05 reserved gl
 
 Code acceptance is complete; the physical-device check is a rollout gate, not a claim established by simulator evidence. Before physical-iPhone QA, explain the short deletion/recall check and wait for founder readiness. Do not start capture automatically.
 
-Hosted opt-in is `VOICE_RETAIN_RECORDING_MEMORIES=1`, requiring companion mode. Default is off. Deploy only after review, provider QA and explicit internal rollout approval; install the matching native UI before enabling retention. Keep the existing Render plan and global spend cap.
+Hosted opt-in is `VOICE_RETAIN_RECORDING_MEMORIES=1`, requiring companion mode. The code default is off; the founder-approved internal service now enables it after review, provider QA, backup and matching native update. Keep the existing Render plan and global spend cap. See the [rollout record](retained-memory-rollout.md).
 
 Back up current databases consistently before schema migration. Rollback uses a schema-16-compatible binary and disables new retention; already retained knowledge remains readable. Never restore an old database to resurrect deleted recordings or reset usage charges. Historical backups remain governed by their existing retention policy; this implementation does not claim to erase every historical backup.
