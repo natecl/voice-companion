@@ -463,22 +463,34 @@ class MemoryStore:
         if pending:
             item.update(stored_state=item['state'],state='unresolved',reason='pending_supported_change',current_disputed_by=pending)
 
+    @staticmethod
+    def _qualify_time(item, now):
+        """Project validity at read time without changing evidence or stored lifecycle."""
+        if item['state'] != 'active':
+            return
+        if item['valid_until'] is not None and item['valid_until'] <= now:
+            item.update(stored_state='active', state='expired', reason='validity_ended')
+        elif item['valid_from'] is not None and item['valid_from'] > now:
+            item.update(stored_state='active', state='future', reason='validity_not_started')
+
     def search(self, owner, query='', *, historical=False, limit=20, profile_only=False, unresolved_only=False):
         """Bounded lexical baseline. Result provenance/lifecycle is mandatory for downstream recall."""
         if not isinstance(query, str) or len(query) > 1000 or type(limit) is not int or not 1 <= limit <= 50:
             raise Rejected('invalid_query')
         terms = query.casefold().split()[:12]
+        now = self.clock()
         with self.connect() as db:
             rows = db.execute("SELECT * FROM claim WHERE owner=? AND state!='invalid' ORDER BY observed DESC,id LIMIT 5000", (owner,)).fetchall()
             result = []
             for row in rows:
                 item = dict(row)
+                self._qualify_time(item,now)
                 self._qualify_pending(db,owner,item)
                 if (item['state'] == 'unresolved') != unresolved_only:
                     continue
                 if profile_only and ((item['subject'] != 'user' and not item['profile_link']) or item['basis'] == 'inferred'):
                     continue
-                if not historical and not unresolved_only and (item['state'] != 'active' or (item['valid_until'] is not None and item['valid_until'] <= self.clock()) or (item['valid_from'] is not None and item['valid_from'] > self.clock())):
+                if not historical and not unresolved_only and item['state'] != 'active':
                     continue
                 if terms and not any(t in item['text'].casefold() for t in terms):
                     continue
@@ -493,6 +505,7 @@ class MemoryStore:
 
     def evidence(self, owner, session):
         """Raw-source fallback includes lifecycle annotations; not yet used by Ask."""
+        now = self.clock()
         with self.connect() as db:
             row = db.execute('SELECT * FROM source WHERE owner=? AND session=? AND deleted=0', (owner, session)).fetchone()
             if not row:
@@ -502,13 +515,13 @@ class MemoryStore:
                 passage['claims'] = [dict(r) for r in db.execute('''SELECT c.id,c.state,c.valid_from,c.valid_until,c.replaces FROM claim c
                   JOIN support s ON s.claim=c.id WHERE s.owner=? AND s.session=? AND s.revision=? AND s.passage=?''', (owner, session, row['revision'], passage['id']))]
                 for claim in passage['claims']:
+                    self._qualify_time(claim,now)
                     self._qualify_pending(db,owner,claim)
-                    if claim['state'] == 'active' and claim['valid_until'] is not None and claim['valid_until'] <= self.clock():
-                        claim['state'] = 'expired'
             return source
 
     def recall_snapshot(self, owner):
         """Consistent owner snapshot, including lifecycle for raw-evidence fallback."""
+        now = self.clock()
         with self.transaction() as db:
             sources = []
             rows = db.execute('SELECT session,revision,payload FROM source WHERE owner=? AND deleted=0 ORDER BY session', (owner,)).fetchall()
@@ -523,9 +536,8 @@ class MemoryStore:
                         WHERE s.owner=? AND s.session=? AND s.revision=? AND s.passage=? ORDER BY c.id""",
                         (owner, row['session'], row['revision'], passage['id']))]
                     for claim in claims:
+                        self._qualify_time(claim,now)
                         self._qualify_pending(db,owner,claim)
-                        if claim['state'] == 'active' and claim['valid_until'] is not None and claim['valid_until'] <= self.clock():
-                            claim['state'] = 'expired'
                     passage['claims'] = claims
                 sources.append(source)
             return sources

@@ -260,6 +260,8 @@ class EvidenceWriterTests(unittest.IsolatedAsyncioTestCase):
             self.store.put_source(self.owner,artifact['source'])
             await self.writer.process_next(self.owner)
         self.assertEqual(index,len(recorded))
+        # Read after the recorded sources' observation times, not the synthetic epoch clock.
+        self.store.clock=lambda: max(json.loads((directory/(n+'.json')).read_text())['source']['captured_at'] for n in ['first','correction','distinct'])+1
         rows=self.store.search(self.owner,historical=True)
         self.assertEqual(sorted(r['state'] for r in rows),['active','superseded'])
         unresolved=self.store.search(self.owner,unresolved_only=True)
@@ -292,6 +294,8 @@ class EvidenceWriterTests(unittest.IsolatedAsyncioTestCase):
             self.store.put_source(self.owner,artifact['source'])
             await self.writer.process_next(self.owner)
         self.assertEqual(index,len(recorded))
+        # Read after the recorded sources' observation times, not the synthetic epoch clock.
+        self.store.clock=lambda: max(json.loads((directory/(n+'.json')).read_text())['source']['captured_at'] for n in ['first','correction','distinct'])+1
         rows=self.store.search(self.owner,historical=True)
         self.assertEqual(sorted(r['state'] for r in rows),['active','active','superseded'])
         self.assertEqual(len({r['entity_id'] for r in rows}),2)
