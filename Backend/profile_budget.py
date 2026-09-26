@@ -19,6 +19,8 @@ ROLLOUT_APPROVAL_ID = 'companion-rollout-qa-2026-09-26-050'
 ROLLOUT_ALLOWANCE = 500_000
 PREFERENCE_APPROVAL_ID = "preference-verification-qa-2026-09-26-030"
 PREFERENCE_ALLOWANCE = 300_000
+VERIFICATION_APPROVAL_ID = "independent-verification-rollout-2026-09-26-025"
+VERIFICATION_ALLOWANCE = 250_000
 
 
 def provision(global_path, memory_path):
@@ -53,7 +55,7 @@ def provision(global_path, memory_path):
 
 
 class ProfileBudget:
-    def __init__(self, path, *, include_rework_allowance=False, include_consolidation_allowance=False, include_multisource_allowance=False, include_rollout_allowance=False, include_preference_allowance=False, independent_source_verification=False):
+    def __init__(self, path, *, include_rework_allowance=False, include_consolidation_allowance=False, include_multisource_allowance=False, include_rollout_allowance=False, include_preference_allowance=False, independent_source_verification=False, include_verification_allowance=False):
         self.path = Path(path)
         self.independent_source_verification = independent_source_verification
         self.cap = ALLOCATION
@@ -88,6 +90,13 @@ class ProfileBudget:
                 if db.execute('SELECT id,cap FROM profile_preference_allowance').fetchall()!=[(PREFERENCE_APPROVAL_ID,PREFERENCE_ALLOWANCE)]:
                     raise ValueError('Explicit preference allowance required')
                 self.cap += PREFERENCE_ALLOWANCE
+
+            if include_verification_allowance:
+                if not include_preference_allowance or not independent_source_verification:
+                    raise ValueError('Verification rollout requires prior allowances and verifier opt-in')
+                if db.execute('SELECT id,cap FROM profile_verification_allowance').fetchall()!=[(VERIFICATION_APPROVAL_ID,VERIFICATION_ALLOWANCE)]:
+                    raise ValueError('Explicit verification rollout allowance required')
+                self.cap += VERIFICATION_ALLOWANCE
 
     def reserve(self, key, model):
         from memory_source_verification import MODEL, RESERVATION
@@ -197,3 +206,42 @@ def provision_preference_allowance(global_path,memory_path):
                   include_multisource_allowance=True,include_rollout_allowance=True)
     return _provision_additional(global_path,memory_path,PREFERENCE_APPROVAL_ID,PREFERENCE_ALLOWANCE,
         'profile_preference_allowance',3_200_000,allocations={'ask':100_000,'jev':200_000},redistribute='preference')
+
+
+def provision_verification_allowance(global_path, memory_path):
+    """Explicit approved operator grant; fund from unused recording headroom.
+
+    The global category is funding, not a claim of transcription use. Model
+    attempts stay in the shared profile ledger. Runtime policies remain intact.
+    """
+    ProfileBudget(memory_path,include_rework_allowance=True,include_consolidation_allowance=True,
+        include_multisource_allowance=True,include_rollout_allowance=True,include_preference_allowance=True)
+    with database(global_path,isolation_level=None,timeout=5) as db:
+        db.execute('BEGIN IMMEDIATE')
+        try:
+            prior=db.execute('SELECT category,reserved FROM request WHERE id=?',(VERIFICATION_APPROVAL_ID,)).fetchone()
+            if prior:
+                if prior!=('stt',VERIFICATION_ALLOWANCE):raise ValueError('Verification allowance conflicts')
+            else:
+                total=db.execute('SELECT coalesce(sum(reserved),0) FROM request').fetchone()[0]
+                used=db.execute("SELECT coalesce(sum(reserved),0) FROM request WHERE category='stt'").fetchone()[0]
+                cap=db.execute('SELECT cap FROM budget WHERE id=1').fetchone()[0]
+                category=db.execute("SELECT cap FROM policy WHERE category='stt'").fetchone()
+                if cap!=5_000_000 or total+VERIFICATION_ALLOWANCE>cap or not category or used+VERIFICATION_ALLOWANCE>category[0]:
+                    raise Rejected('budget_limit')
+                credential=db.execute('SELECT id FROM credential ORDER BY rowid DESC LIMIT 1').fetchone()
+                if credential is None:raise Rejected('no_internal_credential')
+                db.execute('INSERT INTO request VALUES(?,?,?,?,?,?)',
+                    (VERIFICATION_APPROVAL_ID,credential[0],'stt',time.time(),VERIFICATION_ALLOWANCE,'completed'))
+            db.execute('CREATE TABLE IF NOT EXISTS allocation_request(id TEXT PRIMARY KEY REFERENCES request(id))')
+            db.execute('INSERT OR IGNORE INTO allocation_request VALUES(?)',(VERIFICATION_APPROVAL_ID,))
+            db.execute('COMMIT')
+        except BaseException:
+            db.execute('ROLLBACK');raise
+    # Reserve globally first. An interrupted operator call can safely resume.
+    with database(memory_path) as db:
+        db.execute('CREATE TABLE IF NOT EXISTS profile_verification_allowance(id TEXT PRIMARY KEY,cap INTEGER NOT NULL)')
+        db.execute('INSERT OR IGNORE INTO profile_verification_allowance VALUES(?,?)',(VERIFICATION_APPROVAL_ID,VERIFICATION_ALLOWANCE))
+        if db.execute('SELECT id,cap FROM profile_verification_allowance').fetchall()!=[(VERIFICATION_APPROVAL_ID,VERIFICATION_ALLOWANCE)]:
+            raise ValueError('Verification allowance conflicts')
+    return dict(approval_id=VERIFICATION_APPROVAL_ID,total_cap_microusd=3_450_000)

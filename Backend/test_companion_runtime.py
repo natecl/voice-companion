@@ -21,7 +21,7 @@ from memory_store import MemoryStore
 from memory_budget import MemoryBudget, reserve_global_allocation
 import profile_budget
 from relay import Relay
-from service_policy import STT, ASK, RETIRED_JEV, ROLLOUT_POLICIES
+from service_policy import STT, ASK, RETIRED_JEV, ROLLOUT_POLICIES, PREFERENCE_POLICIES
 
 FLAGS={name:'1' for name in ('VOICE_ENABLE_MEMORY_REWORK','VOICE_ENABLE_COMPANION','VOICE_ENABLE_MEMORY',
     'VOICE_ENABLE_PERSONAL_LEARNING','VOICE_ENABLE_MEMORY_LEARNING','VOICE_ENABLE_MEMORY_RECALL','VOICE_ENABLE_ASK')}
@@ -80,7 +80,9 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
             profile_budget.provision_consolidation_allowance(global_path,budget_path)
             profile_budget.provision_multisource_allowance(global_path,budget_path)
             profile_budget.provision_rollout_allowance(global_path,budget_path)
-            validate_rework_allocations(admission,rollout=True)
+            profile_budget.provision_preference_allowance(global_path,budget_path)
+            profile_budget.provision_verification_allowance(global_path,budget_path)
+            validate_rework_allocations(admission,rollout=True,verification=True)
             before=admission.usage();admission.close()
             cache=os.environ.get('VOICE_TEST_EMBEDDING_CACHE')
             from local_embeddings import CONTRACT
@@ -123,7 +125,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
                     with memory.connect() as db:self.assertEqual(db.execute('SELECT count(*) FROM memory_embedding').fetchone()[0],1)
                 with urlopen(f'http://127.0.0.1:{port}/health/learning') as response:
                     self.assertEqual(json.load(response)['state'],'idle')
-                admission=Admission(global_path,total_microusd=5_000_000,limits=ROLLOUT_POLICIES)
+                admission=Admission(global_path,total_microusd=5_000_000,limits=PREFERENCE_POLICIES)
                 self.assertEqual(admission.usage(),before);admission.close()
                 self.assertEqual(profile_budget.ProfileBudget(budget_path,include_rework_allowance=True,
                     include_consolidation_allowance=True,include_multisource_allowance=True).report(),[])

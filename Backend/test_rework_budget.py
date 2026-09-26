@@ -129,3 +129,56 @@ class RolloutBudgetTests(unittest.TestCase):
                 reopened=open_ledger(migrate=True)
                 self.assertEqual(dict((r[0],tuple(r[1:])) for r in reopened.db.execute('SELECT * FROM policy')),PREFERENCE_POLICIES)
                 self.assertEqual(reopened.usage(),admission.usage());reopened.close()
+
+class VerificationRolloutTests(unittest.TestCase):
+    fixture = RolloutBudgetTests.fixture
+    def test_verified_allowance_is_idempotent_and_enforces_old_and_new_caps(self):
+        from profile_budget import provision_rollout_allowance,provision_preference_allowance,provision_verification_allowance
+        from hosted import validate_rework_allocations
+        with tempfile.TemporaryDirectory() as folder:
+            paths,admission=self.fixture(folder)
+            provision_rollout_allowance(*paths);provision_preference_allowance(*paths)
+            options=dict(include_rework_allowance=True,include_consolidation_allowance=True,
+                include_multisource_allowance=True,include_rollout_allowance=True,include_preference_allowance=True)
+            old=ProfileBudget(paths[1],**options)
+            for i in range(320):old.reserve('past-'+str(i),'gpt-6-luna')
+            policies=admission.db.execute('SELECT * FROM policy').fetchall()
+            provision_verification_allowance(*paths);provision_verification_allowance(*paths)
+            validate_rework_allocations(admission,rollout=True,verification=True)
+            self.assertEqual(admission.db.execute('SELECT sum(reserved) FROM request').fetchone(),(3_450_000,))
+            self.assertEqual(policies,admission.db.execute('SELECT * FROM policy').fetchall())
+            with self.assertRaisesRegex(Rejected,'profile_budget_limit'):old.reserve('old','gpt-6-luna')
+            new=ProfileBudget(paths[1],**options,independent_source_verification=True,include_verification_allowance=True)
+            for i in range(6):new.reserve('sol-'+str(i),'gpt-6-sol')
+            new.reserve('jev','jev-1.13.0')
+            reopened=ProfileBudget(paths[1],**options,independent_source_verification=True,include_verification_allowance=True)
+            with self.assertRaisesRegex(Rejected,'profile_budget_limit'):reopened.reserve('over','jev-1.13.0')
+            with self.assertRaisesRegex(Rejected,'paid_retry'):reopened.reserve('sol-0','gpt-6-sol')
+
+    def test_allocation_counts_toward_money_but_not_recording_attempts(self):
+        import time
+        with tempfile.TemporaryDirectory() as folder:
+            ledger=Admission(Path(folder)/'usage.sqlite',total_microusd=300000,
+                limits={'stt':(300000,20000,1)})
+            self.addCleanup(ledger.close);credential,token=ledger.enroll()
+            ledger.db.execute('INSERT INTO request VALUES(?,?,?,?,?,?)',
+                ('funding',credential,'stt',time.time(),250000,'completed'))
+            ledger.db.execute('INSERT INTO allocation_request VALUES(?)',('funding',))
+            request=ledger.reserve(token,'stt');ledger.finish(request,completed=True)
+            self.assertEqual(ledger.db.execute('SELECT sum(reserved) FROM request').fetchone()[0],270000)
+            with self.assertRaisesRegex(Rejected,'daily_limit'):ledger.reserve(token,'stt')
+
+    def test_insufficient_funding_does_not_expose_grant(self):
+        from profile_budget import provision_rollout_allowance,provision_preference_allowance,provision_verification_allowance
+        with tempfile.TemporaryDirectory() as folder:
+            paths,admission=self.fixture(folder)
+            provision_rollout_allowance(*paths);provision_preference_allowance(*paths)
+            credential=admission.db.execute('SELECT id FROM credential').fetchone()[0]
+            admission.db.execute('INSERT INTO request VALUES(?,?,?,?,?,?)',('recording',credential,'stt',0,1_000_000,'completed'))
+            count=admission.db.execute('SELECT count(*) FROM request').fetchone()[0]
+            with self.assertRaisesRegex(Rejected,'budget_limit'):provision_verification_allowance(*paths)
+            self.assertEqual(admission.db.execute('SELECT count(*) FROM request').fetchone()[0],count)
+            import sqlite3
+            from contextlib import closing
+            with closing(sqlite3.connect(paths[1])) as db:
+                self.assertFalse(db.execute("SELECT 1 FROM sqlite_master WHERE name='profile_verification_allowance'").fetchone())
