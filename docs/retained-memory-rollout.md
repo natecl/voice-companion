@@ -1,6 +1,6 @@
 # Retained-memory internal rollout
 
-Status: backend deployed and matching native builds installed/updated on September 26, 2026. Physical-iPhone acceptance is pending founder readiness and the two explicit test-attempt grants below. This is not a public release or a claim that the phone check has passed.
+Status: backend deployed and matching native builds installed/updated on September 26, 2026. The bounded physical-iPhone deletion, retained recall and reopen check has passed after the temporal-handling fix below. This is not a public release.
 
 The founder approved this internal rollout after reviewing the live-provider QA. Render remains on Starter (512 MiB / 0.5 CPU, 1 GB disk), with automatic deployments off. No budget caps or permanent daily quotas were raised.
 
@@ -21,15 +21,14 @@ The service migrated memory schema 15 → 16. Read-only comparison against the b
 
 Local evidence: ignored `work/retention-rollout/` contains service/deploy metadata, signed build/install logs, backup receipt, row-preservation and process-flag checks, and quota inspection. These files do not contain provider secrets or private transcript exports.
 
-## Remaining physical acceptance
+## Physical acceptance after temporal-handling fix
 
-Update: the founder approved one temporary recording and one Ask attempt and was ready. Both grants were applied without changing spending caps. The recording completed, but temporal verification discarded the supported Cedar fact; deletion and Ask were paused. See [the diagnosed failure and local fix](uncertain-memory-time.md). Physical acceptance remains incomplete.
+The founder approved one temporary recording and one Ask attempt and explicitly indicated readiness. The recording completed, but uncertain temporal verification discarded the supported Cedar fact. We paused deletion/Ask, diagnosed from cached outputs, fixed the writer in PR 83, and obtained deployment/recovery approval. See [the failure, fix and recovery evidence](uncertain-memory-time.md). The initial failure remains part of this checkpoint's record.
 
+On the physical iPhone, the founder deleted only the Cedar test recording. Read-only backend verification confirmed its transcript payload was removed, one retained-recording row and the learned claim remained, and retrieval produced a valid retained-memory packet with unavailable original source and unresolved temporal status. The founder asked “where does project cedar meet?” once. The persisted completed answer is “From what I remember, Project Cedar meets at the garden pavilion. [[p1]]” with a retained-claim citation. The founder confirmed “Memory · recording deleted” appeared and that the answer and label remained after fully closing and reopening the app. Device rendering/reopen evidence is founder-observed; no new device screenshot was taken.
 
-Use one short fictional recording, wait until its learned memory is confirmed, delete that recording, ask once about the remembered fact, then reopen the app and inspect the saved answer and unavailable-recording label. The earlier real-provider checks and simulator screenshot remain valid; no broad transcription regression run is needed.
+The bounded capture → learn/recover → delete → retained recall → reopen path passes. This is not a general memory-accuracy guarantee. The answer uses remembered-information wording but does not explicitly explain uncertain timing; the storage/context constraints were separately inspected, and this check does not establish how every temporal question will be phrased.
 
-Preflight found recording quota 6/6 and Ask quota 40/40 for this UTC day. Do not ask the founder to begin a test that will immediately hit those limits. Await approval for one additional recording attempt and one additional Ask attempt, along with explicit readiness. The existing internal learning allocation has $0.17 remaining; category budgets also cover this short check. No new dollar allocation or permanent quota increase is proposed. Use unique, idempotent grant IDs, inspect effective availability before starting, and prohibit automatic paid retries.
-
-If the day rolls over first, recheck actual quotas and skip unnecessary grants. Stop if access, device readiness, budget or required acceptance evidence becomes blocked. Do not mark physical acceptance complete until the observed result is recorded.
+Both one-time attempts are consumed: recording 7/7, Ask 41/41 for the tested UTC day. Final global reservations are $4.586868/$5; profile reservations are $3.38/$3.45. Caps and the Render plan are unchanged. These are conservative reservations, not invoiced cost. No further test calls or permanent quota increases were made. Evidence: ignored `work/retention-rollout/cedar-deleted.json`, `cedar-final.json`, and `cedar-final-quota.json`, plus the founder's reports in this task.
 
 Rollback: use the schema-16-compatible code and disable new retention if needed. Keep already retained knowledge and usage accounting; never restore an old database to undo a failure. See [implementation and provider evidence](retained-recording-memory.md) for retained-excerpt semantics, retrieval limitations and backup boundaries.

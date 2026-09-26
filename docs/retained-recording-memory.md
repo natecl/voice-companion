@@ -1,6 +1,6 @@
 # Recording deletion and retained knowledge
 
-Status: verified code checkpoint, September 26, 2026. Storage/writer behavior, live Jev/Luna context handling, saved-chat reopening and iPhone simulator presentation are verified. The [approved internal rollout](retained-memory-rollout.md) is live with matching native builds. Physical-iPhone rollout acceptance remains pending.
+Status: verified code checkpoint, September 26, 2026. Storage/writer behavior, live Jev/Luna context handling, saved-chat reopening and iPhone simulator presentation are verified. The [approved internal rollout](retained-memory-rollout.md) is live with matching native builds. The bounded physical-iPhone deletion, recall and reopen check has passed; see the rollout evidence.
 
 ## Product contract
 
