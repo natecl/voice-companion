@@ -330,6 +330,19 @@ class MemoryStore:
           AND s.deleted=0 AND s.revision=j.revision AND j.revision=?""", (job['id'],job['owner'],job['session'],job['lease'],job['revision'])).fetchone()
         if not row: raise Rejected('stale_job')
 
+    def replace_chunk_plan(self, job, chunks):
+        with self.transaction() as db:
+            self._chunk_job(db,job)
+            row=db.execute('SELECT payload FROM source WHERE owner=? AND session=?',(job['owner'],job['session'])).fetchone()
+            memory_chunks.validate_plan(json.loads(row['payload']),chunks)
+            if db.execute('SELECT 1 FROM memory_chunk WHERE job=? AND claims IS NOT NULL',(job['id'],)).fetchone():
+                raise Rejected('chunk_plan_already_started')
+            if db.execute("SELECT 1 FROM job_result WHERE job=? AND stage NOT LIKE 'boundary:%'",(job['id'],)).fetchone():
+                raise Rejected('chunk_plan_already_started')
+            db.execute('DELETE FROM memory_chunk WHERE job=?',(job['id'],))
+            for ordinal,chunk in enumerate(chunks):
+                db.execute('INSERT INTO memory_chunk VALUES(?,?,?,?,NULL)',(job['id'],ordinal,chunk['id'],json.dumps(chunk)))
+
     def complete_chunk(self, job, chunk_id, claims):
         if not isinstance(claims,list) or len(claims)>8: raise Rejected('invalid_chunk_claims')
         payload=json.dumps(claims,allow_nan=False,sort_keys=True)
