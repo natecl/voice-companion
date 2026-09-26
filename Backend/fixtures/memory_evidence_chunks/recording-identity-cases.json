@@ -1,0 +1,244 @@
+[
+  {
+    "id": "named",
+    "proposal": {
+      "text": "Maya enjoys swimming.",
+      "kind": "preference",
+      "basis": "stated",
+      "scope": "named",
+      "mention": {
+        "name": "Maya",
+        "relationship": "daughter",
+        "qualifiers": [],
+        "speaker_label": null
+      },
+      "evidence": [
+        {
+          "passage": "p1",
+          "quote": "My daughter Maya enjoys swimming."
+        }
+      ],
+      "time": {
+        "status": "current",
+        "expression": null
+      },
+      "change": {
+        "kind": "none",
+        "previous_text": null
+      }
+    },
+    "accept": true
+  },
+  {
+    "id": "correction",
+    "proposal": {
+      "text": "Maya now enjoys tennis instead of swimming.",
+      "kind": "preference",
+      "basis": "stated",
+      "scope": "named",
+      "mention": {
+        "name": "Maya",
+        "relationship": "daughter",
+        "qualifiers": [],
+        "speaker_label": null
+      },
+      "evidence": [
+        {
+          "passage": "p1",
+          "quote": "My daughter Maya now enjoys tennis instead of swimming."
+        }
+      ],
+      "time": {
+        "status": "current",
+        "expression": null
+      },
+      "change": {
+        "kind": "none",
+        "previous_text": null
+      }
+    },
+    "accept": true
+  },
+  {
+    "id": "named_only",
+    "proposal": {
+      "text": "Fiona used to play violin.",
+      "kind": "preference",
+      "basis": "stated",
+      "scope": "named",
+      "mention": {
+        "name": "Fiona",
+        "relationship": null,
+        "qualifiers": [],
+        "speaker_label": null
+      },
+      "evidence": [
+        {
+          "passage": "p1",
+          "quote": "Fiona used to play violin."
+        }
+      ],
+      "time": {
+        "status": "current",
+        "expression": null
+      },
+      "change": {
+        "kind": "none",
+        "previous_text": null
+      }
+    },
+    "accept": true
+  },
+  {
+    "id": "invented_qualifier",
+    "proposal": {
+      "text": "Maya enjoys swimming.",
+      "kind": "preference",
+      "basis": "stated",
+      "scope": "named",
+      "mention": {
+        "name": "Maya",
+        "relationship": "daughter",
+        "qualifiers": [
+          "other"
+        ],
+        "speaker_label": null
+      },
+      "evidence": [
+        {
+          "passage": "p1",
+          "quote": "My daughter Maya enjoys swimming."
+        }
+      ],
+      "time": {
+        "status": "current",
+        "expression": null
+      },
+      "change": {
+        "kind": "none",
+        "previous_text": null
+      }
+    },
+    "accept": false
+  },
+  {
+    "id": "missing_qualifier",
+    "proposal": {
+      "text": "Maya enjoys swimming.",
+      "kind": "preference",
+      "basis": "stated",
+      "scope": "named",
+      "mention": {
+        "name": "Maya",
+        "relationship": "daughter",
+        "qualifiers": [],
+        "speaker_label": null
+      },
+      "evidence": [
+        {
+          "passage": "p1",
+          "quote": "My other daughter Maya enjoys swimming."
+        }
+      ],
+      "time": {
+        "status": "current",
+        "expression": null
+      },
+      "change": {
+        "kind": "none",
+        "previous_text": null
+      }
+    },
+    "accept": false
+  },
+  {
+    "id": "wrong_relationship",
+    "proposal": {
+      "text": "Maya enjoys swimming.",
+      "kind": "preference",
+      "basis": "stated",
+      "scope": "named",
+      "mention": {
+        "name": "Maya",
+        "relationship": "daughter",
+        "qualifiers": [],
+        "speaker_label": null
+      },
+      "evidence": [
+        {
+          "passage": "p1",
+          "quote": "My colleague Maya enjoys swimming."
+        }
+      ],
+      "time": {
+        "status": "current",
+        "expression": null
+      },
+      "change": {
+        "kind": "none",
+        "previous_text": null
+      }
+    },
+    "accept": false
+  },
+  {
+    "id": "quoted_subject",
+    "proposal": {
+      "text": "My sister Bea likes swimming.",
+      "kind": "preference",
+      "basis": "stated",
+      "scope": "named",
+      "mention": {
+        "name": "Bea",
+        "relationship": "sister",
+        "qualifiers": [],
+        "speaker_label": null
+      },
+      "evidence": [
+        {
+          "passage": "p1",
+          "quote": "My sister Bea said her friend Bea likes swimming."
+        }
+      ],
+      "time": {
+        "status": "current",
+        "expression": null
+      },
+      "change": {
+        "kind": "none",
+        "previous_text": null
+      }
+    },
+    "accept": false
+  },
+  {
+    "id": "anonymous",
+    "proposal": {
+      "text": "The speaker enjoys swimming.",
+      "kind": "preference",
+      "basis": "stated",
+      "scope": "unresolved",
+      "mention": {
+        "name": null,
+        "relationship": null,
+        "qualifiers": [],
+        "speaker_label": null
+      },
+      "evidence": [
+        {
+          "passage": "p1",
+          "quote": "I enjoy swimming."
+        }
+      ],
+      "time": {
+        "status": "current",
+        "expression": null
+      },
+      "change": {
+        "kind": "none",
+        "previous_text": null
+      }
+    },
+    "accept": true
+  }
+]

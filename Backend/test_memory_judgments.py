@@ -55,7 +55,7 @@ class CandidateTests(unittest.TestCase):
 
 class JudgmentTests(unittest.TestCase):
     def test_separate_source_aspects_and_role_thresholds(self):
-        request=verify_proposals(source(),[proposal()])
+        request=verify_proposals(dict(source(),origin='personal_text'),[proposal()])
         self.assertEqual(set(request['questions']),{'support_0','subject_0','modality_0','time_0'})
         data=answers(request,{key:('related_to_author' if key.startswith('subject') else 'supported') for key in request['questions']})
         result=decisions(data,request)

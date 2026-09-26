@@ -2,9 +2,9 @@
 import json
 from admission import Rejected
 from memory_models import JEV, choice, parse_judgments
-from profile_identity import identity_rule
+from profile_identity import identity_rule,personal
 
-VERSION='evidence-judgments-v9'
+VERSION='evidence-judgments-v16'
 POLICIES={'support':.90,'subject':.95,'modality':.90,'time':.90,'identity':.95,'relation':.95,'applicability':.95}
 
 
@@ -14,7 +14,7 @@ def request(state,questions):
     return result
 
 
-def verify_proposals(source,proposals):
+def verify_proposals(source,proposals,*,include_subject=True):
     questions={}
     aspects={
         'support':'Does the memory text faithfully preserve the cited source meaning, negation, uncertainty and whose statement it is?',
@@ -52,7 +52,14 @@ def verify_proposals(source,proposals):
             'named':'An explicitly named other subject is supported, without establishing an account-owner relationship.',
             'unresolved':'The subject remains unidentified or ambiguous; recording speakers are not identified account owners.',
             'wrong':'The claim or proposed mention misattributes the source, changes a relationship, or omits a distinguishing qualifier.'}
-    return request(dict(source=source),questions)
+    if not personal(source):
+        for i,p in enumerate(proposals):
+            questions[f'modality_{i}']['instructions']['question']='Does the cited recording present this claim with the proposed basis? Stated means explicitly asserted by a speaker; it does not require independent truth verification or knowing who the speaker is. Tentative means a real possibility or plan explicitly marked uncertain. Hypothetical examples and unaccepted advice do not establish an actual fact or plan. Judge the asserted versus tentative status, not speaker identity or current-world truth.'
+    if not include_subject:
+        questions={key:value for key,value in questions.items() if not key.startswith('subject_')}
+    cited={ref.get('passage') for p in proposals for ref in p['evidence']}
+    evidence_source=dict(source,passages=[p for p in source['passages'] if p['id'] in cited]) if 'passages' in source else source
+    return request(dict(source=evidence_source),questions)
 
 
 def pair_questions(pairs,*,role):
@@ -101,8 +108,15 @@ def pair_evidence(pair,role):
     previous_source=previous.get('source',{})
     previous_evidence=previous.get('evidence') or [dict(passage=p,origin=previous_source.get('origin','recording'),captured_at=previous_source.get('captured_at')) for p in previous_source.get('passages',[])]
     for e in previous_evidence:
-        prior.append(dict(text=e['passage']['text'],origin=e.get('origin','recording'),
-                          speakers=e['passage'].get('speakers',[]),captured_at=e.get('captured_at')))
+        passage=e['passage'];prior_excerpts=[passage['text']]
+        proposal=previous.get('proposal')
+        if len(passage['text'])>2000 and proposal:
+            spans=[s for s in proposal['spans'] if s['passage']==passage['id']]
+            # Exact original spans plus bounded neighboring text, never a generated summary.
+            if spans:prior_excerpts=[passage['text'][max(0,s['start']-200):s['end']+200] for s in spans]
+        for excerpt in prior_excerpts:
+            prior.append(dict(text=excerpt,origin=e.get('origin','recording'),
+                              speakers=passage.get('speakers',[]),captured_at=e.get('captured_at')))
     result=dict(incoming=dict(claim=p.get('text'),excerpts=excerpts,origin=source.get('origin','recording'),
                               captured_at=source.get('captured_at')),
                 previous=dict(claim=previous.get('text',previous.get('memory',{}).get('text')),evidence=prior))
@@ -120,7 +134,7 @@ def decisions(response,requested,role=None):
         if policy not in POLICIES:raise ValueError('Unknown judgment policy')
         label=a['choice']
         accepted=label not in ('uncertain','unsupported','wrong') and a['probabilities'][label]>=POLICIES[policy]
-        if policy=='subject' and 'author' in requested['questions'][key]['criteria']:
+        if policy=='subject' and 'named' in requested['questions'][key]['criteria']:
             accepted=accepted and label==requested['questions'][key]['instructions']['aspect_value']['scope']
         result[key]=dict(label=label,accepted=accepted,
                          probabilities=a['probabilities'],confidence=a['confidence'],policy=policy,rubric=VERSION)

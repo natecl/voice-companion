@@ -1,0 +1,712 @@
+{
+  "source": {
+    "session_id": "long",
+    "revision": 1,
+    "captured_at": 100.0,
+    "timezone": "UTC",
+    "completed": true,
+    "passages": [
+      {
+        "id": "p0",
+        "text": "My daughter Maya enjoys swimming.",
+        "start": 0.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p1",
+        "text": "Agenda section 0: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 1.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p2",
+        "text": "Agenda section 1: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 2.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p3",
+        "text": "Agenda section 2: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 3.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p4",
+        "text": "Agenda section 3: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 4.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p5",
+        "text": "Agenda section 4: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 5.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p6",
+        "text": "Agenda section 5: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 6.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p7",
+        "text": "Agenda section 6: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 7.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p8",
+        "text": "Agenda section 7: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 8.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p9",
+        "text": "Agenda section 8: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 9.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p10",
+        "text": "Agenda section 9: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 10.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p11",
+        "text": "Agenda section 10: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 11.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p12",
+        "text": "Agenda section 11: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 12.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p13",
+        "text": "Agenda section 12: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 13.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p14",
+        "text": "Agenda section 13: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 14.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p15",
+        "text": "Agenda section 14: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 15.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p16",
+        "text": "Agenda section 15: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. ",
+        "start": 16.0,
+        "duration": 1.0,
+        "speakers": []
+      },
+      {
+        "id": "p25",
+        "text": "My daughter Maya now enjoys tennis instead of swimming.",
+        "start": 25.0,
+        "duration": 1.0,
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "ebe0af9d-c7ea-40af-921f-b1e86d4f4c41",
+    "accepted": 0,
+    "claims": [],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "rejected",
+        "checks": {
+          "support": {
+            "label": "supported",
+            "accepted": true,
+            "probabilities": {
+              "uncertain": 0.0,
+              "unsupported": 0.0,
+              "supported": 1.0
+            },
+            "confidence": 1.0,
+            "policy": "support",
+            "rubric": "evidence-judgments-v12"
+          },
+          "subject": {
+            "label": "named",
+            "accepted": false,
+            "probabilities": {
+              "related_to_author": 0.39,
+              "unresolved": 0.09,
+              "named": 0.49,
+              "author": 0.0,
+              "wrong": 0.03
+            },
+            "confidence": 0.36,
+            "policy": "subject",
+            "rubric": "evidence-judgments-v12"
+          },
+          "modality": {
+            "label": "supported",
+            "accepted": false,
+            "probabilities": {
+              "uncertain": 0.05,
+              "unsupported": 0.11,
+              "supported": 0.84
+            },
+            "confidence": 0.76,
+            "policy": "modality",
+            "rubric": "evidence-judgments-v12"
+          },
+          "time": {
+            "label": "supported",
+            "accepted": true,
+            "probabilities": {
+              "uncertain": 0.02,
+              "unsupported": 0.06,
+              "supported": 0.92
+            },
+            "confidence": 0.89,
+            "policy": "time",
+            "rubric": "evidence-judgments-v12"
+          }
+        }
+      },
+      {
+        "candidate": 1,
+        "result": "rejected",
+        "checks": {
+          "support": {
+            "label": "supported",
+            "accepted": true,
+            "probabilities": {
+              "supported": 0.98,
+              "unsupported": 0.01,
+              "uncertain": 0.01
+            },
+            "confidence": 0.98,
+            "policy": "support",
+            "rubric": "evidence-judgments-v12"
+          },
+          "subject": {
+            "label": "named",
+            "accepted": false,
+            "probabilities": {
+              "wrong": 0.03,
+              "named": 0.47000000000000003,
+              "related_to_author": 0.39,
+              "unresolved": 0.11,
+              "author": 0.0
+            },
+            "confidence": 0.33,
+            "policy": "subject",
+            "rubric": "evidence-judgments-v12"
+          },
+          "modality": {
+            "label": "supported",
+            "accepted": false,
+            "probabilities": {
+              "supported": 0.74,
+              "unsupported": 0.18,
+              "uncertain": 0.08
+            },
+            "confidence": 0.61,
+            "policy": "modality",
+            "rubric": "evidence-judgments-v12"
+          },
+          "time": {
+            "label": "supported",
+            "accepted": true,
+            "probabilities": {
+              "supported": 0.92,
+              "unsupported": 0.07,
+              "uncertain": 0.01
+            },
+            "confidence": 0.88,
+            "policy": "time",
+            "rubric": "evidence-judgments-v12"
+          }
+        }
+      }
+    ]
+  },
+  "claims": [],
+  "unresolved": [],
+  "plans": [
+    {
+      "id": "4c202c74fac747a7c913d4e1dc9b64719c433eff16a6d5c711b004ab522955f6",
+      "version": "turn-chunks-v2",
+      "contract": "d48d8cec29efb6a7872d772b18f43ac6214374ec3ae030d528500b1c5b2cf6c4",
+      "source": {
+        "captured_at": 100.0,
+        "completed": true,
+        "passages": [
+          {
+            "duration": 1.0,
+            "id": "fragment-0",
+            "speakers": [],
+            "start": 0.0,
+            "text": "My daughter Maya enjoys swimming."
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-1",
+            "speakers": [],
+            "start": 1.0,
+            "text": "Agenda section 0: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-2",
+            "speakers": [],
+            "start": 2.0,
+            "text": "Agenda section 1: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-3",
+            "speakers": [],
+            "start": 3.0,
+            "text": "Agenda section 2: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          }
+        ],
+        "revision": 1,
+        "session_id": "long",
+        "timezone": "UTC"
+      },
+      "ranges": [
+        {
+          "fragment": "fragment-0",
+          "passage": "p0",
+          "start": 0,
+          "end": 33,
+          "primary": true
+        },
+        {
+          "fragment": "fragment-1",
+          "passage": "p1",
+          "start": 0,
+          "end": 678,
+          "primary": true
+        },
+        {
+          "fragment": "fragment-2",
+          "passage": "p2",
+          "start": 0,
+          "end": 678,
+          "primary": true
+        },
+        {
+          "fragment": "fragment-3",
+          "passage": "p3",
+          "start": 0,
+          "end": 678,
+          "primary": true
+        }
+      ],
+      "strategy": "jev_boundary_overlap",
+      "boundary_reason": "hard_limit_overlap"
+    },
+    {
+      "id": "844e6bbd3c440963103d7b475989383743ae1ea999cad70343925c4099207135",
+      "version": "turn-chunks-v2",
+      "contract": "d48d8cec29efb6a7872d772b18f43ac6214374ec3ae030d528500b1c5b2cf6c4",
+      "source": {
+        "captured_at": 100.0,
+        "completed": true,
+        "passages": [
+          {
+            "duration": 1.0,
+            "id": "fragment-0",
+            "speakers": [],
+            "start": 3.0,
+            "text": ". We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-1",
+            "speakers": [],
+            "start": 4.0,
+            "text": "Agenda section 3: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-2",
+            "speakers": [],
+            "start": 5.0,
+            "text": "Agenda section 4: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-3",
+            "speakers": [],
+            "start": 6.0,
+            "text": "Agenda section 5: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          }
+        ],
+        "revision": 1,
+        "session_id": "long",
+        "timezone": "UTC"
+      },
+      "ranges": [
+        {
+          "fragment": "fragment-0",
+          "passage": "p3",
+          "start": 478,
+          "end": 678,
+          "primary": false
+        },
+        {
+          "fragment": "fragment-1",
+          "passage": "p4",
+          "start": 0,
+          "end": 678,
+          "primary": true
+        },
+        {
+          "fragment": "fragment-2",
+          "passage": "p5",
+          "start": 0,
+          "end": 678,
+          "primary": true
+        },
+        {
+          "fragment": "fragment-3",
+          "passage": "p6",
+          "start": 0,
+          "end": 678,
+          "primary": true
+        }
+      ],
+      "strategy": "jev_boundary_overlap",
+      "boundary_reason": "hard_limit_overlap"
+    },
+    {
+      "id": "9767da25908177e7c9041da83abbd1c95a23a0ba1098c48656dbb0c995519104",
+      "version": "turn-chunks-v2",
+      "contract": "d48d8cec29efb6a7872d772b18f43ac6214374ec3ae030d528500b1c5b2cf6c4",
+      "source": {
+        "captured_at": 100.0,
+        "completed": true,
+        "passages": [
+          {
+            "duration": 1.0,
+            "id": "fragment-0",
+            "speakers": [],
+            "start": 6.0,
+            "text": ". We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-1",
+            "speakers": [],
+            "start": 7.0,
+            "text": "Agenda section 6: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-2",
+            "speakers": [],
+            "start": 8.0,
+            "text": "Agenda section 7: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-3",
+            "speakers": [],
+            "start": 9.0,
+            "text": "Agenda section 8: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          }
+        ],
+        "revision": 1,
+        "session_id": "long",
+        "timezone": "UTC"
+      },
+      "ranges": [
+        {
+          "fragment": "fragment-0",
+          "passage": "p6",
+          "start": 478,
+          "end": 678,
+          "primary": false
+        },
+        {
+          "fragment": "fragment-1",
+          "passage": "p7",
+          "start": 0,
+          "end": 678,
+          "primary": true
+        },
+        {
+          "fragment": "fragment-2",
+          "passage": "p8",
+          "start": 0,
+          "end": 678,
+          "primary": true
+        },
+        {
+          "fragment": "fragment-3",
+          "passage": "p9",
+          "start": 0,
+          "end": 678,
+          "primary": true
+        }
+      ],
+      "strategy": "jev_boundary_overlap",
+      "boundary_reason": "hard_limit_overlap"
+    },
+    {
+      "id": "d035d7d6ae547584332f3373846a14ba9543c79b97d83c974602e197be6f9a69",
+      "version": "turn-chunks-v2",
+      "contract": "d48d8cec29efb6a7872d772b18f43ac6214374ec3ae030d528500b1c5b2cf6c4",
+      "source": {
+        "captured_at": 100.0,
+        "completed": true,
+        "passages": [
+          {
+            "duration": 1.0,
+            "id": "fragment-0",
+            "speakers": [],
+            "start": 9.0,
+            "text": ". We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-1",
+            "speakers": [],
+            "start": 10.0,
+            "text": "Agenda section 9: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-2",
+            "speakers": [],
+            "start": 11.0,
+            "text": "Agenda section 10: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-3",
+            "speakers": [],
+            "start": 12.0,
+            "text": "Agenda section 11: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          }
+        ],
+        "revision": 1,
+        "session_id": "long",
+        "timezone": "UTC"
+      },
+      "ranges": [
+        {
+          "fragment": "fragment-0",
+          "passage": "p9",
+          "start": 478,
+          "end": 678,
+          "primary": false
+        },
+        {
+          "fragment": "fragment-1",
+          "passage": "p10",
+          "start": 0,
+          "end": 678,
+          "primary": true
+        },
+        {
+          "fragment": "fragment-2",
+          "passage": "p11",
+          "start": 0,
+          "end": 679,
+          "primary": true
+        },
+        {
+          "fragment": "fragment-3",
+          "passage": "p12",
+          "start": 0,
+          "end": 679,
+          "primary": true
+        }
+      ],
+      "strategy": "jev_boundary_overlap",
+      "boundary_reason": "hard_limit_overlap"
+    },
+    {
+      "id": "04686042e3c14811cfda1e649577fb57d6c10cdbc17638d30b5157bffe235158",
+      "version": "turn-chunks-v2",
+      "contract": "d48d8cec29efb6a7872d772b18f43ac6214374ec3ae030d528500b1c5b2cf6c4",
+      "source": {
+        "captured_at": 100.0,
+        "completed": true,
+        "passages": [
+          {
+            "duration": 1.0,
+            "id": "fragment-0",
+            "speakers": [],
+            "start": 12.0,
+            "text": ". We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-1",
+            "speakers": [],
+            "start": 13.0,
+            "text": "Agenda section 12: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-2",
+            "speakers": [],
+            "start": 14.0,
+            "text": "Agenda section 13: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-3",
+            "speakers": [],
+            "start": 15.0,
+            "text": "Agenda section 14: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          }
+        ],
+        "revision": 1,
+        "session_id": "long",
+        "timezone": "UTC"
+      },
+      "ranges": [
+        {
+          "fragment": "fragment-0",
+          "passage": "p12",
+          "start": 479,
+          "end": 679,
+          "primary": false
+        },
+        {
+          "fragment": "fragment-1",
+          "passage": "p13",
+          "start": 0,
+          "end": 679,
+          "primary": true
+        },
+        {
+          "fragment": "fragment-2",
+          "passage": "p14",
+          "start": 0,
+          "end": 679,
+          "primary": true
+        },
+        {
+          "fragment": "fragment-3",
+          "passage": "p15",
+          "start": 0,
+          "end": 679,
+          "primary": true
+        }
+      ],
+      "strategy": "jev_boundary_overlap",
+      "boundary_reason": "hard_limit_overlap"
+    },
+    {
+      "id": "aeae009689a3d025c1fb1c47c6c80af544e48fdfca0c45cf43712b2bca2d4d6e",
+      "version": "turn-chunks-v2",
+      "contract": "d48d8cec29efb6a7872d772b18f43ac6214374ec3ae030d528500b1c5b2cf6c4",
+      "source": {
+        "captured_at": 100.0,
+        "completed": true,
+        "passages": [
+          {
+            "duration": 1.0,
+            "id": "fragment-0",
+            "speakers": [],
+            "start": 15.0,
+            "text": ". We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-1",
+            "speakers": [],
+            "start": 16.0,
+            "text": "Agenda section 15: We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. We discussed the order of items. "
+          },
+          {
+            "duration": 1.0,
+            "id": "fragment-2",
+            "speakers": [],
+            "start": 25.0,
+            "text": "My daughter Maya now enjoys tennis instead of swimming."
+          }
+        ],
+        "revision": 1,
+        "session_id": "long",
+        "timezone": "UTC"
+      },
+      "ranges": [
+        {
+          "fragment": "fragment-0",
+          "passage": "p15",
+          "start": 479,
+          "end": 679,
+          "primary": false
+        },
+        {
+          "fragment": "fragment-1",
+          "passage": "p16",
+          "start": 0,
+          "end": 679,
+          "primary": true
+        },
+        {
+          "fragment": "fragment-2",
+          "passage": "p25",
+          "start": 0,
+          "end": 55,
+          "primary": true
+        }
+      ],
+      "strategy": "jev_boundary_overlap",
+      "boundary_reason": "end"
+    }
+  ],
+  "checks": {
+    "multiple_chunks": true,
+    "semantic_plan": true,
+    "correction": false,
+    "same_person": false,
+    "no_unresolved": true,
+    "no_owner_inference": true,
+    "original_refs": true,
+    "source_unchanged": true
+  },
+  "budget": [
+    {
+      "model": "gpt-6-luna",
+      "calls": 69,
+      "reserved_microusd": 690000
+    },
+    {
+      "model": "jev-1.13.0",
+      "calls": 111,
+      "reserved_microusd": 1110000
+    }
+  ]
+}

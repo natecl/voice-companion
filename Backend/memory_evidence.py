@@ -6,7 +6,7 @@ from memory_identity import description
 from memory_models import LUNA
 from profile_identity import personal
 
-VERSION = 'memory-evidence-v2.2'
+VERSION = 'memory-evidence-v2.5'
 PROMPT = (Path(__file__).parent/'prompts/memory-evidence-v2.md').read_text()
 
 
@@ -30,9 +30,21 @@ SCHEMA=object_schema(dict(memories={'type':'array','items':object_schema(FIELDS)
 
 
 def extraction_request(source):
-    request=dict(model=LUNA,reasoning={'effort':'none'},service_tier='default',instructions=PROMPT,
-        input=json.dumps(source,ensure_ascii=False),max_output_tokens=3000,store=False,tools=[],truncation='disabled',
-        text={'format':dict(type='json_schema',name='memory_evidence_v2',strict=True,schema=SCHEMA)})
+    schema=SCHEMA
+    view=source
+    instructions=PROMPT
+    if not personal(source):
+        # Authorship is application provenance, not a probabilistic extraction choice.
+        variants=[]
+        for scope,name_type in [('named','string'),('unresolved','null')]:
+            mention=object_schema(dict(MENTION['properties'],name={'type':name_type}))
+            variants.append(object_schema(dict(FIELDS,scope=enum(scope),mention=mention)))
+        schema=object_schema(dict(memories={'type':'array','items':{'anyOf':variants}}))
+        instructions+='\nApplication provenance: these are unidentified recording speakers. Use named when the memory subject has an explicit name, even though cross-source identity is not verified. Use unresolved with null name for an unnamed subject. Never infer an account-owner relationship.'
+        view=dict(source,origin='recording')
+    request=dict(model=LUNA,reasoning={'effort':'none'},service_tier='default',instructions=instructions,
+        input=json.dumps(view,ensure_ascii=False),max_output_tokens=3000,store=False,tools=[],truncation='disabled',
+        text={'format':dict(type='json_schema',name='memory_evidence_v2',strict=True,schema=schema)})
     if len(json.dumps(request,ensure_ascii=False).encode())>16000:raise Rejected('memory_extraction_too_large')
     return request
 
@@ -41,9 +53,10 @@ def text(value,limit,*,nullable=False):
     return (nullable and value is None) or (isinstance(value,str) and bool(value.strip()) and len(value)<=limit)
 
 
-def parse(data,source):
+def parse(data,source,*,exact_spans=None):
     if (not isinstance(data,dict) or set(data)!={'memories'} or not isinstance(data['memories'],list)
             or len(data['memories'])>8):raise Rejected('invalid_evidence_extraction')
+    if exact_spans is not None and len(data['memories'])!=1:raise Rejected('invalid_evidence_sources')
     passages={p['id']:p for p in source['passages']};result=[]
     for candidate in data['memories']:
         if not isinstance(candidate,dict) or set(candidate)!=set(FIELDS):raise Rejected('invalid_evidence_extraction')
@@ -70,14 +83,24 @@ def parse(data,source):
         if c['change']['kind'] in ('none','addition') and c['change']['previous_text'] is not None:raise Rejected('invalid_evidence_extraction')
         if not isinstance(c['evidence'],list) or not 1<=len(c['evidence'])<=4:raise Rejected('invalid_evidence_sources')
         spans=[]
-        for ref in c['evidence']:
+        if exact_spans is not None and len(exact_spans)!=len(c['evidence']):raise Rejected('invalid_evidence_sources')
+        for index,ref in enumerate(c['evidence']):
             if not isinstance(ref,dict) or set(ref)!={'passage','quote'}:raise Rejected('invalid_evidence_sources')
             if not isinstance(ref['passage'],str):raise Rejected('invalid_evidence_sources')
             p=passages.get(ref['passage']);quote=ref['quote']
-            if p is None or not text(quote,2000) or p['text'].count(quote)!=1:raise Rejected('invalid_evidence_quote')
+            if p is None or not text(quote,2000):raise Rejected('invalid_evidence_quote')
+            if exact_spans is None:
+                if p['text'].count(quote)!=1:raise Rejected('invalid_evidence_quote')
+                start=p['text'].index(quote)
+            else:
+                span=exact_spans[index]
+                if (set(span)!={'passage','start','end'} or span['passage']!=ref['passage']
+                        or type(span['start']) is not int or type(span['end']) is not int
+                        or not 0<=span['start']<span['end']<=len(p['text'])
+                        or p['text'][span['start']:span['end']]!=quote):raise Rejected('invalid_evidence_quote')
+                start=span['start']
             label=c['mention']['speaker_label']
             if label is not None and p['speakers']!=[label]:raise Rejected('invalid_mention_speaker')
-            start=p['text'].index(quote)
             spans.append(dict(passage=ref['passage'],start=start,end=start+len(quote)))
         expression=c['time']['expression']
         if expression is not None and not any(expression in r['quote'] for r in c['evidence']):raise Rejected('unsupported_time_expression')

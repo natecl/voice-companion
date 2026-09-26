@@ -141,5 +141,20 @@ class WorkerTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(json.loads(body)['state'],'halted')
             self.assertEqual(await asyncio.to_thread(get,'/health'),(200,'ready\n'))
 
+    async def test_identity_size_failure_quarantines_only_its_job(self):
+        self.store.put_source(self.owner,source('too-large'))
+        self.store.put_source(self.owner,source('following'))
+        original=self.writer.models.extract
+        async def extract(request):
+            if json.loads(request['input'])['session_id']=='too-large':raise Rejected('memory_identity_too_large')
+            return await original(request)
+        self.writer.models.extract=extract
+        task=asyncio.create_task(self.worker.run())
+        try:
+            await self.wait_idle()
+            self.assertEqual([j['state'] for j in self.jobs()],['failed','done'])
+            self.assertEqual(self.worker.status()['quarantined'],1)
+        finally:await self.stop(task)
+
 
 if __name__=='__main__': unittest.main()
