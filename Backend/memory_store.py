@@ -11,8 +11,9 @@ import uuid
 from admission import Rejected
 import memory_identity
 import memory_transitions
+import memory_chunks
 
-VERSION = 6
+VERSION = 7
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -72,7 +73,7 @@ class MemoryStore:
         self.personal_learning = personal_learning
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, VERSION):
+            if version not in (0, 1, 2, 3, 4, 5, 6, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -136,6 +137,16 @@ class MemoryStore:
                 db.executescript(memory_identity.SCHEMA)
             if version < 6:
                 db.executescript(memory_transitions.SCHEMA)
+            if version < 7:
+                db.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE IF NOT EXISTS memory_chunk(
+                      job TEXT NOT NULL REFERENCES job(id), ordinal INTEGER NOT NULL,
+                      id TEXT NOT NULL, plan TEXT NOT NULL, claims TEXT,
+                      PRIMARY KEY(job,ordinal), UNIQUE(job,id));
+                    PRAGMA user_version=7;
+                    COMMIT;
+                """)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)
@@ -181,6 +192,7 @@ class MemoryStore:
             return existing_owner
 
     def _invalidate_source(self, db, owner, session):
+        db.execute('DELETE FROM memory_chunk WHERE job IN (SELECT id FROM job WHERE owner=? AND session=?)', (owner,session))
         memory_identity.invalidate_source(db, owner, session)
         db.execute('DELETE FROM job_result WHERE job IN (SELECT id FROM job WHERE owner=? AND session=?)', (owner, session))
         db.execute('DELETE FROM support WHERE owner=? AND session=?', (owner, session))
@@ -271,7 +283,7 @@ class MemoryStore:
 
     def commit_claims(self, job, candidates):
         """Internal writer boundary; not exposed to clients. PR 1 uses fixture judgments."""
-        if not isinstance(candidates, list) or len(candidates) > 50:
+        if not isinstance(candidates, list) or len(candidates) > 256:
             raise Rejected('invalid_candidates')
         with self.transaction() as db:
             live = db.execute('SELECT * FROM job WHERE id=?', (job['id'],)).fetchone()
@@ -295,6 +307,48 @@ class MemoryStore:
                     memory_identity.add_mentions(db, owner, claim_id, session, revision, c['passages'], c['mention'])
             memory_transitions.reopen_invalid(db, owner)
             db.execute("UPDATE job SET state='done',lease=NULL WHERE id=?", (live['id'],))
+
+    def chunk_plan(self, job):
+        with self.transaction() as db:
+            self._chunk_job(db, job)
+            rows = db.execute('SELECT plan,claims FROM memory_chunk WHERE job=? ORDER BY ordinal', (job['id'],)).fetchall()
+            row = db.execute('SELECT payload FROM source WHERE owner=? AND session=?', (job['owner'],job['session'])).fetchone()
+            if rows:
+                chunks = [dict(json.loads(r['plan']), claims=json.loads(r['claims']) if r['claims'] is not None else None) for r in rows]
+                current_contract = memory_chunks.contract(json.loads(row['payload']))
+                if any(c.get('contract') != current_contract for c in chunks):
+                    raise Rejected('chunk_contract_changed')
+                return chunks
+            chunks = memory_chunks.plan(json.loads(row['payload']))
+            for ordinal, chunk in enumerate(chunks):
+                db.execute('INSERT INTO memory_chunk VALUES(?,?,?,?,NULL)', (job['id'],ordinal,chunk['id'],json.dumps(chunk)))
+            return [dict(c,claims=None) for c in chunks]
+
+    def _chunk_job(self, db, job):
+        row = db.execute("""SELECT 1 FROM job j JOIN source s ON s.owner=j.owner AND s.session=j.session
+          WHERE j.id=? AND j.owner=? AND j.session=? AND j.state='running' AND j.lease=?
+          AND s.deleted=0 AND s.revision=j.revision AND j.revision=?""", (job['id'],job['owner'],job['session'],job['lease'],job['revision'])).fetchone()
+        if not row: raise Rejected('stale_job')
+
+    def complete_chunk(self, job, chunk_id, claims):
+        if not isinstance(claims,list) or len(claims)>8: raise Rejected('invalid_chunk_claims')
+        payload=json.dumps(claims,allow_nan=False,sort_keys=True)
+        with self.transaction() as db:
+            self._chunk_job(db,job)
+            row=db.execute('SELECT claims FROM memory_chunk WHERE job=? AND id=?',(job['id'],chunk_id)).fetchone()
+            if not row: raise Rejected('invalid_chunk')
+            if row['claims'] is not None and row['claims']!=payload: raise Rejected('chunk_result_conflict')
+            db.execute('UPDATE memory_chunk SET claims=? WHERE job=? AND id=?',(payload,job['id'],chunk_id))
+
+    def resume_chunk_job(self, owner, job_id):
+        """Explicit operator recovery only. Existing provider reservation rules still apply."""
+        with self.transaction() as db:
+            row=db.execute("""SELECT j.* FROM job j JOIN source s ON s.owner=j.owner AND s.session=j.session
+              WHERE j.id=? AND j.owner=? AND s.deleted=0 AND s.revision=j.revision
+              AND (j.state='interrupted' OR (j.state='failed' AND j.error='learning_interrupted'))""",(job_id,owner)).fetchone()
+            if not row or not db.execute('SELECT 1 FROM memory_chunk WHERE job=?',(job_id,)).fetchone():
+                raise Rejected('chunk_resume_not_eligible')
+            db.execute("UPDATE job SET state='queued',lease=NULL,error=NULL WHERE id=?",(job_id,))
 
     def finish_failed(self, job, code):
         identifier(code)

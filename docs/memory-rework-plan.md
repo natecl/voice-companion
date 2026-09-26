@@ -71,7 +71,7 @@ Delivery split: **1A** persists unresolved lifecycle proposals and prevents the 
 
 ### Checkpoint 2 — resilient background learning and contextual chunks
 
-Delivery split: **2A** isolates known job-local failures and exposes learner state; see [implementation and evidence](memory-worker-isolation.md). **2B** implements context-preserving chunk jobs, bounded processing, deduplication and reviewed recovery. Oversized sources remain failed after 2A; do not claim chunk learning or trigger automatic paid reprocessing.
+Delivery split: **2A** isolates known job-local failures and exposes learner state; see [implementation and evidence](memory-worker-isolation.md). **2B** implements the off-by-default deterministic chunk pipeline, bounded verification batches, exact deduplication and reviewed recovery; see [implementation and evidence](memory-chunks.md). **2C** adds/evaluates Jev semantic boundaries and live provider acceptance before hosted enablement. Deterministic/local fixture success does not complete the provider-quality gate. Oversized sources remain failed after 2A; do not claim chunk learning or trigger automatic paid reprocessing.
 
 **Outcome:** every accepted source has a bounded processing path, and one bad job cannot stop the rest.
 
