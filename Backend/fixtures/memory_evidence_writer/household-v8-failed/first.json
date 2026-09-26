@@ -1,0 +1,65 @@
+{
+  "source": {
+    "session_id": "first",
+    "revision": 1,
+    "captured_at": 1790337600.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "My roommate Tessa uses lavender laundry detergent.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "33e02822-7e4b-4bd2-b56c-32a754a93e7e",
+    "accepted": 1,
+    "claims": [
+      "5817b804-3a56-4174-b2ac-323e302f8c89"
+    ],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "new"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "5817b804-3a56-4174-b2ac-323e302f8c89",
+      "owner": "e8d187ca-367d-42de-b8f1-cfc66bbad669",
+      "text": "Tessa uses lavender laundry detergent.",
+      "subject": "mention_68c4dce7012547079452d1e92de59052",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790396009.9514806,
+      "valid_from": 1790337600.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "supported",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "ffccd732-2473-4081-a36d-89e5edeb5bc2",
+      "sources": [
+        {
+          "session": "first",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "checks": {
+    "no_unresolved": true,
+    "expected_count": true,
+    "first_active": true
+  }
+}

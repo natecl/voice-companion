@@ -1,0 +1,10 @@
+[
+  {"id":"shorter","source":"My brother Luis commutes by bicycle.","claim":"Luis commutes by bicycle.","expected":"supported"},
+  {"id":"paraphrase","source":"Dana takes the train to work.","claim":"Dana commutes to work by train.","expected":"supported"},
+  {"id":"qualified","source":"Rin might join the choir next month.","claim":"Rin might join the choir next month.","expected":"supported"},
+  {"id":"background","source":"My neighbor Omar, who lives upstairs, likes baking bread.","claim":"Omar likes baking bread.","expected":"supported"},
+  {"id":"negation","source":"Luis does not commute by bicycle.","claim":"Luis commutes by bicycle.","expected":"reject"},
+  {"id":"wrong-person","source":"Dana takes the train to work. Eli walks.","claim":"Eli takes the train to work.","expected":"reject"},
+  {"id":"certainty","source":"Rin might join the choir next month.","claim":"Rin has joined the choir.","expected":"reject"},
+  {"id":"past-as-present","source":"Omar liked baking bread as a child but no longer likes it.","claim":"Omar likes baking bread.","expected":"reject"}
+]

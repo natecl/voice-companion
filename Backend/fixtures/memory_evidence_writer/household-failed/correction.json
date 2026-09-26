@@ -1,0 +1,117 @@
+{
+  "source": {
+    "session_id": "correction",
+    "revision": 1,
+    "captured_at": 1790337601.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "Tessa, my roommate, changed to unscented laundry detergent.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "b541ada8-7a73-42dc-8102-a24acd577763",
+    "accepted": 0,
+    "claims": [],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "rejected",
+        "checks": {
+          "support": {
+            "label": "supported",
+            "accepted": true,
+            "probabilities": {
+              "unsupported": 0.0,
+              "uncertain": 0.0,
+              "supported": 1.0
+            },
+            "confidence": 1.0,
+            "policy": "support",
+            "rubric": "evidence-judgments-v5"
+          },
+          "subject": {
+            "label": "related_to_author",
+            "accepted": false,
+            "probabilities": {
+              "wrong": 0.04,
+              "named": 0.07,
+              "unresolved": 0.0,
+              "related_to_author": 0.89,
+              "author": 0.0
+            },
+            "confidence": 0.87,
+            "policy": "subject",
+            "rubric": "evidence-judgments-v5"
+          },
+          "modality": {
+            "label": "supported",
+            "accepted": true,
+            "probabilities": {
+              "unsupported": 0.0,
+              "uncertain": 0.0,
+              "supported": 1.0
+            },
+            "confidence": 0.99,
+            "policy": "modality",
+            "rubric": "evidence-judgments-v5"
+          },
+          "time": {
+            "label": "supported",
+            "accepted": true,
+            "probabilities": {
+              "unsupported": 0.0,
+              "uncertain": 0.0,
+              "supported": 1.0
+            },
+            "confidence": 0.99,
+            "policy": "time",
+            "rubric": "evidence-judgments-v5"
+          }
+        }
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "faf20437-d375-4506-a1fd-4a3c21bdbbcd",
+      "owner": "1b497402-7401-4508-82b3-41af9e3ab4cf",
+      "text": "Tessa uses lavender laundry detergent.",
+      "subject": "mention_aab8d26cd047437d8b1b1839c6da52c7",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790394621.757873,
+      "valid_from": 1790337600.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "supported",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "b86efbeb-253a-459b-9e69-93b7c6d7c62c",
+      "sources": [
+        {
+          "session": "first",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "checks": {
+    "no_unresolved": true,
+    "expected_count": false,
+    "old_historical": false,
+    "correction_active": false,
+    "same_identity": false
+  }
+}

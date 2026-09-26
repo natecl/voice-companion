@@ -1,0 +1,92 @@
+{
+  "source": {
+    "session_id": "correction",
+    "revision": 1,
+    "captured_at": 1790337601.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "My daughter Maya now enjoys tennis instead of swimming.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "e0cd5f40-e85e-4d8c-8797-4175aaf2b132",
+    "accepted": 1,
+    "claims": [
+      "7fc494d5-165f-4d44-b18a-e7367ae29837"
+    ],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "correct"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "7fc494d5-165f-4d44-b18a-e7367ae29837",
+      "owner": "beb80422-b9c3-487d-94af-bd1ce7939838",
+      "text": "The author's daughter Maya now enjoys tennis instead of swimming.",
+      "subject": "mention_6bab07dddb2b4f79a04644d98223082f",
+      "kind": "preference",
+      "basis": "stated",
+      "observed": 1790394046.6889067,
+      "valid_from": 1790337601.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "identity_supported_correction",
+      "replaces": "6c4a4cd6-7b88-43e5-86b9-48ab20e73f0b",
+      "judgment_version": "memory-evidence-v2.1",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "7d3beb08-7742-45e8-8a22-10f2a8df36ab",
+      "sources": [
+        {
+          "session": "correction",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    },
+    {
+      "id": "6c4a4cd6-7b88-43e5-86b9-48ab20e73f0b",
+      "owner": "beb80422-b9c3-487d-94af-bd1ce7939838",
+      "text": "The author\u2019s daughter, Maya, enjoys swimming.",
+      "subject": "mention_746f3f57e2a54afeb9f92e125134a807",
+      "kind": "preference",
+      "basis": "stated",
+      "observed": 1790394044.6206093,
+      "valid_from": 1790337600.0,
+      "valid_until": null,
+      "state": "superseded",
+      "reason": "identity_supported_correction",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.1",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "7d3beb08-7742-45e8-8a22-10f2a8df36ab",
+      "sources": [
+        {
+          "session": "first",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "checks": {
+    "no_unresolved": true,
+    "expected_count": true,
+    "old_historical": true,
+    "correction_active": true,
+    "same_identity": true
+  }
+}

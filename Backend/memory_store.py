@@ -12,8 +12,9 @@ from admission import Rejected
 import memory_identity
 import memory_transitions
 import memory_chunks
+import memory_atomic
 
-VERSION = 7
+VERSION = 8
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -73,7 +74,7 @@ class MemoryStore:
         self.personal_learning = personal_learning
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, VERSION):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -147,6 +148,8 @@ class MemoryStore:
                     PRAGMA user_version=7;
                     COMMIT;
                 """)
+            if version < 8:
+                db.executescript(memory_atomic.SCHEMA)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)
@@ -192,6 +195,7 @@ class MemoryStore:
             return existing_owner
 
     def _invalidate_source(self, db, owner, session):
+        db.execute('DELETE FROM memory_fact_evidence WHERE owner=? AND session=?', (owner,session))
         db.execute('DELETE FROM memory_chunk WHERE job IN (SELECT id FROM job WHERE owner=? AND session=?)', (owner,session))
         memory_identity.invalidate_source(db, owner, session)
         db.execute('DELETE FROM job_result WHERE job IN (SELECT id FROM job WHERE owner=? AND session=?)', (owner, session))
@@ -445,6 +449,20 @@ class MemoryStore:
         with self.transaction() as db:
             db.execute("UPDATE claim SET state='expired',reason='validity_ended' WHERE state='active' AND valid_until<=?", (self.clock(),))
 
+    @staticmethod
+    def _qualify_pending(db, owner, item):
+        """Do not present an old state as current while a supported replacement is unresolved.
+
+        Only new evidence-writer records participate. Historical storage is unchanged;
+        deleting the pending source removes that uncertainty, not a proven correction.
+        """
+        if item['state']!='active':return
+        pending=[r[0] for r in db.execute("""SELECT p.claim FROM claim_relation_proposal p
+            JOIN claim c ON c.id=p.claim JOIN memory_fact_evidence e ON e.claim=c.id
+            WHERE p.target=? AND c.owner=? AND c.state='unresolved' ORDER BY p.claim""",(item['id'],owner))]
+        if pending:
+            item.update(stored_state=item['state'],state='unresolved',reason='pending_supported_change',current_disputed_by=pending)
+
     def search(self, owner, query='', *, historical=False, limit=20, profile_only=False, unresolved_only=False):
         """Bounded lexical baseline. Result provenance/lifecycle is mandatory for downstream recall."""
         if not isinstance(query, str) or len(query) > 1000 or type(limit) is not int or not 1 <= limit <= 50:
@@ -455,6 +473,7 @@ class MemoryStore:
             result = []
             for row in rows:
                 item = dict(row)
+                self._qualify_pending(db,owner,item)
                 if (item['state'] == 'unresolved') != unresolved_only:
                     continue
                 if profile_only and ((item['subject'] != 'user' and not item['profile_link']) or item['basis'] == 'inferred'):
@@ -483,6 +502,7 @@ class MemoryStore:
                 passage['claims'] = [dict(r) for r in db.execute('''SELECT c.id,c.state,c.valid_from,c.valid_until,c.replaces FROM claim c
                   JOIN support s ON s.claim=c.id WHERE s.owner=? AND s.session=? AND s.revision=? AND s.passage=?''', (owner, session, row['revision'], passage['id']))]
                 for claim in passage['claims']:
+                    self._qualify_pending(db,owner,claim)
                     if claim['state'] == 'active' and claim['valid_until'] is not None and claim['valid_until'] <= self.clock():
                         claim['state'] = 'expired'
             return source
@@ -503,6 +523,7 @@ class MemoryStore:
                         WHERE s.owner=? AND s.session=? AND s.revision=? AND s.passage=? ORDER BY c.id""",
                         (owner, row['session'], row['revision'], passage['id']))]
                     for claim in claims:
+                        self._qualify_pending(db,owner,claim)
                         if claim['state'] == 'active' and claim['valid_until'] is not None and claim['valid_until'] <= self.clock():
                             claim['state'] = 'expired'
                     passage['claims'] = claims

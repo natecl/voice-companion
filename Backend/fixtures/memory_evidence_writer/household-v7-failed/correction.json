@@ -1,0 +1,94 @@
+{
+  "source": {
+    "session_id": "correction",
+    "revision": 1,
+    "captured_at": 1790337601.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "Tessa, my roommate, changed to unscented laundry detergent.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "8414f00c-a3ae-4f54-951e-0ffb2fd8874b",
+    "accepted": 1,
+    "claims": [
+      "17e3ef37-8d7f-4fd9-8c55-33b8b11c6433"
+    ],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "unresolved"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "506d4ae7-dccf-4a79-bb0a-495a0b9237ba",
+      "owner": "1bf00cd6-188a-4c2d-a0d3-c03d93d831ed",
+      "text": "Tessa uses lavender laundry detergent.",
+      "subject": "mention_65be1ce7f7964527bf14f700399d83ee",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790395820.1649761,
+      "valid_from": 1790337600.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "supported",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "e4605426-d79a-49bc-b972-a63828bc08e1",
+      "sources": [
+        {
+          "session": "first",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "17e3ef37-8d7f-4fd9-8c55-33b8b11c6433",
+      "owner": "1bf00cd6-188a-4c2d-a0d3-c03d93d831ed",
+      "text": "Tessa changed to unscented laundry detergent.",
+      "subject": null,
+      "kind": "event",
+      "basis": "stated",
+      "observed": 1790395820.6557257,
+      "valid_from": null,
+      "valid_until": null,
+      "state": "unresolved",
+      "reason": "relation_unresolved",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 0,
+      "proposed_targets": [],
+      "identity_status": "unresolved",
+      "entity_id": null,
+      "sources": [
+        {
+          "session": "correction",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "no_unresolved": false,
+    "expected_count": false,
+    "old_historical": false,
+    "correction_active": false,
+    "same_identity": false
+  }
+}

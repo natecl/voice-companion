@@ -1,0 +1,89 @@
+{
+  "source": {
+    "session_id": "first",
+    "revision": 1,
+    "captured_at": 1790337600.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "My brother Luis commutes by bicycle.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "fee020da-290d-4bc8-a143-2a08bb607b95",
+    "accepted": 0,
+    "claims": [],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "rejected",
+        "checks": {
+          "support": {
+            "label": "supported",
+            "accepted": false,
+            "probabilities": {
+              "unsupported": 0.24,
+              "supported": 0.76,
+              "uncertain": 0.0
+            },
+            "confidence": 0.63,
+            "policy": "support",
+            "rubric": "evidence-judgments-v4"
+          },
+          "subject": {
+            "label": "related_to_author",
+            "accepted": true,
+            "probabilities": {
+              "unresolved": 0.0,
+              "author": 0.0,
+              "wrong": 0.01,
+              "related_to_author": 0.98,
+              "named": 0.01
+            },
+            "confidence": 0.98,
+            "policy": "subject",
+            "rubric": "evidence-judgments-v4"
+          },
+          "modality": {
+            "label": "supported",
+            "accepted": true,
+            "probabilities": {
+              "unsupported": 0.05,
+              "supported": 0.94,
+              "uncertain": 0.01
+            },
+            "confidence": 0.91,
+            "policy": "modality",
+            "rubric": "evidence-judgments-v4"
+          },
+          "time": {
+            "label": "supported",
+            "accepted": true,
+            "probabilities": {
+              "unsupported": 0.03,
+              "supported": 0.9,
+              "uncertain": 0.07
+            },
+            "confidence": 0.86,
+            "policy": "time",
+            "rubric": "evidence-judgments-v4"
+          }
+        }
+      }
+    ]
+  },
+  "claims": [],
+  "unresolved": [],
+  "checks": {
+    "no_unresolved": true,
+    "expected_count": false,
+    "first_active": false
+  }
+}

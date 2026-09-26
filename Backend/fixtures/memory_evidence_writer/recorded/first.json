@@ -1,0 +1,65 @@
+{
+  "source": {
+    "session_id": "first",
+    "revision": 1,
+    "captured_at": 1790337600.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "My daughter Maya enjoys swimming.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "cb426829-7ab8-4f61-bc7d-68925db0bbc1",
+    "accepted": 1,
+    "claims": [
+      "6c4a4cd6-7b88-43e5-86b9-48ab20e73f0b"
+    ],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "new"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "6c4a4cd6-7b88-43e5-86b9-48ab20e73f0b",
+      "owner": "beb80422-b9c3-487d-94af-bd1ce7939838",
+      "text": "The author\u2019s daughter, Maya, enjoys swimming.",
+      "subject": "mention_746f3f57e2a54afeb9f92e125134a807",
+      "kind": "preference",
+      "basis": "stated",
+      "observed": 1790394044.6206093,
+      "valid_from": 1790337600.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "supported",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.1",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "7d3beb08-7742-45e8-8a22-10f2a8df36ab",
+      "sources": [
+        {
+          "session": "first",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "checks": {
+    "no_unresolved": true,
+    "expected_count": true,
+    "first_active": true
+  }
+}

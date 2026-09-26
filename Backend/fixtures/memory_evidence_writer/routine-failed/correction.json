@@ -1,0 +1,94 @@
+{
+  "source": {
+    "session_id": "correction",
+    "revision": 1,
+    "captured_at": 1790337601.0,
+    "timezone": "UTC",
+    "completed": true,
+    "origin": "personal_text",
+    "passages": [
+      {
+        "id": "p1",
+        "start": 0.0,
+        "duration": 5.0,
+        "text": "My cousin Eli switched from his paper planner to a digital calendar and now uses that to organize his week.",
+        "speakers": []
+      }
+    ]
+  },
+  "result": {
+    "job": "8c51b195-2ad2-4516-a098-d5ac1b65e7d8",
+    "accepted": 1,
+    "claims": [
+      "446f11da-2be0-4762-99a3-92c6206effc6"
+    ],
+    "decisions": [
+      {
+        "candidate": 0,
+        "result": "unresolved"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "719d61d6-fb99-4f8a-a163-9da302541dae",
+      "owner": "623e8511-a6d3-4f2a-b0e3-a84696dbd5d6",
+      "text": "Eli uses a paper planner to organize his week.",
+      "subject": "mention_f0f680b907b84072bd124e1b7963fc6f",
+      "kind": "fact",
+      "basis": "stated",
+      "observed": 1790395397.8593693,
+      "valid_from": 1790337600.0,
+      "valid_until": null,
+      "state": "active",
+      "reason": "supported",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "identity_status": "established",
+      "entity_id": "5d96a6a8-e700-424f-97ca-c1059a75bfe7",
+      "sources": [
+        {
+          "session": "first",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "446f11da-2be0-4762-99a3-92c6206effc6",
+      "owner": "623e8511-a6d3-4f2a-b0e3-a84696dbd5d6",
+      "text": "Eli switched from his paper planner to a digital calendar and now uses it to organize his week.",
+      "subject": "mention_733f0053a99242a480d4a6a86b6e5c8d",
+      "kind": "event",
+      "basis": "stated",
+      "observed": 1790395400.2540135,
+      "valid_from": 1790337601.0,
+      "valid_until": null,
+      "state": "unresolved",
+      "reason": "relation_unresolved",
+      "replaces": null,
+      "judgment_version": "memory-evidence-v2.2",
+      "profile_link": 1,
+      "proposed_targets": [],
+      "identity_status": "established",
+      "entity_id": "7916cb76-0431-469c-afc1-93d9fdb8a60d",
+      "sources": [
+        {
+          "session": "correction",
+          "revision": 1,
+          "passage": "p1"
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "no_unresolved": false,
+    "expected_count": false,
+    "old_historical": false,
+    "correction_active": false,
+    "same_identity": false
+  }
+}
