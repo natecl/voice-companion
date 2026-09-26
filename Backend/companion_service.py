@@ -2,6 +2,7 @@
 import asyncio
 from contextlib import aclosing
 import json
+import time
 from admission import Rejected
 from ask import input_fits,references
 from companion_chat import CompanionChat
@@ -42,6 +43,7 @@ class CompanionService:
 
     async def handle(self,socket):
         token=socket.request.headers.get('Authorization','').removeprefix('Bearer ')
+        started_at=time.monotonic();first_text=None;usage={}
         owner=None;request=None;created=False;completed=False;reservation=None;prepared=None
         async def send(event):await socket.send(json.dumps(event))
         try:
@@ -67,7 +69,7 @@ class CompanionService:
                     await asyncio.to_thread(self.chat.evidence,owner,prepared['history_ids'])
 
             async def generate():
-                nonlocal prepared,completed
+                nonlocal prepared,completed,first_text,usage
                 use_memory=request['memory'] and not memory_disabled(dict(question=request['question']))
                 past=None;status='disabled'
                 if use_memory:
@@ -91,6 +93,7 @@ class CompanionService:
                 async with aclosing(self.provider.stream(prepared['data'])) as events:
                     async for event in events:
                         if event['type']=='delta':
+                            if first_text is None:first_text=time.monotonic()-started_at
                             answer+=event['text']
                             if len(answer.encode())>16000:raise Rejected('answer_incomplete')
                             await send(event)
@@ -105,6 +108,7 @@ class CompanionService:
                             except asyncio.CancelledError:
                                 await save;completed=True;raise
                             completed=True
+                            usage={key:event.get(key) for key in ('input_tokens','output_tokens')}
                             await send(dict(type='done',question_id=request['question_id'],references=refs,saved=True))
                             return
                 raise Rejected('answer_incomplete')
@@ -131,5 +135,8 @@ class CompanionService:
             if prepared:
                 for snapshot in {item['snapshot_id'] for p in prepared['packets'] for item in p['items'] if 'snapshot_id' in item}:
                     await asyncio.to_thread(release,self.memory,owner,snapshot)
-            if reservation:self.admission.finish(reservation,completed=completed)
+            if reservation:
+                self.admission.finish(reservation,completed=completed)
+                print(json.dumps(dict(category='companion',request_id=reservation,completed=completed,
+                    first_text_seconds=first_text,elapsed_seconds=time.monotonic()-started_at,**usage)),flush=True)
             await socket.close()

@@ -28,11 +28,11 @@ class Provider:
 
 class CompanionServiceTests(unittest.IsolatedAsyncioTestCase):
     @asynccontextmanager
-    async def service(self):
+    async def service(self,recall=None):
         with tempfile.TemporaryDirectory() as d:
             admission=Admission(Path(d)/'usage.sqlite',total_microusd=30000,limits={'ask':(30000,3000,20)})
             credential,token=admission.enroll();memory=MemoryStore(Path(d)/'memory.sqlite');owner=memory.owner_for(credential)
-            provider=Provider();handler=CompanionService(admission,memory,provider)
+            provider=Provider();handler=CompanionService(admission,memory,provider,recall)
             try:
                 async with serve(handler.handle,'127.0.0.1',0,max_size=64000) as server:
                     yield admission,token,memory,owner,provider,f'ws://127.0.0.1:{server.sockets[0].getsockname()[1]}'
@@ -109,8 +109,25 @@ class CompanionServiceTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(CompanionChat(m).recover_interrupted(),0)
             self.assertEqual(len(p.calls),1)
 
-    async def test_disabled_memory_skips_retrieval_and_provider_failure_has_no_saved_answer(self):
-        async with self.service() as (a,token,m,owner,p,url):
+    async def test_disabled_memory_skips_retrieval(self):
+        class ForbiddenRecall:
+            calls=0
+            async def prepare(self,*args):
+                self.calls+=1;raise AssertionError('Must not retrieve')
+        recall=ForbiddenRecall()
+        async with self.service(recall) as (a,token,m,owner,p,url):
             self.assertTrue((await self.call(url,token,question(memory=False)))[-1]['saved'])
             self.assertEqual(p.calls[0]['memory_status'],'disabled')
             self.assertEqual(p.calls[0]['history'],[])
+            self.assertEqual(recall.calls,0)
+
+    async def test_concurrent_duplicate_and_busy_do_not_spend_twice(self):
+        async with self.service() as (a,token,m,owner,p,url):
+            p.stall=True;req=question()
+            async with connect(url,additional_headers={'Authorization':'Bearer '+token}) as first:
+                await first.send(json.dumps(req))
+                while json.loads(await first.recv())['type']!='delta':pass
+                self.assertEqual((await self.call(url,token,req))[-1]['turn']['state'],'pending')
+                self.assertEqual((await self.call(url,token,question('other')))[-1]['message'],'chat_busy')
+                self.assertEqual(len(p.calls),1);self.assertEqual(a.usage(),[('ask',1,3000)])
+            await asyncio.wait_for(p.closed.wait(),2)
