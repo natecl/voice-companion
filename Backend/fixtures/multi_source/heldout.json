@@ -1,0 +1,59 @@
+[
+  {
+    "id": "commute_change",
+    "query": "How did Jordan's commute change?",
+    "texts": [
+      "The earlier note says Jordan commutes by bus.",
+      "Jordan now cycles to work instead of taking the bus.",
+      "A city guide compares buses with cycling."
+    ],
+    "expected": [
+      0,
+      1
+    ]
+  },
+  {
+    "id": "anonymous_student",
+    "query": "Do I study biology?",
+    "texts": [
+      "An unknown speaker says: I study biology.",
+      "A school brochure lists biology courses."
+    ],
+    "expected": [
+      0
+    ]
+  },
+  {
+    "id": "different_person",
+    "query": "What subject does Maya study?",
+    "texts": [
+      "A guest speaker identified as Chris says: I study biology.",
+      "Marco's subject is chemistry."
+    ],
+    "expected": []
+  },
+  {
+    "id": "restriction",
+    "query": "What do the past recordings say about dietary restrictions?",
+    "texts": [
+      "A recorded speaker says: I cannot eat gluten.",
+      "A magazine explains dietary restrictions in general without describing any recorded person."
+    ],
+    "expected": [
+      0
+    ]
+  },
+  {
+    "id": "family_details",
+    "query": "When does Dad prefer calls, and where does Aunt Rose live?",
+    "texts": [
+      "Dad prefers telephone calls on Sunday evenings.",
+      "Aunt Rose lives in Portland, Oregon.",
+      "A telephone directory includes many cities."
+    ],
+    "expected": [
+      0,
+      1
+    ]
+  }
+]

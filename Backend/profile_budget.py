@@ -13,6 +13,8 @@ REWORK_APPROVAL_ID = 'memory-rework-additional-2026-09-25-100'
 REWORK_ALLOWANCE = 1_000_000
 CONSOLIDATION_APPROVAL_ID = 'memory-consolidation-additional-2026-09-26-020'
 CONSOLIDATION_ALLOWANCE = 200_000
+MULTISOURCE_APPROVAL_ID = 'memory-multisource-additional-2026-09-26-020'
+MULTISOURCE_ALLOWANCE = 200_000
 
 
 def provision(global_path, memory_path):
@@ -47,7 +49,7 @@ def provision(global_path, memory_path):
 
 
 class ProfileBudget:
-    def __init__(self, path, *, include_rework_allowance=False, include_consolidation_allowance=False):
+    def __init__(self, path, *, include_rework_allowance=False, include_consolidation_allowance=False, include_multisource_allowance=False):
         self.path = Path(path)
         self.cap = ALLOCATION
         if not self.path.exists(): raise ValueError('Provision the canonical profile allocation first')
@@ -64,6 +66,12 @@ class ProfileBudget:
                 if db.execute('SELECT id,cap FROM profile_consolidation_allowance').fetchall() != [(CONSOLIDATION_APPROVAL_ID,CONSOLIDATION_ALLOWANCE)]:
                     raise ValueError('Explicit consolidation allowance required')
                 self.cap += CONSOLIDATION_ALLOWANCE
+            if include_multisource_allowance:
+                if not include_consolidation_allowance:
+                    raise ValueError('Consolidation allowance required first')
+                if db.execute('SELECT id,cap FROM profile_multisource_allowance').fetchall()!=[(MULTISOURCE_APPROVAL_ID,MULTISOURCE_ALLOWANCE)]:
+                    raise ValueError('Explicit multisource allowance required')
+                self.cap += MULTISOURCE_ALLOWANCE
 
     def reserve(self, key, model):
         if model not in MODELS: raise Rejected('unapproved_profile_model')
@@ -89,63 +97,62 @@ class ProfileBudget:
             return [dict(zip(('model','calls','reserved_microusd'),row)) for row in db.execute('SELECT model,count(*),sum(reserved) FROM profile_attempt GROUP BY model')]
 
 
-def provision_rework_allowance(global_path, memory_path):
-    """Explicit founder-approved additional $1; idempotent and never called at startup."""
-    ProfileBudget(memory_path) # Require the existing canonical ledger.
-    with database(global_path, isolation_level=None, timeout=2) as db:
+def _provision_additional(global_path,memory_path,approval,amount,table,total,allocations=None):
+    if table not in ('profile_rework_allowance','profile_consolidation_allowance','profile_multisource_allowance'):
+        raise ValueError('Unknown allowance')
+    allocations={'ask':amount} if allocations is None else allocations
+    if (not allocations or set(allocations)-{'ask','jev'} or sum(allocations.values())!=amount
+            or any(type(value) is not int or value<=0 for value in allocations.values())):
+        raise ValueError('Invalid approved allocation split')
+    with database(global_path,isolation_level=None,timeout=2) as db:
         db.execute('BEGIN IMMEDIATE')
         try:
-            existing=db.execute('SELECT category,reserved FROM request WHERE id=?',(REWORK_APPROVAL_ID,)).fetchone()
-            if existing:
-                if existing!=('ask',REWORK_ALLOWANCE):raise ValueError('Rework approval conflicts')
-            else:
-                cap=db.execute('SELECT cap FROM budget WHERE id=1').fetchone()[0]
-                used=db.execute('SELECT coalesce(sum(reserved),0) FROM request').fetchone()[0]
-                category_cap=db.execute("SELECT cap FROM policy WHERE category='ask'").fetchone()[0]
-                category_used=db.execute("SELECT coalesce(sum(reserved),0) FROM request WHERE category='ask'").fetchone()[0]
-                if used+REWORK_ALLOWANCE>cap or category_used+REWORK_ALLOWANCE>category_cap:raise Rejected('budget_limit')
-                credential=db.execute('SELECT id FROM credential ORDER BY rowid DESC LIMIT 1').fetchone()
-                if credential is None:raise Rejected('no_internal_credential')
+            missing=[]
+            for category,value in allocations.items():
+                key=approval if len(allocations)==1 else approval+':'+category
+                existing=db.execute('SELECT category,reserved FROM request WHERE id=?',(key,)).fetchone()
+                if existing:
+                    if existing!=(category,value):raise ValueError('Allowance conflicts')
+                else:
+                    policy=db.execute('SELECT cap FROM policy WHERE category=?',(category,)).fetchone()
+                    used=db.execute('SELECT coalesce(sum(reserved),0) FROM request WHERE category=?',(category,)).fetchone()[0]
+                    if policy is None or used+value>policy[0]:raise Rejected('budget_limit')
+                    missing.append((key,category,value))
+            cap=db.execute('SELECT cap FROM budget WHERE id=1').fetchone()[0]
+            used=db.execute('SELECT coalesce(sum(reserved),0) FROM request').fetchone()[0]
+            if used+sum(item[2] for item in missing)>cap:raise Rejected('budget_limit')
+            credential=db.execute('SELECT id FROM credential ORDER BY rowid DESC LIMIT 1').fetchone()
+            if credential is None:raise Rejected('no_internal_credential')
+            for key,category,value in missing:
                 db.execute('INSERT INTO request VALUES(?,?,?,?,?,?)',
-                    (REWORK_APPROVAL_ID,credential[0],'ask',time.time(),REWORK_ALLOWANCE,'completed'))
+                           (key,credential[0],category,time.time(),value,'completed'))
             db.execute('COMMIT')
         except BaseException:
             db.execute('ROLLBACK');raise
-    # Global reservation precedes local exposure; interruption cannot duplicate either.
+    # Global reservation precedes local exposure; retries never grant extra spend.
     with database(memory_path) as db:
-        db.execute('CREATE TABLE IF NOT EXISTS profile_rework_allowance(id TEXT PRIMARY KEY,cap INTEGER NOT NULL)')
-        db.execute('INSERT OR IGNORE INTO profile_rework_allowance VALUES(?,?)',(REWORK_APPROVAL_ID,REWORK_ALLOWANCE))
-        if db.execute('SELECT id,cap FROM profile_rework_allowance').fetchall()!=[(REWORK_APPROVAL_ID,REWORK_ALLOWANCE)]:
-            raise ValueError('Rework approval conflicts')
-    return dict(approval_id=REWORK_APPROVAL_ID,total_cap_microusd=ALLOCATION+REWORK_ALLOWANCE)
+        db.execute(f'CREATE TABLE IF NOT EXISTS {table}(id TEXT PRIMARY KEY,cap INTEGER NOT NULL)')
+        db.execute(f'INSERT OR IGNORE INTO {table} VALUES(?,?)',(approval,amount))
+        if db.execute(f'SELECT id,cap FROM {table}').fetchall()!=[(approval,amount)]:
+            raise ValueError('Allowance conflicts')
+    return dict(approval_id=approval,total_cap_microusd=total)
 
 
-def provision_consolidation_allowance(global_path, memory_path):
-    """Explicit founder-approved additional $0.20; idempotent and never called at startup."""
-    ProfileBudget(memory_path,include_rework_allowance=True) # Require the existing canonical ledger.
-    with database(global_path, isolation_level=None, timeout=2) as db:
-        db.execute('BEGIN IMMEDIATE')
-        try:
-            existing=db.execute('SELECT category,reserved FROM request WHERE id=?',(CONSOLIDATION_APPROVAL_ID,)).fetchone()
-            if existing:
-                if existing!=('ask',CONSOLIDATION_ALLOWANCE):raise ValueError('Rework approval conflicts')
-            else:
-                cap=db.execute('SELECT cap FROM budget WHERE id=1').fetchone()[0]
-                used=db.execute('SELECT coalesce(sum(reserved),0) FROM request').fetchone()[0]
-                category_cap=db.execute("SELECT cap FROM policy WHERE category='ask'").fetchone()[0]
-                category_used=db.execute("SELECT coalesce(sum(reserved),0) FROM request WHERE category='ask'").fetchone()[0]
-                if used+CONSOLIDATION_ALLOWANCE>cap or category_used+CONSOLIDATION_ALLOWANCE>category_cap:raise Rejected('budget_limit')
-                credential=db.execute('SELECT id FROM credential ORDER BY rowid DESC LIMIT 1').fetchone()
-                if credential is None:raise Rejected('no_internal_credential')
-                db.execute('INSERT INTO request VALUES(?,?,?,?,?,?)',
-                    (CONSOLIDATION_APPROVAL_ID,credential[0],'ask',time.time(),CONSOLIDATION_ALLOWANCE,'completed'))
-            db.execute('COMMIT')
-        except BaseException:
-            db.execute('ROLLBACK');raise
-    # Global reservation precedes local exposure; interruption cannot duplicate either.
-    with database(memory_path) as db:
-        db.execute('CREATE TABLE IF NOT EXISTS profile_consolidation_allowance(id TEXT PRIMARY KEY,cap INTEGER NOT NULL)')
-        db.execute('INSERT OR IGNORE INTO profile_consolidation_allowance VALUES(?,?)',(CONSOLIDATION_APPROVAL_ID,CONSOLIDATION_ALLOWANCE))
-        if db.execute('SELECT id,cap FROM profile_consolidation_allowance').fetchall()!=[(CONSOLIDATION_APPROVAL_ID,CONSOLIDATION_ALLOWANCE)]:
-            raise ValueError('Rework approval conflicts')
-    return dict(approval_id=CONSOLIDATION_APPROVAL_ID,total_cap_microusd=ALLOCATION+REWORK_ALLOWANCE+CONSOLIDATION_ALLOWANCE)
+def provision_rework_allowance(global_path,memory_path):
+    ProfileBudget(memory_path)
+    return _provision_additional(global_path,memory_path,REWORK_APPROVAL_ID,REWORK_ALLOWANCE,
+                                 'profile_rework_allowance',ALLOCATION+REWORK_ALLOWANCE)
+
+
+def provision_consolidation_allowance(global_path,memory_path):
+    ProfileBudget(memory_path,include_rework_allowance=True)
+    return _provision_additional(global_path,memory_path,CONSOLIDATION_APPROVAL_ID,CONSOLIDATION_ALLOWANCE,
+                                 'profile_consolidation_allowance',ALLOCATION+REWORK_ALLOWANCE+CONSOLIDATION_ALLOWANCE)
+
+
+def provision_multisource_allowance(global_path,memory_path):
+    """Founder-approved additional $0.20 on September 26; never called at startup."""
+    ProfileBudget(memory_path,include_rework_allowance=True,include_consolidation_allowance=True)
+    return _provision_additional(global_path,memory_path,MULTISOURCE_APPROVAL_ID,MULTISOURCE_ALLOWANCE,
+        'profile_multisource_allowance',ALLOCATION+REWORK_ALLOWANCE+CONSOLIDATION_ALLOWANCE+MULTISOURCE_ALLOWANCE,
+        allocations={'ask':100_000,'jev':100_000})
