@@ -3,8 +3,15 @@ import XCTest
 @MainActor
 final class AskUITests: XCTestCase {
     func testPastSourceOpensWithDateAndSurvivesRelaunch() {
+        verifyPastSource(personal: false)
+    }
+    func testPersonalSourceShowsOriginalNoteAndSurvivesRelaunch() {
+        verifyPastSource(personal: true)
+    }
+    private func verifyPastSource(personal: Bool) {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "--ask-ui-fixture", "--recall-ui-fixture"]
+        if personal { app.launchArguments.append("--profile-ui-fixture") }
         app.launch()
         let field = app.descendants(matching: .any).matching(identifier: "askQuestion").firstMatch
         XCTAssertTrue(field.waitForExistence(timeout: 5))
@@ -14,9 +21,10 @@ final class AskUITests: XCTestCase {
         XCTAssertTrue(source.waitForExistence(timeout: 5))
         source.tap()
         XCTAssertTrue(app.staticTexts["pastSourceDate"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.staticTexts["Maya prefers morning meetings."].exists)
+        XCTAssertTrue(app.staticTexts[personal ? "My daughter Maya prefers morning swimming. I enjoy quiet evenings." : "Maya prefers morning meetings."].exists)
+        if personal { XCTAssertTrue(app.staticTexts["Personal note source"].exists) }
         let attachment = XCTAttachment(screenshot: app.screenshot())
-        attachment.name = "Past source date and transcript — synthetic fixture"
+        attachment.name = personal ? "Personal source — original note" : "Past source date and transcript — synthetic fixture"
         attachment.lifetime = .keepAlways
         add(attachment)
         app.buttons["Done"].tap()

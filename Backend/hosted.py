@@ -36,12 +36,15 @@ async def main():
             if enabled and not answer_key:
                 raise ValueError('Ask enabled without provider credential')
             ask = AskService(store, Luna(answer_key)) if enabled else None
+            personal_recall = os.environ.get('VOICE_ENABLE_PERSONAL_RECALL') == '1'
             personal_enabled = os.environ.get('VOICE_ENABLE_PERSONAL_LEARNING') == '1'
+            if personal_recall and (not personal_enabled or os.environ.get('VOICE_ENABLE_MEMORY_RECALL') != '1'):
+                raise ValueError('Personal recall requires personal learning and memory recall')
             if personal_enabled and os.environ.get('VOICE_ENABLE_MEMORY_LEARNING') != '1':
                 raise ValueError('Personal learning requires memory learning')
             memory = None
             if os.environ.get('VOICE_ENABLE_MEMORY') == '1':
-                memory_store = MemoryStore(directory / 'memory.sqlite', personal_learning=personal_enabled)
+                memory_store = MemoryStore(directory / 'memory.sqlite', personal_learning=personal_enabled, personal_recall=personal_recall)
                 memory_store.recover_jobs()
                 memory_store.maintain()
                 memory = MemoryService(store, memory_store)
@@ -63,6 +66,7 @@ async def main():
                     if allocation is None or tuple(allocation) != ('ask', PROFILE_ALLOCATION):
                         raise ValueError('Profile QA allocation is not reserved')
                     budget = ProfileBudget(directory / 'memory-budget.sqlite')
+                    if ask is not None: ask.qa_budget = budget
                 models = MemoryModels(answer_key, os.environ['TYPESAFE_API_KEY'])
                 if learning_enabled:
                     writer = MemoryWriter(memory_store, models, budget)

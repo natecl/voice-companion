@@ -65,9 +65,10 @@ def validate_source(source):
 
 
 class MemoryStore:
-    def __init__(self, path, *, clock=time.time, personal_learning=False):
+    def __init__(self, path, *, clock=time.time, personal_learning=False, personal_recall=False):
         self.path, self.clock = Path(path), clock
         self.personal_learning = personal_learning
+        self.personal_recall = personal_recall
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
             if version not in (0, 1, 2, VERSION):
@@ -385,10 +386,10 @@ class MemoryStore:
             for row in rows:
                 source = json.loads(row['payload'])
                 # Personal context is held until the independent learning/recall checkpoints pass.
-                if source.get('origin') == 'personal_text':
+                if source.get('origin') == 'personal_text' and not self.personal_recall:
                     continue
                 for passage in source['passages']:
-                    claims = [dict(c) for c in db.execute("""SELECT c.id,c.state,c.valid_from,c.valid_until,c.replaces,c.basis,c.subject
+                    claims = [dict(c) for c in db.execute("""SELECT c.id,c.state,c.valid_from,c.valid_until,c.replaces,c.basis,c.subject,c.text,c.profile_link
                         FROM claim c JOIN support s ON s.claim=c.id
                         WHERE s.owner=? AND s.session=? AND s.revision=? AND s.passage=? ORDER BY c.id""",
                         (owner, row['session'], row['revision'], passage['id']))]

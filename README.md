@@ -35,6 +35,7 @@ An iPhone-first companion for everyday conversations, with Mac support. Working 
 - [Automatic learning, provider QA and cost accounting](docs/memory-learning.md)
 - [Memory recall acceptance and rollout](docs/memory-recall.md)
 - [Personal companion profile plan](docs/personal-profile-plan.md)
+- [Companion memory rework plan](docs/memory-rework-plan.md)
 
 Sources and research inform the product; they do not silently change its definition. Implementation proposals remain hypotheses until accepted by the founder.
 

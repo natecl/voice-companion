@@ -99,7 +99,7 @@ final class SessionController {
         _ = memorySync.acknowledgmentCount
         do {
             if try memorySync.outbox.entry(current.id.uuidString)?.acknowledged == true {
-                return "Saved and synced. Personal learning is not enabled yet."
+                return "Saved and synced."
             }
         } catch { return "Saved on this device. Could not read sync status." }
         return memorySync.lastError == nil ? "Saved on this device. Sync pending…" : "Saved on this device. Sync unavailable; will try on reconnect."
@@ -110,7 +110,7 @@ final class SessionController {
         guard canSavePersonalNote, let memorySync else { return false }
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty, trimmed.utf8.count <= 8000 else {
-            errorMessage = "Enter a personal note of up to 8,000 UTF-8 bytes."
+            errorMessage = "Enter a note, or split a long note into smaller ones."
             return false
         }
         var note = CaptureSession(id: UUID(), createdAt: Date(), source: "personal_text")

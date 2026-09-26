@@ -8,6 +8,7 @@ import re
 import time
 from admission import Rejected
 from memory_store import identifier
+from memory_recall import model_source
 
 MODEL = 'gpt-6-luna'
 PROMPT = (Path(__file__).parent / 'prompts/companion-v1.md').read_text() + '''
@@ -20,6 +21,11 @@ Cite those sources with their m-prefixed IDs. Respect lifecycle annotations: exp
 information is historical, never the current state. Distinguish remembered statements from your
 inference; anonymous speakers do not identify the user. If memory_status is unavailable, mention
 that past context was unavailable; no_match only means this bounded search supplied no match.
+Personal-note sources contain verified claims about the user or a related person, not a general
+license to infer personal facts. Use this understanding only when it helps the question. Preserve
+who each fact concerns, qualifications and dates. Do not turn a feeling into a permanent trait,
+reported advice into a diagnosis, or a hypothetical into biography. Cite the supplied memory ID.
+
 
 '''
 MAX_INPUT_BYTES = 12000
@@ -90,11 +96,13 @@ class Luna:
 
 
 class AskService:
-    def __init__(self, store, provider, recall=None):
+    def __init__(self, store, provider, recall=None, qa_budget=None):
         self.store, self.provider, self.recall = store, provider, recall
+        self.qa_budget = qa_budget
 
     async def handle(self, socket):
         reservation = None
+        qa_reservation = None
         completed = False
         started = time.monotonic()
         first_text = None
@@ -109,7 +117,7 @@ class AskService:
             reservation = self.store.reserve(token, 'ask')
             await send({'type': 'accepted', 'request_id': reservation})
             async def generate():
-                nonlocal first_text, completed, usage, manifest
+                nonlocal first_text, usage, manifest, qa_reservation
                 if data.get('memory'):
                     status = 'unavailable'
                     if self.recall is not None:
@@ -122,8 +130,12 @@ class AskService:
                     data['memory_status'] = status
                     data['past_sources'] = manifest['sources'] if manifest else []
                     await send({'type':'context', 'sources':data['past_sources'], 'memory_status':status})
+                    data['past_sources'] = [model_source(c) for c in data['past_sources']]
                 if manifest and manifest['sources']:
                     await self.recall.validate(manifest)
+                if self.qa_budget is not None:
+                    qa_reservation = 'answer:' + reservation
+                    await asyncio.to_thread(self.qa_budget.reserve, qa_reservation, MODEL)
                 answer = ''
                 async with aclosing(self.provider.stream(data)) as events:
                     async for event in events:
@@ -141,9 +153,7 @@ class AskService:
                             if manifest and manifest['sources']:
                                 await self.recall.validate(manifest)
                             usage = {k: event.get(k) for k in ('input_tokens', 'output_tokens')}
-                            await send({'type': 'done', 'references': refs})
-                            completed = True
-                            return
+                            return {'type': 'done', 'references': refs}
                 raise Rejected('answer_incomplete')
             async def monitor():
                 while True:
@@ -164,13 +174,30 @@ class AskService:
                 for task in tasks:
                     if not task.done(): task.cancel()
                 await asyncio.gather(*tasks, return_exceptions=True)
+            # Finish upstream cleanup and accounting before advertising readiness
+            # for another question. A client may ask again immediately on done.
+            result = tasks[0].result()
+            if qa_reservation:
+                await asyncio.to_thread(self.qa_budget.finish, qa_reservation, usage)
+                qa_reservation = None
+            self.store.authorized(token)
+            if manifest and manifest['sources']:
+                await self.recall.validate(manifest)
+            self.store.finish(reservation, completed=True)
+            completed = True
+            await send(result)
         except Exception as error:
             reason = str(error) if isinstance(error, Rejected) else 'answer_unavailable'
             try: await send({'type': 'error', 'message': reason})
             except Exception: pass  # Disconnected client; provider cleanup still completes above.
         finally:
+            try:
+                if qa_reservation:
+                    await asyncio.to_thread(self.qa_budget.finish, qa_reservation, usage if completed else None)
+            finally:
+                if reservation:
+                    self.store.finish(reservation, completed=completed)
             if reservation:
-                self.store.finish(reservation, completed=completed)
                 print(json.dumps({'category': 'ask', 'request_id': reservation, 'completed': completed,
                                   'first_text_seconds': first_text, 'elapsed_seconds': time.monotonic()-started,
                                   **usage}), flush=True)
