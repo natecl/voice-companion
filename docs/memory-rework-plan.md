@@ -14,6 +14,18 @@ Scope: shared Swift/SwiftUI app and Python/SQLite service; iPhone leads physical
 
 Use the [Jev article](https://x.com/dhravyashah/status/2103314339239428201) as the agreed design baseline: background learning, contextual chunks, bounded harness decisions and relevance ranking; preserve meaning rather than aggressively discarding sentences. Its reported findings guide role selection. Acceptance still requires evidence from this implementation; the article does not establish our entity matching or thresholds.
 
+## Revised interaction and source model
+
+Founder-approved refinement: one persistent **main companion chat** is the default. Returning to the app or starting a recording does not create a new conversation. Give messages an owner-scoped conversation ID now; optional side conversations are a later slice. They will have separate local discussion histories and access to the same relevant personal memory. Separate does not mean private or memory-free, and their messages must not be indiscriminately injected into the main chat.
+
+Keep the existing **recording library** alongside chat. Each capture is one durable item with its title/date, available duration, transcript and stable source references. Future generated summaries and user notes belong to that same item, not a separate source silo. For this rework, retain transcript browsing and deletion; do not build summary generation, a notes editor or library search as incidental scope.
+
+“Ask about this” opens the main chat with the selected recording visibly attached. The user can clear or replace that attachment. Attachment selects relevant evidence; it does not silently exclude all other permitted memory or assert that every passage fits the model context. Source citations open the same recording detail at the referenced passage. Deleted/unavailable sources must have an explicit state rather than a broken or misleading link.
+
+Capture remains accessible from chat and the library. Switching views preserves the draft, reading position and conversation, and does not interrupt recording or answer generation. An active recording has a visible status and stop control across both surfaces. The Manus pill toggle is a navigation reference only: Companion / Workspace are working labels, not a required visual redesign or final naming decision.
+
+Keep three distinct layers: **transcript evidence**, **derived summaries/notes**, and **cross-recording memory**. A generated summary cannot independently support facts or overwrite the transcript. Future user-authored note edits need explicit provenance and correction semantics in their own slice; they must not silently mutate original evidence.
+
 ## Non-negotiable contracts
 
 - A transcript statement, the person it concerns, and whether it applies now are separate concepts. Source support is not proof of current truth or identity.
@@ -100,25 +112,36 @@ Each checkpoint produces a focused PR with a bounded behavior, real-path QA, rev
 - Add keyword plus semantic candidate retrieval behind a small interface. Use indexed owner-scoped lookup and source/version-scoped embedding caches; keep the canonical store independent of the embedding provider. Select the embedding model/runtime from current documentation and a narrow cost/quality evaluation before integration. No new provider is presumed free or already authorized.
 - Search established and unresolved evidence with distinct labels; query identity and correction targets before candidate limits. No unrelated-recency cutoff may prevent designated older evidence from entering the candidate set.
 - Use Jev to score/rank useful candidates. Enforce ownership/deletion/admissibility separately from ranking, and retain current/historical/conflict qualifications. A high relevance score cannot make an unresolved identity certain.
-- Assemble current question, recent chat, active transcript cutoff and a small relevant past-context packet with explicit item/token/time budgets. Honor an explicit request not to use past memory before retrieval; do not require another model call merely to decide whether a cheap lookup is allowed.
+- Assemble current question, bounded recent history from the selected conversation, explicitly attached recording passages, active transcript cutoff and a small relevant past-context packet with explicit item/token/time budgets. Deduplicate overlapping evidence; label attached past recordings separately from live capture. Retrieve relevant passages when an attachment exceeds the budget rather than silently treating a truncated recording as complete. Honor an explicit request not to use past memory before retrieval; do not require another model call merely to decide whether a cheap lookup is allowed.
 - Replace repeated full-library scans/hashes with indexed candidate lookup, cheap change detection and selected-source/claim validation. Unrelated new notes should not cancel an answer; deletion/correction of selected evidence must invalidate it.
 - Version and propagate provenance through context summaries and answers so deleted content cannot re-enter via an old chat summary.
 
 **Gate:** verify designated older paraphrases and correction targets in libraries of 10, 100 and 1,000 synthetic sources; include distractors with matching words. Measure candidate recall, final evidence selection, irrelevant injection and latency separately. Zero owner/deleted-source leakage in the frozen suite. Record a reference environment and latency target before measuring; keep current live-Ask deadlines until a deliberate change is justified. Paid relevance/embedding checks are small and separate from UI replay.
 
-### Checkpoint 6 — companion-first ongoing chat, including during capture
+### Checkpoint 6A — persistent main companion chat
 
-**Outcome:** two obvious actions, one companion, no required recording selection to chat.
+**Outcome:** one obvious place to talk, independent of recording selection, with reliable conversational continuity.
 
-- Add a durable companion conversation independent of a capture session. Reopen it across app launches and allow follow-ups. Chat works with no recordings yet and with no active recording.
-- Keep only an explicit bounded recent-turn window in model context. If summarization becomes necessary, use source-linked derived summaries; never silently pretend unlimited chat history is present or promote assistant text to factual evidence.
-- Make “Capture meeting note” and “Talk to companion” the primary paths. Remove new personal-note creation from the normal UI. Preserve access/deletion for existing personal notes as legacy evidence; do not discard them or reinterpret their identity provenance.
-- During recording, questions use a fixed snapshot of transcript received so far plus current chat and relevant past sources. Answer generation does not stop capture. Follow-up questions retain the relevant conversational subject.
-- Answers should sound attentive and direct, personalize when useful, and ask a natural clarification only when ambiguity materially affects the answer. Source references are available on demand. Memory outage should be disclosed without blocking a useful answer from available context.
-- Validate authenticated ownership, message roles, history limits, source revisions and question IDs. Save chat/answers reliably; propagate deletion to assistant context derived from deleted sources, rather than leaving a second untracked memory store in chat history.
-- Keep microphone permission, interruptions, phone locking and capture limits consistent with the existing verified capture path. No silent expansion into voice replies or always-on listening.
+- Add a durable owner-scoped main conversation with stable conversation/message/question IDs. Reopen it across app launches; do not create a new thread on each visit or capture. Chat works with an empty recording library. Reserve the data boundary for future side conversations without building their UI, branching or management features now.
+- Keep an explicit bounded recent-turn window in model context. If summarization becomes necessary, use source-linked derived summaries; never imply unlimited history is in context or promote assistant text to factual evidence. Future side conversations share relevant memory access, not indiscriminate message history.
+- During recording, questions use a fixed snapshot of transcript received so far plus current chat and relevant past sources. Answer generation does not stop capture. Follow-ups retain the relevant conversational subject.
+- Answers should sound attentive and direct, personalize when useful, and clarify only when ambiguity materially affects the answer. Memory outage should be disclosed without blocking a useful answer from available context.
+- Validate authenticated ownership, message roles, history limits, source revisions and question IDs. Save chat/answers reliably and prevent duplicate turns after reconnect/retry. Propagate deletion to assistant context derived from deleted sources rather than creating a second untracked memory store in chat history.
+- Keep microphone permission, interruptions, phone locking and capture limits consistent with the verified capture path. No voice replies or always-on listening in this checkpoint.
 
-**Gate:** actual app execution verifies empty-library chat, ongoing follow-up, relaunch, cross-recording recall, source opening, correction, deletion, memory outage and chat while transcript events continue. Use saved streaming events for UI iteration. Build Mac and iPhone; inspect the actual changed screens. Human-device claims wait for checkpoint 7.
+**Gate:** execute empty-library chat, follow-up, relaunch, cross-recording recall, correction, deletion, memory outage and chat while transcript events continue through the actual app. Inspect stored turns, context boundaries and capture continuity. Use saved streaming events for UI iteration; perform bounded live answer validation only for changed model integration. Build Mac and iPhone. Physical claims wait for checkpoint 7.
+
+### Checkpoint 6B — recording library and chat connections
+
+**Outcome:** users can revisit a capture and discuss it with the same companion without creating another chat.
+
+- Preserve the recording list and one detail view per capture, including transcript, existing metadata and deletion. Voice notes and meeting notes remain the same source type. Summary generation, user-note editing and optional side conversations remain later work; do not add empty tabs for unimplemented features.
+- Implement “Ask about this” from recording detail: return to the main chat with a visible recording attachment, preserving any unsent draft. Allow clearing/replacing that context. Verify attachment ownership and source revision server-side; do not trust a client-provided recording identifier alone.
+- Route companion citations to the same recording detail and referenced passage. Handle deleted/unavailable sources explicitly. Preserve access/deletion for legacy personal notes and their original authorship provenance; remove separate personal-note creation from the normal workflow.
+- Make Capture meeting note and Talk to companion accessible through simple navigation. Keep capture available from either chat or library, with recording status and stop control visible across both. Switching views preserves drafts and reading position and never implicitly stops capture, cancels an answer or resets memory.
+- Use the Manus toggle only as a reference. Implement the smallest usable navigation change; defer visual polish, final labels, library search, summaries and a notes editor.
+
+**Gate:** run actual app navigation with saved transcript/answer events: open a past recording → Ask about this → follow-up → open its source citation → return to the same chat. Inspect the submitted context when attachments are added, cleared or replaced, including a past attachment alongside active capture. Verify unchanged drafts, reading position, no accidental new threads, long-recording context limits, deleted-source handling and legacy-source access. Build both app targets. No new STT calls are needed for these navigation checks.
 
 ### Checkpoint 7 — internal rollout and physical acceptance
 
@@ -127,7 +150,7 @@ Each checkpoint produces a focused PR with a bounded behavior, real-path QA, rev
 - Review the exact commit, migration, flags, queued work, daily admission and remaining budget. Back up canonical databases consistently, preserve ledgers/identity, and verify migration on a copy before approved hosted rollout. Do not leave failed experimental handlers enabled as a purported success.
 - Use additive migration and flags where practical. Prefer disabling new behavior or a forward fix; do not roll an incompatible old binary onto a newer schema or restore data that resurrects deletions.
 - Install the matching native build. Describe the concrete QA steps and wait for founder readiness before recording or asking them to perform timed actions.
-- Minimal real-device path: capture a short fictional meeting note → ask during capture while new speech continues → stop/save → chat without opening the recording → ask a follow-up → capture an explicit changed fact → verify corrected recall and source → relaunch → delete test sources and inspect derived-memory removal.
+- Minimal real-device path: capture a short fictional meeting note → ask during capture while new speech continues → switch between chat and library without stopping capture → stop/save → chat without opening the recording → ask a follow-up → open the saved recording and use Ask about this → verify its attachment and citation return path → capture an explicit changed fact → verify corrected recall and source → relaunch → delete test sources and inspect derived-memory removal.
 - Design the pre-voice-enrollment example around explicitly named subjects and preserve unknown speaker identity. Separately verify anonymous first-person speech is not promoted to an account-owner fact. The final test must not rely on the removed personal-note UI or silently assume the recorder is speaking.
 - Reuse capture QA when unchanged; the real capture-plus-chat coexistence check is necessary for the new interface. Inspect service/app state as well as the user's answer report. Repeat only failed boundaries.
 
@@ -141,4 +164,4 @@ For each live gate, first state the unanswered question, frozen cases, providers
 
 Each PR reports: outcome; implementation boundaries; schema/API compatibility; expected/observed behavioral evidence; failed evidence; exact code version; model roles/versions; calls/reservations; known limitations; deployment impact. Large model-positive counts cannot compensate for a critical false merge. Passing tests is necessary but not sufficient: execute the delivered path and inspect its result.
 
-Done for this rework means the companion chat works independently and during capture; recordings feed one automatic source-backed memory system; designated supported corrections work; ambiguous people and conflicts remain honest; older relevant facts remain discoverable; failed inputs do not halt unrelated learning; deletion and validity propagate; and physical acceptance passes. It does not mean perfect recall, verified identity for anonymous speech, public-launch readiness, or unrestricted autonomous agency.
+Done for this rework means one persistent main companion chat works independently and during capture; users can browse saved recordings, attach one with Ask about this, and open citations at original passages without losing conversation or capture state; recordings feed one automatic source-backed memory system; designated supported corrections work; ambiguous people and conflicts remain honest; older relevant facts remain discoverable; failed inputs do not halt unrelated learning; deletion and validity propagate; and physical acceptance passes. Optional side conversations, generated meeting summaries, a notes editor, voice replies/enrollment and visual redesign remain separate later slices. Completion does not mean perfect recall, verified identity for anonymous speech, public-launch readiness, or unrestricted autonomous agency.
