@@ -1,4 +1,4 @@
-"""Approved founder trial policy; migration requires the service's exclusive process lock."""
+"""Trial policy: startup migration holds the service lock; budget redistribution serializes with admission."""
 import os
 from pathlib import Path
 import sqlite3
