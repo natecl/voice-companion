@@ -32,3 +32,15 @@ Do not merge this candidate as a completed fix or deploy it until the provider-b
 The new six-case QA input is frozen before live inference in `Backend/fixtures/source-verification/qa-cases.json`: named-family/student positives, negation, unsupported account ownership, quoted-person attribution and future metadata. `expected_support` and `expected_admission` are deliberately separate: a true future claim with proposed current metadata must fail admission. These are synthetic development gates, not a population benchmark. All speakers in these cases are anonymous; “my sister” does not establish an account-owner relationship.
 
 Local validation: 43 targeted tests passed across source verification, saved Sol screen, original subject-continuity failure, atomic classifier evidence, writer transactions and chunk behavior. The historical restored screen tests emitted SQLite ResourceWarnings; their connection lifetime was corrected and those three tests rerun successfully. `git diff --check` passed. These results do not satisfy the still-pending live composition gate.
+
+## Research review — September 26, 2026
+
+At the founder's request, a GPT-6 Luna agent at max reasoning used the last30days skill to investigate this separation. The findings support a design hypothesis, not a model-performance guarantee:
+
+- [Fortunate Recall](https://arxiv.org/abs/2609.10413) studies temporal validity and supersession metadata. It supports treating lifecycle state explicitly, but does not validate transcript-to-claim entailment in this application.
+- [CLAIM-CAL](https://link.springer.com/article/10.1007/s44163-026-02240-w) studies confidence calibration on a different task with a small calibration set and model-based judging. Its results do not calibrate Jev's probabilities or establish Sol's accuracy here.
+- A [September 25 practitioner discussion](https://www.reddit.com/r/AI_Agents/comments/1wpzjri/memory_layer_for_ai_agents_is_totally_fucked/) reports stale preferences, query-dependent answers and entity splitting. This is anecdotal motivation for regression cases, not comparative benchmark evidence.
+
+Decision: evaluate factual entailment against original passages separately from modality, temporal state, identity and lifecycle policy. Do not add the old Jev factual-support score as a second veto after Sol, and do not lower confidence thresholds without labeled calibration evidence. Different models can still make correlated errors; independent verification means a separate source-only judgment, not statistical independence.
+
+Research limitations: the automated search returned substantial off-topic material; Reddit retrieval was partial and rate-limited, and YouTube transcript retrieval returned no transcripts under rate limiting. Primary-source web reads supplemented the search. The frozen live QA gate remains the deciding evidence for this implementation.
