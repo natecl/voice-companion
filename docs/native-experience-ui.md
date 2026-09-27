@@ -24,7 +24,7 @@ xcodebuild -scheme Mac -destination 'platform=macOS' build CODE_SIGN_IDENTITY=-
 
 The UI script creates a fresh local service and memory owner for each scenario. It exercises the real native screens, sockets, storage, and notes worker with synthetic capture/provider input. No microphone audio or paid provider calls are made.
 
-Final simulator run: iPhone 17 Pro simulator, iOS 26.5, September 27. All three scenarios passed (20.242s, 18.484s, 20.979s). The final Mac build passed. Actual rendered screenshots were inspected: [Home](qa/native-experience/home.png), [Agent](qa/native-experience/agent.png), [Notes](qa/native-experience/notes.png). These contain only synthetic fixture content.
+Final simulator run: iPhone 17 Pro simulator, iOS 26.5, September 27. All three scenarios passed (20.242s, 18.484s, 20.979s). The final Mac build passed. Actual rendered screenshots were inspected: [Home](qa/native-experience/home.png) and [Notes](qa/native-experience/notes.png). These contain only synthetic fixture content.
 
 Acceptance scenarios:
 
