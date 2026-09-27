@@ -124,10 +124,10 @@ class RecordingNotesTests(unittest.TestCase):
     def test_schema16_upgrade_preserves_existing_source_without_backfill(self):
         with self.store.connect() as db:
             before=[tuple(r) for r in db.execute('SELECT * FROM source')]
-            db.execute('DROP TABLE recording_notes');db.execute('PRAGMA user_version=16')
+            db.execute('DROP TABLE recording_note_index');db.execute('DROP TABLE recording_notes');db.execute('PRAGMA user_version=16')
         migrated=MemoryStore(self.path)
         with migrated.connect() as db:
             self.assertEqual([tuple(r) for r in db.execute('SELECT * FROM source')],before)
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],17)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],18)
             self.assertEqual(db.execute('SELECT count(*) FROM recording_notes').fetchone()[0],0)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0],'ok')

@@ -194,7 +194,7 @@ class MemoryTests(unittest.TestCase):
         self.assertEqual(len(migrated.search(self.owner)), 1)
         self.assertEqual(migrated.profile(self.owner), [])
         with migrated.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 17)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 18)
 
     def test_personal_sources_are_held_and_origin_cannot_be_rewritten(self):
         note = dict(source(), origin='personal_text')

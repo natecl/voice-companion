@@ -91,3 +91,7 @@ The [retention implementation](retained-recording-memory.md) separates committed
 ## Lean notes slice — September 26, 2026
 
 Founder-approved direction: consolidate around a lean Proven/Better/New experience, with transcript-derived notes next and spoken companion participation afterward. Notes and summary are one feature. Generate after capture from the recording transcript only, save beside it, preserve supporting passage references, and adapt structure to the content. Proactive participation remains deferred. The [notes plan](recording-notes-plan.md) separates storage, generation, native integration and physical acceptance. Permission to simplify the memory system is not a completed replacement or a change to recording-deletion semantics; evaluate notes-based retrieval separately before retiring existing machinery.
+
+## Notes-first consolidation — September 27, 2026
+
+Founder authorizes implementing notes-first past-context retrieval with Jev ranking, direct transcript fallback and a thin personal layer. Preserve current conversation context, original passage citations, uncertainty, attribution, corrections and learned knowledge retained after recording deletion. Thin means a simpler implementation, not work-only or shallow personal understanding. Nonpersonal retained knowledge stays distinct from personal profile facts. Replace existing complexity only after matched behavioral evidence; the approved direction is not a claim that Jev retrieval or the replacement has passed QA. See [delivery plan](notes-first-memory-plan.md).

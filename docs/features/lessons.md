@@ -48,3 +48,7 @@ A native fixture owner keys both backend evidence and the app's saved session di
 ### Notes are a discovery layer, not complete evidence
 
 The [offline comparison](../notes-retrieval-comparison.md) recovered required evidence in 7/7 small notes-expansion cases versus 6/7 lexical-only candidates. This is not a full-harness accuracy result. A controlled summary omission defeated both note discovery and cited-passage expansion; direct transcript fallback remains necessary. Deleted notes cannot replace independently retained learned knowledge. Preserve these contracts when consolidating, and measure matched answers before replacing the deployed retrieval path.
+
+### Notes index foundation
+
+Schema18 indexes sourced note entries transactionally and invalidates them with their source. Use `Backend/notes_search.py` for the new bounded candidate boundary; it is not yet connected to the deployed companion. The [consolidation plan](../notes-first-memory-plan.md) records actual migration/search QA and the remaining Jev/answer gate. Keep runtime retrieval claims separate from this storage checkpoint.

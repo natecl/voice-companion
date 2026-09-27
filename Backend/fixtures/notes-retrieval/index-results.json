@@ -1,0 +1,223 @@
+[
+  {
+    "query": "food diagnosis",
+    "candidates": [
+      {
+        "session_id": "notes-appointment",
+        "revision": 1,
+        "generation_version": "recording-notes-v1",
+        "entry": "2",
+        "text": "Dog\u2019s Possible Food Sensitivity\nCurrent guidance\nThe owner restated that there is no confirmed diagnosis and no food change yet.",
+        "passages": [
+          "p1",
+          "p3"
+        ]
+      },
+      {
+        "session_id": "notes-appointment",
+        "revision": 1,
+        "generation_version": "recording-notes-v1",
+        "entry": "0",
+        "text": "Dog\u2019s Possible Food Sensitivity\nOverview\nA food sensitivity was raised as a possibility, but no diagnosis has been established. The current food should remain unchanged until test results are discussed; call the clinic if vomiting recurs.",
+        "passages": [
+          "p1",
+          "p2"
+        ]
+      },
+      {
+        "session_id": "notes-appointment",
+        "revision": 1,
+        "generation_version": "recording-notes-v1",
+        "entry": "1",
+        "text": "Dog\u2019s Possible Food Sensitivity\nCurrent guidance\nKeep the current food until the test results are discussed; call the clinic if vomiting recurs.",
+        "passages": [
+          "p2"
+        ]
+      }
+    ],
+    "original_evidence": [
+      {
+        "session_id": "notes-appointment",
+        "revision": 1,
+        "passage_id": "p1",
+        "captured_at": 1790461403.0,
+        "timezone": "America/New_York",
+        "origin": "recording",
+        "start": 0.0,
+        "speakers": [
+          0
+        ],
+        "text_start": 0,
+        "text_end": 82,
+        "text": "Vet: The dog may have a food sensitivity, but we have not established a diagnosis.",
+        "lifecycle": [],
+        "evidence_type": "original_source",
+        "claim_scope": "whole_passage"
+      },
+      {
+        "session_id": "notes-appointment",
+        "revision": 1,
+        "passage_id": "p3",
+        "captured_at": 1790461403.0,
+        "timezone": "America/New_York",
+        "origin": "recording",
+        "start": 16.0,
+        "speakers": [
+          0
+        ],
+        "text_start": 0,
+        "text_end": 56,
+        "text": "Owner: So no confirmed diagnosis and no food change yet.",
+        "lifecycle": [],
+        "evidence_type": "original_source",
+        "claim_scope": "whole_passage"
+      },
+      {
+        "session_id": "notes-appointment",
+        "revision": 1,
+        "passage_id": "p2",
+        "captured_at": 1790461403.0,
+        "timezone": "America/New_York",
+        "origin": "recording",
+        "start": 8.0,
+        "speakers": [
+          1
+        ],
+        "text_start": 0,
+        "text_end": 93,
+        "text": "Keep the current food until we discuss the test results. If vomiting recurs, call the clinic.",
+        "lifecycle": [],
+        "evidence_type": "original_source",
+        "claim_scope": "whole_passage"
+      }
+    ]
+  },
+  {
+    "query": "walking routine",
+    "candidates": [
+      {
+        "session_id": "notes-reflection",
+        "revision": 1,
+        "generation_version": "recording-notes-v1",
+        "entry": "2",
+        "text": "Overwhelm and a Possible Walking Routine\nReflection and possibility\nMight try walking before class, but has not decided on a routine.",
+        "passages": [
+          "p2"
+        ]
+      },
+      {
+        "session_id": "notes-reflection",
+        "revision": 1,
+        "generation_version": "recording-notes-v1",
+        "entry": "0",
+        "text": "Overwhelm and a Possible Walking Routine\nOverview\nThe speaker felt overwhelmed this week, enjoyed a quiet walk yesterday, and may try walking before class but has not settled on a routine. They are not asking anyone else to schedule it.",
+        "passages": [
+          "p1",
+          "p2",
+          "p3"
+        ]
+      },
+      {
+        "session_id": "notes-reflection",
+        "revision": 1,
+        "generation_version": "recording-notes-v1",
+        "entry": "3",
+        "text": "Overwhelm and a Possible Walking Routine\nReflection and possibility\nNot asking anyone to schedule it for them.",
+        "passages": [
+          "p3"
+        ]
+      }
+    ],
+    "original_evidence": [
+      {
+        "session_id": "notes-reflection",
+        "revision": 1,
+        "passage_id": "p2",
+        "captured_at": 1790461403.0,
+        "timezone": "America/New_York",
+        "origin": "recording",
+        "start": 8.0,
+        "speakers": [
+          0
+        ],
+        "text_start": 0,
+        "text_end": 70,
+        "text": "I might try walking before class, but I have not decided on a routine.",
+        "lifecycle": [],
+        "evidence_type": "original_source",
+        "claim_scope": "whole_passage"
+      },
+      {
+        "session_id": "notes-reflection",
+        "revision": 1,
+        "passage_id": "p1",
+        "captured_at": 1790461403.0,
+        "timezone": "America/New_York",
+        "origin": "recording",
+        "start": 0.0,
+        "speakers": [
+          0
+        ],
+        "text_start": 0,
+        "text_end": 66,
+        "text": "I felt overwhelmed this week and enjoyed the quiet walk yesterday.",
+        "lifecycle": [],
+        "evidence_type": "original_source",
+        "claim_scope": "whole_passage"
+      },
+      {
+        "session_id": "notes-reflection",
+        "revision": 1,
+        "passage_id": "p3",
+        "captured_at": 1790461403.0,
+        "timezone": "America/New_York",
+        "origin": "recording",
+        "start": 16.0,
+        "speakers": [
+          0
+        ],
+        "text_start": 0,
+        "text_end": 47,
+        "text": "I am not asking anyone to schedule this for me.",
+        "lifecycle": [],
+        "evidence_type": "original_source",
+        "claim_scope": "whole_passage"
+      }
+    ]
+  },
+  {
+    "query": "homework",
+    "candidates": [
+      {
+        "session_id": "notes-lecture",
+        "revision": 1,
+        "generation_version": "recording-notes-v1",
+        "entry": "3",
+        "text": "Correlation and Causation\nKey concepts\nRandom assignment can help estimate causal effects. The lecture states that it does not assign homework.",
+        "passages": [
+          "p3"
+        ]
+      }
+    ],
+    "original_evidence": [
+      {
+        "session_id": "notes-lecture",
+        "revision": 1,
+        "passage_id": "p3",
+        "captured_at": 1790461403.0,
+        "timezone": "America/New_York",
+        "origin": "recording",
+        "start": 16.0,
+        "speakers": [
+          0
+        ],
+        "text_start": 0,
+        "text_end": 94,
+        "text": "Random assignment can help estimate causal effects, but this lecture does not assign homework.",
+        "lifecycle": [],
+        "evidence_type": "original_source",
+        "claim_scope": "whole_passage"
+      }
+    ]
+  }
+]

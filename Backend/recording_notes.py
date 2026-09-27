@@ -1,6 +1,7 @@
 """Revision-bound recording notes. Storage only: no scheduling or provider calls."""
 import json
 import uuid
+import notes_search
 from admission import Rejected
 
 GENERATION_VERSION = 'recording-notes-v1'
@@ -18,6 +19,7 @@ COMMIT;'''
 
 
 def invalidate(db, owner, session, *, deleting=False):
+    db.execute("DELETE FROM recording_note_index WHERE owner=? AND session=?", (owner, session))
     if deleting:
         db.execute('DELETE FROM recording_notes WHERE owner=? AND session=?', (owner, session))
     else:
@@ -59,6 +61,7 @@ def validate_notes(data, source):
 def enqueue_source(db, owner, source):
     """Called in the source transaction: synchronization and scheduling commit together."""
     if source.get('origin') == 'personal_text':return
+    db.execute("DELETE FROM recording_note_index WHERE owner=? AND session=?", (owner, source['session_id']))
     error = ('empty_transcript' if not source['passages'] else
              'notes_input_too_large' if len(json.dumps(source, ensure_ascii=False).encode()) > MAX_INPUT_BYTES else None)
     db.execute("""INSERT INTO recording_notes VALUES(?,?,?,?,?,NULL,NULL,?)
@@ -112,6 +115,7 @@ class RecordingNotes:
                 AND attempt=? AND state='generating' AND revision=?''',
                 (payload, job['owner'], job['session'], job['revision'], job['generation_version'], job['attempt'], source['revision']))
             if result.rowcount != 1:raise Rejected('stale_notes')
+            notes_search.index(db, job['owner'], job['session'], job['revision'], job['generation_version'], data)
 
     def fail(self, job, reason):
         if reason not in {'generation_failed','generation_interrupted','invalid_notes','budget_limit','notes_input_too_large'}:
