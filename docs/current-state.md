@@ -1,6 +1,6 @@
 # Current product, implementation and research knowledge
 
-Reconciled against code through `0b286af`, draft [PR 99](https://github.com/natecl/voice-companion/pull/99), and the last verified internal backend rollout `145f4c8` (PRs 95–97). September 27, 2026 UTC / September 26 local. This documentation pass did not redeploy, inspect live runtime state again, run providers or repeat physical QA. Read the [feature map](features/README.md) for code ownership and targeted tests.
+Reconciled against code through `0b286af`, draft [PR 99](https://github.com/natecl/voice-companion/pull/99), and the memory rollout `145f4c8` (PRs 95–97). The subsequent isolated budget compatibility rollout is `bb073ff` (PR 100); see the physical QA preflight in [dictation evidence](companion-feel-and-dictation.md). September 27, 2026 UTC / September 26 local. This documentation pass did not redeploy, inspect live runtime state again, run providers or repeat physical QA. Read the [feature map](features/README.md) for code ownership and targeted tests.
 
 The [product source of truth](product-source-of-truth.md) and [engineering principles](engineering-principles.md) are canonical. This brief consolidates their current application; it is not a replacement specification. Earlier plans and failed experiments remain evidence, not current requirements.
 
