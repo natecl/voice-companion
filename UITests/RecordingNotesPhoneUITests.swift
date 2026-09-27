@@ -18,7 +18,7 @@ final class RecordingNotesPhoneUITests: XCTestCase {
         XCTAssertTrue(app.buttons["stopRecording"].waitForExistence(timeout: 5))
         app.buttons["stopRecording"].tap()
         // Saved notes open automatically when capture finishes.
-        XCTAssertTrue(app.staticTexts["notesTitle"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.staticTexts["notesText"].firstMatch.waitForExistence(timeout: 15))
         XCTAssertEqual(app.staticTexts["notesTitle"].label, "Maya’s swimming")
         let screenshot = XCTAttachment(screenshot: app.screenshot())
         screenshot.name = "Recording notes — actual native app and local service, synthetic input"

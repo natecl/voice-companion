@@ -241,3 +241,6 @@ Founder fidelity correction, September 27: use the approved Home mockup for icon
 Founder revision: replace the inner composer attachment plus with a paperclip. Home and Agent use the same shared composer; the external capture plus is unchanged. This supersedes the attachment glyph specified above.
 
 Founder composer interaction revision: one trailing control in the shared Home/Agent composer. Empty or whitespace-only drafts show mic; nonempty drafts show send. Active dictation keeps Stop until text is ready for review, and an in-flight answer keeps Cancel. The supplied mobile screenshots illustrate the control substitution, not a change to the app branding or chat layout.
+
+
+Founder all-screen fidelity direction, September 27: compare rendered native Home, Agent, saved notes, live transcript, sign-up, pricing, account and search against the eight supplied final mockups. Match shared typography, iconography, spacing, sizing, borders and shadows using screenshot iteration. Preserve subsequent interaction decisions: upright paperclip, shared Home/Agent composer with mic replaced by send for text, external capture plus, Stop without Pause, and recording-bar tap to open transcript. Visual reference content does not authorize fake authentication, billing, analytics or new product capabilities. Record actual differences and verification limits.

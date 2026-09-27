@@ -17,7 +17,7 @@ final class CompanionPhoneUITests: XCTestCase {
             ["id": UUID().uuidString, "createdAt": dates[index].timeIntervalSinceReferenceDate,
              "completed": true, "source": "microphone", "recordingSeconds": minutes[index] * 60,
              "memoryOwnerID": owner, "memoryTerminal": true,
-             "transcript": ["segments": [["start": 0, "duration": 2, "text": summary, "words": [], "isFinal": true]]]]
+             "transcript": ["segments": [["start": 0, "duration": 2, "text": summary + (index == 0 ? " Put together a first version. Compare feedback on Friday. Who will invite the participants?" : ""), "words": [], "isFinal": true]]]]
         }
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--companion-ui-fixture", "--experience-gallery"]
@@ -29,7 +29,7 @@ final class CompanionPhoneUITests: XCTestCase {
         XCTAssertEqual(app.buttons.matching(identifier: "savedSession").count, 4)
         // Open the first note to wait on actual fixture generation, then refresh library titles.
         app.buttons["savedSession"].firstMatch.tap()
-        XCTAssertTrue(app.staticTexts["notesTitle"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.staticTexts["notesText"].firstMatch.waitForExistence(timeout: 15))
         snapshot(app, "Polished notes")
         app.buttons["Close recording"].tap()
         XCTAssertTrue(app.staticTexts["Product planning"].waitForExistence(timeout: 5))
@@ -43,6 +43,12 @@ final class CompanionPhoneUITests: XCTestCase {
         app.buttons["removeAttachment"].tap()
         app.buttons["agentNavigation"].tap()
         snapshot(app, "Polished Agent")
+        app.buttons["homeNavigation"].tap()
+        app.buttons["searchRecordings"].tap()
+        app.textFields["recordingSearch"].tap(); app.textFields["recordingSearch"].typeText("launch\n")
+        app.swipeDown()
+        snapshot(app, "Search results")
+        app.buttons["Cancel"].tap()
         app.buttons["Account"].tap()
         snapshot(app, "Account")
         app.buttons["Sign-up preview"].tap()
@@ -151,6 +157,11 @@ final class CompanionPhoneUITests: XCTestCase {
         field.tap(); field.typeText("What does Maya enjoy?")
         app.buttons["sendCompanion"].tap()
         XCTAssertTrue(app.buttons["companionSource"].firstMatch.waitForExistence(timeout: 5))
+        app.swipeDown()
+        snapshot(app, "Agent conversation during capture")
+        app.buttons["showActiveRecording"].tap()
+        snapshot(app, "Live transcript sheet")
+        app.buttons["Close recording"].tap()
         XCTAssertTrue(app.buttons["stopRecording"].isEnabled)
         app.buttons["companionSource"].firstMatch.tap()
         XCTAssertTrue(app.staticTexts["citedPassage"].waitForExistence(timeout: 5))

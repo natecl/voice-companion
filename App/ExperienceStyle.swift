@@ -1,5 +1,21 @@
 import SwiftUI
 import ThinkingOrbsKit
+#if os(iOS)
+import UIKit
+#else
+import AppKit
+#endif
+
+enum ExperienceClipboard {
+    static func copy(_ text: String) {
+        #if os(iOS)
+        UIPasteboard.general.string = text
+        #else
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(text, forType: .string)
+        #endif
+    }
+}
 
 /// Shared neutral surfaces and typography, derived from the approved Home screen.
 enum ExperienceStyle {
@@ -34,7 +50,7 @@ struct ExperienceIconButton: View {
                             .padding(size > 44 ? 0 : 4)
                     } else if !bare {
                         Circle().fill(.white)
-                            .shadow(color: .black.opacity(0.035), radius: 14, y: 5)
+                            .shadow(color: .black.opacity(0.06), radius: 16, y: 7)
                     }
                 }
 
@@ -42,9 +58,9 @@ struct ExperienceIconButton: View {
     }
 
     @ViewBuilder private var buttonSymbol: some View {
-        if icon == "mic" || icon == "arrow.up" {
+        if ["mic", "arrow.up", "xmark", "chevron.left", "stop.fill"].contains(icon) {
             Image(systemName: icon)
-                .font(.system(size: icon == "mic" ? 18 : 20, weight: icon == "mic" ? .regular : .semibold))
+                .font(.system(size: icon == "stop.fill" ? 17 : icon == "mic" ? 18 : 20, weight: icon == "mic" ? .regular : .semibold))
         } else {
             ExperienceSymbol(name: icon)
         }
@@ -53,43 +69,81 @@ struct ExperienceIconButton: View {
 
 /// Reviewable UI only. Authentication is unavailable until the service is configured.
 struct ExperienceSignupView: View {
+    @State private var notice = false
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            Spacer()
-            Text("Create your account").font(.title.weight(.semibold))
-            Text("Capture conversations. Keep what matters.").foregroundStyle(ExperienceStyle.secondary)
-            VStack(spacing: 12) {
-                HStack(spacing: 12) { Text("G").font(.headline); Text("Continue with Google") }.frame(maxWidth: .infinity).padding(18)
-                    .background(.white, in: Capsule()).overlay(Capsule().strokeBorder(ExperienceStyle.line))
-                Label("Continue with Apple", systemImage: "apple.logo").frame(maxWidth: .infinity).padding(18)
-                    .foregroundStyle(.white).background(ExperienceStyle.ink, in: Capsule())
-            }.accessibilityElement(children: .combine)
-            Text("Design preview · sign-in is not available in this build.").font(.caption).foregroundStyle(ExperienceStyle.secondary)
-            Spacer()
-        }.padding(24).background(ExperienceStyle.canvas).foregroundStyle(ExperienceStyle.ink).experienceNavigationTitle("")
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: 0) {
+                    Color.clear.frame(height: max(40, geometry.size.height * 0.16))
+                    Text("Ellis").font(.title2.bold()).padding(.bottom, 40)
+                    Text("Create your account").font(.system(.title, weight: .bold)).multilineTextAlignment(.center)
+                    Text("Capture conversations. Keep what matters.").font(.callout).foregroundStyle(ExperienceStyle.secondary).multilineTextAlignment(.center).padding(.top, 10)
+                    VStack(spacing: 12) {
+                        Button { notice = true } label: {
+                            HStack(spacing: 14) {
+                                Text("G").font(.system(size: 27, weight: .bold)).foregroundStyle(AngularGradient(colors: [.blue, .green, .yellow, .red, .blue], center: .center))
+                                Text("Continue with Google").font(.body.weight(.medium))
+                            }.frame(maxWidth: .infinity).frame(height: 50).experienceCard(radius: 25)
+                        }
+                        Button { notice = true } label: {
+                            Label("Continue with Apple", systemImage: "apple.logo").font(.body.weight(.medium))
+                                .frame(maxWidth: .infinity).frame(height: 50).foregroundStyle(.white).background(ExperienceStyle.ink, in: Capsule())
+                        }
+                    }.padding(.top, 44)
+                    Button { notice = true } label: {
+                        (Text("Already have an account? ").foregroundStyle(ExperienceStyle.secondary) + Text("Log in").foregroundStyle(ExperienceStyle.ink)).font(.footnote)
+                    }.padding(.top, 36)
+                    Spacer(minLength: 70)
+                    Text("Design preview · sign-in is not connected.").font(.caption2).foregroundStyle(ExperienceStyle.secondary)
+                    Button("Terms and Privacy Policy") { notice = true }.font(.caption).padding(.top, 12).padding(.bottom, 28)
+                }.padding(.horizontal, 22).frame(minHeight: geometry.size.height)
+            }
+        }.background(ExperienceStyle.canvas).foregroundStyle(ExperienceStyle.ink).experienceNavigationTitle("")
+            .alert("Account preview", isPresented: $notice) { Button("OK", role: .cancel) {} } message: { Text("Sign-in and legal links are not configured in this internal build.") }
     }
 }
 
 struct ExperiencePricingView: View {
+    @Environment(\.dismiss) private var dismiss
+    @State private var selectedPlan = "Monthly"
+    @State private var notice = false
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                Text("Get more with Pro").font(.title.weight(.semibold))
-                Text("More room for the conversations that matter.").foregroundStyle(ExperienceStyle.secondary)
+            VStack(alignment: .leading, spacing: 12) {
+                HStack { Spacer(); ExperienceIconButton("Close plans", icon: "xmark") { dismiss() } }
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Get more with Pro").font(.system(size: 32, weight: .bold))
+                    Text("More room for your conversations.").font(.body).foregroundStyle(ExperienceStyle.secondary)
+                }.padding(.top, 12)
                 VStack(alignment: .leading, spacing: 22) {
-                    Label("Capture conversations", systemImage: "waveform")
-                    HStack(spacing: 12) { ExperienceSymbol(name: "doc.text").frame(width: 22, height: 22); Text("Return to notes and transcripts") }
-                    HStack(spacing: 12) { ExperienceSymbol(name: "bubble.left").frame(width: 22, height: 22); Text("Talk things through with your agent") }
-                }.padding(24).frame(maxWidth: .infinity, alignment: .leading)
-                    .background(ExperienceStyle.surface, in: RoundedRectangle(cornerRadius: 24))
+                    feature("More recording time", icon: "mic")
+                    feature("More conversations with your agent", icon: "bubble.left")
+                    feature("Live transcripts", icon: "text.alignleft")
+                    feature("Notes and summaries", icon: "doc.text")
+                    feature("Find details from past conversations", icon: "magnifyingglass")
+                    Divider()
+                    Text("Core features are also available on Free.").font(.caption).foregroundStyle(ExperienceStyle.secondary).frame(maxWidth: .infinity)
+                }.padding(18).experienceCard(radius: 16)
                 ForEach(["Monthly", "Annually"], id: \.self) { plan in
-                    HStack { Text(plan).fontWeight(.semibold); Spacer(); Text("Price pending").foregroundStyle(ExperienceStyle.secondary) }
-                        .padding(20).overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(ExperienceStyle.line))
+                    Button { selectedPlan = plan } label: {
+                        HStack(spacing: 14) {
+                            Image(systemName: selectedPlan == plan ? "largecircle.fill.circle" : "circle").font(.system(size: 21)).foregroundStyle(selectedPlan == plan ? ExperienceStyle.ink : ExperienceStyle.secondary)
+                            Text(plan).font(.body.weight(.semibold)); Spacer()
+                            Text(plan == "Monthly" ? "$— / month" : "$— / year").font(.body)
+                        }.padding(16).background(selectedPlan == plan ? ExperienceStyle.surface.opacity(0.6) : .white, in: RoundedRectangle(cornerRadius: 14))
+                            .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(selectedPlan == plan ? ExperienceStyle.ink : ExperienceStyle.line))
+                    }.accessibilityAddTraits(selectedPlan == plan ? .isSelected : [])
                 }
-                Text("Design preview · prices, plan allowances, and purchases are not configured. Features shown do not define paid-only access.")
-                    .font(.caption).foregroundStyle(ExperienceStyle.secondary)
-            }.padding(24)
-        }.background(ExperienceStyle.canvas).foregroundStyle(ExperienceStyle.ink).experienceNavigationTitle("")
+                Text("Pricing and limits to be confirmed.").font(.caption).foregroundStyle(ExperienceStyle.secondary).frame(maxWidth: .infinity)
+                Button { notice = true } label: { Text("Continue with Pro").font(.body.weight(.semibold)).frame(maxWidth: .infinity).frame(height: 48).foregroundStyle(.white).background(ExperienceStyle.ink, in: RoundedRectangle(cornerRadius: 13)) }
+                Button("Continue free") { dismiss() }.font(.body.weight(.semibold)).frame(maxWidth: .infinity).frame(minHeight: 44)
+                Button("Terms   ·   Privacy   ·   Restore") { notice = true }.font(.caption).foregroundStyle(ExperienceStyle.secondary).frame(maxWidth: .infinity)
+            }.padding(20)
+        }.background(ExperienceStyle.canvas).foregroundStyle(ExperienceStyle.ink).experienceNavigationTitle("").navigationBarBackButtonHidden(true)
+            .alert("Plan preview", isPresented: $notice) { Button("OK", role: .cancel) {} } message: { Text("Purchases, plan limits, legal links and restoration are not configured in this internal build.") }
+    }
+    private func feature(_ title: String, icon: String) -> some View {
+        HStack(spacing: 20) { ExperienceSymbol(name: icon).frame(width: 22, height: 22); Text(title).font(.callout) }
     }
 }
 
@@ -121,4 +175,17 @@ extension View {
         navigationTitle(title)
         #endif
     }
+}
+
+struct ExperienceCard: ViewModifier {
+    var radius: CGFloat
+    var elevated: Bool
+    func body(content: Content) -> some View {
+        content.background(.white, in: RoundedRectangle(cornerRadius: radius))
+            .overlay(RoundedRectangle(cornerRadius: radius).strokeBorder(ExperienceStyle.line, lineWidth: 0.8))
+            .shadow(color: .black.opacity(elevated ? 0.065 : 0), radius: 18, y: 8)
+    }
+}
+extension View {
+    func experienceCard(radius: CGFloat = 22, elevated: Bool = false) -> some View { modifier(ExperienceCard(radius: radius, elevated: elevated)) }
 }

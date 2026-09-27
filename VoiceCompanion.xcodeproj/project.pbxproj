@@ -35,6 +35,7 @@
 		2C2E3A5C5EE0583DC3EFA2C5 /* MicrophoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C425260D9BD59D9B7A18C540 /* MicrophoneUITests.swift */; };
 		2D1AC0B45D53467828101DBF /* AudioCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB02BC305BA1F675947256B /* AudioCapture.swift */; };
 		2EB6B00CF0B59D267ECE26BA /* RelayConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C627D1B94769284B53CA87 /* RelayConfiguration.swift */; };
+		30F7F902CD878EF2CB1ECDE0 /* ExperienceAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF68AD805B6E63CBC2628D1C /* ExperienceAccountView.swift */; };
 		33194AB168B44429BA555E21 /* ComposerDictation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A61595A22B8D8873EEEA9 /* ComposerDictation.swift */; };
 		3543D18AF22468B790597010 /* MemorySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C97C3F135EEAFF5858CD5D /* MemorySync.swift */; };
 		437BE63711960B3995A94AF9 /* RelayCredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78DF2FA0976B69003E482D9 /* RelayCredentialStore.swift */; };
@@ -114,6 +115,7 @@
 		EDF341C8C485377AC886C9BE /* MemoryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A7E394791C84DF944DF808 /* MemoryUITests.swift */; };
 		F32B0F3154E602EE085159A7 /* MicrophoneAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1EED3788D18E4EE3FBB3EC /* MicrophoneAccess.swift */; };
 		F4DDD59F3F6BD74BA6EA92D3 /* CompanionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958D6A5180E458B927E39E26 /* CompanionUITests.swift */; };
+		F5CA30DA92BCB130D6EE51BC /* ExperienceAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF68AD805B6E63CBC2628D1C /* ExperienceAccountView.swift */; };
 		F673436CDE23257AD9A06DF8 /* RecordingLifecycleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9EC7C7D2F4D7A26C239554 /* RecordingLifecycleTests.swift */; };
 		F6AF624940EE5A378DD8AC7B /* ConversationAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D8082C6B31F2C2E959995 /* ConversationAnswer.swift */; };
 		F9B6B6930B11FA2766490C9D /* ConversationAnswerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CDFE903F387C5D9A9995AB /* ConversationAnswerTests.swift */; };
@@ -176,6 +178,7 @@
 		A27B0813F66346BF740B28AE /* DictationCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictationCallbackTests.swift; sourceTree = "<group>"; };
 		A918307E479F9BA8A830B982 /* MemoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryTests.swift; sourceTree = "<group>"; };
 		A99563154DEC736333441A95 /* CompanionRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionRootView.swift; sourceTree = "<group>"; };
+		AF68AD805B6E63CBC2628D1C /* ExperienceAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceAccountView.swift; sourceTree = "<group>"; };
 		B2CDFE903F387C5D9A9995AB /* ConversationAnswerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationAnswerTests.swift; sourceTree = "<group>"; };
 		B44A1E9C64F211D529376CAE /* RecordingNotesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingNotesUITests.swift; sourceTree = "<group>"; };
 		B67E07AC85400C84CD8C0027 /* SessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionController.swift; sourceTree = "<group>"; };
@@ -316,6 +319,7 @@
 			children = (
 				A99563154DEC736333441A95 /* CompanionRootView.swift */,
 				88BF1AC516A3299E1DFBF855 /* ConversationAskView.swift */,
+				AF68AD805B6E63CBC2628D1C /* ExperienceAccountView.swift */,
 				108FDE335235A814407D563A /* ExperienceStyle.swift */,
 				131DA977EC343A02A8A2BAB1 /* ExperienceSymbol.swift */,
 				8329C8BB764901C562FF590B /* Phone-Info.plist */,
@@ -561,6 +565,7 @@
 				E319A481A74CCCE3F274C3E0 /* ConversationAnswer.swift in Sources */,
 				ECDFC4E9338320EA178ED9FF /* ConversationAskView.swift in Sources */,
 				1418EF1AB9CE2424714AB9DD /* DictationRecognizer.swift in Sources */,
+				F5CA30DA92BCB130D6EE51BC /* ExperienceAccountView.swift in Sources */,
 				2868919084B83CBB122C6893 /* ExperienceStyle.swift in Sources */,
 				DDD5F98F2DCA4D054E5EA2C5 /* ExperienceSymbol.swift in Sources */,
 				E64A2E54175D0F2712013043 /* LiveTranscriber.swift in Sources */,
@@ -635,6 +640,7 @@
 				822939BAFB8BA3E279430B34 /* ConversationAnswer.swift in Sources */,
 				55EC88DB822DCBAAB3210FCC /* ConversationAskView.swift in Sources */,
 				C10893291412E8A3EA454659 /* DictationRecognizer.swift in Sources */,
+				30F7F902CD878EF2CB1ECDE0 /* ExperienceAccountView.swift in Sources */,
 				46B4EFC25395B55EEE20F581 /* ExperienceStyle.swift in Sources */,
 				7D960CB1DA7FECD6B87040D7 /* ExperienceSymbol.swift in Sources */,
 				AA863954E4E818D4E149270B /* LiveTranscriber.swift in Sources */,

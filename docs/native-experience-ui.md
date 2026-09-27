@@ -7,7 +7,7 @@ The approved Home mockup is the visual baseline: white canvas, neutral surfaces,
 - Home groups saved recordings by day, shows available generated titles and transcript previews, and searches local transcript text without a model call. Search does not yet index generated titles.
 - Home and Agent share the same draft, attachment, dictation controls, and persistent conversation. Sending from Home opens Agent. Mic dictates a private editable message; the paperclip opens attachment options and a recording picker, while the separate black plus starts meeting capture.
 - The capture bar shows elapsed time and state, opens a live transcript sheet, and has Stop without Pause. Closing the sheet keeps capture running. Capture completion opens saved notes automatically.
-- Saved notes retain the Notes/Transcript switch, original supporting passages, and Ask Agent attachment behavior. Deletion is in the recording menu, with confirmation on the sheet.
+- Saved notes retain the Notes/Transcript switch, original supporting passages, and Ask Agent attachment behavior. Deletion is in the recording menu, with confirmation.
 - Account exposes the existing memory preference and honest configuration/recording information. Sign-up (Google above Apple) and pricing layouts are explicitly design previews: OAuth, StoreKit, prices, legal URLs, and plan allowances are not implemented or invented.
 - Libraries.dev ThinkingOrbsKit's native SwiftUI port is pinned and vendored with its MIT license. It appears after a two-second wait beside answer/notes status text, pauses when inactive, and respects Reduce Motion. No React runtime, paid Pro package, or external service was added.
 
@@ -24,7 +24,7 @@ xcodebuild -scheme Mac -destination 'platform=macOS' build CODE_SIGN_IDENTITY=-
 
 The UI script creates a fresh local service and memory owner for each scenario. It exercises the real native screens, sockets, storage, and notes worker with synthetic capture/provider input. No microphone audio or paid provider calls are made.
 
-Final simulator run: iPhone 17 Pro simulator, iOS 26.5, September 27. All four scenarios passed (21.978s, 18.359s, 20.564s, 20.978s). The final Mac build passed. Result bundles are preserved by the QA script; this run is under `/tmp/VoiceCompanion-ExperienceResults/20260927-160211/`.
+Initial fidelity simulator run: iPhone 17 Pro simulator, iOS 26.5, September 27. All four scenarios passed (21.978s, 18.359s, 20.564s, 20.978s). The final Mac build passed. Result bundles are preserved by the QA script; this run is under `/tmp/VoiceCompanion-ExperienceResults/20260927-160211/`.
 
 Rendered screenshots were inspected: [Home](qa/native-experience/home.png), [Agent](qa/native-experience/agent.png), [Notes](qa/native-experience/notes.png), [Attachments](qa/native-experience/attachments.png), [Account](qa/native-experience/account.png), [Sign-up preview](qa/native-experience/signup.png), and [Pricing preview](qa/native-experience/pricing.png). These contain only synthetic fixture content.
 
@@ -34,8 +34,8 @@ Acceptance scenarios:
 
 1. Capture while asking, inspect source/transcript, return, stop into saved notes, attach/remove the recording, relaunch the persistent conversation.
 2. Preserve a draft across Home/Agent, start capture, inspect/dismiss the live sheet without stopping, stop into notes, search matching/empty results, and dictate an editable message.
-3. Generate/read saved notes, reopen a supporting passage, relaunch, and delete through the sheet confirmation.
-4. Render four dated recordings, inspect generated notes and the shared screen gallery, attach a recording through the composer plus, and remove it.
+3. Generate/read saved notes, reopen a supporting passage, relaunch, and delete through confirmation.
+4. Render four dated recordings, inspect generated notes and the shared screen gallery, attach a recording through the composer attachment control, and remove it.
 
 During iteration, UI execution caught duplicate accessible Stop controls behind a sheet and an alert attached to the wrong presentation layer. Those were fixed. The QA runner now isolates owners to avoid selecting an older offscreen citation from a previous run.
 
@@ -58,3 +58,20 @@ Home and Agent render the same composer: paperclip opens attachments, empty/whit
 Three affected simulator scenarios passed on September 27 (gallery/attachments, shared draft/search/dictation, capture/chat/navigation); Mac build passed. Result bundles: `/tmp/VoiceCompanion-ExperienceResults/20260927-162356/`. Native Home and typed Agent screenshots were inspected, including keyboard placement. [Typed composer](qa/native-experience/composer-send.png). No paid calls or physical-device validation were performed.
 
 Upright paperclip follow-up: rotated the shared attachment glyph vertically at founder request. Gallery/attachment simulator check passed; native Home render inspected. Updated Home and Agent screenshots show the vertical glyph; the earlier typed-composer screenshot predates this orientation-only change. Results: `/tmp/VoiceCompanion-ExperienceResults/20260927-163546/`.
+
+
+## Eight-screen reference pass — September 27
+
+The founder supplied eight final references for Home, Agent during capture, saved notes, live transcript, sign-up, pricing, account and search. The native implementation now shares the reference's white surfaces, pale borders, soft control shadows and typography hierarchy. Agent has a contextual pill header, neutral user bubble and serif author heading; saved notes and account use full pages, while live transcript remains a sheet. Search has a dedicated search capsule, result count and matching-text highlights. Sign-up keeps Google above Apple; pricing and account use grouped cards. The upright paperclip and mic-to-send composer behavior supersede the older controls pictured in the references. Live capture retains Stop only and opens from the recording bar.
+
+Screenshot iteration also caught and fixed a generated-note title that could remain stale after the body was ready, oversized back/close icons, short conversations anchored too low, and a pricing footer that did not fit the screen.
+
+Final verification: all four isolated simulator scenarios passed on iPhone 17 Pro / iOS 26.5. Result bundles: `/tmp/VoiceCompanion-ExperienceResults/20260927-170751/`. Final Mac compilation and `git diff --check` passed. No paid provider runs or physical-device validation were performed. The delivery gates above remain open.
+
+[Open the screenshot gallery](qa/native-experience/index.html). All images are actual native simulator captures from the final run, including the typed composer with its upright paperclip:
+
+- [Home](qa/native-experience/home.png), [Agent empty](qa/native-experience/agent.png), [Agent during capture](qa/native-experience/agent-capture.png), [typed composer](qa/native-experience/composer-send.png)
+- [Saved notes](qa/native-experience/notes.png), [live transcript](qa/native-experience/live-transcript.png), [search](qa/native-experience/search.png), [attachments](qa/native-experience/attachments.png)
+- [Account](qa/native-experience/account.png), [sign-up preview](qa/native-experience/signup.png), [pricing preview](qa/native-experience/pricing.png)
+
+These are close native adaptations, not pixel-identical reproductions. The simulator's status bar and iOS sheet chrome differ; content length and source links affect note height. The Agent capture test intentionally includes source-debug output and a partial-context retrieval notice; the live transcript uses synthetic stress text. Account, authentication and billing have explicit unconnected-service states instead of simulated signed-in or paid behavior. No physical-phone acceptance or Mac UI behavioral pass is implied.

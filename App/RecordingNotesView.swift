@@ -5,6 +5,7 @@ struct RecordingNotesView: View {
     let attachment: CompanionAttachment
     let configuration: () throws -> RelayConfiguration
     let onPassage: (String) -> Void
+    var onTitle: (String) -> Void = { _ in }
     @State private var result: RecordingNotesResult?
     @State private var loading = true
     @State private var unavailable = false
@@ -15,13 +16,17 @@ struct RecordingNotesView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             if let result, result.state == "ready", let notes = result.notes {
-                Text(notes.title).font(.title2.bold()).accessibilityIdentifier("notesTitle")
                 if result.incomplete { Text("Notes from an incomplete recording").font(.caption) }
+                VStack(alignment: .leading, spacing: 16) {
+                Text("Overview").font(.system(.title2, design: .serif, weight: .bold))
                 bullet(notes.overview)
                 ForEach(Array(notes.sections.enumerated()), id: \.offset) { _, section in
+                    Divider().padding(.vertical, 3)
                     Text(section.heading).font(.headline)
                     ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in bullet(item) }
                 }
+                }.padding(18).frame(maxWidth: .infinity, alignment: .leading).experienceCard(radius: 15)
+                Label("Notes ready", systemImage: "checkmark").font(.callout).foregroundStyle(.green)
                 Text("Generated from this transcript. Check the supporting passages for details.").font(.caption).foregroundStyle(ExperienceStyle.secondary)
             } else if loading {
                 ExperienceThinkingStatus(label: "Preparing notes…").accessibilityIdentifier("notesLoading")
@@ -45,7 +50,7 @@ struct RecordingNotesView: View {
                     let value = try await connection.read(attachment, retry: shouldRetry && poll == 0)
                     try Task.checkCancellation()
                     result = value
-                    if value?.state == "ready" { return }
+                    if value?.state == "ready" { if let title = value?.notes?.title { onTitle(title) }; return }
                     if value?.state != "pending" && value?.state != "generating" { return }
                     if poll < 9 { try await Task.sleep(for: .seconds(2)) }
                 }
@@ -68,19 +73,16 @@ struct RecordingNotesView: View {
         }
     }
     private func bullet(_ item: RecordingNotes.Bullet) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(item.text).textSelection(.enabled).accessibilityIdentifier("notesText")
-            ScrollView(.horizontal) { HStack {
-                ForEach(item.passages, id: \.self) { passage in
-                    Button { onPassage(passage) } label: {
-                        HStack(spacing: 5) { ExperienceSymbol(name: "doc.text").frame(width: 12, height: 14); Text("Passage \(passage.dropFirst())") }
-                            .font(.caption).padding(.horizontal, 10).padding(.vertical, 7)
-                            .background(ExperienceStyle.surface, in: Capsule())
-                    }.frame(minHeight: 44).accessibilityIdentifier("notesPassage")
-                }
-            } }
+        HStack(alignment: .top, spacing: 6) {
+            Text(item.text).textSelection(.enabled).accessibilityIdentifier("notesText").frame(maxWidth: .infinity, alignment: .leading)
+            ForEach(item.passages, id: \.self) { passage in
+                Button { onPassage(passage) } label: {
+                    ExperienceSymbol(name: "doc.text").frame(width: 12, height: 14).foregroundStyle(ExperienceStyle.secondary).frame(width: 44, height: 44)
+                }.accessibilityLabel("Supporting passage \(passage.dropFirst())").accessibilityIdentifier("notesPassage")
+            }
         }
     }
+
 }
 
 /// A library read never schedules generation; fallback remains usable offline.

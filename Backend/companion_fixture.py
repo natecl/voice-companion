@@ -44,7 +44,10 @@ async def main(directory):
                 ('Design review', 'Keep capture simple and chat close by.'),
             ]:
                 if summary in json.dumps(request):
-                    return dict(data=dict(title=title,overview=dict(text=summary,passages=['p1']),sections=[]),usage={})
+                    sections = []
+                    if title == 'Product planning':
+                        sections = [dict(heading='Agreed next steps', items=[dict(text='Put together a first version.', passages=['p1']), dict(text='Compare feedback on Friday.', passages=['p1'])]), dict(heading='Still to clarify', items=[dict(text='Who will invite the participants?', passages=['p1'])])]
+                    return dict(data=dict(title=title,overview=dict(text=summary,passages=['p1']),sections=sections),usage={})
             return dict(data=dict(title='Maya’s swimming',overview=dict(text='Maya enjoys swimming.',passages=['p1']),sections=[]),usage={})
         notes_service=NotesService(ledger,store)
         worker=NotesWorker(NotesGenerator(store,note_provider,FixtureBudget()),ledger)
