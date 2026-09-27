@@ -60,3 +60,7 @@ Voice recognition/enrollment; silent continuous recording; proactive spoken part
 ## Keep context useful
 
 Update the affected feature entry when a checkpoint changes behavior, module ownership, a cross-feature contract, verification evidence or a material limitation. Add a lesson only when a failure or decision changes how future work should be done: trigger → cause → guard → evidence. Link evidence instead of copying logs, mutable budget balances, transcripts or secrets. Retain failed evidence, mark superseded guidance, and avoid duplicating canonical policy. No runtime/provider testing is warranted for map-only edits; verify paths, links and factual alignment with code.
+
+## Current simplification work
+
+[Simple memory foundation](../simple-memory-foundation.md) tracks the authorized learning-and-recall consolidation. The first checkpoint extracts `memory_source_pipeline.SourceVerifier` from reconciliation with exact-response replay evidence; it does not change hosted behavior or establish that the simpler memory system is finished.
