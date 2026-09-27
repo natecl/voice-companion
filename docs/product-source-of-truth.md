@@ -118,3 +118,10 @@ After the bounded Jev classifier screen, the founder chose to keep the pre-retri
 ## Private composer dictation — September 27, 2026
 
 Founder decision: speech addressed to the companion through composer dictation is separate from meeting capture. Pause meeting audio while dictation captures speech, visibly explain the pause, and resume automatically when dictation stops. Other people speaking during that interval are also omitted; no voice identification or simultaneous-speaker separation is claimed. Typed chat and waiting for the companion answer do not pause capture. Dictated questions must not enter the meeting transcript or derived notes through the recording path. They remain ordinary chat when explicitly sent.
+
+
+## Experience and visual direction — September 27, 2026
+
+Founder decision: make the ICP's intended actions and desired feelings explicit throughout design and implementation. Continue serving the curious, ambitious, AI-comfortable person who thinks aloud across everyday life. The approved Home visual is the shared reference for all screens; actively consult Libraries.dev when developing useful interaction feedback. See [engineering guidance](engineering-principles.md#experience-led-ui-implementation--september-27-2026).
+
+Working experience targets, to validate rather than assert as research findings: feel present in the real conversation, confident capture is working, in control of starting/stopping, understood when turning to the Agent, and able to return to what mattered. Make the next touch and its result clear, especially during capture and while the keyboard is open. Visual polish should reinforce those outcomes. The exact one-liner and Proven, Better, New remain unchanged.
