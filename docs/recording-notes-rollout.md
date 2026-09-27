@@ -1,6 +1,6 @@
 # Recording notes — internal rollout
 
-Status: deployed and installed September 26, 2026 (September 27 UTC). Physical-iPhone acceptance is pending explicit founder readiness. This is not a public launch or a claim of complete notes acceptance.
+Status: deployed and installed September 26, 2026 (September 27 UTC). The bounded physical-iPhone acceptance check has passed. This completes the approved after-recording notes slice; it is not a public launch or a general summary-accuracy guarantee.
 
 The founder approved deployment of the verified notes checkpoint and up to $0.05 for at most two notes-generation calls inside the unchanged $5 global cap. The exhausted six-call generation QA allowance remains separate. No Render upgrade or permanent quota increase was authorized or performed.
 
@@ -18,15 +18,19 @@ Consistent pre-migration backup: `/var/data/voice-companion/notes-approved-0gwtq
 
 New subledger: `/var/data/voice-companion/notes-budget.sqlite`, approval `recording-notes-rollout-20260927-005`. It contains a $0.05 cap and a two-call maximum; each call reserves $0.025 without refunding uncertain attempts. The allocation is funded from unused STT-category headroom and marked as an allocation, so it does not count as a recording attempt. It is not permission to run additional STT or another model. Global reservations rose exactly $0.05, from $4.736868 to $4.786868 of $5. Notes attempts remain zero. These are conservative reservations, not invoice costs.
 
-Post-deploy checks: `/health` ready; notes, memory learning and indexing idle without reported failures; runtime process has notes flag `1`; unauthenticated `/notes` WebSocket access returns 401 without invoking a model. Authenticated notes delivery through the physical app remains part of the pending end-to-end check. Existing daily limits have headroom for the intended single recording; no temporary grant was needed. Existing learning/Ask allocations remain unchanged.
+Post-deploy checks: `/health` ready; notes, memory learning and indexing idle without reported failures; runtime process has notes flag `1`; unauthenticated `/notes` WebSocket access returns 401 without invoking a model. Authenticated notes delivery through the physical app was subsequently verified in the check below. Existing daily limits have headroom for the intended single recording; no temporary grant was needed. Existing learning/Ask allocations remain unchanged.
 
 Private local receipts are under ignored `work/notes-rollout/`: backup/provision, deploy metadata, verification, quota, auth guard, signed build and install logs. No new provider call or private transcript export was used for rollout verification.
 
-## Pending physical check
+## Physical acceptance — passed
 
-After the founder explicitly says ready, open the updated app and make one short recording with a clear fact plus a tentative plan. Stop and wait for Notes, inspect the generated content, tap its supporting passage, then close/reopen the app and revisit the same notes. Use the same source for debugging and UI checks. A second generation call is available only if it provides necessary unresolved evidence; no automatic paid retry.
+The founder explicitly indicated readiness, recorded the short synthetic Project Willow statement on the physical iPhone, stopped, and reported that notes appeared. After the founder locked the phone for mirroring, the agent directly inspected the rendered app through iPhone Mirroring. The note title was “Project Willow Community Garden Meetup”; the overview correctly preserved the Saturday/community-garden fact and the uncertainty that bringing snacks was undecided. Passage 1 opened the exact original transcript, including “I might bring snacks, but I haven't decided yet,” at 0.9 seconds.
 
-Record the founder-observed behavior together with notes state, revision, reservation and saved payload verification before declaring the slice complete. If access/permission or allowance blocks this check, stop and wait as required by the engineering principles.
+The app was then terminated and launched through the paired-device developer lifecycle commands. The agent reopened Recordings through mirroring, observed the generated library title, reopened the recording, and directly verified the same notes. Mirroring's app-switcher dismissal gesture had not closed the app; the explicit terminate/launch receipts establish the actual process restart. No new recording, retry, Ask or notes generation was requested during reopening.
+
+Read-only backend evidence confirms source revision 1 completed, notes ready at the same revision, and valid passage references. Exactly one notes attempt completed with 567 input tokens and 50 output tokens, zero reasoning tokens, and a $0.025 conservative reservation. One of the two approved notes calls remains unused. The notes payload, source and attempt record were unchanged after reopening. Global reservations are $4.806868/$5 (including the new recording reservation); this is not invoiced cost. The earlier generation QA ledger remains exhausted and separate.
+
+Receipts: ignored `work/notes-rollout/qa-receipt.json`, `qa-after-reopen.json`, `qa-terminate.json`, and `qa-relaunch.json`; direct mirroring observations are in the task tool history. This exercises physical microphone → real provider transcript → hosted Luna notes → native supporting passage → process restart → saved notes. The five-case generation screen and local failure/owner/revision/deletion tests remain complementary evidence; one phone recording does not establish accuracy for all conversations. Notes still require server connectivity to reopen. No additional model call is needed for this checkpoint.
 
 ## Recovery
 

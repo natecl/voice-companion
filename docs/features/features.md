@@ -113,7 +113,7 @@ Use the [index and authority rules](README.md) first. Paths below are repository
 
 ## Transcript-derived recording notes
 
-**Experience:** saved recordings have Notes and Transcript views. Notes contain a source-grounded title, overview and flexible sections; passage links show the original text. Live capture remains transcript-first. Local integration is verified and the [internal rollout](../recording-notes-rollout.md) is deployed; physical acceptance remains a separate gate.
+**Experience:** saved recordings have Notes and Transcript views. Notes contain a source-grounded title, overview and flexible sections; passage links show the original text. Live capture remains transcript-first. Local integration is verified and the [internal rollout](../recording-notes-rollout.md) is deployed; the bounded physical-iPhone capture/notes/passage/reopen check has passed.
 
 **Code:** `Backend/recording_notes.py` owns revision-bound storage; `MemoryStore.put_source(generate_notes=True)` atomically schedules new terminal recording sources. `notes_generation.py` owns the transcript-only Luna request and validation; `notes_service.py` owns authenticated reads/retries and the serial worker; `notes_budget.py` checks separately funded reservations. `App/Sessions/RecordingNotes.swift` owns bounded socket reads; `App/RecordingNotesView.swift` and `CompanionRootView.swift` present notes and navigate supporting passages.
 
