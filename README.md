@@ -16,7 +16,7 @@ An iPhone-first companion for everyday conversations, with Mac support. Working 
 
 Start with the [feature map](docs/features/README.md) to locate implemented behavior, code boundaries, targeted QA and [learned lessons](docs/features/lessons.md). It is a navigation aid; the canonical product and engineering documents retain authority.
 
-The next authorized slice is [transcript-derived notes](docs/recording-notes-plan.md). Its storage and bounded generation are verified; service/native integration is verified locally, with hosted rollout and physical-device acceptance still pending.
+The next authorized slice is [transcript-derived notes](docs/recording-notes-plan.md). Its storage and bounded generation are verified; service/native integration is verified locally. The [internal rollout](docs/recording-notes-rollout.md) is deployed with the matching iPhone app installed; physical-device acceptance is pending readiness.
 
 ## Knowledge documents
 
