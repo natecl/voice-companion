@@ -1,6 +1,6 @@
 # Current product, implementation and research knowledge
 
-Updated after final PR 99 acceptance on September 27, 2026. The verified native candidate is installed; the service is at budget-only rollout `5a4790e` (PR 101) and still uses personality v2. PR 99's v3 prompt is verified but not internally deployed. See [checkpoint evidence](companion-feel-and-dictation.md) and the [feature map](features/README.md).
+Updated after PR 99 merge and authorized internal rollout on September 27, 2026. The verified native candidate is installed; Render is live at `26023ea` with personality v3. Backup, prompt selection, database preservation, health and unchanged usage are verified in [checkpoint and rollout evidence](companion-feel-and-dictation.md).
 
 The [product source of truth](product-source-of-truth.md) and [engineering principles](engineering-principles.md) are canonical. This brief consolidates their current application; it is not a replacement specification. Earlier plans and failed experiments remain evidence, not current requirements.
 
@@ -28,10 +28,10 @@ Two actions: **Capture meeting note** and **Talk to companion**. Voice notes and
 | Automatic memory, personal context, correction and deletion retention | Internally delivered with bounded verification; unknown speakers stay unknown | [Retention rollout](retained-memory-rollout.md), [verification](verification-rollout.md) |
 | Simpler unified memory | Internally deployed at `145f4c8`; schema 18, preserved old rows and ledgers, authenticated reads checked | [Foundation](simple-memory-foundation.md), [rollout](simple-memory-rollout.md); no new physical acceptance claimed by that rollout |
 | Composer dictation | PR 99 bounded native acceptance complete; candidate installed on physical iPhone | [Input and feel](companion-feel-and-dictation.md); first physical attempt exposed an authorization-callback actor crash; repaired with background-callback regressions, subsequent Stop loss repaired; founder confirmed physical Stop/edit and Clear draft on `da0f39a`; subsequent permission/background-interruption, explicit Send and private capture-pause/resume checks passed (details and evidence limits in the linked acceptance) |
-| v3 personality and plain-message chat | PR 99 candidate; ten live synthetic Luna responses reviewed; local presentation QA passed | [Results](companion-feel-and-dictation.md#approved-ten-response-personality-check); v2 remains last deployed prompt; one response sounded too therapeutic |
+| v3 personality and plain-message chat | PR 99 candidate; ten live synthetic Luna responses reviewed; local presentation QA passed | [Results](companion-feel-and-dictation.md#approved-ten-response-personality-check); v3 is internally deployed; one response sounded too therapeutic |
 | Jev pre-retrieval classifier | Evaluated, never wired into production; founder explicitly left it disabled | [Screen](memory-gate-screen.md); useful classification does not establish net efficiency |
 
-PR 99 completed its bounded acceptance and final review. The signed native candidate is installed. Backend prompt v3 rollout remains separate; no public-release readiness claim follows from these checkpoints.
+PR 99 completed its bounded acceptance and final review. The signed native candidate is installed. Backend prompt v3 is now internally deployed; no public-release readiness claim follows from these checkpoints.
 
 ## Current memory harness
 
@@ -107,9 +107,7 @@ Spending permission, runtime/daily quotas, deployment approval and physical read
 
 ## Remaining narrow-release work
 
-1. Complete the reviewed PR 99 merge and keep its evidence linked; no further paid transcription run is needed for accepted paths.
-2. Separately authorize and perform backend v3 personality rollout; the native candidate already hides visible chat sources.
-3. Continue product UX work on the agreed narrow foundation. Public distribution, onboarding/account/subscription operations and broader release acceptance remain separate from internal feature completion.
+PR 99 is merged and personality v3 is internally deployed. No further paid transcription run is needed for accepted paths. Continue product UX work on the agreed narrow foundation. Public distribution, onboarding/account/subscription operations and broader release acceptance remain separate from internal feature completion.
 
 Deferred: TTS, proactive participation, silently always-on capture, Mac system audio, voiceprints, manual speaker labeling, side chats, note editing, full cross-device recording-library sync, autonomous tools and explicit memory-management UX. A mascot or self-editing SOUL/MEMORY files are not an agreed implementation requirement. No additional research or feature is automatically authorized by being listed here.
 

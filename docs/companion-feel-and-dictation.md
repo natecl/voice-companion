@@ -2,7 +2,7 @@
 
 Founder decision, September 26: spoken replies/TTS are outside the first release. Add voice dictation to the text composer; voice recognition/enrollment and manual voice-note labeling remain deferred. Keep the existing transcript → notes → contextual companion foundation.
 
-Current status: [PR 99](https://github.com/natecl/voice-companion/pull/99) has completed its bounded local and physical-iPhone acceptance and final review. The verified native candidate is installed internally; backend v3 personality rollout remains separate (the service still uses v2). Historical pending/failure sections below are superseded by the final acceptance section. The experimental past-memory gate remains disabled.
+Current status: [PR 99](https://github.com/natecl/voice-companion/pull/99) is merged, bounded acceptance is complete, the native candidate is installed, and backend v3 personality is internally deployed at `26023ea`. Historical pending/failure sections below are superseded by final acceptance and rollout evidence. The experimental past-memory gate remains disabled.
 
 ## Composer contract
 
@@ -207,3 +207,12 @@ Acceptance now includes real Stop/edit/Clear, explicit Send with saved answer, p
 Final review at `c2eed24`: reviewed recognition callback isolation, completion/cancellation, shared routing, UI send guards, hidden presentation versus stored provenance, v3 instructions and preserved synthetic provider receipts. A focused post-integration run passed 19 native callback/composer/routing/message tests and 25 backend companion/budget/admission tests. Existing two Mac UI/local-socket checks and signed device build remain applicable; no runtime code changed during final review. Main has no required status checks configured; no protection was bypassed. Paid QA was not repeated.
 
 The bounded checkpoint is accepted for merge. Native candidate is installed; backend v3 prompt deployment still requires its separate rollout. Known limits: on-device language availability, other speakers omitted during dictation, provider silence still consumes streaming time, best-effort identity, five-minute internal recording cap, and a bounded personality screen rather than a general behavior guarantee. No public release is claimed.
+
+
+## Authorized v3 personality rollout — September 27
+
+Founder explicitly authorized deployment after checkpoint merge. Render deployed `26023ea462b3e9bacadba8ce63a62a94d13fb6d4` in deployment `dep-das9ng0jo6nc73arhbvg` on the existing service/tier. No environment flags, quotas or credentials changed. The matching native candidate was already installed.
+
+Before deployment, backed up 20 SQLite databases with integrity checks and a SHA-256 manifest. After deployment, verified exact Git revision, `ask.instructions` selecting the v3 companion prompt, model `gpt-6-luna`, ready health and idle notes/learning/indexing workers without reported failures. Every table in all backed-up databases retained identical rows and passed integrity checks. Runtime cap remains 5,050,000 microUSD; reserved usage remains 5,027,868, with zero active calls. No provider request or paid retry was made by this rollout. Detailed operator receipts remain in ignored `work/personality-rollout/`.
+
+Behavioral prompt evidence remains the previously approved ten-response screen plus local contracts; deployment verification did not perform a new live conversational quality evaluation. Rollback target is prior verified `5a4790e`, which supports the current budget schema and restores v2 without resetting data or ledgers. This is internal rollout, not public release.
