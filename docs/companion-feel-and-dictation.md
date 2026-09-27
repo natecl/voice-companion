@@ -2,7 +2,7 @@
 
 Founder decision, September 26: spoken replies/TTS are outside the first release. Add voice dictation to the text composer; voice recognition/enrollment and manual voice-note labeling remain deferred. Keep the existing transcript → notes → contextual companion foundation.
 
-Current status: draft [PR 99](https://github.com/natecl/voice-companion/pull/99), not deployed or merge-complete. Local native/controller/UI checks and the ten-response v3 personality screen are complete. Real physical-iPhone dictation, permissions and simultaneous capture remain pending founder readiness. The experimental past-memory gate is disabled. Earlier proposed QA sections below preserve checkpoint history.
+Current status: [PR 99](https://github.com/natecl/voice-companion/pull/99) has completed its bounded local and physical-iPhone acceptance and final review. The verified native candidate is installed internally; backend v3 personality rollout remains separate (the service still uses v2). Historical pending/failure sections below are superseded by the final acceptance section. The experimental past-memory gate remains disabled.
 
 ## Composer contract
 
@@ -196,3 +196,14 @@ Founder follow-up: the meeting-paused indicator appeared during dictation. Combi
 Founder confirmed on the installed candidate: after dictating “Keep this in my draft,” going Home during active dictation, and reopening the app, the notice said “Dictation stopped. Captured text is in your draft.” The founder explicitly confirmed both that the words remained visible/editable and that nothing was sent. This passes the bounded background interruption check, with founder-observed evidence. No meeting capture or paid provider call was requested.
 
 iPhone Mirroring could not start this microphone check: the OS displayed “iPhone microphone is not available from Mac.” Mirroring remains useful for inspecting saved results; actual microphone QA must run directly on the phone. Permission-denied UX and final checkpoint review remain outstanding.
+
+
+## Final bounded checkpoint acceptance — September 27
+
+Permission-denied physical check: with Speech Recognition disabled and an initially empty composer, tapping Dictate displayed the microphone/speech-access explanation without crashing. The founder restored permission. Existing-draft preservation was not exercised in that physical check; `testDeniedPermissionKeepsExistingDraftAndDoesNotSend` covers it locally. No repeated device run is required for that already isolated state contract.
+
+Acceptance now includes real Stop/edit/Clear, explicit Send with saved answer, private dictation exclusion from transcript and notes, visible meeting pause and resumed capture, background interruption preserving an editable unsent draft, and permission-denied explanation without crash. Evidence sources are explicitly distinguished above. Hardware call-interruption propagation has shared-feed regression coverage; this checkpoint does not claim a new physical incoming-call dictation test or on-device Mac speech QA.
+
+Final review at `c2eed24`: reviewed recognition callback isolation, completion/cancellation, shared routing, UI send guards, hidden presentation versus stored provenance, v3 instructions and preserved synthetic provider receipts. A focused post-integration run passed 19 native callback/composer/routing/message tests and 25 backend companion/budget/admission tests. Existing two Mac UI/local-socket checks and signed device build remain applicable; no runtime code changed during final review. Main has no required status checks configured; no protection was bypassed. Paid QA was not repeated.
+
+The bounded checkpoint is accepted for merge. Native candidate is installed; backend v3 prompt deployment still requires its separate rollout. Known limits: on-device language availability, other speakers omitted during dictation, provider silence still consumes streaming time, best-effort identity, five-minute internal recording cap, and a bounded personality screen rather than a general behavior guarantee. No public release is claimed.

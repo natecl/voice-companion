@@ -22,7 +22,7 @@ Canonical product/engineering documents retain authority. Maps describe verified
 | Transcript-derived notes | Internally deployed; local native and bounded physical-iPhone QA pass | [Notes plan](../recording-notes-plan.md) |
 | Recording library and evidence sync | Local saved transcripts; backend evidence outbox, not full cross-device library sync | [Library](features.md#recording-library-and-evidence-sync) |
 | Persistent companion chat | One main chat; ordinary conversation and contextual questions; v3 personality/plain-message candidate pending rollout | [Companion](features.md#companion-chat-and-source-navigation) |
-| Composer dictation | Local candidate; physical speech/permission/coexistence QA pending | [Dictation](features.md#composer-dictation-candidate-not-yet-accepted) |
+| Composer dictation | Bounded physical acceptance passed; native candidate installed | [Dictation](features.md#composer-dictation-candidate-not-yet-accepted) |
 | Automatic learning | Source-scoped background extraction, independent verification, atomic writes | [Learning](features.md#automatic-memory-learning) |
 | Personal context and identity | Whole-life facts/relationships with provenance; no voice enrollment | [Identity](features.md#personal-context-and-identity) |
 | Corrections, time and maintenance | Qualified lifecycle and bounded expiry; source-scoped additions; no memory-management UI | [Lifecycle](features.md#corrections-time-and-maintenance) |
@@ -67,4 +67,4 @@ Update the affected feature entry when a checkpoint changes behavior, module own
 
 ## Current consolidation and follow-up
 
-The [simpler memory foundation](../simple-memory-foundation.md) completed its bounded learning/recall checkpoints and [internal rollout](../simple-memory-rollout.md). It reuses existing provenance/lifecycle tables; it is not a new notes-only store or removal of every legacy adapter. Current follow-up is [dictation and companion feel](../companion-feel-and-dictation.md), with physical-iPhone acceptance still pending. The [Jev gate experiment](../memory-gate-screen.md) is disabled by founder decision.
+The [simpler memory foundation](../simple-memory-foundation.md) completed its bounded learning/recall checkpoints and [internal rollout](../simple-memory-rollout.md). It reuses existing provenance/lifecycle tables; it is not a new notes-only store or removal of every legacy adapter. Current follow-up is [dictation and companion feel](../companion-feel-and-dictation.md), with bounded physical-iPhone acceptance complete and backend v3 rollout still separate. The [Jev gate experiment](../memory-gate-screen.md) is disabled by founder decision.

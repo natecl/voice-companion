@@ -6,7 +6,7 @@ An iPhone-first companion for everyday conversations, with Mac support. Working 
 
 ## Current knowledge and delivery status
 
-Start with the [current product and implementation brief](docs/current-state.md) for decisions, model roles, deployed versus candidate behavior, research outcomes and remaining gates. The [feature map](docs/features/README.md) connects those decisions to code and targeted QA. PR 99 remains a draft: composer dictation and the new plain-message/personality experience are locally implemented but not deployed; physical-iPhone dictation QA is pending. The experimental Jev retrieval gate remains disabled.
+Start with the [current product and implementation brief](docs/current-state.md) for decisions, model roles, deployed versus candidate behavior, research outcomes and remaining gates. The [feature map](docs/features/README.md) connects those decisions to code and targeted QA. PR 99 has completed bounded acceptance and final review: the native dictation/plain-message candidate is installed internally, while backend v3 personality rollout remains separate. The experimental Jev retrieval gate remains disabled.
 
 ## Product source of truth
 
