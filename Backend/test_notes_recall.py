@@ -77,7 +77,7 @@ class NotesRecallTests(test_indexed_recall.IndexedRecallTests):
         from hosted import notes_recall_setting
         self.assertFalse(notes_recall_setting({}))
         with self.assertRaises(ValueError):notes_recall_setting({'VOICE_ENABLE_NOTES_RECALL':'1'})
-        env={key:'1' for key in ('VOICE_ENABLE_NOTES_RECALL','VOICE_ENABLE_RECORDING_NOTES','VOICE_ENABLE_MEMORY_REWORK','VOICE_ENABLE_MEMORY_RECALL')}
+        env={key:'1' for key in ('VOICE_ENABLE_NOTES_RECALL','VOICE_ENABLE_RECORDING_NOTES','VOICE_ENABLE_MEMORY_REWORK','VOICE_ENABLE_MEMORY_RECALL','VOICE_ENABLE_INDEPENDENT_VERIFICATION')}
         self.assertTrue(notes_recall_setting(env))
 
 

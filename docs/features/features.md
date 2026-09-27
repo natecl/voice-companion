@@ -124,3 +124,7 @@ Use the [index and authority rules](README.md) first. Paths below are repository
 ### Notes-first recall candidate
 
 The optional `VOICE_ENABLE_NOTES_RECALL` route selects `Backend/notes_recall.py` in place of indexed recall. The revised candidate fuses and deduplicates original evidence from notes, transcripts, supported personal references and retained knowledge, with one Jev ranking call and an independent two-excerpt reserve. Ten reviewed cases and exact replay pass; disabled and not deployed. Current background learning/lifecycle remain shared, so this is not completed removal of the old harness. [Evidence and limits](../simple-memory-foundation.md#approved-checkpoint-2-qa-result).
+
+### Simplified learning policy
+
+The disabled unified-memory switch now selects source-scoped learning as well as unified recall. Compatible additions remain separately sourced; independent relationship checks still detect corrections the extractor missed, and non-additions retain identity/applicability/atomic correction guards. The existing derived store is reused. Provider/replay, deletion-retention and local hosted integration evidence are in the [simple-memory checkpoint](../simple-memory-foundation.md#checkpoint-3-verified-result-and-rollout-boundary). Internal rollout remains pending.

@@ -70,3 +70,16 @@ class SourceScopedTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotEqual(rows[0]['entity_id'],rows[1]['entity_id'])
         with self.store.connect() as db:
             self.assertEqual(db.execute('SELECT count(*) FROM memory_correction').fetchone()[0],0)
+
+    def test_hosted_policy_selects_verified_writer_and_keeps_baseline(self):
+        from hosted import build_rework_writer
+        for enabled in (False,True):
+            writer=build_rework_writer(self.store,self.writer.models,self.writer.budget,
+                unified=enabled,independent_verification=True)
+            self.assertEqual(writer.source_scoped,enabled)
+            self.assertEqual(writer.semantic_boundaries,not enabled)
+            self.assertEqual(writer.consolidation,not enabled)
+            self.assertTrue(writer.chunking and writer.expiry and writer.independent_source_verification)
+        with self.assertRaises(ValueError):
+            build_rework_writer(self.store,self.writer.models,self.writer.budget,
+                unified=True,independent_verification=False)

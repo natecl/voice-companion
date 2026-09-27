@@ -53,10 +53,19 @@ def notes_setting(env):
 
 def notes_recall_setting(env):
     value=env.get('VOICE_ENABLE_NOTES_RECALL','0')
-    required=('VOICE_ENABLE_RECORDING_NOTES','VOICE_ENABLE_MEMORY_REWORK','VOICE_ENABLE_MEMORY_RECALL')
+    required=('VOICE_ENABLE_RECORDING_NOTES','VOICE_ENABLE_MEMORY_REWORK','VOICE_ENABLE_MEMORY_RECALL','VOICE_ENABLE_INDEPENDENT_VERIFICATION')
     if value not in ('0','1') or (value=='1' and any(env.get(key)!='1' for key in required)):
-        raise ValueError('Notes recall requires notes, memory rework and recall')
+        raise ValueError('Unified memory requires notes, memory rework, recall and independent verification')
     return value=='1'
+
+
+def build_rework_writer(store,models,budget,*,unified,independent_verification):
+    from memory_evidence_writer import EvidenceWriter
+    if unified and not independent_verification:
+        raise ValueError('Unified memory requires independent source verification')
+    return EvidenceWriter(store,models,budget,chunking=True,
+        semantic_boundaries=not unified,expiry=True,consolidation=not unified,
+        independent_source_verification=independent_verification,source_scoped=unified)
 
 
 def validate_rework_allocations(admission, *, rollout=False, verification=False):
@@ -162,9 +171,8 @@ async def main():
                 models = MemoryModels(answer_key, os.environ['TYPESAFE_API_KEY'])
                 if learning_enabled:
                     if rework_enabled:
-                        from memory_evidence_writer import EvidenceWriter
-                        writer=EvidenceWriter(memory_store,models,budget,chunking=True,semantic_boundaries=True,
-                            expiry=True,consolidation=True,independent_source_verification=independent_verification)
+                        writer=build_rework_writer(memory_store,models,budget,
+                            unified=notes_recall_enabled,independent_verification=independent_verification)
                     else:writer = MemoryWriter(memory_store, models, budget)
                     learning_worker = MemoryWorker(writer, store)
 
