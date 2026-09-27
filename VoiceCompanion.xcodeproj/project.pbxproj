@@ -89,6 +89,7 @@
 		C0900437C9093529042C47AD /* RecordingNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49FE797E23357C5FA4D3D04 /* RecordingNotesView.swift */; };
 		C10893291412E8A3EA454659 /* DictationRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6172DF9BAB6444CEE3A4A1B /* DictationRecognizer.swift */; };
 		C6134A9D853871047550EFB6 /* AudioCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB02BC305BA1F675947256B /* AudioCapture.swift */; };
+		C708ABB34A1C309F2EF1D040 /* DictationCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27B0813F66346BF740B28AE /* DictationCallbackTests.swift */; };
 		C8B6EFC94F62E77302795F69 /* SessionController+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220AAC839C8995F4A61DD83B /* SessionController+App.swift */; };
 		C9F627FE87BE3C93F4B9B15B /* AskUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA776C591198A3D1403607CE /* AskUITests.swift */; };
 		CA45619E139BC346728FF250 /* SessionController+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220AAC839C8995F4A61DD83B /* SessionController+App.swift */; };
@@ -163,6 +164,7 @@
 		978F772CA247BC66605A1D33 /* CompanionConnectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionConnectionTests.swift; sourceTree = "<group>"; };
 		979EE57CF1979CC0F0EEF8A0 /* CompanionMessageText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionMessageText.swift; sourceTree = "<group>"; };
 		9C4855C4A183DFEC64AE93D8 /* MacUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A27B0813F66346BF740B28AE /* DictationCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictationCallbackTests.swift; sourceTree = "<group>"; };
 		A918307E479F9BA8A830B982 /* MemoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryTests.swift; sourceTree = "<group>"; };
 		A99563154DEC736333441A95 /* CompanionRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionRootView.swift; sourceTree = "<group>"; };
 		B2CDFE903F387C5D9A9995AB /* ConversationAnswerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationAnswerTests.swift; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 				BDE5D916C772B85F0A028924 /* CompanionMessageTextTests.swift */,
 				FB896610CA7C35AA4B7618D7 /* ComposerDictationTests.swift */,
 				B2CDFE903F387C5D9A9995AB /* ConversationAnswerTests.swift */,
+				A27B0813F66346BF740B28AE /* DictationCallbackTests.swift */,
 				91AC2A636ABED7261B92DF00 /* LiveAskTests.swift */,
 				A918307E479F9BA8A830B982 /* MemoryTests.swift */,
 				EB9EC7C7D2F4D7A26C239554 /* RecordingLifecycleTests.swift */,
@@ -546,6 +549,7 @@
 				DA748D84B8051DB984056BCE /* ComposerDictationTests.swift in Sources */,
 				F6AF624940EE5A378DD8AC7B /* ConversationAnswer.swift in Sources */,
 				F9B6B6930B11FA2766490C9D /* ConversationAnswerTests.swift in Sources */,
+				C708ABB34A1C309F2EF1D040 /* DictationCallbackTests.swift in Sources */,
 				5156B4BA3496FC0F5762C29E /* DictationRecognizer.swift in Sources */,
 				03FBD8055C7542F1C44E9E3E /* LiveAskTests.swift in Sources */,
 				014DA8AD8ABFB0A3B026AFAC /* LiveTranscriber.swift in Sources */,

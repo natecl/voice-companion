@@ -124,3 +124,11 @@ There is no explicit normal-chat/brainstorm/retrieval classifier or mode switch.
 The founder-approved [sixteen-case Jev screen](memory-gate-screen.md) retained all useful/ambiguous cases under a conservative threshold and skipped seven self-contained cases. It added 174 ms median provider latency; net cost/latency savings remain unproven. No production routing change.
 
 Founder decision after the screen: keep the experimental retrieval gate disabled. Ordinary memory retrieval and Jev evidence ranking remain unchanged. The isolated evaluation is retained for reference only.
+
+## Physical dictation startup failure and callback repair
+
+The current signed candidate was installed and launched after founder readiness. The founder granted permission, but Dictate crashed on repeated startup. Two copied device crash reports (`VoiceCompanion-2026-09-26-233553.ips` and `...233554.ips`, retained privately under `work/dictation-crash/`) agree: `EXC_BREAKPOINT` / `_dispatch_assert_queue_fail` → Swift actor-isolation check → the speech-authorization closure inside `AppleDictationRecognizer.start()`, on `com.apple.root.default-qos`. This is an app callback-isolation defect, not a denied-permission error or a transcription-provider failure.
+
+Repair: construct authorization and recognition-result callbacks in explicit `nonisolated` factories with `@Sendable` signatures. They only resume/yield through thread-safe continuations; mutable recognizer/capture/UI ownership remains on MainActor. The result callback had the same isolation risk even though the recorded crash occurred earlier at authorization. No permission bypass, cloud fallback or paid call was introduced.
+
+Eleven targeted local tests pass: two actual background-queue callback regressions (authorization allow/deny and recognition error), seven composer lifecycle cases and two shared-microphone cases. These tests do not synthesize Apple's successful recognition result or prove hardware speech recognition. Physical Dictate → Stop → edit acceptance remains failed/pending until a founder-ready retest of the repaired signed build. Preserve these crash reports; earlier synthetic UI passes did not exercise this framework callback.

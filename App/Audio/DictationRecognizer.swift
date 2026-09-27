@@ -43,7 +43,7 @@ final class AppleDictationRecognizer: DictationRecognizing {
         try Task.checkCancellation()
         guard microphone.state == .allowed else { throw DictationFailure.permission }
         let permission = await withCheckedContinuation { continuation in
-            SFSpeechRecognizer.requestAuthorization { continuation.resume(returning: $0) }
+            SFSpeechRecognizer.requestAuthorization(Self.authorizationHandler(continuation))
         }
         try Task.checkCancellation()
         guard permission == .authorized else { throw DictationFailure.permission }
@@ -56,13 +56,7 @@ final class AppleDictationRecognizer: DictationRecognizing {
         request.addsPunctuation = true
         let (stream, continuation) = AsyncThrowingStream<DictationEvent, Error>.makeStream(bufferingPolicy: .bufferingNewest(1))
         self.recognizer = recognizer; self.request = request; self.continuation = continuation
-        recognition = recognizer.recognitionTask(with: request) { result, error in
-            if let result {
-                continuation.yield(DictationEvent(text: result.bestTranscription.formattedString, isFinal: result.isFinal))
-                if result.isFinal { continuation.finish(); return }
-            }
-            if error != nil { continuation.finish(throwing: DictationFailure.interrupted) }
-        }
+        recognition = recognizer.recognitionTask(with: request, resultHandler: Self.resultHandler(continuation))
         do {
             let audio = try capture.start()
             audioTask = Task {
@@ -84,6 +78,26 @@ final class AppleDictationRecognizer: DictationRecognizing {
             }
         } catch { cancel(); throw error }
         return stream
+    }
+
+    // Speech invokes callbacks on framework-owned queues. Construct them outside
+    // MainActor isolation; continuations safely deliver values to the consumer.
+    nonisolated static func authorizationHandler(
+        _ continuation: CheckedContinuation<SFSpeechRecognizerAuthorizationStatus, Never>
+    ) -> @Sendable (SFSpeechRecognizerAuthorizationStatus) -> Void {
+        { status in continuation.resume(returning: status) }
+    }
+
+    nonisolated static func resultHandler(
+        _ continuation: AsyncThrowingStream<DictationEvent, Error>.Continuation
+    ) -> @Sendable (SFSpeechRecognitionResult?, Error?) -> Void {
+        { result, error in
+            if let result {
+                continuation.yield(DictationEvent(text: result.bestTranscription.formattedString, isFinal: result.isFinal))
+                if result.isFinal { continuation.finish(); return }
+            }
+            if error != nil { continuation.finish(throwing: DictationFailure.interrupted) }
+        }
     }
 
     func finish() { capture.stop() } // Drain already captured frames before endAudio.

@@ -84,3 +84,7 @@ The disabled [Jev gate screen](../memory-gate-screen.md) skipped seven self-cont
 ### Documentation has deployment boundaries too
 
 A merged backend, a local candidate, a built simulator target, a signed device build and an installed/physically tested app are different states. Use the [current-state brief](../current-state.md) plus rollout receipts rather than the opening status of a historical plan. Prompt v3 changed request content, so older exact-answer replays cannot silently stand in for its model review. Documentation-only reconciliation needs path/link/contract checks, not another paid provider run.
+
+### Speech framework callbacks must not inherit MainActor
+
+Physical Dictate startup crashed after permission because the Swift closure passed to Apple's authorization API inherited `MainActor` while the framework invoked it on a background queue. Both device reports identify the executor assertion, not a provider failure. Create authorization/result closures at an explicit nonisolated, Sendable boundary and transfer values through continuations; keep mutable app state actor-isolated. Background-queue regression tests cover the actual factories. Mock recognizers never exercised this boundary, so their passing results could not establish physical recognition. See [repair and pending retest](../companion-feel-and-dictation.md#physical-dictation-startup-failure-and-callback-repair).
