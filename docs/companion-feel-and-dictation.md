@@ -116,3 +116,7 @@ This is a bounded prompt smoke check, not a model benchmark or proof that all co
 ## How conversation type is handled
 
 There is no explicit normal-chat/brainstorm/retrieval classifier or mode switch. The existing harness supplies the current message, bounded recent history and optional contextual evidence; Luna interprets the request and composes the response. Modes can mix naturally, such as brainstorming using a remembered preference. When memory is enabled, retrieval can run even for ordinary conversation; Luna is instructed to ignore irrelevant evidence. This is not a model deciding whether to call a retrieval tool. Explicit memory controls and the existing exclusion rules still apply. Jev's current role is evidence ranking, not choosing the conversation's personality or intent. Adding an intent router is not part of this slice and would require measured benefit before extra architecture.
+
+### Optional retrieval-gate screen
+
+The founder-approved [sixteen-case Jev screen](memory-gate-screen.md) retained all useful/ambiguous cases under a conservative threshold and skipped seven self-contained cases. It added 174 ms median provider latency; net cost/latency savings remain unproven. No production routing change.
