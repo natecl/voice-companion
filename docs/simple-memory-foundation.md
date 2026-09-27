@@ -71,3 +71,43 @@ PYTHONPATH=Backend work/semantic-venv/bin/python Backend/evaluate_unified_recall
 ```
 
 Original citations reopened their source passages; retained citations returned `source_unavailable`. The answer context sometimes includes incidental excerpts (e.g. room-layout discussion in the long case). The answers ignored that noise in this sample; no claim of universally better relevance, lower cost, or faster answers is made. Local sockets and non-streaming QA transport do not establish physical-device behavior or production latency. No deployment performed. Learning/storage consolidation remains the next checkpoint.
+
+## Checkpoint 3 candidate: source-scoped learning
+
+Implemented as `EvidenceWriter(source_scoped=True)` using the existing derived-claim store, provenance and atomic correction/deletion machinery. Default remains false; the unified feature switch now selects both this policy and unified recall, but remains off in the deployed service. No schema migration or copied second memory store is needed. The candidate uses deterministic overlapping chunks and does not consolidate duplicate claims across recordings. Compatible additions remain separately sourced observations; only non-addition relationships proceed to cross-source identity checks. Corrections still require independent support, identity, relationship, current-applicability and atomic snapshot checks. Unknown or truncated candidate sets remain conservative.
+
+An attempted optimization that trusted the extractor's change hint failed completed-change regression tests: the independent relationship check can detect corrections extraction missed. That optimization was removed. Do not reintroduce it. The remaining optimization checks semantic relationships before identity and skips identity only for independently accepted compatible additions. Contextual original excerpts remain available for correction identity.
+
+Local verification: 53 source-scoped, original-writer, verification and chunk tests pass. Behavioral guards cover current/historical/future changes, uncertain identity, same-source correction chains, source validity and surviving attribution uncertainty. A mixed-property case proves a swimming correction leaves an unrelated apples preference intact. Supported daughter/colleague reports remain separate without asserting those people are identical. Legacy ordered-call replay tests remain on the old writer; they are not evidence of the new call order.
+
+Actual recording-writer replay consumed ten exact saved responses without new spending, retained the first preference/location, then stopped before a missing exact response for the narrower Luna identity request. This request verifies the library-to-community-center correction, with the unrelated morning preference removed from identity matching. Provider acceptance is pending; no merge or deployment is justified yet.
+
+Concrete QA: `Backend/evaluate_source_verification.py --source-scoped` exercises the writer, correction, persistence, frozen negative verification cases, then recording deletion and retained-memory hydration. Using `/usr/bin/false` as transport forbids paid cache-miss fallback. Proposed approval: repurpose at most $0.05 from the unused $0.115 unified-recall QA allocation, maximum two Luna and two Jev calls, no retries; preserve the $5.55 combined ceiling and runtime quotas. Do not provision or spend the reallocation before approval. Existing extraction/support responses are reused; Sol verification is unchanged.
+
+This simplifies orchestration, not the physical database schema. Historical compatibility code and old hosted defaults remain until replacement acceptance and separately approved rollout. Existing normalized provenance/identity/correction tables stay to preserve their tested guarantees; further table removal is not assumed necessary for the first slice.
+
+## Checkpoint 3 verified result and rollout boundary
+
+The founder approved repurposing $0.05 from unused unified-recall QA, without increasing the $5.55 combined ceiling. The operator reserves that child grant inside the parent ledger before any call, preventing the same allowance from being spent twice. It allows at most two Luna and two Jev calls, with no automatic retries. One new Luna identity call completed, reserving $0.02; fifteen exact responses were reused. These are reservation bounds, not invoices. No new Sol call or runtime quota change occurred.
+
+The actual source-scoped writer retained morning preference and library location, then independently verified and applied the community-center correction. The morning preference remained active, the library claim became superseded, and corrected/original claims shared the verified identity. No recording became an account-owner profile fact. Reopen matched stored results. Named-family and student-continuity support passed; negation, unknown-owner, quoted-person and future-metadata negative gates retained their expected outcomes. Deleting both recordings retained eligible derived knowledge and correction state; hydrated citations explicitly report original source unavailable.
+
+Evidence: `Backend/fixtures/source-scoped-learning/{calls,results,provision,budget}.json`. Exact-response replay passes without network fallback:
+
+```sh
+PYTHONPATH=Backend python3 Backend/evaluate_source_verification.py work/source-scoped-replay-new --transport /usr/bin/false --replay Backend/fixtures/source-scoped-learning/calls.json --source-scoped
+```
+
+Final integration: 87 targeted checks pass, including actual local hosted process startup/history with the unified switch enabled. The switch requires independent source verification and constructs the same writer policy exercised above; the old disabled-switch behavior remains available for rollback. No new public API or app UI is introduced. The one-store approach retains existing provenance/correction tables; it simplifies orchestration without rebuilding or duplicating the database. No broad claim of faster learning or long-recording semantic quality follows from this short fixture.
+
+### Internal rollout proposal (approval pending)
+
+Read-only preflight found deployed schema 17, nine live sources, ten completed/eight obsolete learning jobs, no queued learning jobs, and one ready note. The actual service process has notes, rework, independent verification and retained memory enabled; unified recall remains disabled. SSH shell variables differ from the serving process and must not be used as rollout-state evidence.
+
+1. Confirm the service is idle; make consistent SQLite backups with integrity checks and a manifest. Preserve usage ledgers and existing data.
+2. Deploy the verified merged revision on the existing Render tier/disk, preserving all other configuration. Schema 18 adds the already-tested notes search index; verify old rows and ready-note indexing after migration.
+3. Enable `VOICE_ENABLE_NOTES_RECALL=1` to select unified retrieval and source-scoped learning together. Keep provider budgets, recording/Ask quotas and existing notes-generation limits unchanged; no automatic re-learning/backfill.
+4. Verify health, authenticated history, storage integrity, selected configuration and job state. No new provider spend is authorized by rollout approval. If a paid or founder-assisted check becomes necessary, stop for its specific allowance/readiness.
+5. If rollout fails, turn the unified switch off while keeping schema-18-compatible code. Do not restore stale usage ledgers or roll an old schema-17 binary over the migrated database. Preserve failure evidence. Remove obsolete compatibility code only after the internal rollback boundary and acceptance are established.
+
+The replacement is ready for this controlled rollout; deployment and post-deployment checks are not yet complete.
