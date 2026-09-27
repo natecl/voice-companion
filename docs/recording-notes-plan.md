@@ -63,3 +63,8 @@ Final local native receipts: Mac `work/notes-integration/native-fixed.xcresult` 
 ## Internal rollout status
 
 The founder approved rollout after checkpoint 3. The verified backend is now deployed with the matching iPhone build installed; physical acceptance waits for readiness. See [rollout evidence, budget and pending check](recording-notes-rollout.md). Earlier checkpoint statements describe their state at delivery.
+
+
+## Final bounded acceptance
+
+Checkpoint 4 passed after explicit readiness: the physical iPhone captured the Willow statement, generated correct notes preserving uncertainty, opened the original supporting passage, and reopened the same notes after a process restart. Exactly one approved notes call was used; reopening did not regenerate. See [direct observations and provider/storage evidence](recording-notes-rollout.md#physical-acceptance--passed). The after-recording notes slice is complete within the documented bounds; live summaries, editing and memory consolidation remain outside this slice.
