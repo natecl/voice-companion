@@ -1,0 +1,12 @@
+{
+  "calls": 5,
+  "new_paid_calls": 0,
+  "recorded_reservation_microusd": 30497,
+  "reopened": true,
+  "answers": [
+    "From what I remember, Project Juniper now meets at the community center, not the library. [[p1]]",
+    "I can\u2019t quote the exact words: the recording was deleted, and I only have a retained summary\u2014not a transcript. From what I remember, it said Project Juniper meets at the community center instead of the library. [[p1]]",
+    "No. From what I remember, the statement is about Project Juniper\u2019s preference for morning meetings; it doesn\u2019t establish that you personally prefer them. [[p1]]"
+  ],
+  "manual_semantic_review_required": true
+}
