@@ -73,3 +73,24 @@ Keep our existing storage and source-verification system. Use three logical resp
 The desired distinctive feeling is: **a quietly sharp, attentive companion who remembers what matters and has something useful to say.** This is a proposed refinement of the agreed attentive-friend direction, not a newly approved fictional persona. No autonomous tools, proactive interruptions, evolving self-authored instructions or new memory architecture are implied.
 
 For the next personality checkpoint, separate style guidance from the unchanged evidence/identity contract in our prompt structure, and review a small set of responses: quick recall, casual conversation, an emotional moment, disagreement, uncertainty, a correction and missing context. Assess whether each feels natural while remaining accurate. Do not deploy new prompts or spend on that evaluation merely because this research was completed.
+
+## Approved personality and message presentation update
+
+Founder request: update the personality prompt using this direction, and show ordinary companion messages without sources in the actual release. This supersedes earlier requirements for visible chat citation links; it does not change note-to-transcript navigation or internal evidence integrity.
+
+Candidate implementation:
+
+- `Backend/prompts/companion-chat-v3.md` is the new active prompt in code. It makes the companion candid, quietly capable and naturally warm, brief by default, attentive to emotion and willing to disagree. The previous prompt remains as historical evidence. Factual grounding, unknown-speaker identity, corrections, uncertainty and tool limitations remain explicit.
+- The model still emits internal grounding tags so existing reference validation, saved provenance and invalidation continue to work. The prompt forbids user-facing Sources sections or source-ID prose. Native `CompanionMessageText` removes tags from streamed, saved and interrupted answers; both current main-chat and legacy Ask hide source controls by default. Original answer text/metadata remain intact.
+- Developer source-inspection UI is available only in DEBUG builds with explicit `--show-evidence-debug`; release builds cannot enable it. Existing source-navigation tests now explicitly opt into that diagnostic view. Generated note passage links remain unchanged.
+- Retained-memory answers no longer have a mandatory “From what I remember” preamble in main chat. Source unavailability must still be explained when relevant or asked. This does not license pretending a deleted transcript is viewable.
+
+Local QA covers streaming citation boundaries, saved/interrupted text, normal brackets, real local socket persistence, hidden default source controls and preserved diagnostic source navigation. Backend storage/validation/context tests pass after correcting a stale schema-17 assertion to the already deployed schema 18. An initial native test invocation used the system Python without fixture dependencies; rerunning with the documented configured Python resolves that setup failure. These checks do not establish model personality quality.
+
+Ten short synthetic prompt cases are frozen in `Backend/fixtures/companion-style/cases.json`: casual conversation, a rough day, useful disagreement, quick recall, unknown speaker, appointment uncertainty, correction, retained knowledge, a general knowledge question and brainstorming with irrelevant retrieved evidence. All fit the existing context/input limits. Proposed live QA is at most ten Luna calls, no retries, reserving up to $0.20 in a separately approved operator allowance. No new model calls or deployment are authorized by updating this candidate. Hold prompt acceptance and rollout until bounded output review passes; physical dictation QA remains independently pending.
+
+
+Founder clarification: the companion is a normal ongoing conversational chatbot, not restricted to recall questions. General questions, brainstorming, writing, reflection and casual chat need no recording. Existing optional source context enriches relevant replies; it must not force personalization or unnecessary recording disclaimers. The v3 prompt makes this explicit; the QA set includes empty-source conversation and unrelated-evidence distraction. Existing no-recording backend behavior remains unchanged.
+
+
+Final local verification of the message/prompt candidate: 27 backend contract/storage/context tests, 11 native core checks and two actual Mac UI/local-service tests pass. Normal chat displays “Maya swims.” without its stored grounding tag or a source button; diagnostic source navigation still passes. The iPhone simulator target builds. The model-behavior scenarios are prepared but have not been run with fresh providers. No deployment or paid call was performed.

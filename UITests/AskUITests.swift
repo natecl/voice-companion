@@ -4,7 +4,7 @@ import XCTest
 final class AskUITests: XCTestCase {
     func testPastSourceOpensWithDateAndSurvivesRelaunch() {
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "--ask-ui-fixture", "--recall-ui-fixture"]
+        app.launchArguments = ["--show-evidence-debug", "--ui-testing", "--ask-ui-fixture", "--recall-ui-fixture"]
         app.launch()
         let field = app.descendants(matching: .any).matching(identifier: "askQuestion").firstMatch
         XCTAssertTrue(field.waitForExistence(timeout: 5))
@@ -26,7 +26,7 @@ final class AskUITests: XCTestCase {
 
     func testAskSourcesAndHistorySurviveRelaunch() {
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "--ask-ui-fixture"]
+        app.launchArguments = ["--show-evidence-debug", "--ui-testing", "--ask-ui-fixture"]
         app.launch()
         let field = app.descendants(matching: .any).matching(identifier: "askQuestion").firstMatch
         XCTAssertTrue(field.waitForExistence(timeout: 5))

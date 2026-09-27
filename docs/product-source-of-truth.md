@@ -100,3 +100,10 @@ Founder authorizes implementing notes-first past-context retrieval with Jev rank
 ## First-release input and companion feel — September 26, 2026
 
 Founder clarification after memory consolidation: spoken replies/TTS are outside the first release. Add explicit voice dictation into the chat composer: stop to retain editable text, or Send to finish transcription and submit the combined draft. No automatic sending merely because speech stops. Voice recognition/enrollment and manual voice-note labeling remain outside this slice; unknown recording speakers remain unknown. Refine the companion toward the agreed attentive-friend experience. See [input contract and personality direction](companion-feel-and-dictation.md); that document separates candidate implementation and proposed tone examples from verified behavior.
+
+## Plain-message companion replies — September 26, 2026
+
+Founder decision: the first release companion should respond as ordinary messages, without visible source markers, source buttons or a source list. Keep the evidence and provenance internally for factual grounding, corrections, invalidation and debugging. This supersedes the earlier visible chat-citation requirement; recording-library access and notes-to-transcript navigation remain. Update the personality toward the attentive, candid, naturally personal direction in [the companion brief](companion-feel-and-dictation.md). This is authorization to implement the candidate, not proof of new prompt quality or deployment.
+
+
+Founder clarification: Talk to companion supports ordinary ongoing conversation, general questions, brainstorming and reflection without needing a recording. Captured context makes relevant answers more personal; it does not limit the companion to retrieval questions or require every reply to mention memories. This grants no additional tools or autonomous actions.

@@ -33,15 +33,15 @@ struct ConversationAskView: View {
                         Text("This snapshot includes provisional text. Its saved sources stay fixed if the transcript changes.")
                             .font(.caption).foregroundStyle(.secondary)
                     }
-                    Text(answer.text.isEmpty ? (answer.state == .streaming ? "Thinking…" : "No answer text received.") : answer.text)
+                    Text(answer.text.isEmpty ? (answer.state == .streaming ? "Thinking…" : "No answer text received.") : CompanionMessageText.presented(answer.text, streaming: answer.state == .streaming))
                         .textSelection(.enabled).accessibilityIdentifier("answerText")
                     if answer.state == .streaming {
-                        Text("Answering… · source links appear when complete").font(.caption).foregroundStyle(.secondary)
+                        Text("Answering…").font(.caption).foregroundStyle(.secondary)
                     }
                     if let notice = answer.notice {
                         Text(notice).font(.caption).foregroundStyle(.secondary)
                     }
-                    if answer.state == .completed {
+                    if answer.state == .completed, CompanionMessageText.showsEvidence {
                         ForEach(answer.references, id: \.self) { reference in
                             if let passage = (answer.question.passages + (answer.pastSources ?? [])).first(where: { $0.id == reference }) {
                                 if passage.retained_claim_id != nil {

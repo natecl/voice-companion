@@ -40,7 +40,10 @@ def instructions(data):
     retained = any(item.get('evidence_type')=='retained_memory' for item in data.get('sources',[])+data.get('past_sources',[]))
     suffix = RETAINED_INSTRUCTIONS if retained else ''
     if data.get('contract')=='companion-context-v1':
-        return (Path(__file__).parent/'prompts/companion-chat-v2.md').read_text() + suffix
+        # Retained provenance stays internal; mention source availability only when relevant.
+        companion_suffix = suffix.replace("Say 'From what I remember' when answering solely from retained memory.",
+            "Use retained knowledge naturally; explain that its original source is unavailable only when relevant or asked.")
+        return (Path(__file__).parent/'prompts/companion-chat-v3.md').read_text() + companion_suffix
     return PROMPT + (INDEXED_PROMPT if data.get('memory_contract') == 'indexed-v1' else '') + suffix
 
 

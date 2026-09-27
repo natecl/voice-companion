@@ -45,6 +45,7 @@
 		5861205F9494857E6D627FE5 /* RecordingNotesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44A1E9C64F211D529376CAE /* RecordingNotesUITests.swift */; };
 		5DAF13B17F8D7D03FDCEC42E /* RecordingConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82134446B9A07E479203081 /* RecordingConnection.swift */; };
 		5E2D19B3C8B069259C1890FD /* Phone-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8329C8BB764901C562FF590B /* Phone-Info.plist */; };
+		5EB05803E14990AA7E4A94FA /* CompanionMessageText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979EE57CF1979CC0F0EEF8A0 /* CompanionMessageText.swift */; };
 		5F69531D18A3F88EDF0A0332 /* RelayCredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78DF2FA0976B69003E482D9 /* RelayCredentialStore.swift */; };
 		6254946A7FBE20F879FD5DDE /* CompanionConnectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978F772CA247BC66605A1D33 /* CompanionConnectionTests.swift */; };
 		64FCE961C2FFAB5A4828960B /* SavedRecordingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D820E88D807B0651015E9212 /* SavedRecordingUITests.swift */; };
@@ -55,6 +56,7 @@
 		7483BDE49DAD86B4E2B0F346 /* RecordingNotesPhoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179D3083C0FA6C3B0BE5F141 /* RecordingNotesPhoneUITests.swift */; };
 		757F1CD0B9B287BEBF3D60D2 /* CompanionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B5A0FD68A271624EC0C138 /* CompanionController.swift */; };
 		777B22E0271AEF80B05980A4 /* transcript-events.json in Resources */ = {isa = PBXBuildFile; fileRef = F68208B8B28B93C1AEA78F78 /* transcript-events.json */; };
+		7881AFA69F55C6016F54849C /* CompanionMessageText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979EE57CF1979CC0F0EEF8A0 /* CompanionMessageText.swift */; };
 		7911F5804A05B3A6601398CB /* VoiceCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */; };
 		7E26AEABAF030A58C7F6FC99 /* SessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07AC85400C84CD8C0027 /* SessionController.swift */; };
 		80C8FD2119A42FB8F5D4D98C /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FC567691D4C18C5E45FD1B /* SessionStore.swift */; };
@@ -70,12 +72,14 @@
 		93B191BE382CDD95F0602F1A /* RecordingConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82134446B9A07E479203081 /* RecordingConnection.swift */; };
 		953786CBFDF701A69F732EE8 /* transcript-events.json in Resources */ = {isa = PBXBuildFile; fileRef = F68208B8B28B93C1AEA78F78 /* transcript-events.json */; };
 		96A1D7506C6172D690F2E072 /* SessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07AC85400C84CD8C0027 /* SessionController.swift */; };
+		9BA0683EC8CC162389FE99A7 /* CompanionMessageTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE5D916C772B85F0A028924 /* CompanionMessageTextTests.swift */; };
 		9D2FB921F7C8AAE0ED0E5E19 /* CompanionRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99563154DEC736333441A95 /* CompanionRootView.swift */; };
 		9E0A95F6529756FB8AC11B4B /* SavedRecordingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D820E88D807B0651015E9212 /* SavedRecordingUITests.swift */; };
 		9EEF177AFC1913B7B6ED51F2 /* CompanionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B5A0FD68A271624EC0C138 /* CompanionController.swift */; };
 		A25AE8D337A5078C2FE14E1D /* RelayConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C627D1B94769284B53CA87 /* RelayConfiguration.swift */; };
 		A355D7F9113716A216DA085C /* MicrophoneAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1EED3788D18E4EE3FBB3EC /* MicrophoneAccess.swift */; };
 		A3C302DB065064AFB615FEE5 /* RecordingFinalizationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84C0859642B21DF9D960467 /* RecordingFinalizationTask.swift */; };
+		A4E0FE5C542EEFD61162AF78 /* CompanionMessageText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979EE57CF1979CC0F0EEF8A0 /* CompanionMessageText.swift */; };
 		A5D2DD411F19A5CB880E5296 /* AudioCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB02BC305BA1F675947256B /* AudioCapture.swift */; };
 		A7746E9756D73D619C384FE7 /* CompanionPhoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DFC1DF2388662FC8CE4B36 /* CompanionPhoneUITests.swift */; };
 		AA863954E4E818D4E149270B /* LiveTranscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B8059B564CBD204AA70BA6 /* LiveTranscriber.swift */; };
@@ -157,6 +161,7 @@
 		958D6A5180E458B927E39E26 /* CompanionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionUITests.swift; sourceTree = "<group>"; };
 		96BE8F0D1257314F735205AE /* TranscriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptTests.swift; sourceTree = "<group>"; };
 		978F772CA247BC66605A1D33 /* CompanionConnectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionConnectionTests.swift; sourceTree = "<group>"; };
+		979EE57CF1979CC0F0EEF8A0 /* CompanionMessageText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionMessageText.swift; sourceTree = "<group>"; };
 		9C4855C4A183DFEC64AE93D8 /* MacUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A918307E479F9BA8A830B982 /* MemoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryTests.swift; sourceTree = "<group>"; };
 		A99563154DEC736333441A95 /* CompanionRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionRootView.swift; sourceTree = "<group>"; };
@@ -166,6 +171,7 @@
 		B82134446B9A07E479203081 /* RecordingConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingConnection.swift; sourceTree = "<group>"; };
 		B83EFEE7FF59EDB9FBAE4641 /* VoiceCompanionPhone.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = VoiceCompanionPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB34ECF3785B087D83C279F1 /* CompanionControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionControllerTests.swift; sourceTree = "<group>"; };
+		BDE5D916C772B85F0A028924 /* CompanionMessageTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionMessageTextTests.swift; sourceTree = "<group>"; };
 		C425260D9BD59D9B7A18C540 /* MicrophoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneUITests.swift; sourceTree = "<group>"; };
 		CA776C591198A3D1403607CE /* AskUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskUITests.swift; sourceTree = "<group>"; };
 		CEFC5F2B0D93A2378C2D5CB5 /* VoiceCompanionMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceCompanionMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -242,6 +248,7 @@
 			children = (
 				38DC5EAF399C9BA0167DE08F /* CompanionConnection.swift */,
 				41B5A0FD68A271624EC0C138 /* CompanionController.swift */,
+				979EE57CF1979CC0F0EEF8A0 /* CompanionMessageText.swift */,
 				518A61595A22B8D8873EEEA9 /* ComposerDictation.swift */,
 				CF7D8082C6B31F2C2E959995 /* ConversationAnswer.swift */,
 				22C97C3F135EEAFF5858CD5D /* MemorySync.swift */,
@@ -285,6 +292,7 @@
 			children = (
 				978F772CA247BC66605A1D33 /* CompanionConnectionTests.swift */,
 				BB34ECF3785B087D83C279F1 /* CompanionControllerTests.swift */,
+				BDE5D916C772B85F0A028924 /* CompanionMessageTextTests.swift */,
 				FB896610CA7C35AA4B7618D7 /* ComposerDictationTests.swift */,
 				B2CDFE903F387C5D9A9995AB /* ConversationAnswerTests.swift */,
 				91AC2A636ABED7261B92DF00 /* LiveAskTests.swift */,
@@ -498,6 +506,7 @@
 				C6134A9D853871047550EFB6 /* AudioCapture.swift in Sources */,
 				0470ED1A1534D608DC5EE888 /* CompanionConnection.swift in Sources */,
 				757F1CD0B9B287BEBF3D60D2 /* CompanionController.swift in Sources */,
+				5EB05803E14990AA7E4A94FA /* CompanionMessageText.swift in Sources */,
 				9D2FB921F7C8AAE0ED0E5E19 /* CompanionRootView.swift in Sources */,
 				8AFC584C612FAD225AAB0487 /* ComposerDictation.swift in Sources */,
 				E319A481A74CCCE3F274C3E0 /* ConversationAnswer.swift in Sources */,
@@ -531,6 +540,8 @@
 				6254946A7FBE20F879FD5DDE /* CompanionConnectionTests.swift in Sources */,
 				9EEF177AFC1913B7B6ED51F2 /* CompanionController.swift in Sources */,
 				12B53303280D22B7AC9F3643 /* CompanionControllerTests.swift in Sources */,
+				A4E0FE5C542EEFD61162AF78 /* CompanionMessageText.swift in Sources */,
+				9BA0683EC8CC162389FE99A7 /* CompanionMessageTextTests.swift in Sources */,
 				33194AB168B44429BA555E21 /* ComposerDictation.swift in Sources */,
 				DA748D84B8051DB984056BCE /* ComposerDictationTests.swift in Sources */,
 				F6AF624940EE5A378DD8AC7B /* ConversationAnswer.swift in Sources */,
@@ -566,6 +577,7 @@
 				2D1AC0B45D53467828101DBF /* AudioCapture.swift in Sources */,
 				D7AFA0F1877EA170A074738E /* CompanionConnection.swift in Sources */,
 				6F1BEF9531E9172756A904EC /* CompanionController.swift in Sources */,
+				7881AFA69F55C6016F54849C /* CompanionMessageText.swift in Sources */,
 				DB914D9A4A61C72484121C80 /* CompanionRootView.swift in Sources */,
 				1F63FFF12419AEE5E75751F7 /* ComposerDictation.swift in Sources */,
 				822939BAFB8BA3E279430B34 /* ConversationAnswer.swift in Sources */,

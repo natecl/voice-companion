@@ -133,3 +133,8 @@ The internally enabled unified-memory switch selects source-scoped learning as w
 ### Composer dictation candidate (not yet accepted)
 
 `App/Sessions/ComposerDictation.swift` owns partial/final text and explicit-send semantics. `App/Audio/DictationRecognizer.swift` uses on-device Apple speech recognition; `SharedMicrophone.swift` supplies independently stoppable consumers to dictation and `LiveTranscriber`. No extra saved recording, cloud fallback or automatic send is created. Controller/shared-audio tests and native UI fixtures cover local behavior; real recognition and physical capture coexistence remain unverified. See [scope, personality direction and QA](../companion-feel-and-dictation.md). TTS and speaker enrollment are deferred. Do not treat this candidate as deployed or merge-complete.
+
+
+### Plain-message presentation and personality candidate
+
+The founder removed visible chat citations from release UX. `CompanionMessageText` hides complete/streaming/interrupted grounding tags without modifying stored evidence; both chat views hide source controls by default. Explicit DEBUG diagnostics preserve source-inspection QA. `companion-chat-v3.md` updates tone while preserving factual/identity rules. The deployed service still uses its previously verified prompt until approved bounded model review and rollout. See [candidate and QA scope](../companion-feel-and-dictation.md#approved-personality-and-message-presentation-update).

@@ -41,3 +41,5 @@ Read README.md, docs/product-source-of-truth.md, docs/v0-scope.md, and docs/engi
 - Before manual QA that needs the founder, explain the steps and wait for their explicit readiness before starting the check.
 
 - Ordinary recording deletion may retain learned memories for answers (founder revision September 26). Deleted transcripts must not remain linked as viewable sources. Preserve correction/identity rules and distinguish the approved contract from the older deployed deletion cascade.
+
+- Founder release refinement: companion replies are ordinary messages without visible citations/source buttons. Preserve evidence validation and provenance internally; source inspection belongs to explicit developer diagnostics. Generated note passage links remain separate. See docs/companion-feel-and-dictation.md for the approved tone and presentation boundary, candidate verification, and rollout gates.

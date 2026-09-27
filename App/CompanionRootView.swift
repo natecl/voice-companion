@@ -135,9 +135,9 @@ struct CompanionRootView: View {
                         ForEach(chat.turns) { turn in
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(turn.question).fontWeight(.semibold)
-                                if let answer = turn.answer { Text(answer).textSelection(.enabled).accessibilityIdentifier("companionAnswer") }
+                                if let answer = turn.answer { Text(CompanionMessageText.presented(answer)).textSelection(.enabled).accessibilityIdentifier("companionAnswer") }
                                 if turn.state != .complete { Text(turnLabel(turn.state)).font(.caption).foregroundStyle(.secondary) }
-                                ForEach(turn.citations, id: \.id) { citation in
+                                ForEach(CompanionMessageText.showsEvidence ? turn.citations : [], id: \.id) { citation in
                                     if citation.source.retained_claim_id != nil {
                                         Text("Memory \(citation.id) · recording deleted")
                                             .font(.caption).foregroundStyle(.secondary)
@@ -151,7 +151,7 @@ struct CompanionRootView: View {
                         }
                         if let response = chat.response {
                             Text(response.request.question).fontWeight(.semibold)
-                            Text(response.text).textSelection(.enabled).accessibilityIdentifier("companionPartial")
+                            Text(CompanionMessageText.presented(response.text, streaming: response.state == .streaming)).textSelection(.enabled).accessibilityIdentifier("companionPartial")
                             Text(response.state == .saved ? "Saved" : response.state == .uncertain ? "Completion not confirmed" : "Answering…")
                                 .font(.caption)
                             if response.memoryStatus == "unavailable" { Text("Past memory is unavailable for this answer.").font(.caption) }
