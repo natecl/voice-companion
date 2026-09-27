@@ -28,3 +28,17 @@ No UI expansion, voice identity, proactive participation, automatic backfill, or
 ## Budget and release gates
 
 The previous matched-comparison allowance does not authorize new rework prompts; its Jev call sublimit is exhausted. Prepare exact new requests and a bounded QA proposal before seeking additional spend. No deployment is authorized by a code merge. Preserve failed comparison evidence and report any unmet acceptance criterion explicitly.
+
+## Checkpoint 2 candidate: unified evidence recall
+
+Implemented in the existing disabled `NotesFirstRecall` candidate, not a third hosted recall adapter. Its legacy class/flag name is retained until rollout cleanup. Discovery fuses transcript hybrid search, note references, supported personal references and retained knowledge. Notes resolve to original excerpts; repeated hits within one route do not multiply its vote. Jev sees each distinct excerpt once, without a second generated paraphrase competing against it.
+
+The two strongest discovery results reserve context independently of Jev's relevance choice. Jev then orders additional helpful/topical candidates up to four selected excerpts, with existing correction expansion, eight-source and byte limits. Unrelated choices cannot add extra excerpts beyond that independent reserve. An oversized required reserve fails explicitly rather than silently discarding it. This is a bounded selection hypothesis, not a guarantee of complete recall. It can include irrelevant evidence; live QA must check abstention and distraction as well as disagreement retention. `available` means evidence was supplied, not that the question is answered by it.
+
+Local evidence:
+- 55 targeted unified/notes/search/context/retention tests passed, including existing retained-memory socket replay.
+- The adversarial Northstar regression supplies a deliberately incorrect `unrelated` judgment for the competing report; both original sources survive, including the organizer's lack of confirmation. This is fault injection, not provider performance evidence.
+- Nine frozen cases plus an unanswered ticket-price question executed through the real local companion socket, SQLite save and reopen with the pinned local semantic model and synthetic response transport. This verifies plumbing only, not answer quality.
+- Exact saved-response replay cannot complete the changed answer context: it stops on a cache miss, with no paid fallback. Fresh bounded QA is required before merging or enabling this candidate. Earlier comparison evidence is preserved; reproduce the old candidate on its recorded commit, not this branch.
+
+Proposed live QA: ten candidate cases, at most ten Jev and ten Luna calls, reuse exact responses when possible, no retries; reserve at most $0.25. Do not reset runtime allowances or deploy. Review corrections, omitted detail, veterinary uncertainty, personal attribution, retained/deleted sources, disagreement, semantic paraphrase and long-source coverage. Source citation/opening and persistence checks run in the harness. If the reserve introduces irrelevant context, assess answer abstention before accepting it. The smaller background learner and data migration remain subsequent checkpoints, not delivered by this read-path change.
