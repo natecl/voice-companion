@@ -37,3 +37,21 @@ class DictationBudgetTests(unittest.TestCase):
                 with store.transaction():redistribute_dictation_policy(store.db)
             self.assertEqual(dict((r[0],tuple(r[1:])) for r in store.db.execute('SELECT * FROM policy')),PREFERENCE_POLICIES)
             store.close()
+
+    def test_private_extension_is_explicit_idempotent_and_reopens(self):
+        from service_policy import extend_private_dictation_policy,PRIVATE_DICTATION_POLICIES
+        with tempfile.TemporaryDirectory() as directory:
+            store=Admission(Path(directory)/'usage.sqlite',total_microusd=5000000,limits=DICTATION_POLICIES)
+            owner,token=store.enroll()
+            store.db.execute('INSERT INTO request VALUES(?,?,?,?,?,?)',('old',owner,'stt',0,1220000,'completed'))
+            before=store.db.execute('SELECT * FROM request').fetchall()
+            for _ in range(2):
+                with store.transaction():extend_private_dictation_policy(store.db)
+            self.assertEqual(before,store.db.execute('SELECT * FROM request').fetchall())
+            store.close()
+            with patch.dict(os.environ,{'VOICE_DATA_DIR':directory,'VOICE_ENABLE_ASK':'1'}):
+                reopened=open_ledger(migrate=True)
+                req=reopened.reserve(token,'stt');reopened.finish(req,completed=True)
+                with self.assertRaises(Rejected):reopened.reserve(token,'stt')
+                self.assertEqual(reopened.db.execute('SELECT cap FROM budget').fetchone()[0],5050000)
+                reopened.close()
