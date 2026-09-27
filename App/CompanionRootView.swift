@@ -4,6 +4,7 @@ import SwiftUI
 struct CompanionRootView: View {
     @State private var recording = SessionController.forApp()
     @State private var chat: CompanionController?
+    @State private var dictation = ComposerDictation.forApp()
     @State private var surface = "Companion"
     @State private var selectedID: UUID?
     @State private var citedSource: CompanionEvidence?
@@ -87,20 +88,21 @@ struct CompanionRootView: View {
         }
         .onChange(of: selected.flatMap { recording.companionAttachment(for: $0) }) { _, _ in notePassage = nil }
         .onChange(of: selectedID) { _, _ in notePassage = nil; recordingTab = citedSource == nil ? "Notes" : "Transcript" }
-        .onChange(of: surface) { _, value in if value == "Recordings" { composing = false } }
+        .onChange(of: surface) { _, value in if value == "Recordings" { composing = false; dictation.interrupt() } }
         .onChange(of: recording.pendingMemoryDeletion) { _, pending in
-            if pending { chat?.clearForSourceDeletion() }
+            if pending { dictation.interrupt(); chat?.clearForSourceDeletion() }
             else { needsChatRefresh = true; refreshWhenReady() }
         }
         .onChange(of: chat?.isBusy) { _, _ in refreshWhenReady() }
         .onChange(of: scenePhase) { _, phase in
             if phase == .background {
-                recording.didEnterBackground(); chat?.didEnterBackground(); sourceTask?.cancel()
+                dictation.interrupt(); recording.didEnterBackground(); chat?.didEnterBackground(); sourceTask?.cancel()
             } else if phase == .active {
                 recording.didBecomeActive()
                 if !recording.pendingMemoryDeletion { chat?.didBecomeActive() }
             }
         }
+        .onDisappear { dictation.interrupt() }
         .alert("Delete this recording?", isPresented: $confirmingDeletion) {
             Button("Cancel", role: .cancel) {}
             Button("Delete", role: .destructive) {
@@ -168,19 +170,47 @@ struct CompanionRootView: View {
                     }
                 }
                 if recording.liveStatus == "Recording" { Text("Includes the transcript received so far.").font(.caption) }
+                if dictation.isActive { Text(dictation.state == .starting ? "Preparing dictation…" : dictation.state == .finishing ? "Finishing dictation…" : "Listening for your message…").font(.caption) }
+                if let notice = dictation.notice { Text(notice).font(.caption).accessibilityIdentifier("dictationNotice") }
                 Toggle("Use past memory", isOn: $chat.useMemory).font(.caption)
-                TextField("Talk to companion", text: $chat.draft, axis: .vertical)
+                TextField("Talk to companion", text: Binding(
+                    get: { ComposerDictation.appending(dictation.text, to: chat.draft) },
+                    set: { if !dictation.isActive { chat.draft = $0 } }), axis: .vertical)
+                    .disabled(dictation.isActive)
                     .textFieldStyle(.roundedBorder).focused($composing).lineLimit(1...5).accessibilityIdentifier("companionDraft")
                 HStack {
-                    Button("Send") { composing = false; chat.send(live: recording.liveStatus == "Recording" ? recording.current : nil) }
-                        .disabled(chat.isBusy || recording.pendingMemoryDeletion || chat.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    Button("Send") {
+                        if dictation.isActive { dictation.finish(send: true) }
+                        else { sendDraft(chat) }
+                    }
+                        .disabled(chat.isBusy || recording.pendingMemoryDeletion || dictation.state == .starting || dictation.state == .finishing
+                                  || ComposerDictation.appending(dictation.text, to: chat.draft).trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                         .accessibilityIdentifier("sendCompanion")
+                    if dictation.isActive {
+                        Button(dictation.state == .finishing ? "Finishing…" : "Stop dictation") {
+                            if dictation.state == .starting { dictation.interrupt() }
+                            else { dictation.finish(send: false) }
+                        }.disabled(dictation.state == .finishing).accessibilityIdentifier("stopDictation")
+                    } else {
+                        Button { composing = false; dictation.start { text, send in
+                            chat.draft = ComposerDictation.appending(text, to: chat.draft)
+                            if send, surface == "Companion", scenePhase == .active,
+                               !chat.isBusy, !recording.pendingMemoryDeletion { sendDraft(chat) }
+                        } } label: { Label("Dictate", systemImage: "mic") }
+                            .disabled(chat.isBusy || recording.pendingMemoryDeletion)
+                            .accessibilityIdentifier("startDictation")
+                    }
                     if chat.isBusy { Button("Cancel answer") { chat.cancel() } }
                     Spacer()
                     Button("Refresh") { chat.refresh() }.disabled(chat.isBusy || recording.pendingMemoryDeletion)
                 }
             }
         } else { Text(sourceNotice ?? "Connecting to your companion…") }
+    }
+
+    private func sendDraft(_ chat: CompanionController) {
+        composing = false
+        chat.send(live: recording.liveStatus == "Recording" ? recording.current : nil)
     }
 
     private var libraryContent: some View {

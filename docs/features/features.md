@@ -128,3 +128,8 @@ The optional `VOICE_ENABLE_NOTES_RECALL` route selects `Backend/notes_recall.py`
 ### Simplified learning policy
 
 The internally enabled unified-memory switch selects source-scoped learning as well as unified recall. Compatible additions remain separately sourced; independent relationship checks still detect corrections the extractor missed, and non-additions retain identity/applicability/atomic correction guards. The existing derived store is reused. Provider/replay, deletion-retention and local hosted integration evidence are in the [simple-memory checkpoint](../simple-memory-foundation.md#checkpoint-3-verified-result-and-rollout-boundary). The [internal rollout](../simple-memory-rollout.md) preserves existing rows, quotas and hosting configuration; authenticated history/notes reads pass.
+
+
+### Composer dictation candidate (not yet accepted)
+
+`App/Sessions/ComposerDictation.swift` owns partial/final text and explicit-send semantics. `App/Audio/DictationRecognizer.swift` uses on-device Apple speech recognition; `SharedMicrophone.swift` supplies independently stoppable consumers to dictation and `LiveTranscriber`. No extra saved recording, cloud fallback or automatic send is created. Controller/shared-audio tests and native UI fixtures cover local behavior; real recognition and physical capture coexistence remain unverified. See [scope, personality direction and QA](../companion-feel-and-dictation.md). TTS and speaker enrollment are deferred. Do not treat this candidate as deployed or merge-complete.

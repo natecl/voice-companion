@@ -22,7 +22,7 @@ final class LiveTranscriber: RecordingConnection {
     private var sendingError: Error?
     private var timeoutError: CaptureFailure?
 
-    init(microphone: any AudioCapture = MicrophoneCapture(),
+    init(microphone: any AudioCapture = SharedMicrophoneCapture(),
          configuration: @escaping () throws -> RelayConfiguration = { try RelayConfiguration.load() },
          timeouts: Timeouts = Timeouts()) {
         self.microphone = microphone
