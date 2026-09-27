@@ -56,3 +56,7 @@ Schema18 indexes sourced note entries transactionally and invalidates them with 
 ### Notes can change usefulness judgments even when evidence is duplicated
 
 In the [matched semantic comparison](../matched-recall-comparison.md), adding note versions of two competing venue reports caused Jev to classify the unconfirmed alternative as topical. Notes-first then omitted that side of the disagreement while indexed recall preserved both. Treat omitted counterevidence as an acceptance failure even when the answer still says it is uncertain. Preserve the failed candidate pool and judgments; do not count shorter incomplete answers as a cost improvement or tune thresholds to one fixture.
+
+### Summary duplication and disagreement selection
+
+The notes-first comparison lost one of two uncertain venue reports. Ranking summaries and their original excerpts separately changed the candidate pool, and a helpful/topical hard cutoff removed counterevidence. The unified candidate ranks original excerpts once and reserves two discovery hits independently of Jev. Ten-case QA restores the frozen disagreement and preserves abstention on an absent ticket price. This bounded reserve can include noise; do not treat it as exhaustive recall or general relevance proof. See [checkpoint evidence](../simple-memory-foundation.md#approved-checkpoint-2-qa-result).
