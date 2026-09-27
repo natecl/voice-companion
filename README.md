@@ -18,7 +18,7 @@ Start with the [feature map](docs/features/README.md) to locate implemented beha
 
 The completed narrow notes slice is [transcript-derived notes](docs/recording-notes-plan.md). Its storage and bounded generation are verified; service/native integration is verified locally. The [internal rollout](docs/recording-notes-rollout.md) is deployed with the matching iPhone app installed; the physical-iPhone capture → notes → supporting passage → restart/reopen check has passed.
 
-The [unified evidence recall checkpoint](docs/simple-memory-foundation.md) replaces the disabled notes-first candidate with deduplicated note/transcript discovery and a bounded independent evidence reserve alongside Jev ranking. Ten reviewed answer cases and exact replay pass, including the earlier disagreement failure. It remains disabled and undeployed; background-learning consolidation is still in progress.
+The [unified memory foundation](docs/simple-memory-foundation.md) is internally deployed: notes and transcripts discover original evidence, Jev ranks it alongside an independent evidence reserve, and a source-scoped background learner maintains verified personal/contextual knowledge. Ten reviewed answer cases and bounded writer QA pass. [Rollout checks](docs/simple-memory-rollout.md) confirm preserved data, healthy workers and authenticated reads; the existing provenance/correction tables remain intentionally shared.
 
 ## Knowledge documents
 
