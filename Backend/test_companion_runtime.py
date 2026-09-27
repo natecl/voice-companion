@@ -89,6 +89,15 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
             profile_budget.provision_preference_allowance(global_path,budget_path)
             profile_budget.provision_verification_allowance(global_path,budget_path)
             validate_rework_allocations(admission,rollout=True,verification=True)
+            if getattr(self,'notes_recall',False):
+                import sqlite3
+                from contextlib import closing
+                admission.db.execute("INSERT INTO request VALUES(?,?,?,?,?,?)",('notes-fixture',credential,'stt',0,25000,'completed'))
+                admission.db.execute("INSERT INTO allocation_request VALUES(?)",('notes-fixture',))
+                with closing(sqlite3.connect(directory/'notes-budget.sqlite')) as db, db:
+                    db.execute('CREATE TABLE notes_allocation(id TEXT,cap INTEGER,max_calls INTEGER)')
+                    db.execute("INSERT INTO notes_allocation VALUES('notes-fixture',25000,1)")
+                    db.execute('CREATE TABLE notes_attempt(id TEXT PRIMARY KEY,reserved INTEGER,state TEXT,usage TEXT)')
             before=admission.usage();admission.close()
             cache=os.environ.get('VOICE_TEST_EMBEDDING_CACHE')
             from local_embeddings import CONTRACT
@@ -104,6 +113,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
                 sock.bind(('127.0.0.1',0));port=sock.getsockname()[1]
             env={k:v for k,v in os.environ.items() if not k.startswith('VOICE_ENABLE_')}
             env.update(FLAGS,VOICE_ENABLE_ROLLOUT_QA='1',VOICE_ENABLE_INDEPENDENT_VERIFICATION='1',VOICE_DATA_DIR=folder,XAI_API_KEY='unused',OPENAI_API_KEY='unused',TYPESAFE_API_KEY='unused',PORT=str(port))
+            if getattr(self,'notes_recall',False):env.update(VOICE_ENABLE_RECORDING_NOTES='1',VOICE_ENABLE_NOTES_RECALL='1')
             if cache:env.update(VOICE_ENABLE_SEMANTIC_INDEX='1',VOICE_EMBEDDING_CACHE=cache,HF_HUB_OFFLINE='1')
             process=subprocess.Popen([sys.executable,str(Path(__file__).with_name('hosted.py'))],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
             try:

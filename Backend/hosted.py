@@ -51,6 +51,14 @@ def notes_setting(env):
     return value=='1'
 
 
+def notes_recall_setting(env):
+    value=env.get('VOICE_ENABLE_NOTES_RECALL','0')
+    required=('VOICE_ENABLE_RECORDING_NOTES','VOICE_ENABLE_MEMORY_REWORK','VOICE_ENABLE_MEMORY_RECALL')
+    if value not in ('0','1') or (value=='1' and any(env.get(key)!='1' for key in required)):
+        raise ValueError('Notes recall requires notes, memory rework and recall')
+    return value=='1'
+
+
 def validate_rework_allocations(admission, *, rollout=False, verification=False):
     import profile_budget as profile
     allocations=[(profile.REWORK_APPROVAL_ID,profile.REWORK_ALLOWANCE),
@@ -72,6 +80,7 @@ def validate_rework_allocations(admission, *, rollout=False, verification=False)
 
 async def main():
     notes_enabled=notes_setting(os.environ)
+    notes_recall_enabled=notes_recall_setting(os.environ)
     rework_enabled,companion_enabled,semantic_enabled=rework_settings(os.environ)
     independent_verification=independent_verification_setting(os.environ,rework_enabled)
     retain_recording_memories=retention_setting(os.environ,companion_enabled)
@@ -164,7 +173,11 @@ async def main():
                         raise ValueError('Recall requires Ask enabled')
                     if rework_enabled:
                         from indexed_recall import IndexedMemoryRecall
-                        ask.recall=IndexedMemoryRecall(memory_store,models,budget,embedder,multi_source=True)
+                        if notes_recall_enabled:
+                            if not notes_enabled:raise ValueError('Notes recall requires notes generation enabled')
+                            from notes_recall import NotesFirstRecall
+                            ask.recall=NotesFirstRecall(memory_store,models,budget,embedder)
+                        else:ask.recall=IndexedMemoryRecall(memory_store,models,budget,embedder,multi_source=True)
                     else:ask.recall = MemoryRecall(memory_store, models, budget)
             if semantic_enabled:
                 from memory_indexing import IndexWorker

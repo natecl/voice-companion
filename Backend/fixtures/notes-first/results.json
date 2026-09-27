@@ -1,0 +1,552 @@
+[
+  {
+    "case": "correction",
+    "question": "Where will Cedar meet?",
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "correction",
+        "conversation_id": "b4a33b34-89ef-49ba-8cd4-47f6438b1095"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "notes-correction",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 53,
+            "text": "Morgan: We proposed Tuesday at the library for Cedar.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "notes-correction",
+            "revision": 1,
+            "passage_id": "p2",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 8.0,
+            "speakers": [
+              1
+            ],
+            "text_start": 0,
+            "text_end": 79,
+            "text": "Sam: Tuesday will not work. Let us use Thursday at the garden pavilion instead.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          },
+          {
+            "session_id": "notes-correction",
+            "revision": 1,
+            "passage_id": "p3",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 16.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 97,
+            "text": "Morgan: Agreed, Thursday at the garden pavilion is the final plan. The library plan is cancelled.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p3"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "Cedar will meet Thursday at the garden pavilion. The library plan was cancelled. [[p3]]"
+      },
+      {
+        "type": "done",
+        "question_id": "correction",
+        "references": [
+          "p3"
+        ],
+        "saved": true
+      }
+    ]
+  },
+  {
+    "case": "omitted",
+    "question": "What explains ice cream sales and swimming?",
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "omitted",
+        "conversation_id": "939dd135-ef31-43d0-ba04-69091b667303"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "notes-lecture",
+            "revision": 1,
+            "passage_id": "p2",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 8.0,
+            "speakers": [
+              1
+            ],
+            "text_start": 0,
+            "text_end": 124,
+            "text": "A common cause can explain an observed association. For example, hot weather can increase both ice cream sales and swimming.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "Hot weather can increase both ice cream sales and swimming, so it\u2019s a common cause of their association. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "omitted",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ]
+  },
+  {
+    "case": "appointment",
+    "question": "Does the dog have a confirmed diagnosis, and should its food change?",
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "appointment",
+        "conversation_id": "1edd408b-6444-4eb1-9959-f90ec5fef2b1"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "notes-appointment",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 82,
+            "text": "Vet: The dog may have a food sensitivity, but we have not established a diagnosis.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "notes-appointment",
+            "revision": 1,
+            "passage_id": "p3",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 16.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 56,
+            "text": "Owner: So no confirmed diagnosis and no food change yet.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          },
+          {
+            "session_id": "notes-appointment",
+            "revision": 1,
+            "passage_id": "p2",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 8.0,
+            "speakers": [
+              1
+            ],
+            "text_start": 0,
+            "text_end": 93,
+            "text": "Keep the current food until we discuss the test results. If vomiting recurs, call the clinic.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p3"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "No. The vet said a food sensitivity was possible, but no diagnosis had been established. Keep the dog on its current food until you discuss the test results; if vomiting recurs, call the clinic. [[p1]] [[p3]]"
+      },
+      {
+        "type": "done",
+        "question_id": "appointment",
+        "references": [
+          "p1",
+          "p3"
+        ],
+        "saved": true
+      }
+    ]
+  },
+  {
+    "case": "personal",
+    "question": "What does my daughter Maya enjoy, and do you know whether I train for marathons?",
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "personal",
+        "conversation_id": "b1878a5b-019e-4779-904c-b5645a6cd52f"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "personal",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "personal_text",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 33,
+            "text": "My daughter Maya enjoys swimming.",
+            "lifecycle": [
+              {
+                "id": "00000000-0000-0000-0000-000000000067",
+                "text": "My daughter Maya enjoys swimming.",
+                "state": "active",
+                "reason": "supported",
+                "valid_from": 100.0,
+                "valid_until": null,
+                "replaces": null,
+                "basis": "stated",
+                "subject": "Maya",
+                "kind": "fact",
+                "profile_link": 1,
+                "identity_status": "legacy_unverified",
+                "entity_id": null,
+                "related_claims": []
+              }
+            ],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "anonymous",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 22,
+            "text": "I train for marathons.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "Maya enjoys swimming. [[p1]] I don\u2019t know whether you train for marathons: that claim appears in a recording, but its speaker hasn\u2019t been identified as you. [[p2]]"
+      },
+      {
+        "type": "done",
+        "question_id": "personal",
+        "references": [
+          "p1",
+          "p2"
+        ],
+        "saved": true
+      }
+    ]
+  },
+  {
+    "case": "change",
+    "question": "Where does Project Birch meet now?",
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "change",
+        "conversation_id": "e9ab2b70-af28-4d59-9cfa-4c8649c4249a"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "birch-new",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 71,
+            "text": "Project Birch now meets at the community center instead of the library.",
+            "lifecycle": [
+              {
+                "id": "00000000-0000-0000-0000-00000000006b",
+                "text": "Project Birch meets at the community center.",
+                "state": "active",
+                "reason": "supported",
+                "valid_from": 100.0,
+                "valid_until": null,
+                "replaces": "00000000-0000-0000-0000-000000000067",
+                "basis": "stated",
+                "subject": "Birch",
+                "kind": "event",
+                "profile_link": 0,
+                "identity_status": "legacy_unverified",
+                "entity_id": null,
+                "related_claims": [
+                  {
+                    "claim": "00000000-0000-0000-0000-000000000067",
+                    "relation": "supersedes"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "birch-old",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 35,
+            "text": "Project Birch meets at the library.",
+            "lifecycle": [
+              {
+                "id": "00000000-0000-0000-0000-000000000067",
+                "text": "Project Birch meets at the library.",
+                "state": "superseded",
+                "reason": "corrected",
+                "valid_from": 100.0,
+                "valid_until": null,
+                "replaces": null,
+                "basis": "stated",
+                "subject": "Birch",
+                "kind": "event",
+                "profile_link": 0,
+                "identity_status": "legacy_unverified",
+                "entity_id": null,
+                "related_claims": [
+                  {
+                    "claim": "00000000-0000-0000-0000-00000000006b",
+                    "relation": "superseded_by"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "Project Birch now meets at the community center, instead of the library. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "change",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ]
+  },
+  {
+    "case": "retained",
+    "question": "Where does Project Juniper meet now, and can I open the original recording?",
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "retained",
+        "conversation_id": "b814bb6b-7b99-481d-a13b-94edf1f5e654"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "retained_claim_id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+            "session_id": "correction",
+            "revision": 1,
+            "passage_id": "retained_481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+            "captured_at": 1790443639.5839324,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 73,
+            "text": "Project Juniper now meets at the community center instead of the library.",
+            "lifecycle": [
+              {
+                "id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+                "text": "Project Juniper now meets at the community center instead of the library.",
+                "subject": "mention_d63289561c5243c1b4438c0016f6d05d",
+                "kind": "fact",
+                "basis": "stated",
+                "observed": 1790460099.09375,
+                "valid_from": 1790443639.5839324,
+                "valid_until": null,
+                "state": "active",
+                "reason": "identity_supported_correction",
+                "replaces": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": "now",
+                  "captured_at": 1790443639.5839324,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "ambiguous_or_unsupported",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "correction",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": [
+                  {
+                    "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                    "relation": "supersedes"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p1"
+          },
+          {
+            "retained_claim_id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+            "session_id": "split-subject",
+            "revision": 1,
+            "passage_id": "retained_c1453a7f-74a3-401e-939b-81ec7579c3fe",
+            "captured_at": 1790443517.9455416,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 50,
+            "text": "Project Juniper's meeting location is the library.",
+            "lifecycle": [
+              {
+                "id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                "text": "Project Juniper's meeting location is the library.",
+                "subject": "mention_77488991b9b949659626270b9a6d5b03",
+                "kind": "fact",
+                "basis": "stated",
+                "observed": 1790460099.082089,
+                "valid_from": 1790443517.9455416,
+                "valid_until": null,
+                "state": "superseded",
+                "reason": "identity_supported_correction",
+                "replaces": null,
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": null,
+                  "captured_at": 1790443517.9455416,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "no_expression",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "split-subject",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": [
+                  {
+                    "claim": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+                    "relation": "superseded_by"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "From what I remember, Project Juniper now meets at the community center, not the library. [[p1]] The original recording isn\u2019t available to open; this detail is retained memory, not a viewable recording."
+      },
+      {
+        "type": "done",
+        "question_id": "retained",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ]
+  }
+]

@@ -120,3 +120,7 @@ Use the [index and authority rules](README.md) first. Paths below are repository
 **Contracts:** reads never generate; unchanged uploads never backfill/retry; source changes invalidate; deletion removes notes regardless of learned-memory retention. Saved notes are server-side, so reopening needs connectivity. Existing capture outbox terminality is the scheduling boundary. Notes are not memory claims and this slice does not replace the existing harness.
 
 **QA:** `test_recording_notes.py`, `test_notes_generation.py`, `test_notes_service.py`, `test_notes_budget.py`, and `RecordingNotes{,Phone}UITests.swift`. Reuse recorded model responses for quality replay and local synthetic socket fixtures for UI work; don't run paid transcription for a notes presentation bug. See [notes evidence and rollout gate](../recording-notes-plan.md).
+
+### Notes-first recall candidate
+
+The optional `VOICE_ENABLE_NOTES_RECALL` route selects `Backend/notes_recall.py` in place of indexed recall. It uses sourced note entries, transcript fallback, a bounded existing personal-profile projection and retained knowledge with one Jev call. Six live answer cases and exact replay pass; not deployed. Current background learning/lifecycle remain shared, so this is not completed removal of the old harness. [Limits, budget and rollout](../notes-first-memory-plan.md#checkpoint-2-bounded-recall-and-thin-personal-context).
