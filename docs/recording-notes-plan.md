@@ -58,3 +58,8 @@ Reproducible simulator command: `SIMULATOR_ID=<booted-simulator> VOICE_TEST_PYTH
 
 
 Final local native receipts: Mac `work/notes-integration/native-fixed.xcresult` passes both the new notes flow and the existing companion/capture flow; iPhone 17 Pro simulator (iOS 26.5) `work/notes-phone-YtpbQv/native.xcresult` passes notes → supporting transcript → terminate/relaunch → same saved notes → deletion. The final simulator build includes source-revision change clearing and outdated-state handling. Screenshots from both platforms were inspected. This is not physical-iPhone or microphone evidence. No additional paid calls occurred during integration.
+
+
+## Internal rollout status
+
+The founder approved rollout after checkpoint 3. The verified backend is now deployed with the matching iPhone build installed; physical acceptance waits for readiness. See [rollout evidence, budget and pending check](recording-notes-rollout.md). Earlier checkpoint statements describe their state at delivery.
