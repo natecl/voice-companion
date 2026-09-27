@@ -11,12 +11,13 @@ final class RecordingNotesPhoneUITests: XCTestCase {
         app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = config
         app.launch()
         defer { app.terminate() }
+        app.buttons["homeNavigation"].tap()
+        let existingCount = app.buttons.matching(identifier: "savedSession").count
+        app.buttons["agentNavigation"].tap()
         app.buttons["startRecording"].tap()
         XCTAssertTrue(app.buttons["stopRecording"].waitForExistence(timeout: 5))
         app.buttons["stopRecording"].tap()
-        app.buttons["Recordings"].tap()
-        XCTAssertTrue(app.buttons["savedSession"].firstMatch.waitForExistence(timeout: 5))
-        app.buttons["savedSession"].firstMatch.tap()
+        // Saved notes open automatically when capture finishes.
         XCTAssertTrue(app.staticTexts["notesTitle"].waitForExistence(timeout: 15))
         XCTAssertEqual(app.staticTexts["notesTitle"].label, "Maya’s swimming")
         let screenshot = XCTAttachment(screenshot: app.screenshot())
@@ -28,12 +29,13 @@ final class RecordingNotesPhoneUITests: XCTestCase {
         app.terminate()
         app.launchArguments = ["--ui-testing", "--companion-ui-fixture"]
         app.launch()
-        app.buttons["Recordings"].tap()
+        app.buttons["homeNavigation"].tap()
         XCTAssertTrue(app.buttons["savedSession"].firstMatch.waitForExistence(timeout: 5))
         app.buttons["savedSession"].firstMatch.tap()
         XCTAssertTrue(app.staticTexts["notesTitle"].waitForExistence(timeout: 10))
+        app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "Recording options")).firstMatch.tap()
         app.buttons["deleteSession"].tap(); app.alerts.buttons["confirmDeleteSession"].firstMatch.tap()
-        XCTAssertFalse(app.buttons["savedSession"].firstMatch.exists)
+        XCTAssertEqual(app.buttons.matching(identifier: "savedSession").count, existingCount)
     }
 }
 #endif

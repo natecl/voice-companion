@@ -24,7 +24,7 @@ struct RecordingNotesView: View {
                 }
                 Text("Generated from this transcript. Check the supporting passages for details.").font(.caption).foregroundStyle(.secondary)
             } else if loading {
-                ProgressView("Preparing notes…").accessibilityIdentifier("notesLoading")
+                ExperienceThinkingStatus(label: "Preparing notes…").accessibilityIdentifier("notesLoading")
             } else {
                 Text(status).foregroundStyle(.secondary).accessibilityIdentifier("notesStatus")
                 if result?.state == "failed", !["empty_transcript", "notes_input_too_large"].contains(result?.error ?? "") {
@@ -72,7 +72,7 @@ struct RecordingNotesView: View {
             ScrollView(.horizontal) { HStack {
                 ForEach(item.passages, id: \.self) { passage in
                     Button("Passage \(passage.dropFirst())") { onPassage(passage) }
-                        .font(.caption).accessibilityIdentifier("notesPassage")
+                        .font(.caption).frame(minHeight: 44).accessibilityIdentifier("notesPassage")
                 }
             } }
         }
@@ -83,11 +83,12 @@ struct RecordingNotesView: View {
 struct RecordingLibraryTitle: View {
     let attachment: CompanionAttachment?
     let personal: Bool
+    var refreshKey = ""
     let configuration: () throws -> RelayConfiguration
     @State private var title: String?
     var body: some View {
         Text(title ?? (personal ? "Personal note" : "Recorded conversation"))
-            .task(id: "\(attachment?.session_id ?? ""): \(attachment?.revision ?? 0)") {
+            .task(id: "\(attachment?.session_id ?? ""): \(attachment?.revision ?? 0):\(refreshKey)") {
                 title = nil
                 guard !personal, let attachment else { return }
                 do {

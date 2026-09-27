@@ -1,0 +1,1 @@
+Vendored from https://github.com/Jakubantalik/Libraries.dev at f20116327f4e3b28d0fb70b04437dfd092bf88fe, packages/thinking-orbs/ports/ios/ThinkingOrbsKit/. MIT license retained. Package test target omitted; upstream test fixtures are not distributed here. Sources unchanged.

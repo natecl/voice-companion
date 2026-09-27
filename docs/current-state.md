@@ -18,6 +18,10 @@ The experience should feel like an attentive, quietly sharp friend: personal int
 
 Two actions: **Capture meeting note** and **Talk to companion**. Voice notes and meetings are one source type. One persistent main chat works during and between captures; recordings live in a library. Starting a recording does not create a chat. “Ask about this” attaches a recording. The Manus pill is a layout reference, not a required design system. Muse informs feel, not feature parity or autonomous-agent scope.
 
+## UI candidate
+
+The [native experience UI checkpoint](native-experience-ui.md) implements the approved Home/Agent visual direction, shared composer, recording sheet, search, and account screen layouts. Three isolated iPhone simulator flows and Mac compilation passed. It is not installed on the physical phone or accepted as device delivery; Mac UI automation and founder-assisted device QA remain pending. Authentication and subscription screens are previews.
+
 ## Delivery status and acceptance
 
 | Area | Last verified status | Evidence / remaining boundary |
