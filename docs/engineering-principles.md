@@ -224,3 +224,14 @@ Founder-approved private-dictation physical QA, September 27: an additional $0.0
 
 
 Founder-authorized v3 personality internal rollout, September 27: deploy merged PR 99 on the existing Render service after backup and verify prompt selection, health, data preservation and unchanged usage. No fresh provider QA or budget increase is authorized by deployment. See [rollout evidence](companion-feel-and-dictation.md).
+
+
+## Experience-led UI implementation — September 27, 2026
+
+Founder direction: actively consult the Libraries.dev skill throughout UI/UX design and implementation. The approved Home mockup is the visual source of truth for typography, white surfaces, icon treatment, rounded controls and visual hierarchy across all screens, including sign-up and pricing. Library defaults and third-party examples must be adapted to that direction. This is design guidance, not a claim that the mockups or effects are implemented.
+
+Before changing an interaction, identify the user's context, intended action, information they need to see, reachable place to touch, immediate feedback and desired feeling. Evaluate the complete transition, including keyboard, loading, empty, denied-permission and failure states. Preserve drafts, capture state and navigation continuity. Validate touch targets, one-handed reach, readable text, reduced motion and actual device behavior at the affected layer. Treat emotional outcomes as hypotheses to check with the founder and representative users.
+
+Use Libraries.dev regularly to evaluate useful feedback for capture, dictation, processing and responses. Read the selected component's reference before implementation; verify native SwiftUI compatibility and dependencies rather than assuming React examples work in the app. Connect effects to real state, preserve audio ownership, stop unnecessary offscreen animation and check performance. Frequent consultation does not require animation on every control. Home's approved styling and product purpose govern which effects earn a place.
+
+The free skill was installed locally as `libraries-dev` from `Jakubantalik/Libraries.dev`, `skills/libraries-dev`. Installation is an agent-environment change, not an app dependency. Other environments must install it separately. Source: https://libraries.dev/skill and https://github.com/Jakubantalik/Libraries.dev/tree/main/skills/libraries-dev. No paid Studio purchase or application package installation is implied.
