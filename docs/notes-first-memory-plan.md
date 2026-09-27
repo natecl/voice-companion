@@ -17,10 +17,62 @@ Implemented schema18 `recording_note_index`, with one candidate per overview/ite
 
 Behavioral run: five recorded notes responses replayed through actual generation/storage (`work/notes-index-final`); then real persistent index queries for diagnosis, walking routine and homework returned saved note entries and valid original passage packets after database reopen. Inspected `index-results.json`; committed the synthetic receipt under `Backend/fixtures/notes-retrieval/index-results.json`. An initial behavioral check reused the comparison database after its intentional summary-omission mutation and correctly found no homework note; the final run uses fresh exact-replay notes. This was fixture isolation, not a production search change. Earlier seven-case comparison remains an evaluation of its own whole-note prototype, not a quality claim for this new entry index.
 
-New paid calls: zero. No deployment or native UI change. Jev integration and complete-answer quality remain pending, not passed by these storage checks.
+New paid calls: zero. No deployment or native UI change. Those storage checks alone do not establish Jev integration or answer quality; see the subsequent checkpoint below.
 
 ## Provider validation gate
 
 Current TypeSafe introduction checked September27: typed Choice questions return probability distributions; independent questions share state. This supports the existing bounded candidate-judgment API shape, not a guarantee of ranking quality. Source: https://docs.typesafe.ai/introduction . Verify the exact request and recorded responses in the next checkpoint.
 
-Proposed dedicated QA allowance: at most $0.15 for twelve calls (six Jev candidate rankings and six Luna answers), no automatic retries, subject to the unchanged global ledger ceiling. Reuse existing notes and transcripts; no new transcription or notes-generation calls. Cases: corrected plan, omitted detail, uncertain appointment, personal attribution, cross-recording correction, and retained knowledge after deletion. This is a request, not an approved or provisioned allocation. If the global ceiling cannot fit it, stop rather than transfer unrelated allowances or exceed it.
+Founder-approved dedicated QA allowance: at most $0.15 for twelve calls (six Jev candidate rankings and six Luna answers), no automatic retries, subject to the unchanged global ledger ceiling. Reuse existing notes and transcripts; no new transcription or notes-generation calls. Cases: corrected plan, omitted detail, uncertain appointment, personal attribution, cross-recording correction, and retained knowledge after deletion. Approved in the subsequent founder message; provisioned as `notes-first-20260927-015`. If the global ceiling cannot fit it, stop rather than transfer unrelated allowances or exceed it.
+
+
+## Checkpoint 2: bounded recall and thin personal context
+
+Implemented `NotesFirstRecall`, selected by `VOICE_ENABLE_NOTES_RECALL=1` only when notes generation, memory rework and recall are enabled. Default remains off. The hosted service uses one selected recall implementation, not two model pipelines. No deployment has occurred.
+
+Candidate capacity is reserved for four sourced note entries, four direct transcript candidates, two relevant supported personal/profile-linked claims, and two retained-knowledge candidates. One existing multi-candidate Jev request ranks the pool. Up to three nonduplicate useful candidates expand to original source passages and known correction relations, capped at eight final passages and 10KB of evidence metadata/text before the existing joint prompt bound. Large fallback passages use a bounded original span around query terms; offsets are retained. Coverage is explicitly partial.
+
+The personal layer reads existing supported user/profile-linked claims with provenance. It creates no new profile database or extraction model. Ordinary recordings do not acquire user identity from their anonymous speaker labels. Retained nonpersonal knowledge has separate candidate space. Source revision/deletion and lifecycle validation remain deterministic. Invalid/provider/budget failures do not trigger paid retries; the existing companion protocol reports retrieval unavailable if recall fails.
+
+Summaries are used to find evidence, not inserted as unverified facts into the answer prompt. Missing, failed or incomplete notes do not prevent transcript fallback. The current live/attached transcript and conversation history remain assembled by the existing companion context boundary.
+
+### Real-provider evidence
+
+Six actual local companion websocket exchanges used six Jev calls and six GPT-6 Luna calls through a budget-enforcing operator transport. Exact requests/responses are saved in `Backend/fixtures/notes-first/calls.json`; socket events and reviewed answers are in `results.json`. All six answers persisted after database reopen. Original cited passages opened; retained-memory citations correctly returned source unavailable. Exact-request replay on the final code reproduced every answer without a paid fallback.
+
+| Frozen case | Observed answer |
+| --- | --- |
+| Cedar final plan | Thursday, garden pavilion; library cancelled |
+| Detail deliberately omitted from the lecture note | Hot weather explains ice cream sales and swimming; original passage cited |
+| Vet appointment uncertainty | No established diagnosis; food unchanged pending discussion of results |
+| Personal context plus unknown speaker | Maya enjoys swimming; marathon statement cannot be attributed to the user |
+| Cross-recording change | Birch now meets at community center, replacing library |
+| Deleted recording | Juniper's corrected community-center location retained; original recording unavailable |
+
+Notes in Cedar/appointment are exact prior generated outputs. The lecture omission is a hand-authored stress control. Personal/Birch claims are synthetic established-state fixtures, so this tests retrieval and source handling, not new extraction accuracy. Juniper uses the saved verified retained-memory fixture. This is a bounded acceptance screen, not a general accuracy or superiority benchmark against the full previous harness.
+
+Jev provider round trips were 0.136–0.442 seconds; Luna's nonstreaming QA responses were 0.768–1.647 seconds. These are six observations with short fixtures, not production streaming-latency or cost guarantees. No microphone/provider transcription was rerun.
+
+Budget receipt confirms twelve completed calls: $0.15 reserved, not actual invoice cost. Global reservations are $4.956868/$5. Funding used previously unreserved category headroom ($0.07 recording category and $0.08 Jev category), with allocation markers; existing grants, policy caps and daily counters were not reset or transferred. The dedicated QA allowance is exhausted. No automatic retries or new notes-generation calls occurred.
+
+### Local integration and regression checks
+
+35 targeted checks passed for recall, notes search, companion socket/context behavior, corrections and service startup, plus one operator-ledger check for idempotent funding, model call limits, cached exact responses and failed-call retry prohibition. A further real hosted-process check started with notes recall enabled, recovered chat and served authenticated history with no provider calls. Flag dependency validation fails closed.
+
+New recall checks cover explicit opt-out before retrieval/spending, empty library, original-source hydration, notes/source mutation during judgments, correction expansion, context bounds, provider errors without retry and long-passage original offsets. Relevant old companion tests preserve live capture/follow-up behavior. Source navigation and reopen were additionally exercised by final provider replay. No native UI was changed.
+
+Initial dry runs caught fixture-construction issues (serialized source key ordering and invalid test-claim overrides/kind); fixed before any live call. Operator tests exposed SQLite connection cleanup on rejected attempts; closed those connections and reran the affected test. Final deduplication avoids counting repeated evidence as multiple selected candidates and preserves exact paid requests/answers in replay.
+
+Reproduce:
+
+```sh
+PYTHONPATH=Backend python3 Backend/evaluate_notes_first.py work/notes-first-replay-new --replay Backend/fixtures/notes-first/calls.json
+PYTHONPATH=Backend python3 -m unittest Backend.test_notes_recall Backend.test_notes_search Backend.test_companion_service Backend.test_companion_context Backend.test_memory_related Backend.test_hosted_startup -q
+python3 -m unittest discover -s scripts/evaluations -p test_notes_first_provider.py -q
+```
+
+### Consolidation boundary and rollout
+
+The new read path is implemented and verified for these cases. The existing background writer, correction/identity lifecycle and retention storage remain shared because they supply the safeguards this screen exercised. We have not proven a replacement learning algorithm, retired the old recall implementation, or measured reduced total background inference cost. Keep the old implementation as rollback until internal rollout is accepted; remove it in a focused cleanup afterward. More aggressive writer simplification is separate from this verified retrieval checkpoint and must preserve retained knowledge.
+
+For internal rollout: back up usage/memory databases, migrate schema18, enable the new flag on the existing Render plan, and verify startup/authenticated routes. No native rebuild is required for the unchanged protocol. Confirm sufficient already-approved runtime allowance before any founder check; do not use the exhausted operator QA grant for extra calls. Deployment requires separate founder approval; manual capture/chat acceptance waits for readiness. Roll back the flag to the prior recall path on failure; do not run schema17 code against the migrated database without a verified rollback plan.
