@@ -149,3 +149,6 @@ The founder removed visible chat citations from release UX. `CompanionMessageTex
 ### Private composer dictation refinement — September 27
 
 Founder-approved behavior: pause meeting audio while dictation captures the companion message, visibly indicate it, then resume automatically. The question is excluded from meeting transcripts/notes; other simultaneous speech is also omitted. Candidate routing uses same-length silence for the meeting stream and original audio for on-device dictation, preserving session timestamps. Prior physical omission was not deliberate routing and does not verify this change. See [dictation evidence](../companion-feel-and-dictation.md). Physical acceptance remains pending; no new paid allowance has been used.
+
+
+Private-dictation physical QA update: the founder confirmed the pause indicator, and agent inspection through iPhone Mirroring verified both meeting statements in transcript/notes with the arithmetic question confined to chat. The resumed statement was saved. This bounded success path passes; remaining permission/interruption coverage and PR review are separate. See the latest [dictation evidence](../companion-feel-and-dictation.md).
