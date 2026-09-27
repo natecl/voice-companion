@@ -141,3 +141,9 @@ After the callback repair was installed, the founder reported that Stop removed 
 The reducer now ignores blank partial resets. A blank final after nonblank speech preserves the last visible text as an editable draft, shows a review notice, and never automatically sends that uncertain partial. A nonempty final remains authoritative, including legitimate revisions; truly empty dictation adds nothing. Existing typed text is preserved and the completed segment appends once.
 
 Verification: 12 focused callback/composer/shared-feed tests pass; two real Mac UI/local-socket tests pass for the empty-final/edit flow and the existing normal-final/explicit-send/capture flow. The retained empty-final screenshot was visually inspected. The signed iPhone build passes. All recognition input in this regression was synthetic; no paid providers were used. The physical Stop/edit retest remains pending readiness; this is not a claimed end-to-end fix on the phone yet.
+
+## Physical Stop/edit/Clear draft retest
+
+Installed and launched signed candidate corresponding to `da0f39a` after explicit founder readiness. The founder confirmed that both requested flows worked: Dictate → Stop retained editable words, and Clear draft removed them. This is founder-observed physical speech/draft evidence, not an independently captured screenshot or recognition-event trace. No Send or paid transcription/model request was part of these steps. The previous callback crash and Stop-loss reports remain preserved above.
+
+Local Clear draft verification additionally passed nine composer tests and one actual Mac UI/local-socket check covering stopped/editable and active dictation clearing; signed iPhone build passed. Pending physical gates: permission-denied UX, interruption draft preservation, explicit Send/final words and simultaneous meeting capture. PR remains draft and the backend prompt remains unchanged.
