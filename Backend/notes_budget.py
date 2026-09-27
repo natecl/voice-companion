@@ -12,14 +12,16 @@ class NotesBudget:
         if not self.path.exists():raise ValueError('Provision notes allowance before enablement')
         with database(self.path) as db:
             rows=db.execute('SELECT id,cap,max_calls FROM notes_allocation').fetchall()
-            if len(rows)!=1:raise ValueError('One explicit notes allocation required')
-            self.approval,self.cap,self.max_calls=rows[0]
-            if self.cap<=0 or self.max_calls<=0 or self.cap>self.max_calls*PER_CALL:
-                raise ValueError('Invalid notes allocation')
-            allocated=admission.db.execute('SELECT reserved FROM request WHERE id=?',(self.approval,)).fetchone()
-            marker=admission.db.execute('SELECT 1 FROM allocation_request WHERE id=?',(self.approval,)).fetchone()
-            if allocated is None or allocated[0]!=self.cap or not marker:
-                raise ValueError('Notes allowance must already be reserved globally')
+            if not rows:raise ValueError('Explicit notes allocation required')
+            self.cap=0;self.max_calls=0
+            for approval,cap,max_calls in rows:
+                if cap<=0 or max_calls<=0 or cap>max_calls*PER_CALL:
+                    raise ValueError('Invalid notes allocation')
+                allocated=admission.db.execute('SELECT reserved FROM request WHERE id=?',(approval,)).fetchone()
+                marker=admission.db.execute('SELECT 1 FROM allocation_request WHERE id=?',(approval,)).fetchone()
+                if allocated is None or allocated[0]!=cap or not marker:
+                    raise ValueError('Notes allowance must already be reserved globally')
+                self.cap+=cap;self.max_calls+=max_calls
 
     def reserve(self,attempt,model):
         if model!='gpt-6-luna':raise Rejected('unapproved_notes_model')

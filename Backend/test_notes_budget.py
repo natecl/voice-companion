@@ -37,3 +37,16 @@ class NotesBudgetTests(unittest.TestCase):
         self.assertFalse(notes_setting({}))
         with self.assertRaises(ValueError):notes_setting({'VOICE_ENABLE_RECORDING_NOTES':'1'})
         self.assertTrue(notes_setting({'VOICE_ENABLE_RECORDING_NOTES':'1','VOICE_ENABLE_MEMORY':'1'}))
+
+    def test_separate_funded_extension_keeps_old_attempts(self):
+        self.provision();budget=NotesBudget(self.path,self.admission)
+        for attempt in ['a','b']:budget.reserve(attempt,'gpt-6-luna');budget.finish(attempt,{})
+        credential=self.admission.db.execute('SELECT id FROM credential LIMIT 1').fetchone()[0]
+        self.admission.db.execute('INSERT INTO request VALUES(?,?,?,?,?,?)',('extra',credential,'ask',0,25000,'completed'))
+        with database(self.path) as db:db.execute('INSERT INTO notes_allocation VALUES(?,?,?)',('extra',25000,1))
+        with self.assertRaises(ValueError):NotesBudget(self.path,self.admission)
+        self.admission.db.execute('INSERT INTO allocation_request VALUES(?)',('extra',))
+        reopened=NotesBudget(self.path,self.admission)
+        reopened.reserve('c','gpt-6-luna');reopened.finish('c',{})
+        with self.assertRaises(Rejected):reopened.reserve('d','gpt-6-luna')
+        with database(self.path) as db:self.assertEqual(db.execute('SELECT count(*) FROM notes_attempt').fetchone()[0],3)
