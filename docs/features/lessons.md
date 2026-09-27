@@ -52,3 +52,7 @@ The [offline comparison](../notes-retrieval-comparison.md) recovered required ev
 ### Notes index foundation
 
 Schema18 indexes sourced note entries transactionally and invalidates them with their source. Use `Backend/notes_search.py` for the new bounded candidate boundary; it is not yet connected to the deployed companion. The [consolidation plan](../notes-first-memory-plan.md) records actual migration/search QA and the remaining Jev/answer gate. Keep runtime retrieval claims separate from this storage checkpoint.
+
+### Notes can change usefulness judgments even when evidence is duplicated
+
+In the [matched semantic comparison](../matched-recall-comparison.md), adding note versions of two competing venue reports caused Jev to classify the unconfirmed alternative as topical. Notes-first then omitted that side of the disagreement while indexed recall preserved both. Treat omitted counterevidence as an acceptance failure even when the answer still says it is uncertain. Preserve the failed candidate pool and judgments; do not count shorter incomplete answers as a cost improvement or tune thresholds to one fixture.
