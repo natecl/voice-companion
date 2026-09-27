@@ -1,6 +1,6 @@
 # Jev past-memory gate: bounded shadow screen
 
-Decision: promising conservative routing, not yet a demonstrated efficiency improvement. Do not enable in production based on this screen alone. Existing chat, attached recording and live transcript stay available; the proposed gate only concerns past retrieval. No runtime files or flags changed.
+Founder decision after review: leave the experimental past-memory gate disabled. It was never integrated into production; no runtime toggle or deployment is required. Reconsider only after a new explicit decision and evidence of benefit. The conservative routing screen was promising, but did not demonstrate an efficiency improvement. Existing chat, attached recording and live transcript stay available; the proposed gate only concerns past retrieval. No runtime files or flags changed.
 
 Founder approved $0.08 for sixteen Jev calls, no retries. The operator ledger is `memory-gate-20260927-008`, separate from production. Combined approved envelopes are $5.83; runtime cap remains $5. Provider reservations are bounds, not an invoice.
 

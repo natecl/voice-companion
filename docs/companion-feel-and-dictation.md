@@ -120,3 +120,5 @@ There is no explicit normal-chat/brainstorm/retrieval classifier or mode switch.
 ### Optional retrieval-gate screen
 
 The founder-approved [sixteen-case Jev screen](memory-gate-screen.md) retained all useful/ambiguous cases under a conservative threshold and skipped seven self-contained cases. It added 174 ms median provider latency; net cost/latency savings remain unproven. No production routing change.
+
+Founder decision after the screen: keep the experimental retrieval gate disabled. Ordinary memory retrieval and Jev evidence ranking remain unchanged. The isolated evaluation is retained for reference only.
