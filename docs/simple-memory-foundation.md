@@ -100,7 +100,7 @@ PYTHONPATH=Backend python3 Backend/evaluate_source_verification.py work/source-s
 
 Final integration: 87 targeted checks pass, including actual local hosted process startup/history with the unified switch enabled. The switch requires independent source verification and constructs the same writer policy exercised above; the old disabled-switch behavior remains available for rollback. No new public API or app UI is introduced. The one-store approach retains existing provenance/correction tables; it simplifies orchestration without rebuilding or duplicating the database. No broad claim of faster learning or long-recording semantic quality follows from this short fixture.
 
-### Internal rollout proposal (approval pending)
+### Internal rollout procedure (subsequently approved and completed)
 
 Read-only preflight found deployed schema 17, nine live sources, ten completed/eight obsolete learning jobs, no queued learning jobs, and one ready note. The actual service process has notes, rework, independent verification and retained memory enabled; unified recall remains disabled. SSH shell variables differ from the serving process and must not be used as rollout-state evidence.
 
@@ -110,4 +110,4 @@ Read-only preflight found deployed schema 17, nine live sources, ten completed/e
 4. Verify health, authenticated history, storage integrity, selected configuration and job state. No new provider spend is authorized by rollout approval. If a paid or founder-assisted check becomes necessary, stop for its specific allowance/readiness.
 5. If rollout fails, turn the unified switch off while keeping schema-18-compatible code. Do not restore stale usage ledgers or roll an old schema-17 binary over the migrated database. Preserve failure evidence. Remove obsolete compatibility code only after the internal rollback boundary and acceptance are established.
 
-The replacement is ready for this controlled rollout; deployment and post-deployment checks are not yet complete.
+The founder subsequently approved this rollout. Deployment and post-deployment checks are complete; see [rollout evidence and limits](simple-memory-rollout.md). Earlier candidate statuses above describe their historical checkpoints.
