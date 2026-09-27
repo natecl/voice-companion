@@ -9,6 +9,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 TESTS = [
+    'CompanionPhoneUITests/testExperienceGalleryAndAttachmentPicker',
     'CompanionPhoneUITests/testCompanionAndCaptureNavigation',
     'CompanionPhoneUITests/testHomeSearchSharedDraftAndTranscriptSheet',
     'RecordingNotesPhoneUITests/testNotesSupportingPassageRelaunchAndDeletion',
@@ -18,9 +19,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--simulator', required=True)
     parser.add_argument('--derived-data', default='/tmp/VoiceCompanion-ExperienceQA')
+    parser.add_argument('--test', action='append', help='Run only this PhoneUITests class/method')
+    parser.add_argument('--results', default='/tmp/VoiceCompanion-ExperienceResults')
     args = parser.parse_args()
+    results = Path(args.results) / time.strftime('%Y%m%d-%H%M%S')
+    results.mkdir(parents=True, exist_ok=True)
     subprocess.run(['xcodegen', 'generate'], cwd=ROOT, check=True)
-    for test in TESTS:
+    for test in args.test or TESTS:
         with tempfile.TemporaryDirectory(prefix='companion-ui-') as directory:
             service = subprocess.Popen([os.sys.executable, str(ROOT / 'Backend/companion_fixture.py'), directory, '--ui', '--notes'], cwd=ROOT)
             try:
@@ -33,7 +38,7 @@ def main():
                 env = os.environ.copy()
                 env['TEST_RUNNER_VOICE_MEMORY_UI_CONFIG'] = config.read_text()
                 print(f'Running {test} with a fresh local owner', flush=True)
-                subprocess.run(['xcodebuild', '-scheme', 'Phone', '-destination', f'platform=iOS Simulator,id={args.simulator}', '-derivedDataPath', args.derived_data, 'test', f'-only-testing:PhoneUITests/{test}', 'CODE_SIGNING_ALLOWED=NO'], cwd=ROOT, env=env, check=True)
+                subprocess.run(['xcodebuild', '-scheme', 'Phone', '-destination', f'platform=iOS Simulator,id={args.simulator}', '-derivedDataPath', args.derived_data, 'test', '-resultBundlePath', str(results / (test.replace('/', '-') + '.xcresult')), f'-only-testing:PhoneUITests/{test}', 'CODE_SIGNING_ALLOWED=NO'], cwd=ROOT, env=env, check=True)
             finally:
                 service.terminate()
                 service.wait(timeout=10)

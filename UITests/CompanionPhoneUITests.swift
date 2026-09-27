@@ -3,6 +3,60 @@ import XCTest
 #if os(iOS)
 @MainActor
 final class CompanionPhoneUITests: XCTestCase {
+    func testExperienceGalleryAndAttachmentPicker() throws {
+        continueAfterFailure = false
+        let config = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"])
+        let configObject = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(config.utf8)) as? [String: Any])
+        let owner = try XCTUnwrap(configObject["memoryOwnerID"] as? String)
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let summaries = ["Test the first version with five people.", "A simple direction for the launch.", "A few places to explore and things to try.", "Keep capture simple and chat close by."]
+        let minutes = [12, 18, 6, 24]
+        let dates = [today.addingTimeInterval(37440), today.addingTimeInterval(29700), today.addingTimeInterval(-22680), today.addingTimeInterval(-35400)]
+        let samples: [[String: Any]] = summaries.enumerated().map { index, summary in
+            ["id": UUID().uuidString, "createdAt": dates[index].timeIntervalSinceReferenceDate,
+             "completed": true, "source": "microphone", "recordingSeconds": minutes[index] * 60,
+             "memoryOwnerID": owner, "memoryTerminal": true,
+             "transcript": ["segments": [["start": 0, "duration": 2, "text": summary, "words": [], "isFinal": true]]]]
+        }
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--companion-ui-fixture", "--experience-gallery"]
+        app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = config
+        app.launchEnvironment["VOICE_UI_SESSION_FIXTURE"] = String(data: try JSONSerialization.data(withJSONObject: samples), encoding: .utf8)
+        app.launch(); defer { app.terminate() }
+        XCTAssertTrue(app.buttons["homeNavigation"].waitForExistence(timeout: 5))
+        app.buttons["homeNavigation"].tap()
+        XCTAssertEqual(app.buttons.matching(identifier: "savedSession").count, 4)
+        // Open the first note to wait on actual fixture generation, then refresh library titles.
+        app.buttons["savedSession"].firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["notesTitle"].waitForExistence(timeout: 15))
+        snapshot(app, "Polished notes")
+        app.buttons["Close recording"].tap()
+        XCTAssertTrue(app.staticTexts["Product planning"].waitForExistence(timeout: 5))
+        snapshot(app, "Polished Home — four synthetic recordings")
+        app.buttons["Attachments and message options"].tap()
+        app.buttons["chooseRecordingAttachment"].tap()
+        XCTAssertTrue(app.buttons["attachRecordingRow"].firstMatch.waitForExistence(timeout: 5))
+        snapshot(app, "Recording attachment picker")
+        app.buttons["attachRecordingRow"].firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["chatAttachment"].waitForExistence(timeout: 5))
+        app.buttons["removeAttachment"].tap()
+        app.buttons["agentNavigation"].tap()
+        snapshot(app, "Polished Agent")
+        app.buttons["Account"].tap()
+        snapshot(app, "Account")
+        app.buttons["Sign-up preview"].tap()
+        snapshot(app, "Sign-up preview")
+        app.navigationBars.buttons.firstMatch.tap()
+        app.buttons["Plan preview"].tap()
+        snapshot(app, "Pricing preview")
+    }
+
+    private func snapshot(_ app: XCUIApplication, _ name: String) {
+        let image = XCTAttachment(screenshot: app.screenshot())
+        image.name = name; image.lifetime = .keepAlways; add(image)
+    }
+
     func testHomeSearchSharedDraftAndTranscriptSheet() throws {
         continueAfterFailure = false
         let app = XCUIApplication()

@@ -5,7 +5,7 @@ The approved Home mockup is the visual baseline: white canvas, neutral surfaces,
 ## Delivered behavior
 
 - Home groups saved recordings by day, shows available generated titles and transcript previews, and searches local transcript text without a model call. Search does not yet index generated titles.
-- Home and Agent share the same draft, attachment, dictation controls, and persistent conversation. Sending from Home opens Agent. Mic dictates a private editable message; the separate plus starts meeting capture.
+- Home and Agent share the same draft, attachment, dictation controls, and persistent conversation. Sending from Home opens Agent. Mic dictates a private editable message; the inner plus opens attachment options and a recording picker, while the separate black plus starts meeting capture.
 - The capture bar shows elapsed time and state, opens a live transcript sheet, and has Stop without Pause. Closing the sheet keeps capture running. Capture completion opens saved notes automatically.
 - Saved notes retain the Notes/Transcript switch, original supporting passages, and Ask Agent attachment behavior. Deletion is in the recording menu, with confirmation on the sheet.
 - Account exposes the existing memory preference and honest configuration/recording information. Sign-up (Google above Apple) and pricing layouts are explicitly design previews: OAuth, StoreKit, prices, legal URLs, and plan allowances are not implemented or invented.
@@ -24,13 +24,18 @@ xcodebuild -scheme Mac -destination 'platform=macOS' build CODE_SIGN_IDENTITY=-
 
 The UI script creates a fresh local service and memory owner for each scenario. It exercises the real native screens, sockets, storage, and notes worker with synthetic capture/provider input. No microphone audio or paid provider calls are made.
 
-Final simulator run: iPhone 17 Pro simulator, iOS 26.5, September 27. All three scenarios passed (20.242s, 18.484s, 20.979s). The final Mac build passed. Actual rendered screenshots were inspected: [Home](qa/native-experience/home.png) and [Notes](qa/native-experience/notes.png). These contain only synthetic fixture content.
+Final simulator run: iPhone 17 Pro simulator, iOS 26.5, September 27. All four scenarios passed (21.978s, 18.359s, 20.564s, 20.978s). The final Mac build passed. Result bundles are preserved by the QA script; this run is under `/tmp/VoiceCompanion-ExperienceResults/20260927-160211/`.
+
+Rendered screenshots were inspected: [Home](qa/native-experience/home.png), [Agent](qa/native-experience/agent.png), [Notes](qa/native-experience/notes.png), [Attachments](qa/native-experience/attachments.png), [Account](qa/native-experience/account.png), [Sign-up preview](qa/native-experience/signup.png), and [Pricing preview](qa/native-experience/pricing.png). These contain only synthetic fixture content.
+
+The fidelity revision removes the separate material footer, puts the composer and capture control on the continuous white canvas, matches the mockup's outlined icon silhouettes, and refines list spacing, duration metadata, neutral contrast, composer proportions and shadows. Shared styling extends to account and preview screens. A DEBUG-only isolated gallery seeds four recordings for reproducible visual comparison; it cannot seed the production store.
 
 Acceptance scenarios:
 
 1. Capture while asking, inspect source/transcript, return, stop into saved notes, attach/remove the recording, relaunch the persistent conversation.
 2. Preserve a draft across Home/Agent, start capture, inspect/dismiss the live sheet without stopping, stop into notes, search matching/empty results, and dictate an editable message.
 3. Generate/read saved notes, reopen a supporting passage, relaunch, and delete through the sheet confirmation.
+4. Render four dated recordings, inspect generated notes and the shared screen gallery, attach a recording through the composer plus, and remove it.
 
 During iteration, UI execution caught duplicate accessible Stop controls behind a sheet and an alert attached to the wrong presentation layer. Those were fixed. The QA runner now isolates owners to avoid selecting an older offscreen citation from a previous run.
 

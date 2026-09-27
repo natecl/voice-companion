@@ -121,13 +121,13 @@ final class CompanionUITests: XCTestCase {
             attachment.name = "Empty final preserves editable speech — synthetic input"
             attachment.lifetime = .keepAlways; add(attachment)
             let clear = app.buttons["clearCompanionDraft"]
-            app.popUpButtons["Message options"].tap()
+            app.popUpButtons["Attachments and message options"].tap()
             clear.tap()
             XCTAssertEqual(field.value as? String, "")
             XCTAssertFalse(app.staticTexts["dictationNotice"].exists)
             dictate.tap()
             XCTAssertTrue(app.buttons["stopDictation"].waitForExistence(timeout: 3))
-            app.popUpButtons["Message options"].tap()
+            app.popUpButtons["Attachments and message options"].tap()
             clear.tap()
             XCTAssertEqual(field.value as? String, "")
             XCTAssertTrue(dictate.exists)

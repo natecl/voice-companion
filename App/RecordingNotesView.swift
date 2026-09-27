@@ -13,7 +13,7 @@ struct RecordingNotesView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 18) {
             if let result, result.state == "ready", let notes = result.notes {
                 Text(notes.title).font(.title2.bold()).accessibilityIdentifier("notesTitle")
                 if result.incomplete { Text("Notes from an incomplete recording").font(.caption) }
@@ -22,17 +22,18 @@ struct RecordingNotesView: View {
                     Text(section.heading).font(.headline)
                     ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in bullet(item) }
                 }
-                Text("Generated from this transcript. Check the supporting passages for details.").font(.caption).foregroundStyle(.secondary)
+                Text("Generated from this transcript. Check the supporting passages for details.").font(.caption).foregroundStyle(ExperienceStyle.secondary)
             } else if loading {
                 ExperienceThinkingStatus(label: "Preparing notes…").accessibilityIdentifier("notesLoading")
             } else {
-                Text(status).foregroundStyle(.secondary).accessibilityIdentifier("notesStatus")
+                Text(status).foregroundStyle(ExperienceStyle.secondary).accessibilityIdentifier("notesStatus")
                 if result?.state == "failed", !["empty_transcript", "notes_input_too_large"].contains(result?.error ?? "") {
                     Button("Retry notes") { retry = true; refresh += 1 }.accessibilityIdentifier("retryNotes")
                 }
                 Button("Refresh notes") { refresh += 1 }.accessibilityIdentifier("refreshNotes")
             }
         }
+        .font(.callout)
         .task(id: "\(attachment.session_id):\(attachment.revision):\(refresh):\(scenePhase)") {
             guard scenePhase == .active else { return }
             result = nil; unavailable = false; loading = true
@@ -71,8 +72,11 @@ struct RecordingNotesView: View {
             Text(item.text).textSelection(.enabled).accessibilityIdentifier("notesText")
             ScrollView(.horizontal) { HStack {
                 ForEach(item.passages, id: \.self) { passage in
-                    Button("Passage \(passage.dropFirst())") { onPassage(passage) }
-                        .font(.caption).frame(minHeight: 44).accessibilityIdentifier("notesPassage")
+                    Button { onPassage(passage) } label: {
+                        HStack(spacing: 5) { ExperienceSymbol(name: "doc.text").frame(width: 12, height: 14); Text("Passage \(passage.dropFirst())") }
+                            .font(.caption).padding(.horizontal, 10).padding(.vertical, 7)
+                            .background(ExperienceStyle.surface, in: Capsule())
+                    }.frame(minHeight: 44).accessibilityIdentifier("notesPassage")
                 }
             } }
         }

@@ -37,6 +37,14 @@ async def main(directory):
             def finish(self,*args):pass
         async def note_provider(request):
             await asyncio.sleep(.5)
+            for title, summary in [
+                ('Product planning', 'Test the first version with five people.'),
+                ('Walk with Sam', 'A simple direction for the launch.'),
+                ('Ideas for the weekend', 'A few places to explore and things to try.'),
+                ('Design review', 'Keep capture simple and chat close by.'),
+            ]:
+                if summary in json.dumps(request):
+                    return dict(data=dict(title=title,overview=dict(text=summary,passages=['p1']),sections=[]),usage={})
             return dict(data=dict(title='Maya’s swimming',overview=dict(text='Maya enjoys swimming.',passages=['p1']),sections=[]),usage={})
         notes_service=NotesService(ledger,store)
         worker=NotesWorker(NotesGenerator(store,note_provider,FixtureBudget()),ledger)

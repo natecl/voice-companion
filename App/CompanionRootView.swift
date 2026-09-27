@@ -12,6 +12,7 @@ struct CompanionRootView: View {
     @State private var searching = false
     @State private var searchText = ""
     @State private var showingAccount = false
+    @State private var showingAttachments = false
     @State private var recordingTab = "Notes"
     @State private var notePassage: MemoryPassage?
     @State private var confirmingDeletion = false
@@ -51,7 +52,7 @@ struct CompanionRootView: View {
     }
     var body: some View {
         VStack(spacing: 0) {
-            navigation.padding(.horizontal, 20).padding(.vertical, 12)
+            navigation.padding(.horizontal, 16).padding(.vertical, 2)
             if let error = recording.errorMessage {
                 Text(error).font(.callout).foregroundStyle(.red).padding(.horizontal, 20)
             }
@@ -70,8 +71,8 @@ struct CompanionRootView: View {
             VStack(spacing: 12) {
                 if recording.liveStatus != nil, selectedID == nil { captureBar }
                 composer
-            }.padding(.horizontal, 16).padding(.top, 12).padding(.bottom, 10)
-                .background(.regularMaterial)
+            }.padding(.horizontal, 18).padding(.top, 14).padding(.bottom, 14)
+                .background(ExperienceStyle.canvas)
         }
         .background(ExperienceStyle.canvas)
         .preferredColorScheme(.light)
@@ -79,7 +80,7 @@ struct CompanionRootView: View {
         .tint(ExperienceStyle.ink)
         .buttonStyle(.plain)
         .frame(minWidth: 300, minHeight: 420)
-        .accessibilityHidden(selectedID != nil || showingAccount)
+        .accessibilityHidden(selectedID != nil || showingAccount || showingAttachments)
         .sheet(isPresented: Binding(get: { selectedID != nil }, set: { if !$0 { selectedID = nil; citedSource = nil } })) {
             VStack(spacing: 16) {
                 HStack {
@@ -129,6 +130,7 @@ struct CompanionRootView: View {
                      : "The transcript and answers tied to it will be removed. Learned memories and their supporting excerpts may remain with your companion.")
             }
         }
+        .sheet(isPresented: $showingAttachments) { attachmentPicker }
         .sheet(isPresented: $showingAccount) {
             accountContent
         }
@@ -174,16 +176,16 @@ struct CompanionRootView: View {
                         if chat.nextBefore != nil {
                             Button("Earlier messages") { chat.loadEarlier() }.disabled(chat.isBusy)
                         }
-                        if chat.turns.isEmpty, chat.response == nil { VStack(alignment: .leading, spacing: 12) { Text("What’s on your mind?").font(.largeTitle.weight(.semibold)); Text("Talk things through, or capture a conversation to come back to.").foregroundStyle(.secondary) }.padding(.vertical, 48) }
+                        if chat.turns.isEmpty, chat.response == nil { VStack(alignment: .leading, spacing: 12) { Text("What’s on your mind?").font(.title2.weight(.semibold)); Text("Talk things through, or capture a conversation to come back to.").foregroundStyle(ExperienceStyle.secondary) }.padding(.vertical, 48) }
                         ForEach(chat.turns) { turn in
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(turn.question).padding(16).background(ExperienceStyle.surface, in: RoundedRectangle(cornerRadius: 22)).frame(maxWidth: .infinity, alignment: .trailing)
                                 if let answer = turn.answer { Text(CompanionMessageText.presented(answer)).textSelection(.enabled).accessibilityIdentifier("companionAnswer") }
-                                if turn.state != .complete { Text(turnLabel(turn.state)).font(.caption).foregroundStyle(.secondary) }
+                                if turn.state != .complete { Text(turnLabel(turn.state)).font(.caption).foregroundStyle(ExperienceStyle.secondary) }
                                 ForEach(CompanionMessageText.showsEvidence ? turn.citations : [], id: \.id) { citation in
                                     if citation.source.retained_claim_id != nil {
                                         Text("Memory \(citation.id) · recording deleted")
-                                            .font(.caption).foregroundStyle(.secondary)
+                                            .font(.caption).foregroundStyle(ExperienceStyle.secondary)
                                             .accessibilityIdentifier("retainedMemoryReference")
                                     } else {
                                         Button("Source \(citation.id)") { openSource(turn: turn.id, citation: citation.id, owner: chat.owner) }
@@ -203,7 +205,7 @@ struct CompanionRootView: View {
                             }
                         }
                     }.padding(24).frame(maxWidth: 760, alignment: .leading).frame(maxWidth: .infinity)
-                }.scrollDismissesKeyboard(.interactively).defaultScrollAnchor(.bottom)
+                }.scrollDismissesKeyboard(.interactively).defaultScrollAnchor(chat.turns.isEmpty && chat.response == nil ? .center : .bottom)
             }
         } else {
             ContentUnavailableView("Your companion", systemImage: "bubble.left", description: Text(sourceNotice ?? "Connecting…"))
@@ -214,7 +216,7 @@ struct CompanionRootView: View {
         if let chat {
             @Bindable var chat = chat
             VStack(alignment: .leading, spacing: 8) {
-                if let notice = chat.notice ?? sourceNotice { Text(notice).font(.caption).foregroundStyle(.secondary) }
+                if let notice = chat.notice ?? sourceNotice { Text(notice).font(.caption).foregroundStyle(ExperienceStyle.secondary) }
                 if let attachment = chat.attachment {
                     HStack(spacing: 12) {
                         Label("Attached recording", systemImage: "doc.text").font(.caption).accessibilityIdentifier("chatAttachment")
@@ -232,28 +234,31 @@ struct CompanionRootView: View {
                     Text("Meeting capture is paused while you dictate. It resumes automatically.")
                         .font(.caption).accessibilityIdentifier("meetingDictationPause")
                 }
-                HStack(alignment: .bottom, spacing: 12) {
-                    VStack(alignment: .leading, spacing: 10) {
+                HStack(alignment: .bottom, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 6) {
                         TextField("Message Agent", text: Binding(
                             get: { ComposerDictation.appending(dictation.text, to: chat.draft) },
-                            set: { if !dictation.isActive { chat.draft = $0 } }), axis: .vertical)
-                            .textFieldStyle(.plain).font(.body).disabled(dictation.isActive)
+                            set: { if !dictation.isActive { chat.draft = $0 } }), prompt: Text("Message Agent").foregroundStyle(ExperienceStyle.secondary), axis: .vertical)
+                            .textFieldStyle(.plain).font(.callout).padding(.horizontal, 2).disabled(dictation.isActive)
                             .focused($composing).lineLimit(1...4).accessibilityIdentifier("companionDraft")
                         HStack(spacing: 8) {
                             Menu {
+                                Button("Attach a recording", systemImage: "doc.text") { composing = false; showingAttachments = true }
+                                    .accessibilityIdentifier("chooseRecordingAttachment")
+                                Divider()
                                 Toggle("Use past memory", isOn: $chat.useMemory)
                                 Button("Clear draft", role: .destructive) { dictation.discard(); chat.draft = "" }
                                     .disabled(!dictation.isActive && chat.draft.isEmpty).accessibilityIdentifier("clearCompanionDraft")
                                 Button("Refresh conversation") { chat.refresh() }.disabled(chat.isBusy || recording.pendingMemoryDeletion)
-                            } label: { Image(systemName: "slider.horizontal.3").frame(width: 44, height: 44) }
-                                .accessibilityLabel("Message options")
+                            } label: { ExperienceSymbol(name: "plus").frame(width: 22, height: 22).frame(width: 36, height: 44) }
+                                .accessibilityLabel("Attachments and message options")
                             Spacer(minLength: 0)
                             if dictation.isActive {
                                 ExperienceIconButton("Stop dictation", icon: "stop.fill") {
                                     if dictation.state == .starting { dictation.interrupt() } else { dictation.finish(send: false) }
                                 }.disabled(dictation.state == .finishing).accessibilityIdentifier("stopDictation")
                             } else {
-                                ExperienceIconButton("Dictate message", icon: "mic") {
+                                ExperienceIconButton("Dictate message", icon: "mic", bare: true) {
                                     composing = false
                                     dictation.start { text, send in
                                         chat.draft = ComposerDictation.appending(text, to: chat.draft)
@@ -271,20 +276,22 @@ struct CompanionRootView: View {
                                 .accessibilityIdentifier("sendCompanion")
                             }
                         }
-                    }.padding(14).background(.white, in: RoundedRectangle(cornerRadius: 28))
-                        .overlay(RoundedRectangle(cornerRadius: 28).strokeBorder(ExperienceStyle.line, lineWidth: 1))
+                    }.padding(.horizontal, 14).padding(.top, 14).padding(.bottom, 5)
+                        .background(.white, in: RoundedRectangle(cornerRadius: 24))
+                        .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(ExperienceStyle.line, lineWidth: 1))
+                        .shadow(color: .black.opacity(0.045), radius: 16, y: 5)
                     if recording.liveStatus == nil {
-                        ExperienceIconButton("Capture meeting note", icon: "plus", filled: true, size: 56) {
+                        ExperienceIconButton("Capture meeting note", icon: "plus", filled: true, size: 58) {
                             composing = false; dictation.interrupt(); surface = "Companion"; recording.startRecording()
-                        }.accessibilityIdentifier("startRecording")
+                        }.padding(.bottom, 10).accessibilityIdentifier("startRecording")
                     }
                 }
             }
         } else {
             HStack {
-                Text("Set up your companion connection in Account.").font(.caption)
+                Text("Your companion connection is not configured.").font(.caption)
                 Spacer()
-                ExperienceIconButton("Capture meeting note", icon: "plus", filled: true, size: 56) { recording.startRecording() }
+                ExperienceIconButton("Capture meeting note", icon: "plus", filled: true, size: 58) { recording.startRecording() }
                     .accessibilityIdentifier("startRecording")
             }
         }
@@ -303,7 +310,7 @@ struct CompanionRootView: View {
 
                     if let session = selected {
                         HStack {
-                            Text(session.createdAt.formatted(date: .abbreviated, time: .shortened)).font(.subheadline).foregroundStyle(.secondary)
+                            Text(session.createdAt.formatted(date: .abbreviated, time: .shortened)).font(.subheadline).foregroundStyle(ExperienceStyle.secondary)
                             Text(recording.isActive && recording.current?.id == session.id ? "Recording" : session.completed ? "Saved" : "Incomplete · saved")
                                 .accessibilityIdentifier("librarySessionStatus")
                         }
@@ -337,9 +344,9 @@ struct CompanionRootView: View {
                             }
                             if session.transcript.segments.isEmpty {
                                 Text(active ? "Listening. Transcript will appear here as speech is received." : "No transcript was received.")
-                                    .foregroundStyle(.secondary).padding(.vertical, 16)
+                                    .foregroundStyle(ExperienceStyle.secondary).padding(.vertical, 16)
                             }
-                            if let notice = session.stopNotice { Text(notice).font(.caption).foregroundStyle(.secondary) }
+                            if let notice = session.stopNotice { Text(notice).font(.caption).foregroundStyle(ExperienceStyle.secondary) }
                             ForEach(session.transcript.segments) { segment in
                                 VStack(alignment: .leading) {
                                     Text("\(segment.start, specifier: "%.1f")s").font(.caption)
@@ -353,26 +360,59 @@ struct CompanionRootView: View {
         }
     }
     private var navigation: some View {
-        HStack(spacing: 8) {
-            ExperienceIconButton("Account", icon: "person.crop.circle") { composing = false; showingAccount = true }
-            Spacer(minLength: 0)
-            Button { surface = "Recordings" } label: {
-                Label("Home", systemImage: "house").font(.subheadline.weight(.semibold)).padding(.horizontal, 14).frame(minHeight: 44)
-                    .background(surface == "Recordings" ? ExperienceStyle.surface : .clear, in: Capsule())
-            }.accessibilityIdentifier("homeNavigation").accessibilityAddTraits(surface == "Recordings" ? .isSelected : [])
-            Button { surface = "Companion" } label: {
-                Label("Agent", systemImage: "bubble.left").font(.subheadline.weight(.semibold)).padding(.horizontal, 14).frame(minHeight: 44)
-                    .background(surface == "Companion" ? ExperienceStyle.surface : .clear, in: Capsule())
-            }.accessibilityIdentifier("agentNavigation").accessibilityAddTraits(surface == "Companion" ? .isSelected : [])
-            Spacer(minLength: 0)
+        HStack(spacing: 6) {
+            ExperienceIconButton("Account", icon: "person") { composing = false; showingAccount = true }
+            Spacer(minLength: 8)
+            navigationPill("Home", icon: "house", value: "Recordings", identifier: "homeNavigation")
+            navigationPill("Agent", icon: "bubble.left", value: "Companion", identifier: "agentNavigation")
+            Spacer(minLength: 8)
             ExperienceIconButton("Search recordings", icon: "magnifyingglass") { surface = "Recordings"; searching.toggle() }
                 .accessibilityIdentifier("searchRecordings")
         }
     }
 
+    private func navigationPill(_ title: String, icon: String, value: String, identifier: String) -> some View {
+        Button { surface = value } label: {
+            HStack(spacing: 9) {
+                ExperienceSymbol(name: icon).frame(width: 22, height: 22)
+                Text(title).font(.system(size: 15, weight: surface == value ? .semibold : .medium))
+            }.padding(.horizontal, 17).frame(height: 42)
+                .background(surface == value ? ExperienceStyle.surface : .white, in: Capsule())
+                .overlay(Capsule().strokeBorder(surface == value ? .clear : ExperienceStyle.line, lineWidth: 1))
+        }.accessibilityIdentifier(identifier).accessibilityAddTraits(surface == value ? .isSelected : [])
+    }
+
+    private var attachmentPicker: some View {
+        NavigationStack {
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 0) {
+                    if library.isEmpty { ContentUnavailableView("No recordings yet", systemImage: "doc.text", description: Text("Capture a conversation first, then attach it to your message.")) }
+                    ForEach(library) { session in
+                        let attachment = recording.companionAttachment(for: session)
+                        Button {
+                            chat?.attachment = attachment; showingAttachments = false
+                        } label: {
+                            HStack(spacing: 16) {
+                                ExperienceSymbol(name: "doc.text").frame(width: 24, height: 28)
+                                VStack(alignment: .leading, spacing: 5) {
+                                    RecordingLibraryTitle(attachment: attachment, personal: session.source == "personal_text", configuration: { try Self.config() }).font(.headline)
+                                    Text(attachment == nil ? "Available after synchronization" : session.createdAt.formatted()).font(.caption).foregroundStyle(ExperienceStyle.secondary)
+                                }
+                                Spacer()
+                            }.padding(.vertical, 18).contentShape(Rectangle())
+                        }.disabled(attachment == nil).accessibilityIdentifier("attachRecordingRow")
+                        Divider()
+                    }
+                }.padding(20)
+            }.experienceNavigationTitle("Attach a recording")
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showingAttachments = false } } }
+                .background(ExperienceStyle.canvas)
+        }.tint(ExperienceStyle.ink).presentationDetents([.medium, .large])
+    }
+
     private var homeContent: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
+            VStack(alignment: .leading, spacing: 0) {
                 if searching {
                     HStack {
                         Image(systemName: "magnifyingglass")
@@ -386,24 +426,34 @@ struct CompanionRootView: View {
                 }
                 ForEach(Array(matches.enumerated()), id: \.element.id) { index, session in
                     if index == 0 || dayTitle(session.createdAt) != dayTitle(matches[index - 1].createdAt) {
-                        Text(dayTitle(session.createdAt)).font(.subheadline.weight(.semibold)).foregroundStyle(.secondary).padding(.top, 8)
+                        Text(dayTitle(session.createdAt)).font(.footnote.weight(.semibold)).foregroundStyle(ExperienceStyle.secondary).padding(.top, index == 0 ? 8 : 14).padding(.bottom, 10)
                     }
                     Button { composing = false; selectedID = session.id; citedSource = nil } label: {
-                        HStack(alignment: .top, spacing: 18) {
-                            Image(systemName: "doc.text").font(.system(size: 26, weight: .regular)).frame(width: 32).padding(.top, 3)
-                            VStack(alignment: .leading, spacing: 7) {
+                        HStack(alignment: .center, spacing: 20) {
+                            ExperienceSymbol(name: "doc.text").frame(width: 24, height: 28).padding(.horizontal, 2)
+                            VStack(alignment: .leading, spacing: 3) {
                                 RecordingLibraryTitle(attachment: recording.companionAttachment(for: session), personal: session.source == "personal_text", refreshKey: "\(surface):\(selectedID?.uuidString ?? "")", configuration: { try Self.config() })
-                                    .font(.headline)
-                                Text(session.createdAt.formatted(date: .omitted, time: .shortened)).font(.subheadline).foregroundStyle(.secondary)
+                                    .font(.callout.weight(.semibold))
+                                Text(recordingMetadata(session)).font(.footnote).foregroundStyle(ExperienceStyle.secondary)
                                 Text(session.transcript.segments.first?.text ?? "Waiting for transcript…")
-                                    .font(.subheadline).foregroundStyle(.secondary).lineLimit(2)
+                                    .font(.footnote).foregroundStyle(ExperienceStyle.secondary).lineLimit(1)
                             }.frame(maxWidth: .infinity, alignment: .leading)
-                        }.contentShape(Rectangle()).padding(.bottom, 20)
-                            .overlay(alignment: .bottom) { Rectangle().fill(ExperienceStyle.line).frame(height: 1) }
+                        }.contentShape(Rectangle()).padding(.top, 2).padding(.bottom, 16)
+                            .overlay(alignment: .bottom) {
+                                if index + 1 < matches.count, dayTitle(matches[index + 1].createdAt) == dayTitle(session.createdAt) {
+                                    Rectangle().fill(ExperienceStyle.line).frame(height: 0.5)
+                                }
+                            }.padding(.bottom, 10)
                     }.accessibilityIdentifier("savedSession")
                 }
-            }.padding(24).frame(maxWidth: 760).frame(maxWidth: .infinity)
+            }.padding(.horizontal, 20).padding(.top, 10).frame(maxWidth: 760).frame(maxWidth: .infinity)
         }.scrollDismissesKeyboard(.interactively)
+    }
+
+    private func recordingMetadata(_ session: CaptureSession) -> String {
+        let time = session.createdAt.formatted(date: .omitted, time: .shortened)
+        guard let seconds = session.recordingSeconds else { return time }
+        return time + " · " + (seconds < 60 ? "\(Int(seconds)) sec" : "\(Int(seconds / 60)) min")
     }
 
     private func dayTitle(_ date: Date) -> String {
@@ -438,21 +488,21 @@ struct CompanionRootView: View {
                 Section("Companion") {
                     if let chat {
                         @Bindable var chat = chat
-                        Toggle("Use past memory", isOn: $chat.useMemory)
-                        Text("Your questions stay in your conversation. Dictated questions are kept out of meeting notes.").font(.callout).foregroundStyle(.secondary)
+                        Toggle("Use past memory", isOn: $chat.useMemory).tint(ExperienceStyle.ink)
+                        Text("Your questions stay in your conversation. Dictated questions are kept out of meeting notes.").font(.callout).foregroundStyle(ExperienceStyle.secondary)
                     } else { Text(sourceNotice ?? "Companion connection is not configured.") }
                 }
                 Section("Recording") {
                     Text("Capture starts only when you tap +.")
                     Text("This development build stops recordings after \(recording.recordingLimit.components.seconds) seconds.")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(ExperienceStyle.secondary)
                 }
                 Section("Account and subscription") {
-                    Text("This build uses an enrolled companion connection. Sign-in and subscriptions are not connected yet.").foregroundStyle(.secondary)
+                    Text("This build uses an enrolled companion connection. Sign-in and subscriptions are not connected yet.").foregroundStyle(ExperienceStyle.secondary)
                     NavigationLink("Sign-up preview") { ExperienceSignupView() }
                     NavigationLink("Plan preview") { ExperiencePricingView() }
                 }
-            }.navigationTitle("Account")
+            }.font(.callout).scrollContentBackground(.hidden).background(ExperienceStyle.canvas).tint(ExperienceStyle.ink).experienceNavigationTitle("Account")
                 .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showingAccount = false } } }
         }.frame(minWidth: 320, minHeight: 480)
     }
