@@ -1,0 +1,1981 @@
+[
+  {
+    "case": "correction",
+    "strategy": "indexed",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "correction",
+        "conversation_id": "b886047f-7488-4607-9085-0e0a80750de8"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "notes-correction",
+            "revision": 1,
+            "passage_id": "p2",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 8.0,
+            "speakers": [
+              1
+            ],
+            "text_start": 0,
+            "text_end": 79,
+            "text": "Sam: Tuesday will not work. Let us use Thursday at the garden pavilion instead.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "notes-correction",
+            "revision": 1,
+            "passage_id": "p3",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 16.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 97,
+            "text": "Morgan: Agreed, Thursday at the garden pavilion is the final plan. The library plan is cancelled.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          },
+          {
+            "session_id": "notes-correction",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 53,
+            "text": "Morgan: We proposed Tuesday at the library for Cedar.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p3"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "Cedar will meet at the garden pavilion on Thursday; the earlier library plan was cancelled. [[p1]] [[p2]]"
+      },
+      {
+        "type": "done",
+        "question_id": "correction",
+        "references": [
+          "p1",
+          "p2"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": false,
+        "usage": {
+          "input_tokens": 1441,
+          "output_tokens": 167
+        },
+        "recorded_provider_seconds": 0.1795240454375744
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": false,
+        "usage": {
+          "input_tokens": 1124,
+          "input_tokens_details": {
+            "cache_write_tokens": 1121,
+            "cached_tokens": 0
+          },
+          "output_tokens": 30,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1154
+        },
+        "recorded_provider_seconds": 1.2335537048056722
+      }
+    ]
+  },
+  {
+    "case": "correction",
+    "strategy": "notes",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "correction",
+        "conversation_id": "1f86b1c4-d4f2-49e5-ac11-60d8000bfe7b"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "notes-correction",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 53,
+            "text": "Morgan: We proposed Tuesday at the library for Cedar.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "notes-correction",
+            "revision": 1,
+            "passage_id": "p2",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 8.0,
+            "speakers": [
+              1
+            ],
+            "text_start": 0,
+            "text_end": 79,
+            "text": "Sam: Tuesday will not work. Let us use Thursday at the garden pavilion instead.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          },
+          {
+            "session_id": "notes-correction",
+            "revision": 1,
+            "passage_id": "p3",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 16.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 97,
+            "text": "Morgan: Agreed, Thursday at the garden pavilion is the final plan. The library plan is cancelled.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p3"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "Cedar will meet Thursday at the garden pavilion. The library plan was cancelled. [[p3]]"
+      },
+      {
+        "type": "done",
+        "question_id": "correction",
+        "references": [
+          "p3"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": false,
+        "usage": {
+          "input_tokens": 2071,
+          "output_tokens": 249
+        },
+        "recorded_provider_seconds": 0.14245150797069073
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": true,
+        "usage": {
+          "input_tokens": 1124,
+          "input_tokens_details": {
+            "cache_write_tokens": 1121,
+            "cached_tokens": 0
+          },
+          "output_tokens": 24,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1148
+        },
+        "recorded_provider_seconds": 1.6465367749333382
+      }
+    ]
+  },
+  {
+    "case": "omitted",
+    "strategy": "indexed",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "omitted",
+        "conversation_id": "bc1c5ba2-033d-4af4-984f-8166d9f86ac7"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "notes-lecture",
+            "revision": 1,
+            "passage_id": "p2",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 8.0,
+            "speakers": [
+              1
+            ],
+            "text_start": 0,
+            "text_end": 124,
+            "text": "A common cause can explain an observed association. For example, hot weather can increase both ice cream sales and swimming.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "Hot weather can increase both ice cream sales and swimming, so it\u2019s a common cause of their association. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "omitted",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": false,
+        "usage": {
+          "input_tokens": 1153,
+          "output_tokens": 126
+        },
+        "recorded_provider_seconds": 0.1384216072037816
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": true,
+        "usage": {
+          "input_tokens": 861,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 29,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 890
+        },
+        "recorded_provider_seconds": 1.1782950991764665
+      }
+    ]
+  },
+  {
+    "case": "omitted",
+    "strategy": "notes",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "omitted",
+        "conversation_id": "473fa8d9-3bc6-42b2-b568-abac328c1491"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "notes-lecture",
+            "revision": 1,
+            "passage_id": "p2",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 8.0,
+            "speakers": [
+              1
+            ],
+            "text_start": 0,
+            "text_end": 124,
+            "text": "A common cause can explain an observed association. For example, hot weather can increase both ice cream sales and swimming.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "Hot weather can increase both ice cream sales and swimming, so it\u2019s a common cause of their association. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "omitted",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": true,
+        "usage": {
+          "input_tokens": 1153,
+          "output_tokens": 126
+        },
+        "recorded_provider_seconds": 0.1384216072037816
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": true,
+        "usage": {
+          "input_tokens": 861,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 29,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 890
+        },
+        "recorded_provider_seconds": 1.1782950991764665
+      }
+    ]
+  },
+  {
+    "case": "appointment",
+    "strategy": "indexed",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "appointment",
+        "conversation_id": "1968737a-9616-4317-a481-84a5311a6b5e"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "notes-appointment",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 82,
+            "text": "Vet: The dog may have a food sensitivity, but we have not established a diagnosis.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "notes-appointment",
+            "revision": 1,
+            "passage_id": "p3",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 16.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 56,
+            "text": "Owner: So no confirmed diagnosis and no food change yet.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          },
+          {
+            "session_id": "notes-appointment",
+            "revision": 1,
+            "passage_id": "p2",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 8.0,
+            "speakers": [
+              1
+            ],
+            "text_start": 0,
+            "text_end": 93,
+            "text": "Keep the current food until we discuss the test results. If vomiting recurs, call the clinic.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p3"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "No. The vet said a food sensitivity was possible, but no diagnosis had been established. Keep the dog on its current food until you discuss the test results; if vomiting recurs, call the clinic. [[p1]] [[p3]]"
+      },
+      {
+        "type": "done",
+        "question_id": "appointment",
+        "references": [
+          "p1",
+          "p3"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": false,
+        "usage": {
+          "input_tokens": 1153,
+          "output_tokens": 126
+        },
+        "recorded_provider_seconds": 0.16764338966459036
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": true,
+        "usage": {
+          "input_tokens": 1134,
+          "input_tokens_details": {
+            "cache_write_tokens": 1131,
+            "cached_tokens": 0
+          },
+          "output_tokens": 53,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1187
+        },
+        "recorded_provider_seconds": 1.2774007339030504
+      }
+    ]
+  },
+  {
+    "case": "appointment",
+    "strategy": "notes",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "appointment",
+        "conversation_id": "4b2d4f68-03dd-4ce2-823d-c5a6334783d9"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "notes-appointment",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 82,
+            "text": "Vet: The dog may have a food sensitivity, but we have not established a diagnosis.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "notes-appointment",
+            "revision": 1,
+            "passage_id": "p3",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 16.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 56,
+            "text": "Owner: So no confirmed diagnosis and no food change yet.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          },
+          {
+            "session_id": "notes-appointment",
+            "revision": 1,
+            "passage_id": "p2",
+            "captured_at": 1790461403.0,
+            "timezone": "America/New_York",
+            "origin": "recording",
+            "start": 8.0,
+            "speakers": [
+              1
+            ],
+            "text_start": 0,
+            "text_end": 93,
+            "text": "Keep the current food until we discuss the test results. If vomiting recurs, call the clinic.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p3"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "No. The vet said a food sensitivity was possible, but no diagnosis had been established. Keep the dog on its current food until you discuss the test results; if vomiting recurs, call the clinic. [[p1]] [[p3]]"
+      },
+      {
+        "type": "done",
+        "question_id": "appointment",
+        "references": [
+          "p1",
+          "p3"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": true,
+        "usage": {
+          "input_tokens": 2084,
+          "output_tokens": 249
+        },
+        "recorded_provider_seconds": 0.14054765831679106
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": true,
+        "usage": {
+          "input_tokens": 1134,
+          "input_tokens_details": {
+            "cache_write_tokens": 1131,
+            "cached_tokens": 0
+          },
+          "output_tokens": 53,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1187
+        },
+        "recorded_provider_seconds": 1.2774007339030504
+      }
+    ]
+  },
+  {
+    "case": "personal",
+    "strategy": "indexed",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "personal",
+        "conversation_id": "78f412e9-beee-425f-8b21-95bfcf8e7892"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "anonymous",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 22,
+            "text": "I train for marathons.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "personal",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "personal_text",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 33,
+            "text": "My daughter Maya enjoys swimming.",
+            "lifecycle": [
+              {
+                "id": "00000000-0000-0000-0000-000000000067",
+                "text": "My daughter Maya enjoys swimming.",
+                "state": "active",
+                "reason": "supported",
+                "valid_from": 100.0,
+                "valid_until": null,
+                "replaces": null,
+                "basis": "stated",
+                "subject": "Maya",
+                "kind": "fact",
+                "profile_link": 1,
+                "identity_status": "legacy_unverified",
+                "entity_id": null,
+                "related_claims": []
+              }
+            ],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "Maya enjoys swimming. [[p2]] I can\u2019t tell whether you train for marathons: that statement appears in a recording, but its speaker hasn\u2019t been identified as you. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "personal",
+        "references": [
+          "p2",
+          "p1"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": false,
+        "usage": {
+          "input_tokens": 853,
+          "output_tokens": 85
+        },
+        "recorded_provider_seconds": 0.15080665424466133
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": false,
+        "usage": {
+          "input_tokens": 1073,
+          "input_tokens_details": {
+            "cache_write_tokens": 1070,
+            "cached_tokens": 0
+          },
+          "output_tokens": 45,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1118
+        },
+        "recorded_provider_seconds": 1.0868890881538391
+      }
+    ]
+  },
+  {
+    "case": "personal",
+    "strategy": "notes",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "personal",
+        "conversation_id": "0a75cfd4-fc78-44aa-ba3b-858ab86afc15"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "personal",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "personal_text",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 33,
+            "text": "My daughter Maya enjoys swimming.",
+            "lifecycle": [
+              {
+                "id": "00000000-0000-0000-0000-000000000067",
+                "text": "My daughter Maya enjoys swimming.",
+                "state": "active",
+                "reason": "supported",
+                "valid_from": 100.0,
+                "valid_until": null,
+                "replaces": null,
+                "basis": "stated",
+                "subject": "Maya",
+                "kind": "fact",
+                "profile_link": 1,
+                "identity_status": "legacy_unverified",
+                "entity_id": null,
+                "related_claims": []
+              }
+            ],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "anonymous",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 22,
+            "text": "I train for marathons.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "Maya enjoys swimming. [[p1]] I don\u2019t know whether you train for marathons: that claim appears in a recording, but its speaker hasn\u2019t been identified as you. [[p2]]"
+      },
+      {
+        "type": "done",
+        "question_id": "personal",
+        "references": [
+          "p1",
+          "p2"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": true,
+        "usage": {
+          "input_tokens": 1131,
+          "output_tokens": 126
+        },
+        "recorded_provider_seconds": 0.44249440636485815
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": true,
+        "usage": {
+          "input_tokens": 1073,
+          "input_tokens_details": {
+            "cache_write_tokens": 1070,
+            "cached_tokens": 0
+          },
+          "output_tokens": 45,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1118
+        },
+        "recorded_provider_seconds": 1.403991462662816
+      }
+    ]
+  },
+  {
+    "case": "change",
+    "strategy": "indexed",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "change",
+        "conversation_id": "5d2d5298-2f4e-4b18-a8fc-725d03b173f4"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "birch-new",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 71,
+            "text": "Project Birch now meets at the community center instead of the library.",
+            "lifecycle": [
+              {
+                "id": "00000000-0000-0000-0000-00000000006b",
+                "text": "Project Birch meets at the community center.",
+                "state": "active",
+                "reason": "supported",
+                "valid_from": 100.0,
+                "valid_until": null,
+                "replaces": "00000000-0000-0000-0000-000000000067",
+                "basis": "stated",
+                "subject": "Birch",
+                "kind": "event",
+                "profile_link": 0,
+                "identity_status": "legacy_unverified",
+                "entity_id": null,
+                "related_claims": [
+                  {
+                    "claim": "00000000-0000-0000-0000-000000000067",
+                    "relation": "supersedes"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "birch-old",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 35,
+            "text": "Project Birch meets at the library.",
+            "lifecycle": [
+              {
+                "id": "00000000-0000-0000-0000-000000000067",
+                "text": "Project Birch meets at the library.",
+                "state": "superseded",
+                "reason": "corrected",
+                "valid_from": 100.0,
+                "valid_until": null,
+                "replaces": null,
+                "basis": "stated",
+                "subject": "Birch",
+                "kind": "event",
+                "profile_link": 0,
+                "identity_status": "legacy_unverified",
+                "entity_id": null,
+                "related_claims": [
+                  {
+                    "claim": "00000000-0000-0000-0000-00000000006b",
+                    "relation": "superseded_by"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "Project Birch now meets at the community center, instead of the library. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "change",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": false,
+        "usage": {
+          "input_tokens": 848,
+          "output_tokens": 85
+        },
+        "recorded_provider_seconds": 0.1579976724460721
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": true,
+        "usage": {
+          "input_tokens": 1273,
+          "input_tokens_details": {
+            "cache_write_tokens": 1270,
+            "cached_tokens": 0
+          },
+          "output_tokens": 22,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1295
+        },
+        "recorded_provider_seconds": 0.7676250152289867
+      }
+    ]
+  },
+  {
+    "case": "change",
+    "strategy": "notes",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "change",
+        "conversation_id": "57e969f2-5603-4878-818d-aab62193a2af"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "birch-new",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 71,
+            "text": "Project Birch now meets at the community center instead of the library.",
+            "lifecycle": [
+              {
+                "id": "00000000-0000-0000-0000-00000000006b",
+                "text": "Project Birch meets at the community center.",
+                "state": "active",
+                "reason": "supported",
+                "valid_from": 100.0,
+                "valid_until": null,
+                "replaces": "00000000-0000-0000-0000-000000000067",
+                "basis": "stated",
+                "subject": "Birch",
+                "kind": "event",
+                "profile_link": 0,
+                "identity_status": "legacy_unverified",
+                "entity_id": null,
+                "related_claims": [
+                  {
+                    "claim": "00000000-0000-0000-0000-000000000067",
+                    "relation": "supersedes"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "birch-old",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 35,
+            "text": "Project Birch meets at the library.",
+            "lifecycle": [
+              {
+                "id": "00000000-0000-0000-0000-000000000067",
+                "text": "Project Birch meets at the library.",
+                "state": "superseded",
+                "reason": "corrected",
+                "valid_from": 100.0,
+                "valid_until": null,
+                "replaces": null,
+                "basis": "stated",
+                "subject": "Birch",
+                "kind": "event",
+                "profile_link": 0,
+                "identity_status": "legacy_unverified",
+                "entity_id": null,
+                "related_claims": [
+                  {
+                    "claim": "00000000-0000-0000-0000-00000000006b",
+                    "relation": "superseded_by"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "Project Birch now meets at the community center, instead of the library. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "change",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": true,
+        "usage": {
+          "input_tokens": 1136,
+          "output_tokens": 126
+        },
+        "recorded_provider_seconds": 0.14796721749007702
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": true,
+        "usage": {
+          "input_tokens": 1273,
+          "input_tokens_details": {
+            "cache_write_tokens": 1270,
+            "cached_tokens": 0
+          },
+          "output_tokens": 22,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1295
+        },
+        "recorded_provider_seconds": 0.7676250152289867
+      }
+    ]
+  },
+  {
+    "case": "retained",
+    "strategy": "indexed",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "retained",
+        "conversation_id": "e241466f-9f37-4d9f-84ae-ae54580f8419"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "retained_claim_id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+            "session_id": "correction",
+            "revision": 1,
+            "passage_id": "retained_481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+            "captured_at": 1790443639.5839324,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 73,
+            "text": "Project Juniper now meets at the community center instead of the library.",
+            "lifecycle": [
+              {
+                "id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+                "text": "Project Juniper now meets at the community center instead of the library.",
+                "subject": "mention_d63289561c5243c1b4438c0016f6d05d",
+                "kind": "fact",
+                "basis": "stated",
+                "observed": 1790460099.09375,
+                "valid_from": 1790443639.5839324,
+                "valid_until": null,
+                "state": "active",
+                "reason": "identity_supported_correction",
+                "replaces": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": "now",
+                  "captured_at": 1790443639.5839324,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "ambiguous_or_unsupported",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "correction",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": [
+                  {
+                    "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                    "relation": "supersedes"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p1"
+          },
+          {
+            "retained_claim_id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+            "session_id": "split-subject",
+            "revision": 1,
+            "passage_id": "retained_c1453a7f-74a3-401e-939b-81ec7579c3fe",
+            "captured_at": 1790443517.9455416,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 50,
+            "text": "Project Juniper's meeting location is the library.",
+            "lifecycle": [
+              {
+                "id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                "text": "Project Juniper's meeting location is the library.",
+                "subject": "mention_77488991b9b949659626270b9a6d5b03",
+                "kind": "fact",
+                "basis": "stated",
+                "observed": 1790460099.082089,
+                "valid_from": 1790443517.9455416,
+                "valid_until": null,
+                "state": "superseded",
+                "reason": "identity_supported_correction",
+                "replaces": null,
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": null,
+                  "captured_at": 1790443517.9455416,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "no_expression",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "split-subject",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": [
+                  {
+                    "claim": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+                    "relation": "superseded_by"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "From what I remember, Project Juniper now meets at the community center, not the library. [[p1]] The original recording isn\u2019t available to open; this detail is retained memory, not a viewable recording."
+      },
+      {
+        "type": "done",
+        "question_id": "retained",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": false,
+        "usage": {
+          "input_tokens": 1136,
+          "output_tokens": 126
+        },
+        "recorded_provider_seconds": 0.13738319277763367
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": true,
+        "usage": {
+          "input_tokens": 1897,
+          "input_tokens_details": {
+            "cache_write_tokens": 1894,
+            "cached_tokens": 0
+          },
+          "output_tokens": 48,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1945
+        },
+        "recorded_provider_seconds": 1.3776366440579295
+      }
+    ]
+  },
+  {
+    "case": "retained",
+    "strategy": "notes",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "retained",
+        "conversation_id": "aea57ac6-583d-466a-9387-eb248f25408b"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "retained_claim_id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+            "session_id": "correction",
+            "revision": 1,
+            "passage_id": "retained_481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+            "captured_at": 1790443639.5839324,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 73,
+            "text": "Project Juniper now meets at the community center instead of the library.",
+            "lifecycle": [
+              {
+                "id": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+                "text": "Project Juniper now meets at the community center instead of the library.",
+                "subject": "mention_d63289561c5243c1b4438c0016f6d05d",
+                "kind": "fact",
+                "basis": "stated",
+                "observed": 1790460099.09375,
+                "valid_from": 1790443639.5839324,
+                "valid_until": null,
+                "state": "active",
+                "reason": "identity_supported_correction",
+                "replaces": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": "now",
+                  "captured_at": 1790443639.5839324,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "ambiguous_or_unsupported",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "correction",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": [
+                  {
+                    "claim": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                    "relation": "supersedes"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p1"
+          },
+          {
+            "retained_claim_id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+            "session_id": "split-subject",
+            "revision": 1,
+            "passage_id": "retained_c1453a7f-74a3-401e-939b-81ec7579c3fe",
+            "captured_at": 1790443517.9455416,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 50,
+            "text": "Project Juniper's meeting location is the library.",
+            "lifecycle": [
+              {
+                "id": "c1453a7f-74a3-401e-939b-81ec7579c3fe",
+                "text": "Project Juniper's meeting location is the library.",
+                "subject": "mention_77488991b9b949659626270b9a6d5b03",
+                "kind": "fact",
+                "basis": "stated",
+                "observed": 1790460099.082089,
+                "valid_from": 1790443517.9455416,
+                "valid_until": null,
+                "state": "superseded",
+                "reason": "identity_supported_correction",
+                "replaces": null,
+                "judgment_version": "memory-evidence-v2.5",
+                "profile_link": 0,
+                "temporal_evidence": {
+                  "version": "calendar-reference-v2",
+                  "expression": null,
+                  "captured_at": 1790443517.9455416,
+                  "timezone": "UTC",
+                  "resolution": "unresolved",
+                  "date": null,
+                  "reason": "no_expression",
+                  "reported_status": "current",
+                  "basis": "stated",
+                  "session": "split-subject",
+                  "revision": 1
+                },
+                "identity_status": "established",
+                "entity_id": "3f22ebb6-b55e-4413-9ff7-9f5d9f781a03",
+                "related_claims": [
+                  {
+                    "claim": "481a0ab5-c08f-4a2d-b063-b7e8a393626d",
+                    "relation": "superseded_by"
+                  }
+                ]
+              }
+            ],
+            "evidence_type": "retained_memory",
+            "claim_scope": "derived_claim",
+            "source_available": false,
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "From what I remember, Project Juniper now meets at the community center, not the library. [[p1]] The original recording isn\u2019t available to open; this detail is retained memory, not a viewable recording."
+      },
+      {
+        "type": "done",
+        "question_id": "retained",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": true,
+        "usage": {
+          "input_tokens": 858,
+          "output_tokens": 85
+        },
+        "recorded_provider_seconds": 0.1364245256409049
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": true,
+        "usage": {
+          "input_tokens": 1897,
+          "input_tokens_details": {
+            "cache_write_tokens": 1894,
+            "cached_tokens": 0
+          },
+          "output_tokens": 48,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1945
+        },
+        "recorded_provider_seconds": 1.3776366440579295
+      }
+    ]
+  },
+  {
+    "case": "conflict",
+    "strategy": "indexed",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "conflict",
+        "conversation_id": "c6134c5a-cfca-4f75-aa4f-2ed90a4ab221"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "a",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 70,
+            "text": "Leah: I think the Northstar picnic is at Riverside Park this Saturday.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "b",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 113,
+            "text": "Amir: I heard the Northstar picnic would be at the botanical garden, but the organizer has not confirmed a venue.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "The venue isn\u2019t definite in these recordings. Riverside Park is only a guess, and the botanical garden is something Amir heard; he says the organizer hasn\u2019t confirmed the venue. [[p1]] [[p2]]"
+      },
+      {
+        "type": "done",
+        "question_id": "conflict",
+        "references": [
+          "p1",
+          "p2"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": false,
+        "usage": {
+          "input_tokens": 875,
+          "output_tokens": 85
+        },
+        "recorded_provider_seconds": 0.13175435084849596
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": false,
+        "usage": {
+          "input_tokens": 981,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 47,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1028
+        },
+        "recorded_provider_seconds": 1.1733092088252306
+      }
+    ]
+  },
+  {
+    "case": "conflict",
+    "strategy": "notes",
+    "status": "complete",
+    "conflict_coverage_failure": true,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "conflict",
+        "conversation_id": "f4eeb349-4649-4ad4-a662-093139e0dc5e"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "a",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 70,
+            "text": "Leah: I think the Northstar picnic is at Riverside Park this Saturday.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "The excerpt only says the Northstar picnic might be at Riverside Park; Leah says, \u201cI think,\u201d so the location isn\u2019t definite. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "conflict",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": false,
+        "usage": {
+          "input_tokens": 1484,
+          "output_tokens": 167
+        },
+        "recorded_provider_seconds": 0.15149819292128086
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": false,
+        "usage": {
+          "input_tokens": 846,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 36,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 882
+        },
+        "recorded_provider_seconds": 0.8835834749042988
+      }
+    ]
+  },
+  {
+    "case": "paraphrase",
+    "strategy": "indexed",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "paraphrase",
+        "conversation_id": "910ab122-92a4-4381-906e-cf2c7344ef38"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "cycling",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 73,
+            "text": "Riders may secure their bikes in the courtyard racks behind the entrance.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "You can secure your bicycle in the courtyard racks behind the entrance. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "paraphrase",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": false,
+        "usage": {
+          "input_tokens": 577,
+          "output_tokens": 44
+        },
+        "recorded_provider_seconds": 0.13512031827121973
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": false,
+        "usage": {
+          "input_tokens": 844,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 21,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 865
+        },
+        "recorded_provider_seconds": 0.9696978880092502
+      }
+    ]
+  },
+  {
+    "case": "paraphrase",
+    "strategy": "notes",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "paraphrase",
+        "conversation_id": "ab3db899-9cc2-4550-956f-65c342d10a2a"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "cycling",
+            "revision": 1,
+            "passage_id": "p1",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 0.0,
+            "speakers": [],
+            "text_start": 0,
+            "text_end": 73,
+            "text": "Riders may secure their bikes in the courtyard racks behind the entrance.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "You can secure your bicycle in the courtyard racks behind the entrance. [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "paraphrase",
+        "references": [
+          "p1"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": true,
+        "usage": {
+          "input_tokens": 577,
+          "output_tokens": 44
+        },
+        "recorded_provider_seconds": 0.13512031827121973
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": true,
+        "usage": {
+          "input_tokens": 844,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 21,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 865
+        },
+        "recorded_provider_seconds": 0.9696978880092502
+      }
+    ]
+  },
+  {
+    "case": "long",
+    "strategy": "indexed",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "long",
+        "conversation_id": "afcbfd3a-7f47-4397-acd1-d65aa6ffe491"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "orion",
+            "revision": 1,
+            "passage_id": "p32",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 640.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 92,
+            "text": "The Orion equipment deposit receipt number is OR-4821. This is not the event admission code.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "orion",
+            "revision": 1,
+            "passage_id": "p8",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 160.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 65,
+            "text": "For Orion, borrowed equipment must be returned by Friday at 5 pm.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "For Orion, the equipment must be returned by Friday at 5 pm, and the deposit receipt number is **OR-4821**. [[p2]] [[p1]]"
+      },
+      {
+        "type": "done",
+        "question_id": "long",
+        "references": [
+          "p2",
+          "p1"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": false,
+        "usage": {
+          "input_tokens": 4137,
+          "output_tokens": 497
+        },
+        "recorded_provider_seconds": 0.17367098480463028
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": false,
+        "usage": {
+          "input_tokens": 986,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 40,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1026
+        },
+        "recorded_provider_seconds": 1.792259351350367
+      }
+    ]
+  },
+  {
+    "case": "long",
+    "strategy": "notes",
+    "status": "complete",
+    "conflict_coverage_failure": false,
+    "events": [
+      {
+        "type": "accepted",
+        "question_id": "long",
+        "conversation_id": "3f15f361-80aa-4fdf-a3e7-11662c553f94"
+      },
+      {
+        "type": "context",
+        "sources": [
+          {
+            "session_id": "orion",
+            "revision": 1,
+            "passage_id": "p8",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 160.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 65,
+            "text": "For Orion, borrowed equipment must be returned by Friday at 5 pm.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p1"
+          },
+          {
+            "session_id": "orion",
+            "revision": 1,
+            "passage_id": "p32",
+            "captured_at": 100.0,
+            "timezone": "UTC",
+            "origin": "recording",
+            "start": 640.0,
+            "speakers": [
+              0
+            ],
+            "text_start": 0,
+            "text_end": 92,
+            "text": "The Orion equipment deposit receipt number is OR-4821. This is not the event admission code.",
+            "lifecycle": [],
+            "evidence_type": "original_source",
+            "claim_scope": "whole_passage",
+            "id": "p2"
+          }
+        ],
+        "memory_status": "available"
+      },
+      {
+        "type": "delta",
+        "text": "For Orion, return the borrowed equipment by **Friday at 5 pm**. The deposit receipt number is **OR-4821**\u2014it is not the event admission code. [[p1]] [[p2]]"
+      },
+      {
+        "type": "done",
+        "question_id": "long",
+        "references": [
+          "p1",
+          "p2"
+        ],
+        "saved": true
+      }
+    ],
+    "usage": [
+      {
+        "model": "jev-1.13.0",
+        "reused": false,
+        "usage": {
+          "input_tokens": 1826,
+          "output_tokens": 210
+        },
+        "recorded_provider_seconds": 0.14353044610470533
+      },
+      {
+        "model": "gpt-6-luna",
+        "reused": false,
+        "usage": {
+          "input_tokens": 986,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 48,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1034
+        },
+        "recorded_provider_seconds": 1.7066296767443419
+      }
+    ]
+  }
+]

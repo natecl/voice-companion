@@ -18,7 +18,7 @@ Start with the [feature map](docs/features/README.md) to locate implemented beha
 
 The completed narrow notes slice is [transcript-derived notes](docs/recording-notes-plan.md). Its storage and bounded generation are verified; service/native integration is verified locally. The [internal rollout](docs/recording-notes-rollout.md) is deployed with the matching iPhone app installed; the physical-iPhone capture → notes → supporting passage → restart/reopen check has passed.
 
-The [notes-first recall candidate](docs/notes-first-memory-plan.md) now has bounded Jev ranking, transcript fallback and thin personal context with six provider-backed answer cases and exact replay. It is merged behind a disabled flag; internal rollout and retirement of the old retrieval path remain pending.
+The [notes-first recall candidate](docs/notes-first-memory-plan.md) now has bounded Jev ranking, transcript fallback and thin personal context with six provider-backed answer cases and exact replay. It is merged behind a disabled flag. The subsequent [matched comparison](docs/matched-recall-comparison.md) found an unresolved-disagreement omission; rollout is held until that regression is fixed and verified.
 
 ## Knowledge documents
 
