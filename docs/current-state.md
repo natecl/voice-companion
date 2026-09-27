@@ -20,7 +20,7 @@ Two actions: **Capture meeting note** and **Talk to companion**. Voice notes and
 
 ## UI candidate
 
-The [native experience UI checkpoint](native-experience-ui.md) implements the approved Home/Agent visual direction, shared composer, recording sheet, search, and account screen layouts. Four isolated iPhone simulator flows and Mac compilation passed. The fidelity revision aligns header icons, list spacing and the continuous white composer surface with the approved mockup; the inner plus now opens a recording-attachment picker. It is not installed on the physical phone or accepted as device delivery; Mac UI automation and founder-assisted device QA remain pending. Authentication and subscription screens are previews.
+The [native experience UI checkpoint](native-experience-ui.md) implements the approved Home/Agent visual direction, shared composer, recording sheet, search, and account screen layouts. Four isolated iPhone simulator flows and Mac compilation passed. The fidelity revision aligns header icons, list spacing and the continuous white composer surface with the approved mockup; the paperclip opens a recording-attachment picker, and the shared Home/Agent composer swaps mic for send when text is present. It is not installed on the physical phone or accepted as device delivery; Mac UI automation and founder-assisted device QA remain pending. Authentication and subscription screens are previews.
 
 ## Delivery status and acceptance
 

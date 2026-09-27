@@ -250,13 +250,19 @@ struct CompanionRootView: View {
                                 Button("Clear draft", role: .destructive) { dictation.discard(); chat.draft = "" }
                                     .disabled(!dictation.isActive && chat.draft.isEmpty).accessibilityIdentifier("clearCompanionDraft")
                                 Button("Refresh conversation") { chat.refresh() }.disabled(chat.isBusy || recording.pendingMemoryDeletion)
-                            } label: { ExperienceSymbol(name: "plus").frame(width: 22, height: 22).frame(width: 44, height: 44).contentShape(Rectangle()) }
+                            } label: { Image(systemName: "paperclip").font(.system(size: 20, weight: .regular)).frame(width: 44, height: 44).contentShape(Rectangle()) }
                                 .accessibilityLabel("Attachments and message options")
                             Spacer(minLength: 0)
                             if dictation.isActive {
                                 ExperienceIconButton("Stop dictation", icon: "stop.fill") {
                                     if dictation.state == .starting { dictation.interrupt() } else { dictation.finish(send: false) }
                                 }.disabled(dictation.state == .finishing).accessibilityIdentifier("stopDictation")
+                            } else if chat.isBusy {
+                                ExperienceIconButton("Cancel answer", icon: "stop.fill") { chat.cancel() }
+                            } else if !chat.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                                ExperienceIconButton("Send", icon: "arrow.up", filled: true) { sendDraft(chat) }
+                                    .disabled(recording.pendingMemoryDeletion)
+                                    .accessibilityIdentifier("sendCompanion")
                             } else {
                                 ExperienceIconButton("Dictate message", icon: "mic", bare: true) {
                                     composing = false
@@ -264,16 +270,7 @@ struct CompanionRootView: View {
                                         chat.draft = ComposerDictation.appending(text, to: chat.draft)
                                         if send, scenePhase == .active, !chat.isBusy, !recording.pendingMemoryDeletion { sendDraft(chat) }
                                     }
-                                }.disabled(chat.isBusy || recording.pendingMemoryDeletion).accessibilityIdentifier("startDictation")
-                            }
-                            if chat.isBusy {
-                                ExperienceIconButton("Cancel answer", icon: "stop.fill") { chat.cancel() }
-                            } else {
-                                ExperienceIconButton("Send", icon: "arrow.up", filled: true) {
-                                    if dictation.isActive { dictation.finish(send: true) } else { sendDraft(chat) }
-                                }
-                                .disabled(recording.pendingMemoryDeletion || dictation.state == .starting || dictation.state == .finishing || ComposerDictation.appending(dictation.text, to: chat.draft).trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                                .accessibilityIdentifier("sendCompanion")
+                                }.disabled(recording.pendingMemoryDeletion).accessibilityIdentifier("startDictation")
                             }
                         }.padding(.leading, -4).padding(.trailing, -10)
                     }.padding(.horizontal, 14).padding(.top, 14).padding(.bottom, 5)

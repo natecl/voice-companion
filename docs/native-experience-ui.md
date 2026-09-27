@@ -5,7 +5,7 @@ The approved Home mockup is the visual baseline: white canvas, neutral surfaces,
 ## Delivered behavior
 
 - Home groups saved recordings by day, shows available generated titles and transcript previews, and searches local transcript text without a model call. Search does not yet index generated titles.
-- Home and Agent share the same draft, attachment, dictation controls, and persistent conversation. Sending from Home opens Agent. Mic dictates a private editable message; the inner plus opens attachment options and a recording picker, while the separate black plus starts meeting capture.
+- Home and Agent share the same draft, attachment, dictation controls, and persistent conversation. Sending from Home opens Agent. Mic dictates a private editable message; the paperclip opens attachment options and a recording picker, while the separate black plus starts meeting capture.
 - The capture bar shows elapsed time and state, opens a live transcript sheet, and has Stop without Pause. Closing the sheet keeps capture running. Capture completion opens saved notes automatically.
 - Saved notes retain the Notes/Transcript switch, original supporting passages, and Ask Agent attachment behavior. Deletion is in the recording menu, with confirmation on the sheet.
 - Account exposes the existing memory preference and honest configuration/recording information. Sign-up (Google above Apple) and pricing layouts are explicitly design previews: OAuth, StoreKit, prices, legal URLs, and plan allowances are not implemented or invented.
@@ -50,3 +50,9 @@ Both affected simulator scenarios passed on September 27: gallery/attachment pic
 Physical-iPhone recording, interruptions, touch comfort, accessibility text sizes, and battery/performance have not been validated by this UI checkpoint. Mac compiles, but the Mac XCTest runner timed out while enabling automation, before tests began; no Mac behavioral pass is claimed. Existing microphone/provider verification is not new evidence for this layout.
 
 Before founder-assisted device QA, explain the exact steps and wait for explicit readiness. Do not merge this as completed iPhone delivery or present the preview account screens as working services.
+
+## Shared composer controls
+
+Home and Agent render the same composer: paperclip opens attachments, empty/whitespace-only drafts show mic, and text replaces mic with send. Active dictation shows Stop until the editable text is ready; busy responses retain Cancel. Clearing a draft restores mic. The external plus still starts capture.
+
+Three affected simulator scenarios passed on September 27 (gallery/attachments, shared draft/search/dictation, capture/chat/navigation); Mac build passed. Result bundles: `/tmp/VoiceCompanion-ExperienceResults/20260927-162356/`. Native Home and typed Agent screenshots were inspected, including keyboard placement. [Typed composer](qa/native-experience/composer-send.png). No paid calls or physical-device validation were performed.

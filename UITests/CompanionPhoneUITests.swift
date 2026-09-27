@@ -66,9 +66,17 @@ final class CompanionPhoneUITests: XCTestCase {
         defer { app.terminate() }
         let draft = app.descendants(matching: .any).matching(identifier: "companionDraft").firstMatch
         XCTAssertTrue(draft.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["startDictation"].exists)
+        XCTAssertFalse(app.buttons["sendCompanion"].exists)
         draft.tap(); draft.typeText("Keep this thought")
+        XCTAssertTrue(app.buttons["sendCompanion"].exists)
+        XCTAssertFalse(app.buttons["startDictation"].exists)
+        snapshot(app, "Agent composer with send")
         app.buttons["homeNavigation"].tap()
         XCTAssertEqual(draft.value as? String, "Keep this thought")
+        XCTAssertTrue(app.buttons["sendCompanion"].exists)
+        XCTAssertFalse(app.buttons["startDictation"].exists)
+        snapshot(app, "Home composer with send")
         app.buttons["startRecording"].tap()
         XCTAssertTrue(app.buttons["showActiveRecording"].waitForExistence(timeout: 5))
         app.buttons["showActiveRecording"].tap()
@@ -92,11 +100,18 @@ final class CompanionPhoneUITests: XCTestCase {
         XCTAssertTrue(app.buttons["savedSession"].firstMatch.exists)
         app.buttons["agentNavigation"].tap()
         XCTAssertEqual(draft.value as? String, "Keep this thought")
+        app.buttons["Attachments and message options"].tap()
+        app.buttons["clearCompanionDraft"].tap()
+        XCTAssertTrue(app.buttons["startDictation"].exists)
+        XCTAssertFalse(app.buttons["sendCompanion"].exists)
         app.buttons["startDictation"].tap()
         XCTAssertTrue(app.buttons["stopDictation"].waitForExistence(timeout: 3))
+        XCTAssertFalse(app.buttons["sendCompanion"].exists)
         app.buttons["stopDictation"].tap()
         let editable = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in draft.isEnabled && (draft.value as? String ?? "").contains("What does Maya enjoy?") }, object: nil)
         XCTAssertEqual(XCTWaiter.wait(for: [editable], timeout: 5), .completed)
+        XCTAssertTrue(app.buttons["sendCompanion"].exists)
+        XCTAssertFalse(app.buttons["startDictation"].exists)
     }
 
     func testRetainedMemoryReferenceAfterReopen() throws {
