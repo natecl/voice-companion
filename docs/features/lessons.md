@@ -88,3 +88,7 @@ A merged backend, a local candidate, a built simulator target, a signed device b
 ### Speech framework callbacks must not inherit MainActor
 
 Physical Dictate startup crashed after permission because the Swift closure passed to Apple's authorization API inherited `MainActor` while the framework invoked it on a background queue. Both device reports identify the executor assertion, not a provider failure. Create authorization/result closures at an explicit nonisolated, Sendable boundary and transfer values through continuations; keep mutable app state actor-isolated. Background-queue regression tests cover the actual factories. Mock recognizers never exercised this boundary, so their passing results could not establish physical recognition. See [repair and pending retest](../companion-feel-and-dictation.md#physical-dictation-startup-failure-and-callback-repair).
+
+### Empty speech completion must not erase visible work
+
+Stop can expose terminal hypotheses that differ from earlier partial text. The composer previously replaced visible speech with an empty final, reproduced by a failing regression after the physical report. Preserve nonblank text across blank resets; if final recognition cannot confirm it, keep an editable draft and prevent automatic Send. Continue accepting real nonempty corrections. Test Stop and Send, pre-existing typed text, blank intermediate events and the native binding—not only the normal happy-path recognizer. [Evidence](../companion-feel-and-dictation.md#stop-lost-the-visible-draft-reproduced-empty-final-boundary).

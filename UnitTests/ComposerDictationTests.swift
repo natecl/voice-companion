@@ -30,6 +30,29 @@ final class ComposerDictationTests: XCTestCase {
         XCTAssertEqual(sends, 0); XCTAssertFalse(composer.isActive)
     }
 
+    func testEmptyFinalAfterVisibleSpeechPreservesDraftAndNeverSends() async {
+        for send in [false, true] {
+            let speech = DictationStub(); let composer = ComposerDictation(makeRecognizer: { speech })
+            var draft = "Already typed:"; var sends = 0
+            composer.start { text, shouldSend in
+                draft = ComposerDictation.appending(text, to: draft)
+                if shouldSend { sends += 1 }
+            }
+            await settle()
+            speech.events.continuation.yield(.init(text: "Tomorrow I want to take a walk and call Maya.", isFinal: false))
+            await settle()
+            speech.events.continuation.yield(.init(text: "  ", isFinal: false))
+            await settle()
+            XCTAssertEqual(composer.text, "Tomorrow I want to take a walk and call Maya.")
+            composer.finish(send: send)
+            speech.events.continuation.yield(.init(text: "", isFinal: true))
+            await settle()
+            XCTAssertEqual(draft, "Already typed: Tomorrow I want to take a walk and call Maya.")
+            XCTAssertEqual(sends, 0)
+            XCTAssertNotNil(composer.notice)
+        }
+    }
+
     func testSendWaitsForFinalWordsAndSendsOnce() async {
         let speech = DictationStub(); let composer = ComposerDictation(makeRecognizer: { speech })
         var results: [(String, Bool)] = []

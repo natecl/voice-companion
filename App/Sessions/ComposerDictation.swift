@@ -41,6 +41,17 @@ final class ComposerDictation {
                 }
                 for try await event in events {
                     guard generation == current, !Task.isCancelled else { return }
+                    // Empty terminal/reset hypotheses must not erase speech the
+                    // user already saw. Keep the draft, but do not auto-send an
+                    // unconfirmed partial when final recognition is empty.
+                    if event.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        if event.isFinal {
+                            complete(success: text.isEmpty, message: text.isEmpty ? nil :
+                                "Dictation could not confirm the final text. Your words are kept in the draft; review before sending.")
+                            return
+                        }
+                        continue
+                    }
                     text = event.text
                     if event.isFinal { complete(success: true); return }
                 }
@@ -107,7 +118,8 @@ private final class DictationUIFixture: DictationRecognizing {
         return events.stream
     }
     func finish() {
-        events.continuation.yield(.init(text: "What does Maya enjoy?", isFinal: true))
+        let final = ProcessInfo.processInfo.arguments.contains("--dictation-empty-final-fixture") ? "" : "What does Maya enjoy?"
+        events.continuation.yield(.init(text: final, isFinal: true))
         events.continuation.finish()
     }
     func cancel() { events.continuation.finish() }

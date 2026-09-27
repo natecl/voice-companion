@@ -70,6 +70,14 @@ final class CompanionUITests: XCTestCase {
         XCTAssertFalse(app.staticTexts["companionAnswer"].firstMatch.exists)
     }
     func testDictationDraftAndExplicitSendWithCapture() throws {
+        try checkDictation(emptyFinal: false)
+    }
+
+    func testDictationEmptyFinalRetainsEditableDraft() throws {
+        try checkDictation(emptyFinal: true)
+    }
+
+    private func checkDictation(emptyFinal: Bool) throws {
         continueAfterFailure = false
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
@@ -86,6 +94,7 @@ final class CompanionUITests: XCTestCase {
         XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 5), .completed)
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--companion-ui-fixture", "--dictation-ui-fixture"]
+        if emptyFinal { app.launchArguments.append("--dictation-empty-final-fixture") }
         app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = try String(contentsOf: config, encoding: .utf8)
         app.launch(); defer { app.terminate() }
         let field = app.descendants(matching: .any).matching(identifier: "companionDraft").firstMatch
@@ -98,9 +107,20 @@ final class CompanionUITests: XCTestCase {
         XCTAssertTrue(app.buttons["stopDictation"].waitForExistence(timeout: 3))
         XCTAssertEqual(field.value as? String, "Please tell me: What does Maya")
         app.buttons["stopDictation"].tap()
-        let finalized = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in field.value as? String == "Please tell me: What does Maya enjoy?" && field.isEnabled }, object: nil)
+        let expected = emptyFinal ? "Please tell me: What does Maya" : "Please tell me: What does Maya enjoy?"
+        let finalized = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in field.value as? String == expected && field.isEnabled }, object: nil)
         XCTAssertEqual(XCTWaiter.wait(for: [finalized], timeout: 5), .completed)
         XCTAssertFalse(app.staticTexts["companionAnswer"].exists)
+        if emptyFinal {
+            XCTAssertTrue(app.staticTexts["dictationNotice"].exists)
+            field.tap(); field.typeText(" edited")
+            XCTAssertTrue((field.value as? String ?? "").contains("edited"))
+            XCTAssertTrue((field.value as? String ?? "").contains("What does Maya"))
+            let attachment = XCTAttachment(screenshot: app.screenshot())
+            attachment.name = "Empty final preserves editable speech — synthetic input"
+            attachment.lifetime = .keepAlways; add(attachment)
+            return
+        }
         app.buttons["startRecording"].tap()
         XCTAssertTrue(app.buttons["stopRecording"].waitForExistence(timeout: 5))
         dictate.tap()
