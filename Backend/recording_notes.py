@@ -56,6 +56,18 @@ def validate_notes(data, source):
     return payload
 
 
+def enqueue_source(db, owner, source):
+    """Called in the source transaction: synchronization and scheduling commit together."""
+    if source.get('origin') == 'personal_text':return
+    error = ('empty_transcript' if not source['passages'] else
+             'notes_input_too_large' if len(json.dumps(source, ensure_ascii=False).encode()) > MAX_INPUT_BYTES else None)
+    db.execute("""INSERT INTO recording_notes VALUES(?,?,?,?,?,NULL,NULL,?)
+        ON CONFLICT(owner,session) DO UPDATE SET revision=excluded.revision,
+        generation_version=excluded.generation_version,state=excluded.state,
+        attempt=NULL,payload=NULL,error=excluded.error""",
+        (owner,source['session_id'],source['revision'],GENERATION_VERSION,'failed' if error else 'pending',error))
+
+
 class RecordingNotes:
     def __init__(self, store):self.store = store
 
@@ -77,15 +89,8 @@ class RecordingNotes:
                 if not retry:return old['state']
                 if old['state'] != 'failed':raise Rejected('notes_not_retryable')
             elif retry:raise Rejected('notes_not_retryable')
-            error = ('empty_transcript' if not source['passages'] else
-                     'notes_input_too_large' if len(json.dumps(source, ensure_ascii=False).encode()) > MAX_INPUT_BYTES else None)
-            state = 'failed' if error else 'pending'
-            db.execute('''INSERT INTO recording_notes VALUES(?,?,?,?,?,NULL,NULL,?)
-                ON CONFLICT(owner,session) DO UPDATE SET revision=excluded.revision,
-                generation_version=excluded.generation_version,state=excluded.state,
-                attempt=NULL,payload=NULL,error=excluded.error''',
-                (owner, session, revision, GENERATION_VERSION, state, error))
-            return state
+            enqueue_source(db, owner, source)
+            return db.execute('SELECT state FROM recording_notes WHERE owner=? AND session=?',(owner,session)).fetchone()[0]
 
     def claim(self, owner, session):
         with self.store.transaction() as db:

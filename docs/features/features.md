@@ -109,3 +109,14 @@ Use the [index and authority rules](README.md) first. Paths below are repository
 **QA route:** `test_admission.py`, `test_admin.py`, `test_hosted_startup.py`, `test_hosted_relay.py`, `test_rework_budget.py`. Run the narrowest applicable checks. `scripts/check.sh` supports mac/simulator/device; its default tests deliberately skip some manual microphone classes. Read the script and [development instructions](../development.md) before claiming device coverage.
 
 **Evidence:** [V1 runbook](../v1-runbook.md), [capacity](../companion-capacity.md), [retention rollout](../retained-memory-rollout.md). Back up consistently before deployment; compare data/usage preservation and health. Forward-fix or use schema-compatible rollback; restoring old data can resurrect deleted sources and erase usage history. No automatic public deployment or subscription operations are implied.
+
+
+## Transcript-derived recording notes
+
+**Experience:** saved recordings have Notes and Transcript views. Notes contain a source-grounded title, overview and flexible sections; passage links show the original text. Live capture remains transcript-first. This checkpoint is locally implemented, not yet deployed; physical acceptance remains a separate gate.
+
+**Code:** `Backend/recording_notes.py` owns revision-bound storage; `MemoryStore.put_source(generate_notes=True)` atomically schedules new terminal recording sources. `notes_generation.py` owns the transcript-only Luna request and validation; `notes_service.py` owns authenticated reads/retries and the serial worker; `notes_budget.py` checks separately funded reservations. `App/Sessions/RecordingNotes.swift` owns bounded socket reads; `App/RecordingNotesView.swift` and `CompanionRootView.swift` present notes and navigate supporting passages.
+
+**Contracts:** reads never generate; unchanged uploads never backfill/retry; source changes invalidate; deletion removes notes regardless of learned-memory retention. Saved notes are server-side, so reopening needs connectivity. Existing capture outbox terminality is the scheduling boundary. Notes are not memory claims and this slice does not replace the existing harness.
+
+**QA:** `test_recording_notes.py`, `test_notes_generation.py`, `test_notes_service.py`, `test_notes_budget.py`, and `RecordingNotes{,Phone}UITests.swift`. Reuse recorded model responses for quality replay and local synthetic socket fixtures for UI work; don't run paid transcription for a notes presentation bug. See [notes evidence and rollout gate](../recording-notes-plan.md).

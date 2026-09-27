@@ -8,6 +8,8 @@ struct CompanionRootView: View {
     @State private var selectedID: UUID?
     @State private var citedSource: CompanionEvidence?
     @State private var sourceNotice: String?
+    @State private var recordingTab = "Notes"
+    @State private var notePassage: MemoryPassage?
     @State private var confirmingDeletion = false
     @State private var needsChatRefresh = false
     @State private var sourceTask: Task<Void, Never>?
@@ -83,6 +85,8 @@ struct CompanionRootView: View {
                 if !recording.pendingMemoryDeletion { chat?.refresh() }
             } catch { sourceNotice = error.localizedDescription }
         }
+        .onChange(of: selected.flatMap { recording.companionAttachment(for: $0) }) { _, _ in notePassage = nil }
+        .onChange(of: selectedID) { _, _ in notePassage = nil; recordingTab = citedSource == nil ? "Notes" : "Transcript" }
         .onChange(of: surface) { _, value in if value == "Recordings" { composing = false } }
         .onChange(of: recording.pendingMemoryDeletion) { _, pending in
             if pending { chat?.clearForSourceDeletion() }
@@ -183,19 +187,25 @@ struct CompanionRootView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 if selectedID != nil {
-                    Button("All recordings") { selectedID = nil; citedSource = nil; sourceNotice = nil }
-                        .accessibilityIdentifier("allRecordings")
-                    Button("Back to companion") { surface = "Companion" }.accessibilityIdentifier("backToCompanion")
+                    HStack {
+                        Button("All recordings") { selectedID = nil; citedSource = nil; sourceNotice = nil }
+                            .accessibilityIdentifier("allRecordings")
+                        Button("Back to companion") { surface = "Companion" }.accessibilityIdentifier("backToCompanion")
+                    }
                     if let session = selected {
-                        Text(session.createdAt.formatted()).font(.headline)
-                        Text(recording.isActive && recording.current?.id == session.id ? "Recording" : session.completed ? "Saved" : "Incomplete · saved")
-                            .accessibilityIdentifier("librarySessionStatus")
-                        if let attachment = recording.companionAttachment(for: session), !(recording.isActive && recording.current?.id == session.id) {
-                            Button("Ask about this") { chat?.attachment = attachment; surface = "Companion" }
-                                .accessibilityIdentifier("askAboutRecording")
-                        } else { Text("Ask about this becomes available after this recording syncs.").font(.caption) }
-                        if !(recording.isActive && recording.current?.id == session.id) {
-                            Button("Delete recording", role: .destructive) { confirmingDeletion = true }.accessibilityIdentifier("deleteSession")
+                        HStack {
+                            Text(session.createdAt.formatted()).font(.headline)
+                            Text(recording.isActive && recording.current?.id == session.id ? "Recording" : session.completed ? "Saved" : "Incomplete · saved")
+                                .accessibilityIdentifier("librarySessionStatus")
+                        }
+                        HStack {
+                            if let attachment = recording.companionAttachment(for: session), !(recording.isActive && recording.current?.id == session.id) {
+                                Button("Ask about this") { chat?.attachment = attachment; surface = "Companion" }
+                                    .accessibilityIdentifier("askAboutRecording")
+                            } else { Text("Ask about this becomes available after this recording syncs.").font(.caption) }
+                            if !(recording.isActive && recording.current?.id == session.id) {
+                                Button("Delete recording", role: .destructive) { confirmingDeletion = true }.accessibilityIdentifier("deleteSession")
+                            }
                         }
                     }
                     if let citedSource {
@@ -204,25 +214,48 @@ struct CompanionRootView: View {
                         if citedSource.snapshot_id != nil { Text("Transcript excerpt at the time you asked.").font(.caption) }
                     }
                     if let session = selected {
-                        ForEach(session.transcript.segments) { segment in
-                            VStack(alignment: .leading) {
-                                Text("\(segment.start, specifier: "%.1f")s").font(.caption)
-                                Text(segment.text).textSelection(.enabled)
-                            }.accessibilityIdentifier("transcriptSegment")
+                        let attachment = recording.companionAttachment(for: session)
+                        let active = recording.isActive && recording.current?.id == session.id
+                        if !active, session.source != "personal_text" {
+                            Picker("Recording content", selection: $recordingTab) {
+                                Text("Notes").tag("Notes")
+                                Text("Transcript").tag("Transcript")
+                            }.pickerStyle(.segmented).accessibilityIdentifier("recordingContent")
+                        }
+                        if recordingTab == "Notes", !active, session.source != "personal_text" {
+                            if let attachment {
+                                RecordingNotesView(attachment: attachment, configuration: { try Self.config() }, onPassage: { passage in
+                                    notePassage = MemorySource(session, revision: attachment.revision).passages.first { $0.id == passage }
+                                    recordingTab = "Transcript"
+                                }).id("\(attachment.session_id):\(attachment.revision)")
+                            } else { Text("Notes become available after this recording syncs.").font(.caption) }
+                        } else {
+                            if let notePassage {
+                                Text("Supporting passage · \(notePassage.start, specifier: "%.1f")s").font(.caption)
+                                Text(notePassage.text).padding().background(.quaternary).accessibilityIdentifier("notesSupportingPassage")
+                            }
+                            ForEach(session.transcript.segments) { segment in
+                                VStack(alignment: .leading) {
+                                    Text("\(segment.start, specifier: "%.1f")s").font(.caption)
+                                    Text(segment.text).textSelection(.enabled)
+                                }.accessibilityIdentifier("transcriptSegment")
+                            }
                         }
                     } else { Text("The full recording is not available on this device.") }
                 } else {
                     Text("Recordings").font(.title2.bold())
                     if library.isEmpty { Text("No recordings yet.") }
-                    ForEach(library) { session in
-                        Button {
-                            selectedID = session.id; citedSource = nil
-                        } label: {
-                            VStack(alignment: .leading) {
-                                Text(session.source == "personal_text" ? "Personal note" : "Recorded conversation")
-                                Text(session.createdAt.formatted()).font(.caption)
-                            }
-                        }.accessibilityIdentifier("savedSession")
+                    LazyVStack(alignment: .leading, spacing: 16) {
+                        ForEach(library) { session in
+                            Button {
+                                selectedID = session.id; citedSource = nil
+                            } label: {
+                                VStack(alignment: .leading) {
+                                    RecordingLibraryTitle(attachment: recording.companionAttachment(for: session), personal: session.source == "personal_text", configuration: { try Self.config() })
+                                    Text(session.createdAt.formatted()).font(.caption)
+                                }
+                            }.accessibilityIdentifier("savedSession")
+                        }
                     }
                 }
             }.frame(maxWidth: .infinity, alignment: .leading)
@@ -235,6 +268,7 @@ struct CompanionRootView: View {
             do {
                 try await connection(owner: owner).run(.source(turnID: turn, citationID: citation)) { event in
                     try Task.checkCancellation()
+                    recordingTab = "Transcript"; notePassage = nil
                     citedSource = event.source
                     selectedID = event.source?.session_id.flatMap(UUID.init(uuidString:))
                     surface = "Recordings"
