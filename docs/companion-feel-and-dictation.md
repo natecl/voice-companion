@@ -94,3 +94,25 @@ Founder clarification: the companion is a normal ongoing conversational chatbot,
 
 
 Final local verification of the message/prompt candidate: 27 backend contract/storage/context tests, 11 native core checks and two actual Mac UI/local-service tests pass. Normal chat displays “Maya swims.” without its stored grounding tag or a source button; diagnostic source navigation still passes. The iPhone simulator target builds. The model-behavior scenarios are prepared but have not been run with fresh providers. No deployment or paid call was performed.
+
+## Approved ten-response personality check
+
+Founder approved the proposed $0.20 / ten Luna response allowance. The isolated operator grant `companion-style-20260927-020` raises combined approved envelopes from $5.55 to $5.75 without changing the application's $5 runtime envelope or quotas. Ten calls completed with no retries, each reserving $0.02; this exhausts the $0.20 allowance by conservative reservation, not a claim of invoiced cost. Runtime reservations stayed at 4,956,868 microUSD.
+
+All ten requests use the actual v3 instructions selected by `ask.instructions`, GPT-6 Luna with reasoning none, Standard/default service tier, no tools, no storage, disabled truncation and a 1,000-output-token cap. The operator transport requests non-streaming responses for review; these calls do not establish streaming latency. Native streaming/persistence behavior has separate local evidence. Exact requests, provider responses, reviewed answers and receipts are in `Backend/fixtures/companion-style/{calls,results,provision,budget}.json`; all source material is synthetic.
+
+Reviewed outcomes:
+
+- Casual conversation and the simple science question worked without a recording or a request for one.
+- The disagreement case challenged an impossible time budget instead of agreeing.
+- Brainstorming produced three names and ignored unrelated clinic evidence, with no fabricated factual citation.
+- Quick recall supplied the clinic; the correction selected the community center; retained knowledge answered naturally without the previously mandatory memory preamble.
+- The anonymous first-person swimming claim was not assigned to the user. Appointment uncertainty remained uncertain.
+- Grounded answers used valid internal p1 tags; general/creative answers did not force citations. None added a Sources section. Native presentation removes those internal tags as separately verified.
+- The rough-day answer honored the request not to make a to-do list, but its conversational metaphor about sitting with the user felt more therapeutic than the intended understated register. Record this as a taste limitation for founder review, not a factual failure or evidence of a universally finished personality.
+
+This is a bounded prompt smoke check, not a model benchmark or proof that all conversational modes work. No production prompt deployment occurred, and PR acceptance still depends on outstanding physical dictation QA. Further personality iteration should use actual user feedback or a specifically approved additional test allowance rather than automatic paid reruns.
+
+## How conversation type is handled
+
+There is no explicit normal-chat/brainstorm/retrieval classifier or mode switch. The existing harness supplies the current message, bounded recent history and optional contextual evidence; Luna interprets the request and composes the response. Modes can mix naturally, such as brainstorming using a remembered preference. When memory is enabled, retrieval can run even for ordinary conversation; Luna is instructed to ignore irrelevant evidence. This is not a model deciding whether to call a retrieval tool. Explicit memory controls and the existing exclusion rules still apply. Jev's current role is evidence ranking, not choosing the conversation's personality or intent. Adding an intent router is not part of this slice and would require measured benefit before extra architecture.
