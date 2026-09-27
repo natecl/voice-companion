@@ -31,6 +31,9 @@ class Transport:
         if cached is not None:
             response=copy.deepcopy(cached); paid=False; raw=None
         else:
+            if self.command=='/usr/bin/false':
+                (self.directory/'missing-request.json').write_text(json.dumps(request,indent=2))
+                raise RuntimeError('Missing exact response; paid calls forbidden')
             if self.process is None:
                 self.process=subprocess.Popen(shlex.split(self.command),stdin=subprocess.PIPE,stdout=subprocess.PIPE,text=True)
             self.process.stdin.write(json.dumps(request)+'\n');self.process.stdin.flush()
@@ -62,15 +65,15 @@ class TransportBudget:
     def reserve(self,*args):pass
     def finish(self,*args):pass
 
-async def run(directory,command,replay_paths=()):
+async def run(directory,command,replay_paths=(),*,source_scoped=False):
     directory.mkdir(parents=True,exist_ok=False)
     models=Transport(command,directory,replay_paths);results=[]
     def save():
         (directory/'results.json').write_text(json.dumps(results,indent=2))
     try:
-        store=MemoryStore(directory/'memory.sqlite');owner=store.owner_for('qa-independent-source')
-        writer=EvidenceWriter(store,models,TransportBudget(),chunking=True,semantic_boundaries=True,
-            expiry=True,consolidation=True,independent_source_verification=True)
+        store=MemoryStore(directory/'memory.sqlite',retain_recording_memories=source_scoped);owner=store.owner_for('qa-independent-source')
+        writer=EvidenceWriter(store,models,TransportBudget(),chunking=True,semantic_boundaries=not source_scoped,
+            expiry=True,consolidation=not source_scoped,independent_source_verification=True,source_scoped=source_scoped)
         original=json.loads((ROOT/'subject-continuity/calls.json').read_text())
         for index in (0,3):
             source=json.loads(original[index]['request']['input']);source.pop('origin',None)
@@ -105,6 +108,20 @@ async def run(directory,command,replay_paths=()):
                 accepted=all(v['accepted'] for v in decisions.values())
             results.append(dict(case=r['id'],support=support[r['id']],metadata=decisions,accepted=accepted,expected=r['expected_admission']));save()
             assert accepted==r['expected_admission'],'Frozen admission gate failed: '+r['id']
+        if source_scoped:
+            import memory_context
+            import memory_retention
+            before={(r['text'],r['state']) for r in store.search(owner,historical=True)}
+            with store.connect() as db:sessions=[r[0] for r in db.execute('SELECT session FROM source WHERE owner=? AND deleted=0',(owner,))]
+            for session in sessions:
+                store.delete_source(owner,session)
+                assert store.source(owner,session) is None
+            reopened=MemoryStore(directory/'memory.sqlite',retain_recording_memories=True)
+            assert {(r['text'],r['state']) for r in reopened.search(owner,historical=True)}==before
+            refs=memory_retention.retrieve(reopened,owner,'Project Juniper community center morning')
+            packet=memory_context.select(reopened,owner,refs)
+            assert packet['items'] and all(p['source_available'] is False for p in packet['items'])
+            results.append(dict(case='retention-after-delete',packet=packet));save()
         print(json.dumps(dict(composition_checks_passed=True,new_calls=sum(c['paid'] for c in models.calls))),flush=True)
     except BaseException as error:
         (directory/'failure.json').write_text(json.dumps(dict(type=type(error).__name__,error=str(error))))
@@ -114,4 +131,5 @@ async def run(directory,command,replay_paths=()):
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('directory',type=Path);parser.add_argument('--transport',required=True)
     parser.add_argument('--replay',type=Path,action='append',default=[])
-    args=parser.parse_args();asyncio.run(run(args.directory,args.transport,args.replay))
+    parser.add_argument('--source-scoped',action='store_true')
+    args=parser.parse_args();asyncio.run(run(args.directory,args.transport,args.replay,source_scoped=args.source_scoped))

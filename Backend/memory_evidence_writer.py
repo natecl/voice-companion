@@ -16,7 +16,10 @@ from memory_writer import bounded_batches
 
 
 class EvidenceWriter:
-    def __init__(self,store,models,budget,*,luna_identity=True,chunking=False,semantic_boundaries=False,expiry=False,consolidation=False,independent_source_verification=False):
+    def __init__(self,store,models,budget,*,luna_identity=True,chunking=False,semantic_boundaries=False,expiry=False,consolidation=False,independent_source_verification=False,source_scoped=False):
+        self.source_scoped=source_scoped
+        if source_scoped and (semantic_boundaries or consolidation):
+            raise ValueError("Source-scoped learning uses deterministic chunks and separate observations")
         self.store,self.models,self.budget=store,models,budget
         self.independent_source_verification=independent_source_verification
         self.lock=asyncio.Lock()
@@ -85,15 +88,26 @@ class EvidenceWriter:
                     identity={};relations={}
                     pairs={f'prior_{i}':dict(incoming=dict(source=source,proposal=p),previous=c) for i,c in enumerate(old)}
                     if pairs:
-                        for role in ('identity','relation'):
+                        for role in (('relation','identity') if self.source_scoped else ('identity','relation')):
                             entries=list(pairs.items())
                             luna=role=='identity' and self.luna_identity
-                            build=(memory_identity_model.contextual_request if self.consolidation else memory_identity_model.request) if luna else lambda pairs:memory_judgments.pair_questions(pairs,role=role)
+                            build=(memory_identity_model.contextual_request if (self.consolidation or self.source_scoped) else memory_identity_model.request) if luna else lambda pairs:memory_judgments.pair_questions(pairs,role=role)
                             for begin,end,request in bounded_batches(entries,lambda a,b:build(dict(entries[a:b])),'memory_identity_too_large' if luna else 'memory_judgment_too_large'):
                                 response=await metered(self.store,self.budget,job,f'evidence-{role}:{index}:{begin}',request,self.models.extract if luna else self.models.judge)
                                 parsed=memory_identity_model.decisions(response['data'],request) if luna else memory_judgments.decisions(response['data'],request,role)
                                 if role=='identity':identity.update(parsed)
                                 else:relations.update(parsed)
+                            if self.source_scoped and role=='relation':
+                                # An independently accepted addition is not a replacement
+                                # target. Do not build cross-source identity links to it.
+                                # Ambiguous/conflicting targets and pool truncation stay
+                                # conservative; existing atomic correction guards remain.
+                                kept=[(key,prior) for key,prior in zip(pairs,old)
+                                      if not (relations[key]['accepted'] and relations[key]['label']=='addition')]
+                                relations={f'prior_{i}':relations[key] for i,(key,_) in enumerate(kept)}
+                                old=[prior for _,prior in kept]
+                                pool=dict(pool,candidates=old)
+                                pairs={f'prior_{i}':dict(incoming=dict(source=source,proposal=p),previous=c) for i,c in enumerate(old)}
                     applicability={}
                     temporal_pairs={key:pair for key,pair in pairs.items()
                         if identity[key]['accepted'] and identity[key]['label']=='same'
