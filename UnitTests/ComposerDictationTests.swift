@@ -90,6 +90,21 @@ final class ComposerDictationTests: XCTestCase {
         XCTAssertEqual(text, "Still here"); XCTAssertEqual(send, false); XCTAssertTrue(speech.cancelled)
     }
 
+    func testDiscardCancelsPendingSendAndIgnoresLateFinal() async {
+        let speech = DictationStub(); let composer = ComposerDictation(makeRecognizer: { speech })
+        var completions = 0
+        composer.start { _, _ in completions += 1 }; await settle()
+        speech.events.continuation.yield(.init(text: "Discard these words", isFinal: false)); await settle()
+        composer.finish(send: true)
+        composer.discard()
+        speech.events.continuation.yield(.init(text: "Late final", isFinal: true)); await settle()
+        XCTAssertEqual(completions, 0)
+        XCTAssertEqual(composer.text, "")
+        XCTAssertFalse(composer.isActive)
+        XCTAssertTrue(speech.cancelled)
+        XCTAssertNil(composer.notice)
+    }
+
     func testDeniedPermissionKeepsExistingDraftAndDoesNotSend() async {
         let speech = DictationStub(); speech.failure = DictationFailure.permission
         let composer = ComposerDictation(makeRecognizer: { speech })

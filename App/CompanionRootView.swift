@@ -172,7 +172,16 @@ struct CompanionRootView: View {
                 if recording.liveStatus == "Recording" { Text("Includes the transcript received so far.").font(.caption) }
                 if dictation.isActive { Text(dictation.state == .starting ? "Preparing dictation…" : dictation.state == .finishing ? "Finishing dictation…" : "Listening for your message…").font(.caption) }
                 if let notice = dictation.notice { Text(notice).font(.caption).accessibilityIdentifier("dictationNotice") }
-                Toggle("Use past memory", isOn: $chat.useMemory).font(.caption)
+                HStack {
+                    Toggle("Use past memory", isOn: $chat.useMemory).font(.caption)
+                    Spacer()
+                    Button("Clear draft", role: .destructive) {
+                        dictation.discard()
+                        chat.draft = ""
+                    }
+                    .disabled(!dictation.isActive && chat.draft.isEmpty)
+                    .accessibilityIdentifier("clearCompanionDraft")
+                }
                 TextField("Talk to companion", text: Binding(
                     get: { ComposerDictation.appending(dictation.text, to: chat.draft) },
                     set: { if !dictation.isActive { chat.draft = $0 } }), axis: .vertical)

@@ -119,6 +119,16 @@ final class CompanionUITests: XCTestCase {
             let attachment = XCTAttachment(screenshot: app.screenshot())
             attachment.name = "Empty final preserves editable speech — synthetic input"
             attachment.lifetime = .keepAlways; add(attachment)
+            let clear = app.buttons["clearCompanionDraft"]
+            clear.tap()
+            XCTAssertEqual(field.value as? String, "")
+            XCTAssertFalse(app.staticTexts["dictationNotice"].exists)
+            dictate.tap()
+            XCTAssertTrue(app.buttons["stopDictation"].waitForExistence(timeout: 3))
+            clear.tap()
+            XCTAssertEqual(field.value as? String, "")
+            XCTAssertTrue(dictate.exists)
+            XCTAssertFalse(app.staticTexts["companionAnswer"].exists)
             return
         }
         app.buttons["startRecording"].tap()

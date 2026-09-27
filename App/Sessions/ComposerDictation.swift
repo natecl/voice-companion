@@ -81,6 +81,13 @@ final class ComposerDictation {
         complete(success: false, message: text.isEmpty ? nil : "Dictation stopped. Captured text is in your draft.")
     }
 
+    /// Explicit deletion discards this segment and any pending Send intent.
+    func discard() {
+        completion = nil
+        text = ""
+        complete(success: false)
+    }
+
     private func complete(success: Bool, message: String? = nil) {
         let captured = text.trimmingCharacters(in: .whitespacesAndNewlines)
         let send = success && sendRequested && !captured.isEmpty

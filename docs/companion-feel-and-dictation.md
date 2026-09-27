@@ -8,6 +8,7 @@ Current status: draft [PR 99](https://github.com/natecl/voice-companion/pull/99)
 
 - Dictate deliberately: show listening and preview the latest transcription in the compose box, preserving existing typed text. Partial hypotheses replace each other; they are not repeatedly appended.
 - Stop dictation finishes recognition and appends one editable segment. It does not send.
+- Founder-requested Clear draft removes the whole unsent composer draft (typed and dictated text). During dictation it cancels recognition and any pending Send, discards late callbacks, and clears notices. It does not delete saved recordings, chat history or stop a separate meeting capture.
 - Send during dictation finishes recognition, appends the final segment and sends the combined draft exactly once. Failure, interruption, backgrounding or navigation preserves received text without sending it automatically.
 - Dictation alone creates no recording, note or learned-memory source. Sending follows the normal companion chat contract. If meeting capture is already active, the same microphone speech also belongs to that meeting; starting/stopping dictation must not stop meeting capture.
 - A single microphone feed supplies independently stoppable consumers. Short dictation uses Apple's on-device recognition when supported for the current locale; no silent cloud fallback or additional Grok transcription session. Unsupported recognition explains the limitation and leaves typing available.
