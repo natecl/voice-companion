@@ -44,3 +44,7 @@ After verification, update only changed status/ownership/contracts and add a dur
 ### Isolate notes UI runs while preserving relaunch evidence
 
 A native fixture owner keys both backend evidence and the app's saved session directory. Reusing that owner across failed test runs leaves valid older recordings behind; deleting the current recording should not erase those sessions. Use a fresh owner/server directory per independent run and the same owner only for the relaunch portion. `scripts/qa-recording-notes-phone.sh` enforces this. Keep failed receipts; distinguish macOS static-text values from iOS labels, scroll controls into view, and scope duplicate nested iOS alert elements before tapping. These are fixture/driver corrections, not permission to remove product persistence or loosen deletion behavior.
+
+### Notes are a discovery layer, not complete evidence
+
+The [offline comparison](../notes-retrieval-comparison.md) recovered required evidence in 7/7 small notes-expansion cases versus 6/7 lexical-only candidates. This is not a full-harness accuracy result. A controlled summary omission defeated both note discovery and cited-passage expansion; direct transcript fallback remains necessary. Deleted notes cannot replace independently retained learned knowledge. Preserve these contracts when consolidating, and measure matched answers before replacing the deployed retrieval path.

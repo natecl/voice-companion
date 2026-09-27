@@ -1,0 +1,527 @@
+{
+  "new_paid_calls": 0,
+  "cases": [
+    {
+      "case": "conversation",
+      "question": "When are Alex and Jordan meeting?",
+      "required_passages": [
+        "p1",
+        "p2"
+      ],
+      "current_lexical": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-conversation:p2",
+          "notes-conversation:p3",
+          "notes-conversation:p1"
+        ],
+        "evidence_text_bytes": 134
+      },
+      "notes_expanded": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-conversation:p1",
+          "notes-conversation:p2",
+          "notes-conversation:p3"
+        ],
+        "evidence_text_bytes": 134
+      },
+      "selected_notes": [
+        {
+          "title": "Library Meeting Arrangements",
+          "overview": {
+            "text": "Alex suggested meeting at the library on Friday; Jordan agreed and said they would send the agenda tomorrow. Alex confirmed the library.",
+            "passages": [
+              "p1",
+              "p2",
+              "p3"
+            ]
+          },
+          "sections": [
+            {
+              "heading": "Arrangements",
+              "items": [
+                {
+                  "text": "The meeting is set for Friday at the library.",
+                  "passages": [
+                    "p1",
+                    "p2",
+                    "p3"
+                  ]
+                },
+                {
+                  "text": "Jordan said they would send the agenda tomorrow.",
+                  "passages": [
+                    "p2"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "notes_text_bytes": 462
+    },
+    {
+      "case": "conversation",
+      "question": "Who will send the agenda?",
+      "required_passages": [
+        "p2"
+      ],
+      "current_lexical": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-conversation:p2",
+          "notes-correction:p2"
+        ],
+        "evidence_text_bytes": 133
+      },
+      "notes_expanded": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-conversation:p1",
+          "notes-conversation:p2",
+          "notes-conversation:p3"
+        ],
+        "evidence_text_bytes": 134
+      },
+      "selected_notes": [
+        {
+          "title": "Library Meeting Arrangements",
+          "overview": {
+            "text": "Alex suggested meeting at the library on Friday; Jordan agreed and said they would send the agenda tomorrow. Alex confirmed the library.",
+            "passages": [
+              "p1",
+              "p2",
+              "p3"
+            ]
+          },
+          "sections": [
+            {
+              "heading": "Arrangements",
+              "items": [
+                {
+                  "text": "The meeting is set for Friday at the library.",
+                  "passages": [
+                    "p1",
+                    "p2",
+                    "p3"
+                  ]
+                },
+                {
+                  "text": "Jordan said they would send the agenda tomorrow.",
+                  "passages": [
+                    "p2"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "notes_text_bytes": 462
+    },
+    {
+      "case": "lecture",
+      "question": "What explains ice cream sales and swimming?",
+      "required_passages": [
+        "p2"
+      ],
+      "current_lexical": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-lecture:p2"
+        ],
+        "evidence_text_bytes": 124
+      },
+      "notes_expanded": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-lecture:p1",
+          "notes-lecture:p2",
+          "notes-lecture:p3"
+        ],
+        "evidence_text_bytes": 317
+      },
+      "selected_notes": [
+        {
+          "title": "Correlation and Causation",
+          "overview": {
+            "text": "The lecture distinguishes correlation from causation and gives an example of a common cause that can produce an association.",
+            "passages": [
+              "p1",
+              "p2"
+            ]
+          },
+          "sections": [
+            {
+              "heading": "Key concepts",
+              "items": [
+                {
+                  "text": "Correlation describes variables changing together; it does not by itself establish causation.",
+                  "passages": [
+                    "p1"
+                  ]
+                },
+                {
+                  "text": "A common cause can explain an observed association: hot weather can increase both ice cream sales and swimming.",
+                  "passages": [
+                    "p2"
+                  ]
+                },
+                {
+                  "text": "Random assignment can help estimate causal effects. The lecture states that it does not assign homework.",
+                  "passages": [
+                    "p3"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "notes_text_bytes": 678
+    },
+    {
+      "case": "lecture",
+      "question": "Was homework assigned?",
+      "required_passages": [
+        "p3"
+      ],
+      "current_lexical": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-lecture:p3"
+        ],
+        "evidence_text_bytes": 94
+      },
+      "notes_expanded": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-lecture:p1",
+          "notes-lecture:p2",
+          "notes-lecture:p3"
+        ],
+        "evidence_text_bytes": 317
+      },
+      "selected_notes": [
+        {
+          "title": "Correlation and Causation",
+          "overview": {
+            "text": "The lecture distinguishes correlation from causation and gives an example of a common cause that can produce an association.",
+            "passages": [
+              "p1",
+              "p2"
+            ]
+          },
+          "sections": [
+            {
+              "heading": "Key concepts",
+              "items": [
+                {
+                  "text": "Correlation describes variables changing together; it does not by itself establish causation.",
+                  "passages": [
+                    "p1"
+                  ]
+                },
+                {
+                  "text": "A common cause can explain an observed association: hot weather can increase both ice cream sales and swimming.",
+                  "passages": [
+                    "p2"
+                  ]
+                },
+                {
+                  "text": "Random assignment can help estimate causal effects. The lecture states that it does not assign homework.",
+                  "passages": [
+                    "p3"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "notes_text_bytes": 678
+    },
+    {
+      "case": "appointment",
+      "question": "Does the dog have a confirmed diagnosis?",
+      "required_passages": [
+        "p1",
+        "p3"
+      ],
+      "current_lexical": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-appointment:p1",
+          "notes-appointment:p3",
+          "notes-conversation:p3",
+          "notes-reflection:p2"
+        ],
+        "evidence_text_bytes": 245
+      },
+      "notes_expanded": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-appointment:p1",
+          "notes-appointment:p2",
+          "notes-appointment:p3",
+          "notes-conversation:p1",
+          "notes-conversation:p2",
+          "notes-conversation:p3",
+          "notes-correction:p1",
+          "notes-correction:p2",
+          "notes-correction:p3"
+        ],
+        "evidence_text_bytes": 594
+      },
+      "selected_notes": [
+        {
+          "title": "Dog\u2019s Possible Food Sensitivity",
+          "overview": {
+            "text": "A food sensitivity was raised as a possibility, but no diagnosis has been established. The current food should remain unchanged until test results are discussed; call the clinic if vomiting recurs.",
+            "passages": [
+              "p1",
+              "p2"
+            ]
+          },
+          "sections": [
+            {
+              "heading": "Current guidance",
+              "items": [
+                {
+                  "text": "Keep the current food until the test results are discussed; call the clinic if vomiting recurs.",
+                  "passages": [
+                    "p2"
+                  ]
+                },
+                {
+                  "text": "The owner restated that there is no confirmed diagnosis and no food change yet.",
+                  "passages": [
+                    "p1",
+                    "p3"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Library Meeting Arrangements",
+          "overview": {
+            "text": "Alex suggested meeting at the library on Friday; Jordan agreed and said they would send the agenda tomorrow. Alex confirmed the library.",
+            "passages": [
+              "p1",
+              "p2",
+              "p3"
+            ]
+          },
+          "sections": [
+            {
+              "heading": "Arrangements",
+              "items": [
+                {
+                  "text": "The meeting is set for Friday at the library.",
+                  "passages": [
+                    "p1",
+                    "p2",
+                    "p3"
+                  ]
+                },
+                {
+                  "text": "Jordan said they would send the agenda tomorrow.",
+                  "passages": [
+                    "p2"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cedar Plan: Thursday at the Garden Pavilion",
+          "overview": {
+            "text": "The initial proposal for Tuesday at the library was rejected. Morgan confirmed Thursday at the garden pavilion as the final plan and said the library plan was cancelled.",
+            "passages": [
+              "p1",
+              "p2",
+              "p3"
+            ]
+          },
+          "sections": [
+            {
+              "heading": "Final plan",
+              "items": [
+                {
+                  "text": "Thursday at the garden pavilion is the agreed plan for Cedar; Tuesday at the library is cancelled.",
+                  "passages": [
+                    "p1",
+                    "p2",
+                    "p3"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "notes_text_bytes": 1545
+    },
+    {
+      "case": "reflection",
+      "question": "Is walking before class a decided routine?",
+      "required_passages": [
+        "p2"
+      ],
+      "current_lexical": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-reflection:p2"
+        ],
+        "evidence_text_bytes": 70
+      },
+      "notes_expanded": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-reflection:p1",
+          "notes-reflection:p2",
+          "notes-reflection:p3"
+        ],
+        "evidence_text_bytes": 183
+      },
+      "selected_notes": [
+        {
+          "title": "Overwhelm and a Possible Walking Routine",
+          "overview": {
+            "text": "The speaker felt overwhelmed this week, enjoyed a quiet walk yesterday, and may try walking before class but has not settled on a routine. They are not asking anyone else to schedule it.",
+            "passages": [
+              "p1",
+              "p2",
+              "p3"
+            ]
+          },
+          "sections": [
+            {
+              "heading": "Reflection and possibility",
+              "items": [
+                {
+                  "text": "Felt overwhelmed this week and enjoyed a quiet walk yesterday.",
+                  "passages": [
+                    "p1"
+                  ]
+                },
+                {
+                  "text": "Might try walking before class, but has not decided on a routine.",
+                  "passages": [
+                    "p2"
+                  ]
+                },
+                {
+                  "text": "Not asking anyone to schedule it for them.",
+                  "passages": [
+                    "p3"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "notes_text_bytes": 636
+    },
+    {
+      "case": "correction",
+      "question": "Where will Cedar meet?",
+      "required_passages": [
+        "p3"
+      ],
+      "current_lexical": {
+        "required_present": false,
+        "missing": [
+          "p3"
+        ],
+        "references": [
+          "notes-conversation:p1",
+          "notes-correction:p1",
+          "notes-conversation:p2",
+          "notes-correction:p2"
+        ],
+        "evidence_text_bytes": 229
+      },
+      "notes_expanded": {
+        "required_present": true,
+        "missing": [],
+        "references": [
+          "notes-correction:p1",
+          "notes-correction:p2",
+          "notes-correction:p3"
+        ],
+        "evidence_text_bytes": 229
+      },
+      "selected_notes": [
+        {
+          "title": "Cedar Plan: Thursday at the Garden Pavilion",
+          "overview": {
+            "text": "The initial proposal for Tuesday at the library was rejected. Morgan confirmed Thursday at the garden pavilion as the final plan and said the library plan was cancelled.",
+            "passages": [
+              "p1",
+              "p2",
+              "p3"
+            ]
+          },
+          "sections": [
+            {
+              "heading": "Final plan",
+              "items": [
+                {
+                  "text": "Thursday at the garden pavilion is the agreed plan for Cedar; Tuesday at the library is cancelled.",
+                  "passages": [
+                    "p1",
+                    "p2",
+                    "p3"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "notes_text_bytes": 479
+    }
+  ],
+  "compression_control": {
+    "provenance": "Hand-authored omission, not generated output",
+    "direct_transcript_finds_detail": true,
+    "notes_detail_query_misses": true,
+    "topic_note_citations_also_omit_detail": true
+  },
+  "current_lexical_required_hits": 6,
+  "notes_expanded_required_hits": 7,
+  "controls": {
+    "owner_isolation": true,
+    "opt_out": true,
+    "original_passages_open": true,
+    "stale_notes_excluded": true,
+    "stale_citations_invalid": true,
+    "deleted_notes_unavailable": true
+  },
+  "limitations": [
+    "Five short synthetic recordings; seven lexical queries, no statistical generalization.",
+    "Baseline has no semantic embedding or final model ranking; not the full deployed harness.",
+    "Notes route expands all citations from up to three notes, capped at twelve passages.",
+    "No new Jev retrieval, new answers, latency or inference cost measured.",
+    "No learned claims seeded in matched corpus; retention replay is a separate lifecycle baseline."
+  ]
+}
