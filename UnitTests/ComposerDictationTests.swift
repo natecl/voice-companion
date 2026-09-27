@@ -153,13 +153,14 @@ final class SharedMicrophoneTests: XCTestCase {
     func testDictationStopDoesNotStopMeetingAndReverse() async throws {
         for stopMeetingFirst in [false, true] {
             let hardware = MicrophoneStub(); let hub = SharedMicrophone(capture: hardware)
-            let meeting = SharedMicrophoneCapture(hub: hub); let dictation = SharedMicrophoneCapture(hub: hub)
+            let meeting = SharedMicrophoneCapture(hub: hub); let dictation = SharedMicrophoneCapture(hub: hub, purpose: .dictation)
             var meetingStream = try meeting.start().makeAsyncIterator()
             var dictationStream = try dictation.start().makeAsyncIterator()
             XCTAssertEqual(hardware.starts, 1)
             hardware.events.continuation.yield(Data([1, 2]))
             let a = try await meetingStream.next(); let b = try await dictationStream.next()
-            XCTAssertEqual(a, b)
+            XCTAssertEqual(a, Data([0, 0])); XCTAssertEqual(b, Data([1, 2]))
+            XCTAssertTrue(hub.meetingAudioPaused)
             if stopMeetingFirst { meeting.stop() } else { dictation.stop() }
             XCTAssertEqual(hardware.stops, 0)
             hardware.events.continuation.yield(Data([3, 4]))
@@ -167,6 +168,46 @@ final class SharedMicrophoneTests: XCTestCase {
             XCTAssertEqual(next, Data([3, 4]))
             meeting.stop(); dictation.stop(); XCTAssertEqual(hardware.stops, 1)
         }
+    }
+
+    func testPrivateDictationPreservesFrameTimingAndResumesMeeting() async throws {
+        let hardware = MicrophoneStub(); let hub = SharedMicrophone(capture: hardware)
+        let meeting = SharedMicrophoneCapture(hub: hub)
+        let dictation = SharedMicrophoneCapture(hub: hub, purpose: .dictation)
+        var recording = try meeting.start().makeAsyncIterator()
+        let frame = Data([1, 2, 3, 4])
+        hardware.events.continuation.yield(frame)
+        let before = try await recording.next(); XCTAssertEqual(before, frame)
+        var privateAudio = try dictation.start().makeAsyncIterator()
+        for _ in 0..<12 {
+            hardware.events.continuation.yield(frame)
+            let muted = try await recording.next(); let original = try await privateAudio.next()
+            XCTAssertEqual(muted, Data(count: frame.count)); XCTAssertEqual(original, frame)
+        }
+        dictation.stop(); XCTAssertFalse(hub.meetingAudioPaused)
+        hardware.events.continuation.yield(frame)
+        let after = try await recording.next(); XCTAssertEqual(after, frame)
+        XCTAssertEqual(hardware.starts, 1); XCTAssertEqual(hardware.stops, 0)
+        meeting.stop()
+    }
+
+    func testMeetingStartedDuringDictationIsMutedAndInterruptionClearsPause() async throws {
+        let hardware = MicrophoneStub(); let hub = SharedMicrophone(capture: hardware)
+        let dictation = SharedMicrophoneCapture(hub: hub, purpose: .dictation)
+        let meeting = SharedMicrophoneCapture(hub: hub)
+        var speech = try dictation.start().makeAsyncIterator()
+        var recording = try meeting.start().makeAsyncIterator()
+        hardware.events.continuation.yield(Data([7, 8]))
+        let muted = try await recording.next(); let original = try await speech.next()
+        XCTAssertEqual(muted, Data([0, 0])); XCTAssertEqual(original, Data([7, 8]))
+        hardware.events.continuation.finish(throwing: CaptureFailure.interrupted)
+        do { _ = try await recording.next(); XCTFail("Missing interruption") } catch {}
+        XCTAssertFalse(hub.meetingAudioPaused)
+        meeting.stop(); dictation.stop()
+        var restarted = try meeting.start().makeAsyncIterator()
+        hardware.events.continuation.yield(Data([9, 10]))
+        let fresh = try await restarted.next(); XCTAssertEqual(fresh, Data([9, 10]))
+        meeting.stop()
     }
 
     func testHardwareInterruptionReachesBothConsumersAndCanRestart() async throws {

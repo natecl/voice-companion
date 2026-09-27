@@ -112,3 +112,8 @@ Spending permission, runtime/daily quotas, deployment approval and physical read
 3. Continue product UX work on the agreed narrow foundation. Public distribution, onboarding/account/subscription operations and broader release acceptance remain separate from internal feature completion.
 
 Deferred: TTS, proactive participation, silently always-on capture, Mac system audio, voiceprints, manual speaker labeling, side chats, note editing, full cross-device recording-library sync, autonomous tools and explicit memory-management UX. A mascot or self-editing SOUL/MEMORY files are not an agreed implementation requirement. No additional research or feature is automatically authorized by being listed here.
+
+
+### Private composer dictation refinement — September 27
+
+Founder-approved behavior: pause meeting audio while dictation captures the companion message, visibly indicate it, then resume automatically. The question is excluded from meeting transcripts/notes; other simultaneous speech is also omitted. Candidate routing uses same-length silence for the meeting stream and original audio for on-device dictation, preserving session timestamps. Prior physical omission was not deliberate routing and does not verify this change. See [dictation evidence](companion-feel-and-dictation.md). Physical acceptance remains pending; no new paid allowance has been used.

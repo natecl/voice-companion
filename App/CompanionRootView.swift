@@ -63,10 +63,14 @@ struct CompanionRootView: View {
                 libraryContent.opacity(surface == "Recordings" ? 1 : 0)
                     .allowsHitTesting(surface == "Recordings").accessibilityHidden(surface != "Recordings")
             }
+            if recording.liveStatus == "Recording", SharedMicrophone.shared.meetingAudioPaused {
+                Text("Meeting audio is not being captured while you dictate. Capture resumes automatically when dictation stops.")
+                    .font(.caption).accessibilityIdentifier("meetingDictationPause")
+            }
             Divider()
             HStack {
                 if let status = recording.liveStatus {
-                    Button(status) { selectedID = recording.current?.id; citedSource = nil; surface = "Recordings" }
+                    Button(status == "Recording" && SharedMicrophone.shared.meetingAudioPaused ? "Meeting capture paused for dictation" : status) { selectedID = recording.current?.id; citedSource = nil; surface = "Recordings" }
                         .accessibilityIdentifier("showActiveRecording")
                     Spacer()
                     Button("Stop recording") { recording.stop() }

@@ -35,7 +35,7 @@ final class AppleDictationRecognizer: DictationRecognizing {
     private var audioTask: Task<Void, Never>?
     private var continuation: AsyncThrowingStream<DictationEvent, Error>.Continuation?
 
-    init(capture: any AudioCapture = SharedMicrophoneCapture()) { self.capture = capture }
+    init(capture: any AudioCapture = SharedMicrophoneCapture(purpose: .dictation)) { self.capture = capture }
 
     func start() async throws -> AsyncThrowingStream<DictationEvent, Error> {
         let microphone = MicrophoneAccess()

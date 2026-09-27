@@ -113,3 +113,8 @@ Founder clarification: Talk to companion supports ordinary ongoing conversation,
 ## Retrieval-gate decision
 
 After the bounded Jev classifier screen, the founder chose to keep the pre-retrieval gate disabled. Existing past retrieval and Jev evidence ranking remain unchanged. Chat style is interpreted by Luna from the message and context; no separate normal-chat/brainstorming/retrieval mode classifier is enabled. See [evidence](memory-gate-screen.md).
+
+
+## Private composer dictation — September 27, 2026
+
+Founder decision: speech addressed to the companion through composer dictation is separate from meeting capture. Pause meeting audio while dictation captures speech, visibly explain the pause, and resume automatically when dictation stops. Other people speaking during that interval are also omitted; no voice identification or simultaneous-speaker separation is claimed. Typed chat and waiting for the companion answer do not pause capture. Dictated questions must not enter the meeting transcript or derived notes through the recording path. They remain ordinary chat when explicitly sent.

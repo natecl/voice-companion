@@ -144,3 +144,8 @@ The founder removed visible chat citations from release UX. `CompanionMessageTex
 ## Disabled retrieval-gate experiment
 
 `scripts/evaluations/memory_gate_screen.py` and synthetic `Backend/fixtures/memory-gate/` preserve the isolated screen. There is no production import or runtime switch enabling it. Sixteen calls, seven would-skip results, zero false skips under conservative thresholds; median added provider round-trip 174 ms. One wrong top label was caught by confidence. Founder decision: leave disabled; normal recall and Jev evidence ranking remain active. [Full interpretation](../memory-gate-screen.md).
+
+
+### Private composer dictation refinement — September 27
+
+Founder-approved behavior: pause meeting audio while dictation captures the companion message, visibly indicate it, then resume automatically. The question is excluded from meeting transcripts/notes; other simultaneous speech is also omitted. Candidate routing uses same-length silence for the meeting stream and original audio for on-device dictation, preserving session timestamps. Prior physical omission was not deliberate routing and does not verify this change. See [dictation evidence](../companion-feel-and-dictation.md). Physical acceptance remains pending; no new paid allowance has been used.
