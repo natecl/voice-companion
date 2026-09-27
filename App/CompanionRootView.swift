@@ -250,7 +250,7 @@ struct CompanionRootView: View {
                                 Button("Clear draft", role: .destructive) { dictation.discard(); chat.draft = "" }
                                     .disabled(!dictation.isActive && chat.draft.isEmpty).accessibilityIdentifier("clearCompanionDraft")
                                 Button("Refresh conversation") { chat.refresh() }.disabled(chat.isBusy || recording.pendingMemoryDeletion)
-                            } label: { Image(systemName: "paperclip").font(.system(size: 20, weight: .regular)).frame(width: 44, height: 44).contentShape(Rectangle()) }
+                            } label: { Image(systemName: "paperclip").font(.system(size: 20, weight: .regular)).rotationEffect(.degrees(-45)).frame(width: 44, height: 44).contentShape(Rectangle()) }
                                 .accessibilityLabel("Attachments and message options")
                             Spacer(minLength: 0)
                             if dictation.isActive {
