@@ -20,7 +20,7 @@ final class CompanionUITests: XCTestCase {
         let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in FileManager.default.fileExists(atPath: config.path) }, object: nil)
         XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 5), .completed)
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--companion-ui-fixture"]
+        app.launchArguments = ["--show-evidence-debug", "--ui-testing", "--enable-companion-ui", "--companion-ui-fixture"]
         app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = try String(contentsOf: config, encoding: .utf8)
         app.launch()
         defer { app.terminate() }
@@ -56,7 +56,7 @@ final class CompanionUITests: XCTestCase {
         attachment.lifetime = .keepAlways
         add(attachment)
         app.terminate()
-        app.launchArguments = ["--ui-testing", "--companion-ui-fixture"]
+        app.launchArguments = ["--show-evidence-debug", "--ui-testing", "--companion-ui-fixture"]
         app.launch()
         XCTAssertTrue(app.buttons["companionSource"].firstMatch.waitForExistence(timeout: 5))
         app.buttons["companionSource"].firstMatch.tap()
@@ -69,5 +69,85 @@ final class CompanionUITests: XCTestCase {
         XCTAssertFalse(app.buttons["companionSource"].firstMatch.exists)
         XCTAssertFalse(app.staticTexts["companionAnswer"].firstMatch.exists)
     }
+    func testDictationDraftAndExplicitSendWithCapture() throws {
+        try checkDictation(emptyFinal: false)
+    }
+
+    func testDictationEmptyFinalRetainsEditableDraft() throws {
+        try checkDictation(emptyFinal: true)
+    }
+
+    private func checkDictation(emptyFinal: Bool) throws {
+        continueAfterFailure = false
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let fixture = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Backend/companion_fixture.py")
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: ProcessInfo.processInfo.environment["VOICE_TEST_PYTHON"] ?? "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3")
+        process.arguments = [fixture.path, directory.path, "--ui"]
+        process.standardOutput = FileHandle.nullDevice
+        try process.run()
+        defer { if process.isRunning { process.terminate() }; process.waitUntilExit() }
+        let config = directory.appendingPathComponent("config.json")
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in FileManager.default.fileExists(atPath: config.path) }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 5), .completed)
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--companion-ui-fixture", "--dictation-ui-fixture"]
+        if emptyFinal { app.launchArguments.append("--dictation-empty-final-fixture") }
+        app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = try String(contentsOf: config, encoding: .utf8)
+        app.launch(); defer { app.terminate() }
+        let field = app.descendants(matching: .any).matching(identifier: "companionDraft").firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        let dictate = app.buttons["startDictation"]
+        let enabled = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in dictate.isEnabled }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [enabled], timeout: 5), .completed)
+        field.tap(); field.typeText("Please tell me:")
+        dictate.tap()
+        XCTAssertTrue(app.buttons["stopDictation"].waitForExistence(timeout: 3))
+        XCTAssertEqual(field.value as? String, "Please tell me: What does Maya")
+        app.buttons["stopDictation"].tap()
+        let expected = emptyFinal ? "Please tell me: What does Maya" : "Please tell me: What does Maya enjoy?"
+        let finalized = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in field.value as? String == expected && field.isEnabled }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [finalized], timeout: 5), .completed)
+        XCTAssertFalse(app.staticTexts["companionAnswer"].exists)
+        if emptyFinal {
+            XCTAssertTrue(app.staticTexts["dictationNotice"].exists)
+            field.tap(); field.typeText(" edited")
+            XCTAssertTrue((field.value as? String ?? "").contains("edited"))
+            XCTAssertTrue((field.value as? String ?? "").contains("What does Maya"))
+            let attachment = XCTAttachment(screenshot: app.screenshot())
+            attachment.name = "Empty final preserves editable speech — synthetic input"
+            attachment.lifetime = .keepAlways; add(attachment)
+            let clear = app.buttons["clearCompanionDraft"]
+            clear.tap()
+            XCTAssertEqual(field.value as? String, "")
+            XCTAssertFalse(app.staticTexts["dictationNotice"].exists)
+            dictate.tap()
+            XCTAssertTrue(app.buttons["stopDictation"].waitForExistence(timeout: 3))
+            clear.tap()
+            XCTAssertEqual(field.value as? String, "")
+            XCTAssertTrue(dictate.exists)
+            XCTAssertFalse(app.staticTexts["companionAnswer"].exists)
+            return
+        }
+        app.buttons["startRecording"].tap()
+        XCTAssertTrue(app.buttons["stopRecording"].waitForExistence(timeout: 5))
+        dictate.tap()
+        XCTAssertTrue(app.buttons["stopDictation"].waitForExistence(timeout: 3))
+        app.buttons["sendCompanion"].tap()
+        XCTAssertTrue(app.staticTexts["companionAnswer"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["stopRecording"].isEnabled)
+        XCTAssertEqual(field.value as? String, "")
+        let message = app.staticTexts["companionAnswer"].firstMatch
+        XCTAssertEqual(message.value as? String ?? message.label, "Maya swims.")
+        XCTAssertFalse(app.buttons["companionSource"].exists)
+        XCTAssertFalse(app.staticTexts["retainedMemoryReference"].exists)
+        let attachment = XCTAttachment(screenshot: app.screenshot())
+        attachment.name = "Dictation explicit send with continuing capture — synthetic input"
+        attachment.lifetime = .keepAlways; add(attachment)
+        app.buttons["stopRecording"].tap()
+    }
+
 }
 #endif

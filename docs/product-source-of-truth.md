@@ -2,6 +2,8 @@
 
 Status: Agreed with the founder on September 24, 2026.
 
+Current interpretation: later dated refinements below supersede conflicting earlier delivery descriptions. See [current implementation and decision brief](current-state.md) for deployed versus candidate status. In particular, notes are implemented; release chat hides visible sources; TTS/voice identity remain deferred; the experimental retrieval gate is disabled.
+
 ## One-liner
 
 > Granola with an AI that listens alongside you and can join the conversation.
@@ -95,3 +97,24 @@ Founder-approved direction: consolidate around a lean Proven/Better/New experien
 ## Notes-first consolidation — September 27, 2026
 
 Founder authorizes implementing notes-first past-context retrieval with Jev ranking, direct transcript fallback and a thin personal layer. Preserve current conversation context, original passage citations, uncertainty, attribution, corrections and learned knowledge retained after recording deletion. Thin means a simpler implementation, not work-only or shallow personal understanding. Nonpersonal retained knowledge stays distinct from personal profile facts. Replace existing complexity only after matched behavioral evidence; the approved direction is not a claim that Jev retrieval or the replacement has passed QA. See [delivery plan](notes-first-memory-plan.md).
+
+
+## First-release input and companion feel — September 26, 2026
+
+Founder clarification after memory consolidation: spoken replies/TTS are outside the first release. Add explicit voice dictation into the chat composer: stop to retain editable text, or Send to finish transcription and submit the combined draft. No automatic sending merely because speech stops. Voice recognition/enrollment and manual voice-note labeling remain outside this slice; unknown recording speakers remain unknown. Refine the companion toward the agreed attentive-friend experience. See [input contract and personality direction](companion-feel-and-dictation.md); that document separates candidate implementation and proposed tone examples from verified behavior.
+
+## Plain-message companion replies — September 26, 2026
+
+Founder decision: the first release companion should respond as ordinary messages, without visible source markers, source buttons or a source list. Keep the evidence and provenance internally for factual grounding, corrections, invalidation and debugging. This supersedes the earlier visible chat-citation requirement; recording-library access and notes-to-transcript navigation remain. Update the personality toward the attentive, candid, naturally personal direction in [the companion brief](companion-feel-and-dictation.md). This is authorization to implement the candidate, not proof of new prompt quality or deployment.
+
+
+Founder clarification: Talk to companion supports ordinary ongoing conversation, general questions, brainstorming and reflection without needing a recording. Captured context makes relevant answers more personal; it does not limit the companion to retrieval questions or require every reply to mention memories. This grants no additional tools or autonomous actions.
+
+## Retrieval-gate decision
+
+After the bounded Jev classifier screen, the founder chose to keep the pre-retrieval gate disabled. Existing past retrieval and Jev evidence ranking remain unchanged. Chat style is interpreted by Luna from the message and context; no separate normal-chat/brainstorming/retrieval mode classifier is enabled. See [evidence](memory-gate-screen.md).
+
+
+## Private composer dictation — September 27, 2026
+
+Founder decision: speech addressed to the companion through composer dictation is separate from meeting capture. Pause meeting audio while dictation captures speech, visibly explain the pause, and resume automatically when dictation stops. Other people speaking during that interval are also omitted; no voice identification or simultaneous-speaker separation is claimed. Typed chat and waiting for the companion answer do not pause capture. Dictated questions must not enter the meeting transcript or derived notes through the recording path. They remain ordinary chat when explicitly sent.

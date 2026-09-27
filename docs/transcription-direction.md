@@ -1,5 +1,7 @@
 # Transcription direction
 
+> Dated research/audit record. Preserve its findings and uncertainty; it does not describe the current deployed stack or authorize changing it. Read [current state](current-state.md) for adopted decisions, subsequent fixes, rejected candidates and remaining limits.
+
 Status: Conversation research recap, September 24, 2026. Grok Voice Transcribe 2.0 is integrated in the internal Mac/iPhone builds and has passed a bounded synthetic screen (see quality-evaluation.md). Representative natural-conversation quality and final provider selection remain unresolved; the candidate discussion below is historical research, not a completed comparison.
 
 ## Requirements

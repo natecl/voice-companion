@@ -1,6 +1,6 @@
 # Feature and context map
 
-Checked against main `3fb8d4b` on September 26, 2026 (through PR 84). This is a navigation aid for humans and coding agents, not a new product specification or a claim of public-release readiness.
+Reconciled against implementation through `0b286af` (draft PR 99) and the last verified internal rollout at `145f4c8` (PRs 95–97). See [current state](../current-state.md) for the deployment/candidate boundary; this documentation pass did not re-inspect the live service. This is a navigation aid for humans and coding agents, not a new product specification or a claim of public-release readiness.
 
 > Granola with an AI that listens alongside you and can join the conversation.
 
@@ -21,11 +21,12 @@ Canonical product/engineering documents retain authority. Maps describe verified
 | Microphone capture and live transcript | Internal Mac/iPhone flow; speaker labels best-effort | [Capture](features.md#capture-and-live-transcript) |
 | Transcript-derived notes | Internally deployed; local native and bounded physical-iPhone QA pass | [Notes plan](../recording-notes-plan.md) |
 | Recording library and evidence sync | Local saved transcripts; backend evidence outbox, not full cross-device library sync | [Library](features.md#recording-library-and-evidence-sync) |
-| Persistent companion chat | One main chat; typed questions during/after capture and across recordings | [Companion](features.md#companion-chat-and-source-navigation) |
-| Automatic learning | Background evidence extraction, independent verification, atomic writes | [Learning](features.md#automatic-memory-learning) |
+| Persistent companion chat | One main chat; ordinary conversation and contextual questions; v3 personality/plain-message candidate pending rollout | [Companion](features.md#companion-chat-and-source-navigation) |
+| Composer dictation | Bounded physical acceptance passed; native candidate installed | [Dictation](features.md#composer-dictation-candidate-not-yet-accepted) |
+| Automatic learning | Source-scoped background extraction, independent verification, atomic writes | [Learning](features.md#automatic-memory-learning) |
 | Personal context and identity | Whole-life facts/relationships with provenance; no voice enrollment | [Identity](features.md#personal-context-and-identity) |
-| Corrections, time and maintenance | Qualified lifecycle, bounded expiry and consolidation; no memory-management UI | [Lifecycle](features.md#corrections-time-and-maintenance) |
-| Retrieval and answer context | Live/attached/history/past evidence; hybrid original-source retrieval, lexical retained-memory retrieval | [Recall](features.md#retrieval-and-answer-context) |
+| Corrections, time and maintenance | Qualified lifecycle and bounded expiry; source-scoped additions; no memory-management UI | [Lifecycle](features.md#corrections-time-and-maintenance) |
+| Retrieval and answer context | Unified notes/transcript discovery, one Jev ranking, independent evidence reserve; pre-retrieval classifier disabled | [Recall](features.md#retrieval-and-answer-context) |
 | Recording deletion and retained memory | Transcript removed; eligible learned knowledge retained with unavailable-source label | [Deletion](features.md#recording-deletion-and-retained-memory) |
 | Internal access, budgets and deployment | Explicit enrollment, admission caps, persistent single-instance service | [Operations](features.md#internal-access-budgets-and-rollout) |
 
@@ -35,13 +36,16 @@ Canonical product/engineering documents retain authority. Maps describe verified
 Capture meeting note
   microphone -> transcription relay/provider -> transcript events
        -> local session/library -> durable evidence outbox -> backend source
-            +-> background learning -> verified claims + evidence + lifecycle
+            +-> generated notes -> note index -> original passage discovery
+            +-> source-scoped learning -> verified claims + evidence + lifecycle
             +-> background indexing -> lexical/vector source retrieval
 
 Talk to companion (the same main chat during and between recordings)
   question + optional recording/live snapshot + recent chat
        + relevant past evidence -> bounded context -> Luna answer
-            -> saved turn + references -> source passage OR retained-memory label
+            -> saved turn + internal evidence/provenance
+                 -> deployed UI: source controls / retained-memory label
+                 -> PR 99 release candidate: ordinary text; diagnostics only
 
 Delete recording
   local library removal + durable deletion sync
@@ -61,6 +65,6 @@ Voice recognition/enrollment; silent continuous recording; proactive spoken part
 
 Update the affected feature entry when a checkpoint changes behavior, module ownership, a cross-feature contract, verification evidence or a material limitation. Add a lesson only when a failure or decision changes how future work should be done: trigger → cause → guard → evidence. Link evidence instead of copying logs, mutable budget balances, transcripts or secrets. Retain failed evidence, mark superseded guidance, and avoid duplicating canonical policy. No runtime/provider testing is warranted for map-only edits; verify paths, links and factual alignment with code.
 
-## Current simplification work
+## Current consolidation and follow-up
 
-[Simple memory foundation](../simple-memory-foundation.md) tracks the authorized learning-and-recall consolidation. The first checkpoint extracts `memory_source_pipeline.SourceVerifier` from reconciliation with exact-response replay evidence; it does not change hosted behavior or establish that the simpler memory system is finished.
+The [simpler memory foundation](../simple-memory-foundation.md) completed its bounded learning/recall checkpoints and [internal rollout](../simple-memory-rollout.md). It reuses existing provenance/lifecycle tables; it is not a new notes-only store or removal of every legacy adapter. Current follow-up is [dictation and companion feel](../companion-feel-and-dictation.md), with bounded physical-iPhone acceptance complete and backend v3 rollout still separate. The [Jev gate experiment](../memory-gate-screen.md) is disabled by founder decision.

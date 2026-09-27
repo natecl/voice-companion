@@ -1,0 +1,101 @@
+{
+  "corpus": "Five synthetic recordings: Maya, anonymous marathon speaker, Juniper, dentist, weekend preference; local CPU discovery only, no ranking/answer calls.",
+  "cases": [
+    {
+      "id": "greeting",
+      "candidates": 5,
+      "seconds": 0.005653833999531344,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "general",
+      "candidates": 5,
+      "seconds": 0.005571749992668629,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "rewrite",
+      "candidates": 5,
+      "seconds": 0.006044624984497204,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "arithmetic",
+      "candidates": 5,
+      "seconds": 0.00529862500843592,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "self_contained_brainstorm",
+      "candidates": 5,
+      "seconds": 0.006105040985858068,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "thanks",
+      "candidates": 5,
+      "seconds": 0.004940499988151714,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "explicit_recall",
+      "candidates": 5,
+      "seconds": 0.0053840840118937194,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "correction",
+      "candidates": 5,
+      "seconds": 0.005514875025255606,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "implicit_weekend",
+      "candidates": 5,
+      "seconds": 0.005734417005442083,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "personal_advice",
+      "candidates": 5,
+      "seconds": 0.005875041009858251,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "followup",
+      "candidates": 5,
+      "seconds": 0.005139624990988523,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "cross_recording",
+      "candidates": 5,
+      "seconds": 0.005095166998216882,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "ambiguous",
+      "candidates": 5,
+      "seconds": 0.004807582998182625,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "emotional",
+      "candidates": 5,
+      "seconds": 0.005162290995940566,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "attached_only",
+      "candidates": 5,
+      "seconds": 0.0048234589921776205,
+      "baseline_ranking_call": true
+    },
+    {
+      "id": "quoted_instruction",
+      "candidates": 5,
+      "seconds": 0.00671058299485594,
+      "baseline_ranking_call": true
+    }
+  ]
+}

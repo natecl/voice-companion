@@ -1,0 +1,285 @@
+{
+  "summary": {
+    "cases": 16,
+    "would_skip": 7,
+    "false_skips": 0,
+    "median_seconds": 0.17402110062539577,
+    "mean_seconds": 0.17586919479072094,
+    "max_seconds": 0.27237240597605705,
+    "reserved_microusd": 80000
+  },
+  "cases": [
+    {
+      "id": "greeting",
+      "expected": "unnecessary",
+      "decision": "would_skip",
+      "answer": {
+        "type": "choice",
+        "choice": "unnecessary",
+        "confidence": 1.0,
+        "probabilities": {
+          "uncertain": 0.0,
+          "useful": 0.0,
+          "unnecessary": 1.0
+        }
+      },
+      "seconds": 0.27237240597605705,
+      "false_skip": false
+    },
+    {
+      "id": "general",
+      "expected": "unnecessary",
+      "decision": "would_skip",
+      "answer": {
+        "type": "choice",
+        "choice": "unnecessary",
+        "confidence": 1.0,
+        "probabilities": {
+          "useful": 0.0,
+          "uncertain": 0.0,
+          "unnecessary": 1.0
+        }
+      },
+      "seconds": 0.13681054022163153,
+      "false_skip": false
+    },
+    {
+      "id": "rewrite",
+      "expected": "unnecessary",
+      "decision": "would_skip",
+      "answer": {
+        "type": "choice",
+        "choice": "unnecessary",
+        "confidence": 1.0,
+        "probabilities": {
+          "uncertain": 0.0,
+          "unnecessary": 1.0,
+          "useful": 0.0
+        }
+      },
+      "seconds": 0.17630197294056416,
+      "false_skip": false
+    },
+    {
+      "id": "arithmetic",
+      "expected": "unnecessary",
+      "decision": "would_skip",
+      "answer": {
+        "type": "choice",
+        "choice": "unnecessary",
+        "confidence": 1.0,
+        "probabilities": {
+          "useful": 0.0,
+          "uncertain": 0.0,
+          "unnecessary": 1.0
+        }
+      },
+      "seconds": 0.18179971631616354,
+      "false_skip": false
+    },
+    {
+      "id": "self_contained_brainstorm",
+      "expected": "unnecessary",
+      "decision": "would_skip",
+      "answer": {
+        "type": "choice",
+        "choice": "unnecessary",
+        "confidence": 1.0,
+        "probabilities": {
+          "uncertain": 0.0,
+          "useful": 0.0,
+          "unnecessary": 1.0
+        }
+      },
+      "seconds": 0.22549705300480127,
+      "false_skip": false
+    },
+    {
+      "id": "thanks",
+      "expected": "unnecessary",
+      "decision": "would_skip",
+      "answer": {
+        "type": "choice",
+        "choice": "unnecessary",
+        "confidence": 0.94,
+        "probabilities": {
+          "unnecessary": 0.96,
+          "uncertain": 0.03,
+          "useful": 0.01
+        }
+      },
+      "seconds": 0.17626130115240812,
+      "false_skip": false
+    },
+    {
+      "id": "explicit_recall",
+      "expected": "useful",
+      "decision": "would_retrieve",
+      "answer": {
+        "type": "choice",
+        "choice": "useful",
+        "confidence": 0.63,
+        "probabilities": {
+          "useful": 0.75,
+          "uncertain": 0.19,
+          "unnecessary": 0.06
+        }
+      },
+      "seconds": 0.14314667135477066,
+      "false_skip": false
+    },
+    {
+      "id": "correction",
+      "expected": "useful",
+      "decision": "would_retrieve",
+      "answer": {
+        "type": "choice",
+        "choice": "useful",
+        "confidence": 0.67,
+        "probabilities": {
+          "useful": 0.78,
+          "uncertain": 0.19,
+          "unnecessary": 0.03
+        }
+      },
+      "seconds": 0.1443472048267722,
+      "false_skip": false
+    },
+    {
+      "id": "implicit_weekend",
+      "expected": "useful",
+      "decision": "would_retrieve",
+      "answer": {
+        "type": "choice",
+        "choice": "useful",
+        "confidence": 0.52,
+        "probabilities": {
+          "unnecessary": 0.27,
+          "useful": 0.68,
+          "uncertain": 0.05
+        }
+      },
+      "seconds": 0.1733455816283822,
+      "false_skip": false
+    },
+    {
+      "id": "personal_advice",
+      "expected": "useful",
+      "decision": "would_retrieve",
+      "answer": {
+        "type": "choice",
+        "choice": "useful",
+        "confidence": 0.81,
+        "probabilities": {
+          "uncertain": 0.05,
+          "unnecessary": 0.08,
+          "useful": 0.87
+        }
+      },
+      "seconds": 0.14528661500662565,
+      "false_skip": false
+    },
+    {
+      "id": "followup",
+      "expected": "useful",
+      "decision": "would_retrieve",
+      "answer": {
+        "type": "choice",
+        "choice": "unnecessary",
+        "confidence": 0.36,
+        "probabilities": {
+          "unnecessary": 0.57,
+          "useful": 0.26,
+          "uncertain": 0.17
+        }
+      },
+      "seconds": 0.1687483387067914,
+      "false_skip": false
+    },
+    {
+      "id": "cross_recording",
+      "expected": "useful",
+      "decision": "would_retrieve",
+      "answer": {
+        "type": "choice",
+        "choice": "useful",
+        "confidence": 0.69,
+        "probabilities": {
+          "uncertain": 0.17,
+          "useful": 0.79,
+          "unnecessary": 0.04
+        }
+      },
+      "seconds": 0.14441646728664637,
+      "false_skip": false
+    },
+    {
+      "id": "ambiguous",
+      "expected": "uncertain",
+      "decision": "would_retrieve",
+      "answer": {
+        "type": "choice",
+        "choice": "uncertain",
+        "confidence": 0.7,
+        "probabilities": {
+          "unnecessary": 0.16,
+          "useful": 0.04,
+          "uncertain": 0.8
+        }
+      },
+      "seconds": 0.1498896600678563,
+      "false_skip": false
+    },
+    {
+      "id": "emotional",
+      "expected": "uncertain",
+      "decision": "would_retrieve",
+      "answer": {
+        "type": "choice",
+        "choice": "useful",
+        "confidence": 0.27,
+        "probabilities": {
+          "uncertain": 0.16,
+          "unnecessary": 0.33,
+          "useful": 0.51
+        }
+      },
+      "seconds": 0.17469661962240934,
+      "false_skip": false
+    },
+    {
+      "id": "attached_only",
+      "expected": "unnecessary",
+      "decision": "would_skip",
+      "answer": {
+        "type": "choice",
+        "choice": "unnecessary",
+        "confidence": 0.97,
+        "probabilities": {
+          "useful": 0.0,
+          "uncertain": 0.02,
+          "unnecessary": 0.98
+        }
+      },
+      "seconds": 0.20008189044892788,
+      "false_skip": false
+    },
+    {
+      "id": "quoted_instruction",
+      "expected": "useful",
+      "decision": "would_retrieve",
+      "answer": {
+        "type": "choice",
+        "choice": "useful",
+        "confidence": 0.44,
+        "probabilities": {
+          "useful": 0.62,
+          "uncertain": 0.3,
+          "unnecessary": 0.08
+        }
+      },
+      "seconds": 0.20090507809072733,
+      "false_skip": false
+    }
+  ]
+}

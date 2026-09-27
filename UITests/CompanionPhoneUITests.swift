@@ -7,7 +7,7 @@ final class CompanionPhoneUITests: XCTestCase {
         continueAfterFailure = false
         let config = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"])
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--companion-ui-fixture"]
+        app.launchArguments = ["--show-evidence-debug", "--ui-testing", "--enable-companion-ui", "--companion-ui-fixture"]
         app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = config
         app.launch()
         defer { app.terminate() }
@@ -19,7 +19,7 @@ final class CompanionPhoneUITests: XCTestCase {
         image.lifetime = .keepAlways
         add(image)
         app.terminate()
-        app.launchArguments = ["--ui-testing", "--companion-ui-fixture"]
+        app.launchArguments = ["--show-evidence-debug", "--ui-testing", "--companion-ui-fixture"]
         app.launch()
         XCTAssertTrue(app.staticTexts["retainedMemoryReference"].firstMatch.waitForExistence(timeout: 8))
         XCTAssertFalse(app.buttons["companionSource"].exists)
@@ -29,7 +29,7 @@ final class CompanionPhoneUITests: XCTestCase {
         continueAfterFailure = false
         let config = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"], "Launch with the isolated local companion fixture configuration")
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--companion-ui-fixture"]
+        app.launchArguments = ["--show-evidence-debug", "--ui-testing", "--enable-companion-ui", "--companion-ui-fixture"]
         app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = config
         app.launch()
         defer { app.terminate() }
@@ -57,7 +57,7 @@ final class CompanionPhoneUITests: XCTestCase {
         image.lifetime = .keepAlways
         add(image)
         app.terminate()
-        app.launchArguments = ["--ui-testing", "--companion-ui-fixture"]
+        app.launchArguments = ["--show-evidence-debug", "--ui-testing", "--companion-ui-fixture"]
         app.launch()
         XCTAssertTrue(app.buttons["companionSource"].firstMatch.waitForExistence(timeout: 5))
     }

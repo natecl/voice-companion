@@ -9,7 +9,8 @@ settings:
     SWIFT_VERSION: '6.0'
     GENERATE_INFOPLIST_FILE: YES
     CODE_SIGN_STYLE: Automatic
-    INFOPLIST_KEY_NSMicrophoneUsageDescription: "Capture speech for the transcript when you start a recording session."
+    INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: "Turn your speech into an editable companion message when you tap Dictate."
+    INFOPLIST_KEY_NSMicrophoneUsageDescription: "Capture speech when you record a conversation or dictate a message."
 targets:
   VoiceCompanionMac:
     type: application

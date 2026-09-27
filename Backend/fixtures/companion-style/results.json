@@ -1,0 +1,102 @@
+[
+  {
+    "id": "casual",
+    "answer": "That sounds like a nice way to clear your head. You could keep it low-key and just see how you feel once you\u2019re out.",
+    "references": [],
+    "reserved_microusd": 20000,
+    "review_criteria": [
+      "Natural, proportionate response; no invented personal context; no forced plan or obligatory question."
+    ]
+  },
+  {
+    "id": "rough-day",
+    "answer": "I\u2019m sorry. Some days just take more out of you than they should. We don\u2019t have to fix anything right now\u2014I can just sit with you in it.",
+    "references": [],
+    "reserved_microusd": 20000,
+    "review_criteria": [
+      "Acknowledge naturally without diagnosis, productivity coaching, forced intimacy or a checklist."
+    ]
+  },
+  {
+    "id": "disagreement",
+    "answer": "Probably not\u2014focus can help you make a dent, but it won\u2019t turn five hours of work into one. Pick the highest-impact piece you can finish in an hour, and treat the rest as a separate plan.",
+    "references": [],
+    "reserved_microusd": 20000,
+    "review_criteria": [
+      "Respectfully challenge the mismatch; no reflexive agreement or lecture."
+    ]
+  },
+  {
+    "id": "quick-recall",
+    "answer": "The appointment is at the Oak Street clinic. [[p1]]",
+    "references": [
+      "p1"
+    ],
+    "reserved_microusd": 20000,
+    "review_criteria": [
+      "Answer place directly and briefly; internal p1 grounding; no Sources list or source-ID prose."
+    ]
+  },
+  {
+    "id": "unknown-speaker",
+    "answer": "The recording says, \u201cI enjoy swimming,\u201d but the speaker hasn\u2019t been identified as you, so I can\u2019t tell whether you like it. [[p1]]",
+    "references": [
+      "p1"
+    ],
+    "reserved_microusd": 20000,
+    "review_criteria": [
+      "Do not assign an unidentified recorded first-person statement to the account owner; explain briefly."
+    ]
+  },
+  {
+    "id": "uncertainty",
+    "answer": "No. The vet said it might be an allergy, but no diagnosis was established. [[p1]]",
+    "references": [
+      "p1"
+    ],
+    "reserved_microusd": 20000,
+    "review_criteria": [
+      "Preserve uncertainty; no invented diagnosis, treatment or medical advice."
+    ]
+  },
+  {
+    "id": "correction",
+    "answer": "Project Juniper now meets at the community center. [[p1]]",
+    "references": [
+      "p1"
+    ],
+    "reserved_microusd": 20000,
+    "review_criteria": [
+      "Community center replaces library; concise and internally grounded."
+    ]
+  },
+  {
+    "id": "retained",
+    "answer": "Project Juniper meets at the community center. [[p1]]",
+    "references": [
+      "p1"
+    ],
+    "reserved_microusd": 20000,
+    "review_criteria": [
+      "Use retained knowledge; no claim the deleted recording is viewable; no mandatory memory-mechanism preamble; internal p1 grounding."
+    ]
+  },
+  {
+    "id": "general-question",
+    "answer": "Sunlight looks white, but it contains all the colors of the rainbow. As it passes through the air, tiny gas molecules scatter blue light more than most other colors, sending it toward our eyes from all directions. That scattered blue light makes the sky look blue.",
+    "references": [],
+    "reserved_microusd": 20000,
+    "review_criteria": [
+      "Explain from general knowledge; no request for a recording, fabricated citation or unnecessary memory disclaimer."
+    ]
+  },
+  {
+    "id": "brainstorm-with-irrelevant-memory",
+    "answer": "- The Plot Thickens on Maple Street\n- Neighbors & Paperbacks\n- The Bookish Block Party",
+    "references": [],
+    "reserved_microusd": 20000,
+    "review_criteria": [
+      "Offer useful ordinary creative help; ignore unrelated clinic evidence, do not cite or force personalization."
+    ]
+  }
+]

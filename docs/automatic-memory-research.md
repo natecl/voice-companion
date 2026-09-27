@@ -1,5 +1,7 @@
 # Automatic memory for the listening companion
 
+> Dated research/audit record. Preserve its findings and uncertainty; it does not describe the current deployed stack or authorize changing it. Read [current state](current-state.md) for adopted decisions, subsequent fixes, rejected candidates and remaining limits.
+
 Research date: September 25, 2026. Research and architecture recommendation, not an implemented feature or vendor commitment. Reviewed official TypeSafe/Supermemory documentation, alternative implementations and original research. No provider evaluations, installations, account changes or uploads of user transcripts were performed.
 
 ## Accepted product direction

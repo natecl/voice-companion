@@ -51,7 +51,7 @@ The [offline comparison](../notes-retrieval-comparison.md) recovered required ev
 
 ### Notes index foundation
 
-Schema18 indexes sourced note entries transactionally and invalidates them with their source. Use `Backend/notes_search.py` for the new bounded candidate boundary; it is not yet connected to the deployed companion. The [consolidation plan](../notes-first-memory-plan.md) records actual migration/search QA and the remaining Jev/answer gate. Keep runtime retrieval claims separate from this storage checkpoint.
+Schema18 indexes sourced note entries transactionally and invalidates them with their source. Use `Backend/notes_search.py` for the new bounded candidate boundary; it is now connected through the deployed unified recall path. The initial storage checkpoint below is historical. The [consolidation plan](../notes-first-memory-plan.md) records actual migration/search QA and the remaining Jev/answer gate. Keep runtime retrieval claims separate from this storage checkpoint.
 
 ### Notes can change usefulness judgments even when evidence is duplicated
 
@@ -60,3 +60,35 @@ In the [matched semantic comparison](../matched-recall-comparison.md), adding no
 ### Summary duplication and disagreement selection
 
 The notes-first comparison lost one of two uncertain venue reports. Ranking summaries and their original excerpts separately changed the candidate pool, and a helpful/topical hard cutoff removed counterevidence. The unified candidate ranks original excerpts once and reserves two discovery hits independently of Jev. Ten-case QA restores the frozen disagreement and preserves abstention on an absent ticket price. This bounded reserve can include noise; do not treat it as exhaustive recall or general relevance proof. See [checkpoint evidence](../simple-memory-foundation.md#approved-checkpoint-2-qa-result).
+
+### Simplification must retain the hard contracts
+
+Source-scoped learning removed duplicate consolidation and semantic boundary calls from the active route while reusing tested provenance and lifecycle tables. An attempted shortcut trusting the extractor's change hint missed corrections; independent relationship checks remain. Fewer tables or models are not acceptance criteria by themselves. See [foundation](../simple-memory-foundation.md).
+
+### Separate microphone consumers from capture ownership
+
+Dictation and meeting transcription can share one hardware feed but need independent lifetimes. Stop one subscriber without stopping the other; guard stale callbacks by generation and preserve partial draft text on failure. Synthetic state/UI evidence verifies those contracts, not real audio permissions, locale support or device coexistence. See [pending device gate](../companion-feel-and-dictation.md).
+
+### Plain messages still need internal provenance
+
+Hiding source markers must not delete stored references or weaken validation/invalidation. Streaming can split a marker at any character, and interrupted text can end mid-marker; suppress those fragments without stripping ordinary brackets or altering saved evidence. Note passage navigation is a distinct feature. See `CompanionMessageText` and [presentation QA](../companion-feel-and-dictation.md).
+
+### Personality, memory and user identity are separate
+
+A natural companion needs more than retrieval answers, but warmth must not create unsupported familiarity or identify an anonymous speaker. Muse's visible files inspired a short stable character and adaptive communication preferences; they did not justify copying private memory or adding a second store. Ten live prompt cases verified bounded behavior; one therapeutic response remains a taste issue rather than a hidden failure. General chat must ignore irrelevant retrieved details.
+
+### Classification success does not prove efficiency
+
+The disabled [Jev gate screen](../memory-gate-screen.md) skipped seven self-contained cases and retained nine useful/ambiguous ones, but added a median 174 ms round-trip. Its wrong top label on a history-dependent follow-up was rescued by the predeclared confidence threshold. Count the new serial call, empty-library behavior and downstream savings before claiming an optimization. Preserve fixed labels, exact requests and failed choices; don't tune a threshold after seeing the same test cases and report an independent win.
+
+### Documentation has deployment boundaries too
+
+A merged backend, a local candidate, a built simulator target, a signed device build and an installed/physically tested app are different states. Use the [current-state brief](../current-state.md) plus rollout receipts rather than the opening status of a historical plan. Prompt v3 changed request content, so older exact-answer replays cannot silently stand in for its model review. Documentation-only reconciliation needs path/link/contract checks, not another paid provider run.
+
+### Speech framework callbacks must not inherit MainActor
+
+Physical Dictate startup crashed after permission because the Swift closure passed to Apple's authorization API inherited `MainActor` while the framework invoked it on a background queue. Both device reports identify the executor assertion, not a provider failure. Create authorization/result closures at an explicit nonisolated, Sendable boundary and transfer values through continuations; keep mutable app state actor-isolated. Background-queue regression tests cover the actual factories. Mock recognizers never exercised this boundary, so their passing results could not establish physical recognition. See [repair and pending retest](../companion-feel-and-dictation.md#physical-dictation-startup-failure-and-callback-repair).
+
+### Empty speech completion must not erase visible work
+
+Stop can expose terminal hypotheses that differ from earlier partial text. The composer previously replaced visible speech with an empty final, reproduced by a failing regression after the physical report. Preserve nonblank text across blank resets; if final recognition cannot confirm it, keep an editable draft and prevent automatic Send. Continue accepting real nonempty corrections. Test Stop and Send, pre-existing typed text, blank intermediate events and the native binding—not only the normal happy-path recognizer. [Evidence](../companion-feel-and-dictation.md#stop-lost-the-visible-draft-reproduced-empty-final-boundary).

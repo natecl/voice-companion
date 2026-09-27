@@ -1,0 +1,363 @@
+[
+  {
+    "id": "casual",
+    "data": {
+      "contract": "companion-context-v1",
+      "question": "I think I might go for a walk.",
+      "history": [],
+      "history_limited": false,
+      "sources": [],
+      "source_groups": {
+        "live": [],
+        "past": [],
+        "history_evidence": []
+      },
+      "recordings": {},
+      "memory_status": "no_match"
+    },
+    "review_criteria": [
+      "Natural, proportionate response; no invented personal context; no forced plan or obligatory question."
+    ]
+  },
+  {
+    "id": "rough-day",
+    "data": {
+      "contract": "companion-context-v1",
+      "question": "Today was rough. Please do not turn this into a to-do list.",
+      "history": [],
+      "history_limited": false,
+      "sources": [],
+      "source_groups": {
+        "live": [],
+        "past": [],
+        "history_evidence": []
+      },
+      "recordings": {},
+      "memory_status": "no_match"
+    },
+    "review_criteria": [
+      "Acknowledge naturally without diagnosis, productivity coaching, forced intimacy or a checklist."
+    ]
+  },
+  {
+    "id": "disagreement",
+    "data": {
+      "contract": "companion-context-v1",
+      "question": "I have one free hour. I can probably finish five hours of work if I just focus harder, right?",
+      "history": [],
+      "history_limited": false,
+      "sources": [],
+      "source_groups": {
+        "live": [],
+        "past": [],
+        "history_evidence": []
+      },
+      "recordings": {},
+      "memory_status": "no_match"
+    },
+    "review_criteria": [
+      "Respectfully challenge the mismatch; no reflexive agreement or lecture."
+    ]
+  },
+  {
+    "id": "quick-recall",
+    "data": {
+      "contract": "companion-context-v1",
+      "question": "Where is the appointment?",
+      "history": [],
+      "history_limited": false,
+      "sources": [
+        {
+          "session_id": "anonymous",
+          "revision": 1,
+          "passage_id": "p1",
+          "text_start": 0,
+          "text_end": 44,
+          "text": "The appointment is at the Oak Street clinic.",
+          "start": 0.0,
+          "speakers": [],
+          "captured_at": 100.0,
+          "timezone": "UTC",
+          "evidence_type": "live_snapshot",
+          "origin": "recording",
+          "scope": "capture_cutoff",
+          "speaker_identity": "unidentified_recording_speaker",
+          "snapshot_id": "a1b4aa8c721bd85b2f503d1a57ef84e358f00f8159e7a19ece542d167417771d",
+          "id": "p1"
+        }
+      ],
+      "source_groups": {
+        "live": [
+          "p1"
+        ],
+        "past": [],
+        "history_evidence": []
+      },
+      "recordings": {
+        "live": {
+          "session_id": "anonymous",
+          "revision": 1,
+          "coverage": "complete",
+          "cutoff_seconds": 2.0
+        }
+      },
+      "memory_status": "no_match"
+    },
+    "review_criteria": [
+      "Answer place directly and briefly; internal p1 grounding; no Sources list or source-ID prose."
+    ]
+  },
+  {
+    "id": "unknown-speaker",
+    "data": {
+      "contract": "companion-context-v1",
+      "question": "Do I like swimming?",
+      "history": [],
+      "history_limited": false,
+      "sources": [
+        {
+          "session_id": "anonymous",
+          "revision": 1,
+          "passage_id": "p1",
+          "text_start": 0,
+          "text_end": 17,
+          "text": "I enjoy swimming.",
+          "start": 0.0,
+          "speakers": [],
+          "captured_at": 100.0,
+          "timezone": "UTC",
+          "evidence_type": "live_snapshot",
+          "origin": "recording",
+          "scope": "capture_cutoff",
+          "speaker_identity": "unidentified_recording_speaker",
+          "snapshot_id": "a1b4aa8c721bd85b2f503d1a57ef84e358f00f8159e7a19ece542d167417771d",
+          "id": "p1"
+        }
+      ],
+      "source_groups": {
+        "live": [
+          "p1"
+        ],
+        "past": [],
+        "history_evidence": []
+      },
+      "recordings": {
+        "live": {
+          "session_id": "anonymous",
+          "revision": 1,
+          "coverage": "complete",
+          "cutoff_seconds": 2.0
+        }
+      },
+      "memory_status": "no_match"
+    },
+    "review_criteria": [
+      "Do not assign an unidentified recorded first-person statement to the account owner; explain briefly."
+    ]
+  },
+  {
+    "id": "uncertainty",
+    "data": {
+      "contract": "companion-context-v1",
+      "question": "Did the vet diagnose an allergy?",
+      "history": [],
+      "history_limited": false,
+      "sources": [
+        {
+          "session_id": "anonymous",
+          "revision": 1,
+          "passage_id": "p1",
+          "text_start": 0,
+          "text_end": 70,
+          "text": "The vet said it might be an allergy, but no diagnosis was established.",
+          "start": 0.0,
+          "speakers": [],
+          "captured_at": 100.0,
+          "timezone": "UTC",
+          "evidence_type": "live_snapshot",
+          "origin": "recording",
+          "scope": "capture_cutoff",
+          "speaker_identity": "unidentified_recording_speaker",
+          "snapshot_id": "a1b4aa8c721bd85b2f503d1a57ef84e358f00f8159e7a19ece542d167417771d",
+          "id": "p1"
+        }
+      ],
+      "source_groups": {
+        "live": [
+          "p1"
+        ],
+        "past": [],
+        "history_evidence": []
+      },
+      "recordings": {
+        "live": {
+          "session_id": "anonymous",
+          "revision": 1,
+          "coverage": "complete",
+          "cutoff_seconds": 2.0
+        }
+      },
+      "memory_status": "no_match"
+    },
+    "review_criteria": [
+      "Preserve uncertainty; no invented diagnosis, treatment or medical advice."
+    ]
+  },
+  {
+    "id": "correction",
+    "data": {
+      "contract": "companion-context-v1",
+      "question": "Where does Project Juniper meet now?",
+      "history": [],
+      "history_limited": false,
+      "sources": [
+        {
+          "session_id": "anonymous",
+          "revision": 1,
+          "passage_id": "p1",
+          "text_start": 0,
+          "text_end": 92,
+          "text": "Project Juniper previously met at the library. It now meets at the community center instead.",
+          "start": 0.0,
+          "speakers": [],
+          "captured_at": 100.0,
+          "timezone": "UTC",
+          "evidence_type": "live_snapshot",
+          "origin": "recording",
+          "scope": "capture_cutoff",
+          "speaker_identity": "unidentified_recording_speaker",
+          "snapshot_id": "a1b4aa8c721bd85b2f503d1a57ef84e358f00f8159e7a19ece542d167417771d",
+          "id": "p1"
+        }
+      ],
+      "source_groups": {
+        "live": [
+          "p1"
+        ],
+        "past": [],
+        "history_evidence": []
+      },
+      "recordings": {
+        "live": {
+          "session_id": "anonymous",
+          "revision": 1,
+          "coverage": "complete",
+          "cutoff_seconds": 2.0
+        }
+      },
+      "memory_status": "no_match"
+    },
+    "review_criteria": [
+      "Community center replaces library; concise and internally grounded."
+    ]
+  },
+  {
+    "id": "retained",
+    "data": {
+      "contract": "companion-context-v1",
+      "question": "Where does Project Juniper meet?",
+      "history": [],
+      "history_limited": false,
+      "sources": [
+        {
+          "session_id": "anonymous",
+          "revision": 1,
+          "passage_id": "p1",
+          "text_start": 0,
+          "text_end": 46,
+          "text": "Project Juniper meets at the community center.",
+          "start": 0.0,
+          "speakers": [],
+          "captured_at": 100.0,
+          "timezone": "UTC",
+          "evidence_type": "retained_memory",
+          "origin": "recording",
+          "scope": "retained_knowledge",
+          "speaker_identity": "unidentified_recording_speaker",
+          "id": "p1",
+          "retained_claim_id": "qa-retained"
+        }
+      ],
+      "source_groups": {
+        "live": [],
+        "past": [
+          "p1"
+        ],
+        "history_evidence": []
+      },
+      "recordings": {},
+      "memory_status": "no_match"
+    },
+    "review_criteria": [
+      "Use retained knowledge; no claim the deleted recording is viewable; no mandatory memory-mechanism preamble; internal p1 grounding."
+    ]
+  },
+  {
+    "id": "general-question",
+    "data": {
+      "contract": "companion-context-v1",
+      "question": "Why does the sky look blue? Explain it simply.",
+      "history": [],
+      "history_limited": false,
+      "sources": [],
+      "source_groups": {
+        "live": [],
+        "past": [],
+        "history_evidence": []
+      },
+      "recordings": {},
+      "memory_status": "no_match"
+    },
+    "review_criteria": [
+      "Explain from general knowledge; no request for a recording, fabricated citation or unnecessary memory disclaimer."
+    ]
+  },
+  {
+    "id": "brainstorm-with-irrelevant-memory",
+    "data": {
+      "contract": "companion-context-v1",
+      "question": "Help me come up with three playful names for a neighborhood book club.",
+      "history": [],
+      "history_limited": false,
+      "sources": [
+        {
+          "session_id": "anonymous",
+          "revision": 1,
+          "passage_id": "p1",
+          "text_start": 0,
+          "text_end": 44,
+          "text": "The appointment is at the Oak Street clinic.",
+          "start": 0.0,
+          "speakers": [],
+          "captured_at": 100.0,
+          "timezone": "UTC",
+          "evidence_type": "live_snapshot",
+          "origin": "recording",
+          "scope": "capture_cutoff",
+          "speaker_identity": "unidentified_recording_speaker",
+          "snapshot_id": "a1b4aa8c721bd85b2f503d1a57ef84e358f00f8159e7a19ece542d167417771d",
+          "id": "p1"
+        }
+      ],
+      "source_groups": {
+        "live": [
+          "p1"
+        ],
+        "past": [],
+        "history_evidence": []
+      },
+      "recordings": {
+        "live": {
+          "session_id": "anonymous",
+          "revision": 1,
+          "coverage": "complete",
+          "cutoff_seconds": 2.0
+        }
+      },
+      "memory_status": "no_match"
+    },
+    "review_criteria": [
+      "Offer useful ordinary creative help; ignore unrelated clinic evidence, do not cite or force personalization."
+    ]
+  }
+]

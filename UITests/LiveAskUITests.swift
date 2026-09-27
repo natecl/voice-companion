@@ -4,7 +4,7 @@ import XCTest
 final class LiveAskUITests: XCTestCase {
     func testAskDuringRecordingShowsCutoffAndStopRemainsIndependent() {
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "--live-ask-ui-fixture"]
+        app.launchArguments = ["--show-evidence-debug", "--ui-testing", "--live-ask-ui-fixture"]
         app.launch()
         app.buttons["startRecording"].tap()
         XCTAssertTrue(app.staticTexts["liveAskNotice"].waitForExistence(timeout: 5))
