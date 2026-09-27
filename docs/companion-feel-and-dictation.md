@@ -189,3 +189,10 @@ The transient pause/resume indicator was not observed live by the agent, and the
 
 
 Founder follow-up: the meeting-paused indicator appeared during dictation. Combined with the agent's direct mirrored inspection of the saved transcript, generated notes and companion answer, the bounded physical pause → private question → resumed meeting capture check passes. Indicator evidence is founder-observed; saved-output evidence is agent-observed. This does not claim new permission-denial/interruption verification or acceptance of the whole PR. No repeat paid run is necessary for this successful path.
+
+
+## Physical background interruption check
+
+Founder confirmed on the installed candidate: after dictating “Keep this in my draft,” going Home during active dictation, and reopening the app, the notice said “Dictation stopped. Captured text is in your draft.” The founder explicitly confirmed both that the words remained visible/editable and that nothing was sent. This passes the bounded background interruption check, with founder-observed evidence. No meeting capture or paid provider call was requested.
+
+iPhone Mirroring could not start this microphone check: the OS displayed “iPhone microphone is not available from Mac.” Mirroring remains useful for inspecting saved results; actual microphone QA must run directly on the phone. Permission-denied UX and final checkpoint review remain outstanding.
