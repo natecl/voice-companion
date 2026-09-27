@@ -44,6 +44,13 @@ def retention_setting(env, companion_enabled):
     return value=='1'
 
 
+def notes_setting(env):
+    value=env.get('VOICE_ENABLE_RECORDING_NOTES','0')
+    if value not in ('0','1') or (value=='1' and env.get('VOICE_ENABLE_MEMORY')!='1'):
+        raise ValueError('Recording notes require memory storage')
+    return value=='1'
+
+
 def validate_rework_allocations(admission, *, rollout=False, verification=False):
     import profile_budget as profile
     allocations=[(profile.REWORK_APPROVAL_ID,profile.REWORK_ALLOWANCE),
@@ -64,6 +71,7 @@ def validate_rework_allocations(admission, *, rollout=False, verification=False)
 
 
 async def main():
+    notes_enabled=notes_setting(os.environ)
     rework_enabled,companion_enabled,semantic_enabled=rework_settings(os.environ)
     independent_verification=independent_verification_setting(os.environ,rework_enabled)
     retain_recording_memories=retention_setting(os.environ,companion_enabled)
@@ -85,6 +93,9 @@ async def main():
         indexing_task = None
         embedder = None
         companion = None
+        notes = None
+        notes_task = None
+        notes_worker = None
         try:
             store.recover_interrupted()
             answer_key = os.environ.get('OPENAI_API_KEY', '').strip()
@@ -95,6 +106,10 @@ async def main():
             personal_enabled = os.environ.get('VOICE_ENABLE_PERSONAL_LEARNING') == '1'
             if personal_enabled and os.environ.get('VOICE_ENABLE_MEMORY_LEARNING') != '1':
                 raise ValueError('Personal learning requires memory learning')
+            if notes_enabled and not answer_key:raise ValueError("Notes require provider credential")
+            if notes_enabled:
+                from notes_budget import NotesBudget
+                notes_budget=NotesBudget(directory/"notes-budget.sqlite",store)
             memory = None
             if os.environ.get('VOICE_ENABLE_MEMORY') == '1':
                 if semantic_enabled:
@@ -106,7 +121,13 @@ async def main():
                     retain_recording_memories=retain_recording_memories)
                 memory_store.recover_jobs()
                 memory_store.maintain()
-                memory = MemoryService(store, memory_store)
+                memory = MemoryService(store, memory_store, generate_notes=notes_enabled)
+                if notes_enabled:
+                    from notes_generation import NotesGenerator
+                    from notes_service import NotesService, NotesWorker
+                    notes=NotesService(store,memory_store)
+                    notes.notes.recover_interrupted()
+                    notes_worker=NotesWorker(NotesGenerator(memory_store,MemoryModels(answer_key,"").extract,notes_budget),store)
             learning_enabled = os.environ.get('VOICE_ENABLE_MEMORY_LEARNING') == '1'
             recall_enabled = os.environ.get('VOICE_ENABLE_MEMORY_RECALL') == '1'
             if learning_enabled or recall_enabled:
@@ -156,15 +177,21 @@ async def main():
                 companion.chat.recover_interrupted()
             relay = Relay(key, admission=store, ask=ask, memory=memory,
                           learning_status=learning_worker.status if learning_worker else None,companion=companion,
-                          indexing_status=indexing_worker.status if indexing_worker else None)
+                          indexing_status=indexing_worker.status if indexing_worker else None, notes=notes,
+                          notes_status=notes_worker.status if notes_worker else None)
+            if notes_worker:notes_worker.busy=lambda: relay.active
             async with serve(relay.handle, '0.0.0.0', int(os.environ.get('PORT', '10000')),
                              process_request=relay.authorize, max_size=64000, max_queue=8,
                              close_timeout=2, server_header=None):
+                if notes_worker:notes_task=asyncio.create_task(notes_worker.run())
                 if learning_worker:learning_task=asyncio.create_task(learning_worker.run())
                 if indexing_worker:indexing_task=asyncio.create_task(indexing_worker.run())
                 print('Internal transcription service ready', flush=True)
                 await asyncio.Future()
         finally:
+            if notes_task is not None:
+                notes_task.cancel()
+                with suppress(asyncio.CancelledError):await notes_task
             if indexing_task is not None:
                 indexing_task.cancel()
                 with suppress(asyncio.CancelledError):await indexing_task

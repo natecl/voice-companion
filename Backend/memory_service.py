@@ -5,8 +5,9 @@ from admission import Rejected
 
 
 class MemoryService:
-    def __init__(self, admission, store):
+    def __init__(self, admission, store, *, generate_notes=False):
         self.admission, self.store = admission, store
+        self.generate_notes = generate_notes
         self.slots = asyncio.Semaphore(2)
 
     async def handle(self, socket):
@@ -36,7 +37,7 @@ class MemoryService:
                             raise Rejected('invalid_memory_request')
                         # Recheck after async owner lookup, before persistence dispatch.
                         self.admission.authorized(token)
-                        result = await asyncio.to_thread(self.store.put_source, owner, data['source'])
+                        result = await asyncio.to_thread(self.store.put_source, owner, data['source'], generate_notes=self.generate_notes)
                     elif operation == 'delete' and set(data) == {'version', 'owner', 'operation', 'session_id'}:
                         self.admission.authorized(token)
                         result = await asyncio.to_thread(self.store.delete_source, owner, data['session_id'])

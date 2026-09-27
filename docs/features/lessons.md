@@ -39,3 +39,8 @@ These are engineering observations and decisions, not new product requirements. 
 State the intended user outcome, identify its feature entry and active code path, and read the linked current contract. Follow the flow to its immediate upstream/downstream dependencies. Name the invariant at risk and the smallest realistic QA that can prove it. Keep backend, simulator, physical-device and founder-observed evidence distinct. Do not copy historical budget balances into a new allowance or infer a provider run is free.
 
 After verification, update only changed status/ownership/contracts and add a durable lesson if something newly learned would alter future work. Keep detailed commands, fixtures and failed runs in the relevant checkpoint evidence. This map should reduce rediscovery, not become a second implementation or an activity log.
+
+
+### Isolate notes UI runs while preserving relaunch evidence
+
+A native fixture owner keys both backend evidence and the app's saved session directory. Reusing that owner across failed test runs leaves valid older recordings behind; deleting the current recording should not erase those sessions. Use a fresh owner/server directory per independent run and the same owner only for the relaunch portion. `scripts/qa-recording-notes-phone.sh` enforces this. Keep failed receipts; distinguish macOS static-text values from iOS labels, scroll controls into view, and scope duplicate nested iOS alert elements before tapping. These are fixture/driver corrections, not permission to remove product persistence or loosen deletion behavior.
