@@ -155,3 +155,6 @@ Private-dictation physical QA update: the founder confirmed the pause indicator,
 
 
 Final checkpoint update: permission denial produced the expected explanation without crash (empty initial draft), permission was restored, and final local review passed 19 native plus 25 backend checks. Earlier pending acceptance statements are historical; backend v3 rollout remains separate.
+
+
+Rollout supersession: PR 99 merged and backend personality v3 deployed internally at `26023ea` after founder approval. Prompt selection, health, 20 database integrity/row comparisons and unchanged usage were verified without a new model call. Earlier candidate/not-deployed statements are historical. See [rollout evidence](../companion-feel-and-dictation.md#authorized-v3-personality-rollout--september-27).
