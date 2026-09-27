@@ -14,6 +14,54 @@ ROLLOUT_POLICIES = {'stt':(1_500_000,20_000,6),'ask':(2_850_000,3_000,20),'jev':
 
 PREFERENCE_POLICIES = {'stt':(1_200_000,20_000,6),'ask':(2_950_000,3_000,20),'jev':(850_000,500,64)}
 
+# Founder-approved $0.04 physical QA envelope: move $0.02 of unused Ask
+# capacity to one recording reservation. Total remains $5; no old charge moves.
+DICTATION_POLICIES = {'stt':(1_220_000,20_000,6),'ask':(2_930_000,3_000,20),'jev':(850_000,500,64)}
+DICTATION_APPROVAL = 'dictation-physical-20260927-040'
+
+
+PRIVATE_DICTATION_APPROVAL = 'private-dictation-20260927-050'
+PRIVATE_DICTATION_POLICIES = {'stt':(1_240_000,20_000,6),'ask':(2_960_000,3_000,20),'jev':(850_000,500,64)}
+
+def private_dictation_funded(db, cap, policies):
+    if cap != (5_050_000,) or policies != PRIVATE_DICTATION_POLICIES:return False
+    if not db.execute("SELECT 1 FROM sqlite_master WHERE name='qa_budget_extension'").fetchone():return False
+    return db.execute('SELECT amount FROM qa_budget_extension WHERE id=?',(PRIVATE_DICTATION_APPROVAL,)).fetchone()==(50_000,)
+
+def extend_private_dictation_policy(db):
+    """Explicit operator transaction; never called by startup. Preserves old charges."""
+    cap=db.execute('SELECT cap FROM budget WHERE id=1').fetchone()
+    policies=dict((r[0],tuple(r[1:])) for r in db.execute('SELECT * FROM policy'))
+    if private_dictation_funded(db,cap,policies):return
+    if cap!=(5_000_000,) or policies!=DICTATION_POLICIES:raise ValueError('Unexpected QA baseline')
+    if db.execute("SELECT 1 FROM request WHERE state='active'").fetchone():raise ValueError('Active request')
+    db.execute('CREATE TABLE IF NOT EXISTS qa_budget_extension(id TEXT PRIMARY KEY,amount INTEGER NOT NULL)')
+    db.execute('INSERT INTO qa_budget_extension VALUES(?,?)',(PRIVATE_DICTATION_APPROVAL,50_000))
+    db.execute('UPDATE budget SET cap=5050000 WHERE id=1')
+    for category,(limit,_,_) in PRIVATE_DICTATION_POLICIES.items():
+        db.execute('UPDATE policy SET cap=? WHERE category=?',(limit,category))
+
+
+def redistribute_dictation_policy(db):
+    """Caller owns a transaction. Explicit operator action, never startup funding."""
+    policies=dict((r[0],tuple(r[1:])) for r in db.execute('SELECT category,cap,reservation,daily FROM policy'))
+    if db.execute('SELECT cap FROM budget WHERE id=1').fetchone()!=(5_000_000,) or policies not in (PREFERENCE_POLICIES,DICTATION_POLICIES):
+        raise ValueError('Unexpected ledger policy')
+    if db.execute("SELECT 1 FROM request WHERE state='active'").fetchone():
+        raise ValueError('Wait for active requests before redistribution')
+    for category,(cap,_,_) in DICTATION_POLICIES.items():
+        used=db.execute('SELECT coalesce(sum(reserved),0) FROM request WHERE category=?',(category,)).fetchone()[0]
+        if used>cap:raise ValueError('Existing usage exceeds redistributed cap')
+    db.execute('CREATE TABLE IF NOT EXISTS budget_redistribution(approval_id TEXT PRIMARY KEY, policy TEXT NOT NULL)')
+    import json
+    policy=json.dumps(DICTATION_POLICIES,sort_keys=True)
+    prior=db.execute('SELECT policy FROM budget_redistribution WHERE approval_id=?',(DICTATION_APPROVAL,)).fetchone()
+    if prior is not None and prior!=(policy,):raise ValueError('Approval mismatch')
+    db.execute('INSERT OR IGNORE INTO budget_redistribution VALUES(?,?)',(DICTATION_APPROVAL,policy))
+    for category,(cap,_,_) in DICTATION_POLICIES.items():
+        db.execute('UPDATE policy SET cap=? WHERE category=?',(cap,category))
+
+
 def redistribute_preference_policy(db):
     policies=dict((r[0],tuple(r[1:])) for r in db.execute('SELECT category,cap,reservation,daily FROM policy'))
     if db.execute('SELECT cap FROM budget WHERE id=1').fetchone()!=(5_000_000,) or policies not in (ROLLOUT_POLICIES,PREFERENCE_POLICIES):
@@ -47,7 +95,7 @@ def add_ask_policy(path):
         db.execute('BEGIN IMMEDIATE')
         cap = db.execute('SELECT cap FROM budget WHERE id=1').fetchone()
         policies = dict((row[0], tuple(row[1:])) for row in db.execute('SELECT category,cap,reservation,daily FROM policy'))
-        if cap != (5_000_000,) or policies not in ({'stt': STT}, {'stt': STT, 'ask': ASK}, {'stt': STT, 'ask': ASK, 'jev': RETIRED_JEV}, ROLLOUT_POLICIES, PREFERENCE_POLICIES):
+        if not private_dictation_funded(db,cap,policies) and (cap != (5_000_000,) or policies not in ({'stt': STT}, {'stt': STT, 'ask': ASK}, {'stt': STT, 'ask': ASK, 'jev': RETIRED_JEV}, ROLLOUT_POLICIES, PREFERENCE_POLICIES, DICTATION_POLICIES)):
             raise ValueError('Unexpected ledger policy; migration refused')
         if 'ask' not in policies:
             db.execute('INSERT INTO policy VALUES(?,?,?,?)', ('ask', *ASK))
@@ -68,10 +116,13 @@ def open_ledger(*, migrate=False):
     if enabled and migrate:
         add_ask_policy(path)
     limits = {'stt': STT, 'ask': ASK} if enabled else {'stt': STT}
+    total=5_000_000
     if path.exists():
         with closing(sqlite3.connect(path)) as db:
             if db.execute("SELECT 1 FROM policy WHERE category='jev'").fetchone():
                 limits['jev'] = RETIRED_JEV
             policies=dict((row[0],tuple(row[1:])) for row in db.execute('SELECT category,cap,reservation,daily FROM policy'))
-            if enabled and policies in (ROLLOUT_POLICIES,PREFERENCE_POLICIES):limits=dict(policies)
-    return Admission(path, total_microusd=5_000_000, limits=limits)
+            if enabled and policies in (ROLLOUT_POLICIES,PREFERENCE_POLICIES,DICTATION_POLICIES):limits=dict(policies)
+            if enabled and private_dictation_funded(db,db.execute('SELECT cap FROM budget WHERE id=1').fetchone(),policies):
+                limits=dict(policies);total=5_050_000
+    return Admission(path, total_microusd=total, limits=limits)
