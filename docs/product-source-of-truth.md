@@ -2,6 +2,8 @@
 
 Status: Agreed with the founder on September 24, 2026.
 
+Current interpretation: later dated refinements below supersede conflicting earlier delivery descriptions. See [current implementation and decision brief](current-state.md) for deployed versus candidate status. In particular, notes are implemented; release chat hides visible sources; TTS/voice identity remain deferred; the experimental retrieval gate is disabled.
+
 ## One-liner
 
 > Granola with an AI that listens alongside you and can join the conversation.
@@ -107,3 +109,7 @@ Founder decision: the first release companion should respond as ordinary message
 
 
 Founder clarification: Talk to companion supports ordinary ongoing conversation, general questions, brainstorming and reflection without needing a recording. Captured context makes relevant answers more personal; it does not limit the companion to retrieval questions or require every reply to mention memories. This grants no additional tools or autonomous actions.
+
+## Retrieval-gate decision
+
+After the bounded Jev classifier screen, the founder chose to keep the pre-retrieval gate disabled. Existing past retrieval and Jev evidence ranking remain unchanged. Chat style is interpreted by Luna from the message and context; no separate normal-chat/brainstorming/retrieval mode classifier is enabled. See [evidence](memory-gate-screen.md).

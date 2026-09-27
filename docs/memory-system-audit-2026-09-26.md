@@ -1,5 +1,7 @@
 # Current memory-system audit
 
+> Dated research/audit record. Preserve its findings and uncertainty; it does not describe the current deployed stack or authorize changing it. Read [current state](current-state.md) for adopted decisions, subsequent fixes, rejected candidates and remaining limits.
+
 Audited September 26, 2026. Code baseline: `85e72cd8dd630c529b9fc7a043e7cc0b9cc5f229`, with documentation through `c3b8e9a`. The deployed service reports that same implementation, schema 3, and all memory/personal flags enabled. PR 31 is draft and unmerged; deployment is an internal trial, not acceptance. This audit changes no application code or deployed configuration.
 
 ## Verdict

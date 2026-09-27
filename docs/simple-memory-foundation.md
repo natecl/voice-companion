@@ -1,6 +1,6 @@
 # Simpler memory foundation
 
-Status: implementation in progress; existing hosted memory remains the baseline. This supersedes the strict notes-first candidate that failed the [matched comparison](matched-recall-comparison.md). The revised retrieval checkpoint now passes its bounded gate below; whole-system consolidation and rollout remain unfinished.
+Current status: checkpoints 1–3 passed their bounded acceptance and PRs 95–97 were internally deployed; see [rollout](simple-memory-rollout.md). Unified recall and source-scoped learning share the existing provenance/lifecycle store. This supersedes the strict notes-first candidate that failed the [matched comparison](matched-recall-comparison.md). Sections below preserve the chronological candidate, approval and QA record; their “pending” or “disabled” statements describe those earlier stages, not current rollout status.
 
 ## Outcome
 

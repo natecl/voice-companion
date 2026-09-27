@@ -2,6 +2,8 @@
 
 Founder decision, September 26: spoken replies/TTS are outside the first release. Add voice dictation to the text composer; voice recognition/enrollment and manual voice-note labeling remain deferred. Keep the existing transcript → notes → contextual companion foundation.
 
+Current status: draft [PR 99](https://github.com/natecl/voice-companion/pull/99), not deployed or merge-complete. Local native/controller/UI checks and the ten-response v3 personality screen are complete. Real physical-iPhone dictation, permissions and simultaneous capture remain pending founder readiness. The experimental past-memory gate is disabled. Earlier proposed QA sections below preserve checkpoint history.
+
 ## Composer contract
 
 - Dictate deliberately: show listening and preview the latest transcription in the compose box, preserving existing typed text. Partial hypotheses replace each other; they are not repeatedly appended.
@@ -21,14 +23,14 @@ Build on the existing attentive-personal-companion prompt, not a new persona or 
 - Perceptive: use relevant recorded details to reduce repetition; do not bring up personal information merely to demonstrate memory.
 - Independent judgment: disagree respectfully and give reasons; avoid reflexive agreement, canned praise and exaggerated confidence.
 - Proportionate: answer a quick factual question briefly, make space for reflection when invited, and ask one useful question only when it helps.
-- Grounded: distinguish recall, inference and advice. Make uncertainty specific and keep source access available without narrating the retrieval machinery.
+- Grounded: distinguish recall, inference and advice. Make uncertainty specific and preserve source evidence internally without narrating retrieval or adding visible chat citations.
 - Personal without pretending: no invented shared experiences, claims of feelings, forced intimacy, or claims to know the user beyond supported context.
 
 Illustrative tone targets (examples, not recorded facts):
 
 | Situation | Desired response style |
 | --- | --- |
-| User asks where an appointment is | Give the place first, with the actual supporting source; no memory preamble. |
+| User asks where an appointment is | Give the place first, grounded in actual evidence internally; no visible source or memory preamble. |
 | User feels overwhelmed by several commitments | “That sounds like a lot at once. Want to sort out what actually needs your attention today?” Adapt to what the user said; do not diagnose or force planning. |
 | User proposes an unrealistic plan | “I think the timing is the weak point. You’re fitting three things into the same afternoon.” Use specifics only when supplied. |
 | User corrects a fact | Acknowledge naturally and answer from the correction; do not claim a permanent memory write unless the system actually confirms one. |
@@ -93,7 +95,7 @@ Ten short synthetic prompt cases are frozen in `Backend/fixtures/companion-style
 Founder clarification: the companion is a normal ongoing conversational chatbot, not restricted to recall questions. General questions, brainstorming, writing, reflection and casual chat need no recording. Existing optional source context enriches relevant replies; it must not force personalization or unnecessary recording disclaimers. The v3 prompt makes this explicit; the QA set includes empty-source conversation and unrelated-evidence distraction. Existing no-recording backend behavior remains unchanged.
 
 
-Final local verification of the message/prompt candidate: 27 backend contract/storage/context tests, 11 native core checks and two actual Mac UI/local-service tests pass. Normal chat displays “Maya swims.” without its stored grounding tag or a source button; diagnostic source navigation still passes. The iPhone simulator target builds. The model-behavior scenarios are prepared but have not been run with fresh providers. No deployment or paid call was performed.
+Final local verification of the message/prompt candidate: 27 backend contract/storage/context tests, 11 native core checks and two actual Mac UI/local-service tests pass. Normal chat displays “Maya swims.” without its stored grounding tag or a source button; diagnostic source navigation still passes. The iPhone simulator target builds. At this local-check stage, model-behavior scenarios were prepared but not yet run; the subsequently approved live result follows below. No deployment occurred.
 
 ## Approved ten-response personality check
 

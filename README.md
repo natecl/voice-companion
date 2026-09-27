@@ -4,6 +4,10 @@
 
 An iPhone-first companion for everyday conversations, with Mac support. Working name: Voice Companion. The installed internal V1 build records microphone audio through the hosted service, supports locked-screen capture, saves transcripts locally, and answers typed questions during or after a conversation with fixed source references. Recording remains capped at five minutes; speaker labels are best-effort. See the [V1 runbook](docs/v1-runbook.md) for use, setup, quotas and known limits, and [final acceptance](docs/v1-acceptance.md) for evidence. The [V0 runbook](docs/v0-runbook.md) retains local Mac relay instructions and historical scope. This private repository is not a public release.
 
+## Current knowledge and delivery status
+
+Start with the [current product and implementation brief](docs/current-state.md) for decisions, model roles, deployed versus candidate behavior, research outcomes and remaining gates. The [feature map](docs/features/README.md) connects those decisions to code and targeted QA. PR 99 remains a draft: composer dictation and the new plain-message/personality experience are locally implemented but not deployed; physical-iPhone dictation QA is pending. The experimental Jev retrieval gate remains disabled.
+
 ## Product source of truth
 
 [Proven, Better, New](docs/product-source-of-truth.md) is the authoritative product definition agreed with the founder. It takes the framework applied by Mark Pincus and Garry Tan to the voice companion idea as its starting point. Granola is the **Proven**.

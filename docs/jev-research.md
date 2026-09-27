@@ -1,5 +1,7 @@
 # Jev research
 
+> Dated research/audit record. Preserve its findings and uncertainty; it does not describe the current deployed stack or authorize changing it. Read [current state](current-state.md) for adopted decisions, subsequent fixes, rejected candidates and remaining limits.
+
 Reviewed September 24, 2026. Based on official documentation; no API benchmarking performed. These findings and implementation ideas are supporting research, not product requirements.
 
 ## Documented capabilities
