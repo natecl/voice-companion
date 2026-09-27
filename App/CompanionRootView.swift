@@ -241,7 +241,7 @@ struct CompanionRootView: View {
                             set: { if !dictation.isActive { chat.draft = $0 } }), prompt: Text("Message Agent").foregroundStyle(ExperienceStyle.secondary), axis: .vertical)
                             .textFieldStyle(.plain).font(.callout).padding(.horizontal, 2).disabled(dictation.isActive)
                             .focused($composing).lineLimit(1...4).accessibilityIdentifier("companionDraft")
-                        HStack(spacing: 8) {
+                        HStack(spacing: 0) {
                             Menu {
                                 Button("Attach a recording", systemImage: "doc.text") { composing = false; showingAttachments = true }
                                     .accessibilityIdentifier("chooseRecordingAttachment")
@@ -250,7 +250,7 @@ struct CompanionRootView: View {
                                 Button("Clear draft", role: .destructive) { dictation.discard(); chat.draft = "" }
                                     .disabled(!dictation.isActive && chat.draft.isEmpty).accessibilityIdentifier("clearCompanionDraft")
                                 Button("Refresh conversation") { chat.refresh() }.disabled(chat.isBusy || recording.pendingMemoryDeletion)
-                            } label: { ExperienceSymbol(name: "plus").frame(width: 22, height: 22).frame(width: 36, height: 44) }
+                            } label: { ExperienceSymbol(name: "plus").frame(width: 22, height: 22).frame(width: 44, height: 44).contentShape(Rectangle()) }
                                 .accessibilityLabel("Attachments and message options")
                             Spacer(minLength: 0)
                             if dictation.isActive {
@@ -275,7 +275,7 @@ struct CompanionRootView: View {
                                 .disabled(recording.pendingMemoryDeletion || dictation.state == .starting || dictation.state == .finishing || ComposerDictation.appending(dictation.text, to: chat.draft).trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                                 .accessibilityIdentifier("sendCompanion")
                             }
-                        }
+                        }.padding(.leading, -4).padding(.trailing, -10)
                     }.padding(.horizontal, 14).padding(.top, 14).padding(.bottom, 5)
                         .background(.white, in: RoundedRectangle(cornerRadius: 24))
                         .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(ExperienceStyle.line, lineWidth: 1))
@@ -283,7 +283,7 @@ struct CompanionRootView: View {
                     if recording.liveStatus == nil {
                         ExperienceIconButton("Capture meeting note", icon: "plus", filled: true, size: 58) {
                             composing = false; dictation.interrupt(); surface = "Companion"; recording.startRecording()
-                        }.padding(.bottom, 10).accessibilityIdentifier("startRecording")
+                        }.padding(.bottom, 12).accessibilityIdentifier("startRecording")
                     }
                 }
             }

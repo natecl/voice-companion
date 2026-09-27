@@ -39,6 +39,12 @@ Acceptance scenarios:
 
 During iteration, UI execution caught duplicate accessible Stop controls behind a sheet and an alert attached to the wrong presentation layer. Those were fixed. The QA runner now isolates owners to avoid selecting an older offscreen citation from a previous run.
 
+## Composer optical refinement
+
+Follow-up reference comparison corrected oversized mic/send glyphs, the send control's excessive right inset, and the capture plus's glyph size and vertical alignment. The inner attachment control retains a 44-point target. The actual Home render was compared with the supplied reference; Home and Agent screenshots above are updated. This adjusts visual geometry only, preserving capture, dictation and attachment behavior.
+
+Both affected simulator scenarios passed on September 27: gallery/attachment picker and shared draft/search/live-sheet/dictation. Results: `/tmp/VoiceCompanion-ExperienceResults/20260927-161534/`. Mac compilation also passed. Earlier four-scenario evidence remains for the preceding revision; this focused follow-up does not claim renewed physical-device QA.
+
 ## Remaining delivery gates
 
 Physical-iPhone recording, interruptions, touch comfort, accessibility text sizes, and battery/performance have not been validated by this UI checkpoint. Mac compiles, but the Mac XCTest runner timed out while enabling automation, before tests began; no Mac behavioral pass is claimed. Existing microphone/provider verification is not new evidence for this layout.

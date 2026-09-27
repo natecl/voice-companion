@@ -24,8 +24,8 @@ struct ExperienceIconButton: View {
     }
     var body: some View {
         Button(action: action) {
-            ExperienceSymbol(name: icon)
-                .frame(width: size > 44 ? 36 : 23, height: size > 44 ? 36 : 23)
+            buttonSymbol
+                .frame(width: size > 44 ? 30 : 23, height: size > 44 ? 30 : 23)
                 .foregroundStyle(filled && enabled ? .white : ExperienceStyle.ink.opacity(enabled ? 1 : 0.40))
                 .frame(width: size, height: size)
                 .background {
@@ -39,6 +39,15 @@ struct ExperienceIconButton: View {
                 }
 
         }.buttonStyle(.plain).accessibilityLabel(title)
+    }
+
+    @ViewBuilder private var buttonSymbol: some View {
+        if icon == "mic" || icon == "arrow.up" {
+            Image(systemName: icon)
+                .font(.system(size: icon == "mic" ? 18 : 20, weight: icon == "mic" ? .regular : .semibold))
+        } else {
+            ExperienceSymbol(name: icon)
+        }
     }
 }
 
