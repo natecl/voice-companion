@@ -257,3 +257,9 @@ Founder navigation clarification, September 28: Agent remains the primary page w
 Founder dictation revision, September 28: while dictating, replace the inline composer with trash, elapsed time, a real microphone-level waveform and Send (no Pause). Send finalizes recognition, appends to the existing draft and sends the combined message only after successful final recognition. Trash discards only the active dictated segment. Preserve interruption/failure recovery without automatic sending. User notices have a top-right dismiss X; profile/search circles use visible pale-gray borders matching the tabs.
 
 Founder dictation-control correction: use the same circular up-arrow send control as typed messages, not a visible Send text label. Preserve its accessible Send label and finalization behavior.
+
+Founder paperclip-menu revision: call the attachment action “Attach note,” remove Dictate message and Clear draft, and improve Refresh conversation feedback. Preserve drafts during refresh; keep existing history visible while revalidating and do not leave unvalidated source evidence presented as current after a failed refresh. Dictation remains available through the empty composer's microphone.
+
+Founder notice-dismissal refinement: dismissed error cards should fade and gently collapse with surrounding layout movement, respecting Reduce Motion.
+
+Founder incoming-message revision: Agent replies use the supplied Manus-style light-gray, subtly bordered, rounded content-sized bubbles with slightly heavier text, aligned left. Apply to streaming and saved replies; retain the no-repeated-author-label decision.

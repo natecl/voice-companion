@@ -25,6 +25,7 @@
 		12B53303280D22B7AC9F3643 /* CompanionControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB34ECF3785B087D83C279F1 /* CompanionControllerTests.swift */; };
 		13E4C484E4C4A7BE8E2890F0 /* MicrophoneCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BE8C55AFCE2A84D18222B0 /* MicrophoneCapture.swift */; };
 		1418EF1AB9CE2424714AB9DD /* DictationRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6172DF9BAB6444CEE3A4A1B /* DictationRecognizer.swift */; };
+		17B428E511A9CBE10781A63D /* CompanionRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDA0E3F2FEAB048B99422E9 /* CompanionRefreshTests.swift */; };
 		1AEE96BC35A02CA6C540EA30 /* MicrophoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C425260D9BD59D9B7A18C540 /* MicrophoneUITests.swift */; };
 		1B87433F944E38148F470A3E /* TransportFailureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1722767CA347C5B2A2A522 /* TransportFailureTests.swift */; };
 		1D6EF96453393998382EFCD5 /* LiveAskUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0D140F53F36D3A6C7A9F8C /* LiveAskUITests.swift */; };
@@ -201,6 +202,7 @@
 		E84C0859642B21DF9D960467 /* RecordingFinalizationTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingFinalizationTask.swift; sourceTree = "<group>"; };
 		EB9EC7C7D2F4D7A26C239554 /* RecordingLifecycleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingLifecycleTests.swift; sourceTree = "<group>"; };
 		EE3F8A7C9C6A23D538E310C0 /* CoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFDA0E3F2FEAB048B99422E9 /* CompanionRefreshTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionRefreshTests.swift; sourceTree = "<group>"; };
 		F68208B8B28B93C1AEA78F78 /* transcript-events.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "transcript-events.json"; sourceTree = "<group>"; };
 		FB896610CA7C35AA4B7618D7 /* ComposerDictationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerDictationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -338,6 +340,7 @@
 				978F772CA247BC66605A1D33 /* CompanionConnectionTests.swift */,
 				BB34ECF3785B087D83C279F1 /* CompanionControllerTests.swift */,
 				BDE5D916C772B85F0A028924 /* CompanionMessageTextTests.swift */,
+				EFDA0E3F2FEAB048B99422E9 /* CompanionRefreshTests.swift */,
 				FB896610CA7C35AA4B7618D7 /* ComposerDictationTests.swift */,
 				B2CDFE903F387C5D9A9995AB /* ConversationAnswerTests.swift */,
 				A27B0813F66346BF740B28AE /* DictationCallbackTests.swift */,
@@ -598,6 +601,7 @@
 				12B53303280D22B7AC9F3643 /* CompanionControllerTests.swift in Sources */,
 				A4E0FE5C542EEFD61162AF78 /* CompanionMessageText.swift in Sources */,
 				9BA0683EC8CC162389FE99A7 /* CompanionMessageTextTests.swift in Sources */,
+				17B428E511A9CBE10781A63D /* CompanionRefreshTests.swift in Sources */,
 				33194AB168B44429BA555E21 /* ComposerDictation.swift in Sources */,
 				DA748D84B8051DB984056BCE /* ComposerDictationTests.swift in Sources */,
 				F6AF624940EE5A378DD8AC7B /* ConversationAnswer.swift in Sources */,

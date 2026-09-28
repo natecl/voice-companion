@@ -118,3 +118,16 @@ Verification: 15 focused ComposerDictation/SharedMicrophone unit tests passed, c
 Signed source checkpoint `0d53122` was installed in place and launched on the paired iPhone. Receipts: `/tmp/dictation-wave-device.log`, `/tmp/dictation-wave-install.json`, `/tmp/dictation-wave-launch.json`. No recording was initiated; device behavior acceptance remains pending.
 
 Dictation arrow correction: replaced the visible Send text with the exact shared filled up-arrow control used for typed messages. Finalization behavior is unchanged. The affected simulator flow passed (38.385 s), screenshot inspected/refreshed, signed build passed. Evidence: `/tmp/VoiceCompanion-ExperienceResults/20260928-004753/` and `/tmp/dictation-arrow-device.log`.
+
+
+## Paperclip menu and refresh follow-up
+
+The menu now offers Attach note, Use past memory and Refresh conversation. Dictate message and Clear draft are removed at founder request. The attachment sheet explains the context being attached, uses consistent note naming, and shows an add/selected indicator. Dictation remains on the empty composer's microphone.
+
+Refresh previously erased the visible history before waiting for the network. It now retains the page while loading, preserves the draft, and reports Refreshing conversation / Conversation is up to date. A failed revalidation still clears unvalidated history and presents the existing error card. The busy control correctly identifies Cancel refresh. Dismissed notice cards use a short fade/scale transition and animated layout collapse; Reduce Motion removes the transition.
+
+Focused refresh-controller tests cover visible-history preservation, replacement/success feedback, and failure clearing while retaining the draft. Simulator QA initially exposed test assumptions tied to the removed Clear draft action and debug-only source controls; those test steps were corrected to use actual composer editing and completion state. These failures were not application refresh failures.
+
+Final verification: two controller regressions passed; menu/refresh and gallery/attachment flows passed at `/tmp/VoiceCompanion-ExperienceResults/20260928-005534/`. The shorter Refresh chat label and dismissal update passed at `20260928-005732`; the subsequent incoming-bubble revision passed capture/chat/source/reopen plus dismissal at `20260928-005903`. Actual menu, attachment sheet and Agent bubble screenshots inspected. Final signed iPhone and Mac builds passed. No paid calls or physical behavioral acceptance.
+
+Agent saved and streaming replies now use the latest supplied reference: content-sized left-aligned light-gray rounded bubbles, subtle border, 16-point horizontal padding and semibold body type. This supersedes the earlier unboxed replies. The Agent capture screenshot contains debug-only source markers from the synthetic fixture.

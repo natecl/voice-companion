@@ -205,7 +205,7 @@ struct CompanionRootView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(turn.question).padding(.horizontal, 14).padding(.vertical, 12).experienceCard(radius: 18).frame(maxWidth: .infinity, alignment: .trailing)
                                 if let answer = turn.answer {
-                                    Text(CompanionMessageText.presented(answer)).padding(.top, 14).font(.body).lineSpacing(3).textSelection(.enabled).accessibilityIdentifier("companionAnswer")
+                                    Text(CompanionMessageText.presented(answer)).modifier(ExperienceAgentBubble()).padding(.top, 14).textSelection(.enabled).accessibilityIdentifier("companionAnswer")
                                     Button { ExperienceClipboard.copy(CompanionMessageText.presented(answer)) } label: { Image(systemName: "square.on.square").font(.system(size: 18)).foregroundStyle(ExperienceStyle.secondary).frame(width: 44, height: 44, alignment: .leading) }.accessibilityLabel("Copy answer")
                                 }
                                 if turn.state != .complete { ExperienceNotice(title: "About this answer", message: turnLabel(turn.state)) }
@@ -223,7 +223,7 @@ struct CompanionRootView: View {
                         }
                         if let response = chat.response {
                             Text(response.request.question).padding(.horizontal, 14).padding(.vertical, 12).experienceCard(radius: 18).frame(maxWidth: .infinity, alignment: .trailing)
-                            Text(CompanionMessageText.presented(response.text, streaming: response.state == .streaming)).font(.body).lineSpacing(3).textSelection(.enabled).accessibilityIdentifier("companionPartial")
+                            Text(CompanionMessageText.presented(response.text, streaming: response.state == .streaming)).modifier(ExperienceAgentBubble()).textSelection(.enabled).accessibilityIdentifier("companionPartial")
                             if response.state == .streaming { ExperienceThinkingStatus(label: "Answering…", active: surface == "Companion" && selectedID == nil) }
                             else if response.state != .saved { ExperienceNotice(title: "Answer interrupted", message: "We couldn’t confirm this answer was saved. Recover the question below to check or continue it.") }
 
@@ -243,10 +243,17 @@ struct CompanionRootView: View {
         if let chat {
             @Bindable var chat = chat
             VStack(alignment: .leading, spacing: 8) {
+                if let status = chat.refreshStatus {
+                    HStack(spacing: 8) {
+                        if chat.isRefreshing { ProgressView().controlSize(.small) }
+                        else { Image(systemName: "checkmark.circle") }
+                        Text(status).font(.caption)
+                    }.foregroundStyle(ExperienceStyle.secondary).accessibilityIdentifier("conversationRefreshStatus")
+                }
                 if let notice = chat.notice ?? sourceNotice { ExperienceNotice(title: "Agent update", message: notice).accessibilityIdentifier("companionNotice") }
                 if let attachment = chat.attachment {
                     HStack(spacing: 12) {
-                        Label("Attached recording", systemImage: "doc.text").font(.caption).accessibilityIdentifier("chatAttachment")
+                        Label("Attached note", systemImage: "doc.text").font(.caption).accessibilityIdentifier("chatAttachment")
                         Button("Open") { selectedID = UUID(uuidString: attachment.session_id); citedSource = nil }
                         Spacer()
                         Button("Remove") { chat.attachment = nil }.accessibilityIdentifier("removeAttachment")
@@ -281,16 +288,11 @@ struct CompanionRootView: View {
                                 .accessibilityIdentifier("sendDictation")
                         } else {
                         Menu {
-                            Button("Attach a recording", systemImage: "doc.text") { composing = false; showingAttachments = true }
+                            Button("Attach note", systemImage: "doc.text") { composing = false; showingAttachments = true }
                                 .accessibilityIdentifier("chooseRecordingAttachment")
-                            Button("Dictate message", systemImage: "mic") { startDictation(chat) }
-                                .disabled(chat.isBusy || recording.pendingMemoryDeletion)
-                                .accessibilityIdentifier("dictateIntoDraft")
                             Divider()
                             Toggle("Use past memory", isOn: $chat.useMemory)
-                            Button("Clear draft", role: .destructive) { dictation.discard(); chat.draft = "" }
-                                .disabled(!dictation.isActive && chat.draft.isEmpty).accessibilityIdentifier("clearCompanionDraft")
-                            Button("Refresh conversation") { chat.refresh() }.disabled(chat.isBusy || recording.pendingMemoryDeletion)
+                            Button("Refresh chat", systemImage: "arrow.clockwise") { composing = false; chat.refresh(userInitiated: true) }.accessibilityLabel("Refresh conversation").disabled(chat.isBusy || recording.pendingMemoryDeletion)
                         } label: { Image(systemName: "paperclip").font(.system(size: 20, weight: .regular)).rotationEffect(.degrees(-45)).frame(width: 44, height: 44).contentShape(Rectangle()) }
                             .accessibilityLabel("Attachments and message options")
                         TextField("Message Agent", text: Binding(
@@ -301,7 +303,7 @@ struct CompanionRootView: View {
                         ZStack {
                             Group {
                                 if chat.isBusy {
-                                    ExperienceIconButton("Cancel answer", icon: "stop.fill") { chat.cancel() }
+                                    ExperienceIconButton(chat.isRefreshing ? "Cancel refresh" : "Cancel answer", icon: "stop.fill") { chat.cancel() }
                                 } else if !chat.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                                     ExperienceIconButton("Send", icon: "arrow.up", filled: true) { sendDraft(chat) }
                                         .disabled(recording.pendingMemoryDeletion)
@@ -452,7 +454,7 @@ struct CompanionRootView: View {
             navigationPill("Agent", icon: "bubble.left", value: "Companion", identifier: "agentNavigation")
                 .contextMenu {
                     if let answer = chat?.turns.last?.answer { ShareLink(item: CompanionMessageText.presented(answer)) }
-                    Button("Refresh conversation") { chat?.refresh() }.disabled(chat?.isBusy ?? true)
+                    Button("Refresh chat") { chat?.refresh(userInitiated: true) }.accessibilityLabel("Refresh conversation").disabled(chat?.isBusy ?? true)
                 }
             navigationPill("Notes", icon: "doc.text", value: "Recordings", identifier: "notesNavigation")
             Spacer(minLength: 8)
@@ -481,7 +483,11 @@ struct CompanionRootView: View {
         NavigationStack {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 0) {
-                    if library.isEmpty { ContentUnavailableView("No recordings yet", systemImage: "doc.text", description: Text("Capture a conversation first, then attach it to your message.")) }
+                    if library.isEmpty { ContentUnavailableView("No notes yet", systemImage: "doc.text", description: Text("Capture a conversation to create your first note.")) }
+                    if !library.isEmpty {
+                        Text("Choose a note to give Agent context for your message.")
+                            .font(.subheadline).foregroundStyle(ExperienceStyle.secondary).padding(.bottom, 12)
+                    }
                     ForEach(library) { session in
                         let attachment = recording.companionAttachment(for: session)
                         Button {
@@ -494,12 +500,14 @@ struct CompanionRootView: View {
                                     Text(attachment == nil ? "Available after synchronization" : session.createdAt.formatted()).font(.caption).foregroundStyle(ExperienceStyle.secondary)
                                 }
                                 Spacer()
+                                Image(systemName: chat?.attachment?.session_id == session.id.uuidString ? "checkmark.circle.fill" : "plus.circle")
+                                    .foregroundStyle(ExperienceStyle.secondary)
                             }.padding(.vertical, 18).contentShape(Rectangle())
                         }.disabled(attachment == nil).accessibilityIdentifier("attachRecordingRow")
                         Divider()
                     }
                 }.padding(20)
-            }.experienceNavigationTitle("Attach a recording")
+            }.experienceNavigationTitle("Attach note")
                 .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showingAttachments = false } } }
                 .background(ExperienceStyle.canvas)
         }.tint(ExperienceStyle.ink).presentationDetents([.medium, .large])

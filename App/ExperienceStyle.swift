@@ -216,6 +216,7 @@ struct ExperienceNotice: View {
     let title: String
     let message: String
     @State private var dismissed = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     var body: some View {
         Group {
         if !dismissed {
@@ -225,13 +226,16 @@ struct ExperienceNotice: View {
                 Text(title).font(.subheadline.weight(.semibold))
                 Text(message).font(.footnote).foregroundStyle(ExperienceStyle.secondary).fixedSize(horizontal: false, vertical: true)
             }.frame(maxWidth: .infinity, alignment: .leading)
-            Button { dismissed = true } label: {
+            Button {
+                withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) { dismissed = true }
+            } label: {
                 Image(systemName: "xmark").font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(ExperienceStyle.secondary).frame(width: 44, height: 44)
             }.buttonStyle(ExperiencePressStyle()).accessibilityLabel("Dismiss \(title)")
         }.padding(10).background(ExperienceStyle.surface.opacity(0.65), in: RoundedRectangle(cornerRadius: 18))
             .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(ExperienceStyle.line))
             .accessibilityElement(children: .contain)
+            .transition(reduceMotion ? .identity : .opacity.combined(with: .scale(scale: 0.98, anchor: .top)))
         }
         }.onChange(of: message) { _, _ in dismissed = false }
     }
@@ -249,5 +253,17 @@ enum ExperienceHaptics {
         #if os(iOS)
         UINotificationFeedbackGenerator().notificationOccurred(.success)
         #endif
+    }
+}
+
+/// The founder-provided chat reference uses quiet, content-sized incoming bubbles.
+struct ExperienceAgentBubble: ViewModifier {
+    func body(content: Content) -> some View {
+        content.font(.body.weight(.semibold)).lineSpacing(4)
+            .padding(.horizontal, 16).padding(.vertical, 14)
+            .background(Color(white: 0.945), in: RoundedRectangle(cornerRadius: 18))
+            .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(Color(white: 0.90), lineWidth: 0.7))
+            .padding(.trailing, 32)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

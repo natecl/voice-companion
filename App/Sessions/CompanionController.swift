@@ -24,6 +24,8 @@ final class CompanionController {
     private(set) var nextBefore: Int?
     private(set) var isBusy = false
     private(set) var notice: String?
+    private(set) var isRefreshing = false
+    private(set) var refreshStatus: String?
     private let makeConnection: () -> any CompanionConnection
     private var connection: (any CompanionConnection)?
     private var task: Task<Void, Never>?
@@ -62,6 +64,7 @@ final class CompanionController {
     }
 
     private func begin(_ question: CompanionQuestion) {
+        refreshStatus = nil
         notice = nil
         response = Response(request: question)
         isBusy = true
@@ -114,21 +117,30 @@ final class CompanionController {
         }
     }
 
-    func refresh() { load(before: nil) }
+    func refresh(userInitiated: Bool = false) { load(before: nil, userInitiated: userInitiated) }
     func loadEarlier() {
         guard let nextBefore else { return }
         load(before: nextBefore)
     }
-    private func load(before: Int?) {
+    private func load(before: Int?, userInitiated: Bool = false) {
         guard !isBusy else { return }
         isBusy = true
         notice = nil
-        // Don't leave old answers presented as current if server revalidation fails.
-        if before == nil { turns = []; nextBefore = nil }
+        isRefreshing = true
+        refreshStatus = userInitiated ? "Refreshing conversation…" : nil
+        // Keep the visible conversation stable until revalidation completes.
         task = Task {
-            defer { connection = nil; isBusy = false; task = nil }
-            do { try await readHistory(before: before) }
-            catch { notice = error is CancellationError ? "Chat refresh interrupted." : error.localizedDescription }
+            defer { connection = nil; isBusy = false; isRefreshing = false; task = nil }
+            do {
+                try await readHistory(before: before)
+                try Task.checkCancellation()
+                refreshStatus = userInitiated ? "Conversation is up to date." : nil
+            } catch {
+                // Failed revalidation must not leave stale evidence presented as current.
+                if before == nil { turns = []; nextBefore = nil }
+                refreshStatus = nil
+                notice = error is CancellationError ? "Refresh stopped. Tap Refresh conversation to try again." : error.localizedDescription
+            }
         }
     }
     private func readHistory(before: Int?) async throws {
