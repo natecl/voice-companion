@@ -33,8 +33,12 @@ def source(session,text,completed):
 
 class RecordedScreen(unittest.IsolatedAsyncioTestCase):
     async def test_exact_live_screen_through_service(self):
-        cases={c['id']:c for c in json.loads((ROOT/'cases.json').read_text())}
-        for row in json.loads((ROOT/'live-screen-20260928/results.json').read_text()):
+        cases={c['id']:c for name in ('cases.json','semantic-cases.json')
+            for c in json.loads((ROOT/name).read_text())}
+        rows=json.loads((ROOT/'live-screen-20260928/results.json').read_text())
+        semantic=json.loads((ROOT/'semantic-screen-20260928/results.json').read_text())
+        rows += [dict(row,route='llm',decision=row['result']['type']) for row in semantic]
+        for row in rows:
             with self.subTest(case=row['case'],route=row['route']),tempfile.TemporaryDirectory() as folder:
                 store=MemoryStore(Path(folder)/'memory.sqlite',clock=lambda:300.)
                 owner=store.owner_for('qa');case=cases[row['case']]
@@ -44,6 +48,10 @@ class RecordedScreen(unittest.IsolatedAsyncioTestCase):
                 result=await service.evaluate(owner,source('capture',case['live'],False),lambda:True)
                 self.assertEqual(result['type'],'contribution' if row['decision']=='contribute' else 'silence')
                 self.assertEqual(model.used,len(row['calls']))
+                if row['case'].startswith('semantic-'):
+                    self.assertEqual(model.used,1)
+                    self.assertEqual(row['decision'],case['expected'])
+                    self.assertEqual(row['state']['sources'][0]['text'],case['past'])
                 turns=CompanionChat(store).page(owner)['turns']
                 if row['decision']=='contribute':self.assertEqual(turns[0]['answer'],row['text'])
                 else:self.assertEqual(turns,[])

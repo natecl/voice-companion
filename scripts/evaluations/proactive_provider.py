@@ -10,8 +10,10 @@ CAP=250000
 
 def run(payload):
     key=payload['id'];req=payload['request'];model=req.get('model')
-    assert key in {f'{case}:{route}:{kind}' for case in ('sleep-relevant','already-addressed','wrong-person')
+    allowed = {f'{case}:{route}:{kind}' for case in ('sleep-relevant','already-addressed','wrong-person')
         for route in ('llm','jev') for kind in ('judge','draft')}
+    allowed.update(f'semantic-{case}:llm:draft' for case in ('wrong-person','fictional','instruction'))
+    assert key in allowed
     assert len(json.dumps(req,ensure_ascii=False).encode())<=16000
     if model=='gpt-6-luna':
         assert key.endswith(':draft')

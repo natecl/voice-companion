@@ -10,7 +10,7 @@ The [product source of truth](product-source-of-truth.md) and [engineering princ
 
 - **Proven:** Granola. This is the reference product, not a claim that we have copied every Granola feature.
 - **Better:** faster responses, lower latency and price, and recognizable improvements. These are goals; the implementation has not established a universal comparative advantage.
-- **New:** an iPhone-first AI note-taking app that proactively contributes useful personal context, questions and ideas through text during conversations. Mac remains supported. Proactive participation is the hypothesis, not implemented behavior.
+- **New:** an iPhone-first AI note-taking app that proactively contributes useful personal context, questions and ideas through text during conversations. Mac remains supported. Proactive participation is the product hypothesis; a local gated implementation now has simulator and bounded model evidence, while production participation remains disabled.
 
 Prior ICP hypothesis (not yet a validated launch segment): a curious, ambitious, AI-comfortable person who thinks out loud and wants useful perspective without repeatedly explaining their life. The founder, Mark Pincus and Garry Tan are reference personas, not a restriction to founders or developers. Whole-life context includes relationships, family, pets, interests, study, appointments, work and goals.
 
@@ -118,7 +118,7 @@ Spending permission, runtime/daily quotas, deployment approval and physical read
 
 PR 99 is merged and personality v3 is internally deployed. No further paid transcription run is needed for accepted paths. Continue product UX work on the agreed narrow foundation. Public distribution, onboarding/account/subscription operations and broader release acceptance remain separate from internal feature completion.
 
-Core unbuilt product work: proactive text participation, calendar/email/message context and fresh outside-information retrieval. Separately deferred: TTS, silently always-on capture, Mac system audio, voiceprints, manual speaker labeling, side chats, note editing, full cross-device recording-library sync, autonomous tools and explicit memory-management UX. A mascot or self-editing SOUL/MEMORY files are not an agreed implementation requirement. No additional research or feature is automatically authorized by being listed here.
+Core remaining product work: production acceptance/enablement of the local proactive path, calendar/email/message context and fresh outside-information retrieval. Separately deferred: TTS, silently always-on capture, Mac system audio, voiceprints, manual speaker labeling, side chats, note editing, full cross-device recording-library sync, autonomous tools and explicit memory-management UX. A mascot or self-editing SOUL/MEMORY files are not an agreed implementation requirement. No additional research or feature is automatically authorized by being listed here.
 
 
 ### Private composer dictation refinement — September 27
@@ -136,4 +136,4 @@ September 28 local UI checkpoint: Notes swipe Delete and long-press Share/Delete
 September 28 internal UI rollout complete: PR104 backend is live at `4dd5b70`; matching native app installed in place and launched on the founder’s iPhone. Includes welcome-message onboarding, stacked note cards with icon-only swipe actions, shared composer/dictation, refined motion, and preserved historical replies after note deletion. Verified all 20 databases/106 tables unchanged and no new paid usage. Physical feel/performance is not newly claimed. See [rollout receipt](native-experience-ui.md#approved-internal-rollout--september-28-2026).
 
 
-Current next feature: [proactive contributions from past notes — MVP implementation plan](proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. The plan and bounded $0.25 / 12-call QA approval are recorded; no proactive implementation or new live verification is claimed.
+Current next feature: [proactive contributions from past notes — MVP implementation plan](proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. The [local native checkpoint](proactive-native.md) is implemented and simulator-verified, with seven bounded model calls including three retrieved-evidence silence cases. The [model evidence](proactive-model-screen.md) records $0.11 conservative reservations under the $0.25 / 12-call grant. Production enablement, broader quality and physical acceptance remain pending.
