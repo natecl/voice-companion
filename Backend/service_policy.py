@@ -63,6 +63,27 @@ def extend_proactive_phone_policy(db):
         db.execute('UPDATE policy SET cap=? WHERE category=?',(limit,category))
 
 
+CEDAR_PHONE_APPROVAL = 'cedar-phone-20260928-170'
+CEDAR_PHONE_POLICIES = {'stt':(1_300_000,20_000,6),'ask':(3_035_000,3_000,20),'jev':(850_000,500,64)}
+
+def cedar_phone_funded(db,cap,policies):
+    if cap!=(5_185_000,) or policies!=CEDAR_PHONE_POLICIES:return False
+    if not db.execute("SELECT 1 FROM sqlite_master WHERE name='qa_budget_extension'").fetchone():return False
+    return db.execute('SELECT amount FROM qa_budget_extension WHERE id=?',(CEDAR_PHONE_APPROVAL,)).fetchone()==(45_000,)
+
+def extend_cedar_phone_policy(db):
+    """One recording plus one note; six proactive calls have a separate $0.12 ledger."""
+    cap=db.execute('SELECT cap FROM budget WHERE id=1').fetchone()
+    policies=dict((r[0],tuple(r[1:])) for r in db.execute('SELECT * FROM policy'))
+    if cedar_phone_funded(db,cap,policies):return
+    if not proactive_phone_funded(db,cap,policies):raise ValueError('Unexpected QA baseline')
+    if db.execute("SELECT 1 FROM request WHERE state='active'").fetchone():raise ValueError('Active request')
+    db.execute('INSERT INTO qa_budget_extension VALUES(?,?)',(CEDAR_PHONE_APPROVAL,45_000))
+    db.execute('UPDATE budget SET cap=5185000 WHERE id=1')
+    for category,(limit,_,_) in CEDAR_PHONE_POLICIES.items():
+        db.execute('UPDATE policy SET cap=? WHERE category=?',(limit,category))
+
+
 def redistribute_dictation_policy(db):
     """Caller owns a transaction. Explicit operator action, never startup funding."""
     policies=dict((r[0],tuple(r[1:])) for r in db.execute('SELECT category,cap,reservation,daily FROM policy'))
@@ -116,7 +137,7 @@ def add_ask_policy(path):
         db.execute('BEGIN IMMEDIATE')
         cap = db.execute('SELECT cap FROM budget WHERE id=1').fetchone()
         policies = dict((row[0], tuple(row[1:])) for row in db.execute('SELECT category,cap,reservation,daily FROM policy'))
-        if not proactive_phone_funded(db,cap,policies) and not private_dictation_funded(db,cap,policies) and (cap != (5_000_000,) or policies not in ({'stt': STT}, {'stt': STT, 'ask': ASK}, {'stt': STT, 'ask': ASK, 'jev': RETIRED_JEV}, ROLLOUT_POLICIES, PREFERENCE_POLICIES, DICTATION_POLICIES)):
+        if not cedar_phone_funded(db,cap,policies) and not proactive_phone_funded(db,cap,policies) and not private_dictation_funded(db,cap,policies) and (cap != (5_000_000,) or policies not in ({'stt': STT}, {'stt': STT, 'ask': ASK}, {'stt': STT, 'ask': ASK, 'jev': RETIRED_JEV}, ROLLOUT_POLICIES, PREFERENCE_POLICIES, DICTATION_POLICIES)):
             raise ValueError('Unexpected ledger policy; migration refused')
         if 'ask' not in policies:
             db.execute('INSERT INTO policy VALUES(?,?,?,?)', ('ask', *ASK))
@@ -148,4 +169,6 @@ def open_ledger(*, migrate=False):
                 limits=dict(policies);total=5_050_000
             if enabled and proactive_phone_funded(db,db.execute('SELECT cap FROM budget WHERE id=1').fetchone(),policies):
                 limits=dict(policies);total=5_140_000
+            if enabled and cedar_phone_funded(db,db.execute('SELECT cap FROM budget WHERE id=1').fetchone(),policies):
+                limits=dict(policies);total=5_185_000
     return Admission(path, total_microusd=total, limits=limits)

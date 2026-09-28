@@ -7,16 +7,19 @@ from admission import Rejected
 from memory_budget import database
 
 APPROVAL = 'proactive-phone-20260928-090'
+CEDAR_APPROVAL = 'cedar-phone-20260928-170'
 
 class PhoneQA:
     def __init__(self, directory, *, clock=time.time):
         self.root=Path(directory);self.clock=clock
         self.config=json.loads((self.root/'proactive-phone-qa.json').read_text())
-        if self.config['approval']!=APPROVAL:raise ValueError('Unknown phone QA approval')
+        if self.config['approval'] not in (APPROVAL,CEDAR_APPROVAL):raise ValueError('Unknown phone QA approval')
+        cedar=self.config['approval']==CEDAR_APPROVAL
+        self.max_calls,self.cap=(6,120000) if cedar else (12,250000)
         if not 0<self.config['expires']-self.config['starts']<=86400:raise ValueError('Invalid QA window')
-        self.path=self.root/'proactive-phone-qa.sqlite'
+        self.path=self.root/('cedar-phone-qa.sqlite' if cedar else 'proactive-phone-qa.sqlite')
         if not self.path.exists():raise ValueError('Provision phone QA first')
-        self.usage=self.root/'proactive-20260928-025'/'usage.sqlite'
+        self.usage=self.root/(CEDAR_APPROVAL if cedar else 'proactive-20260928-025')/'usage.sqlite'
         if not self.usage.exists():raise ValueError('Existing feature ledger required')
 
     def active(self, owner):
@@ -34,7 +37,12 @@ class PhoneQA:
     def contains(self,owner,capture):
         # Keep test recordings out of personal learning even after expiry.
         if owner!=self.config['owner']:return False
-        with database(self.path) as db:return bool(db.execute('SELECT 1 FROM capture WHERE id=?',(capture,)).fetchone())
+        paths={self.path,self.root/'proactive-phone-qa.sqlite'}
+        for path in paths:
+            if path.exists():
+                with database(path) as db:
+                    if db.execute('SELECT 1 FROM capture WHERE id=?',(capture,)).fetchone():return True
+        return False
 
     def sources(self,owner):
         if not self.active(owner):return set()
@@ -45,7 +53,7 @@ class PhoneQA:
         with database(self.usage,isolation_level=None,timeout=2) as db:
             db.execute('BEGIN IMMEDIATE')
             count,total=db.execute('SELECT count(*),coalesce(sum(reserved),0) FROM attempts').fetchone()
-            if count>=12 or total+20000>250000:raise Rejected('proactive_budget_limit')
+            if count>=self.max_calls or total+20000>self.cap:raise Rejected('proactive_budget_limit')
             if db.execute('SELECT 1 FROM attempts WHERE id=?',(key,)).fetchone():raise Rejected('proactive_paid_retry')
             db.execute('INSERT INTO attempts VALUES(?,?,?, ?,NULL)',(key,'phone-runtime',20000,'reserved'))
             db.commit()
