@@ -4,6 +4,7 @@ import SwiftUI
 struct CompanionRootView: View {
     @State private var recording = SessionController.forApp()
     @State private var chat: CompanionController?
+    @State private var proactive: ProactiveCoordinator?
     @State private var dictation = ComposerDictation.forApp()
     @State private var surface = "Companion"
     @State private var selectedID: UUID?
@@ -109,27 +110,56 @@ struct CompanionRootView: View {
                 let config = try Self.config()
                 guard let owner = config.memoryOwnerID else { throw CaptureFailure.noRelay }
                 chat = CompanionController(owner: owner, makeConnection: { connection(owner: owner) })
+                #if DEBUG
+                // Deliberate local QA only; release enablement awaits rollout approval and a runtime allowance.
+                if ProcessInfo.processInfo.arguments.contains("--proactive-qa"), config.url.host == "127.0.0.1" {
+                    proactive = ProactiveCoordinator(makeConnection: {
+                        ProactiveSocketConnection(configuration: {
+                            let current = try Self.config()
+                            guard current.memoryOwnerID == owner else { throw AskFailure.accessExpired }
+                            return current
+                        })
+                    }, received: { needsChatRefresh = true; refreshWhenReady() })
+                }
+                #endif
                 if !recording.pendingMemoryDeletion { chat?.refresh() }
+                updateProactive()
             } catch { sourceNotice = error.localizedDescription }
         }
         .onChange(of: selected.flatMap { recording.companionAttachment(for: $0) }) { _, _ in notePassage = nil }
         .onChange(of: selectedID) { _, _ in notePassage = nil; recordingTab = citedSource == nil ? "Notes" : "Transcript" }
         .onChange(of: surface) { _, value in if value == "Recordings" { composing = false; dictation.interrupt() } }
         .onChange(of: recording.pendingMemoryDeletion) { _, pending in
-            if pending { dictation.interrupt() }
+            if pending { dictation.interrupt(); proactive?.suspend() }
             else { needsChatRefresh = true; refreshWhenReady() }
         }
+        .onChange(of: proactiveSource) { _, _ in updateProactive() }
+        .onChange(of: chat?.useMemory) { _, _ in updateProactive() }
+        .onChange(of: SharedMicrophone.shared.meetingAudioPaused) { _, _ in updateProactive() }
         .onChange(of: chat?.isBusy) { _, _ in refreshWhenReady() }
         .onChange(of: scenePhase) { _, phase in
+            if phase != .active { proactive?.suspend() }
             if phase == .background {
                 dictation.interrupt(); recording.didEnterBackground(); chat?.didEnterBackground(); sourceTask?.cancel()
             } else if phase == .active {
                 recording.didBecomeActive()
+                updateProactive()
                 if !recording.pendingMemoryDeletion { chat?.didBecomeActive() }
             }
         }
-        .onDisappear { dictation.interrupt() }
+        .onDisappear { dictation.interrupt(); proactive?.suspend() }
 
+    }
+
+    private var proactiveSource: MemorySource? {
+        guard recording.liveStatus == "Recording", let current = recording.current,
+              current.memoryOwnerID == chat?.owner else { return nil }
+        return MemorySource(live: current, revision: 1, finalizedOnly: true)
+    }
+    private func updateProactive() {
+        guard chat?.useMemory == true else { proactive?.quiet(); return }
+        proactive?.update(proactiveSource, foreground: scenePhase == .active &&
+            !recording.pendingMemoryDeletion && !SharedMicrophone.shared.meetingAudioPaused)
     }
 
     private var showingLiveRecording: Bool { recording.isActive && selectedID == recording.current?.id }
@@ -198,6 +228,7 @@ struct CompanionRootView: View {
     @ViewBuilder private var chatContent: some View {
         if let chat {
             @Bindable var chat = chat
+            ScrollViewReader { proxy in
             VStack(alignment: .leading, spacing: 12) {
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 20) {
@@ -214,7 +245,9 @@ struct CompanionRootView: View {
                         }
                         ForEach(chat.turns) { turn in
                             VStack(alignment: .leading, spacing: 8) {
-                                Text(turn.question).padding(.horizontal, 14).padding(.vertical, 12).experienceCard(radius: 18).frame(maxWidth: .infinity, alignment: .trailing)
+                                if !turn.isProactive {
+                                    Text(turn.question).padding(.horizontal, 14).padding(.vertical, 12).experienceCard(radius: 18).frame(maxWidth: .infinity, alignment: .trailing)
+                                }
                                 if let answer = turn.answer {
                                     Text(CompanionMessageText.presented(answer)).modifier(ExperienceAgentBubble())
                                         .contextMenu {
@@ -254,6 +287,16 @@ struct CompanionRootView: View {
                         }
                     }.padding(24).frame(maxWidth: 760, alignment: .leading).frame(maxWidth: .infinity)
                 }.scrollDismissesKeyboard(.interactively).defaultScrollAnchor(.bottom).defaultScrollAnchor(.top, for: .alignment)
+                if let id = proactive?.latestMessageID, chat.turns.contains(where: { $0.id == id }) {
+                    Button { proxy.scrollTo(id, anchor: .bottom); proactive?.markRead() } label: {
+                        Label("New message", systemImage: "arrow.down")
+                            .font(.callout).padding(.horizontal, 14).padding(.vertical, 8)
+                            .background(.white, in: Capsule())
+                            .overlay(Capsule().strokeBorder(ExperienceStyle.line, lineWidth: 1))
+                    }.frame(maxWidth: .infinity).padding(.bottom, 8)
+                        .accessibilityIdentifier("proactiveNewMessage")
+                }
+            }
             }
         } else {
             ContentUnavailableView("Your companion", systemImage: "bubble.left", description: Text(sourceNotice ?? "Connecting…"))
@@ -264,6 +307,10 @@ struct CompanionRootView: View {
         if let chat {
             @Bindable var chat = chat
             VStack(alignment: .leading, spacing: 8) {
+                if proactive?.unavailable == true {
+                    Text("Proactive reminders are unavailable for this capture. You can still ask me.")
+                        .font(.caption).foregroundStyle(ExperienceStyle.secondary)
+                }
                 if let status = chat.refreshStatus {
                     HStack(spacing: 8) {
                         if chat.isRefreshing { ProgressView().controlSize(.small) }
@@ -560,7 +607,9 @@ struct CompanionRootView: View {
                             .overlay { RoundedRectangle(cornerRadius: 24).stroke(ExperienceStyle.line.opacity(0.55), lineWidth: 0.5) }
                             .contentShape(RoundedRectangle(cornerRadius: 24))
                     }.buttonStyle(ExperiencePressStyle(pressedScale: 0.985)).accessibilityIdentifier("savedSession")
+                    #if os(iOS)
                     .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 24))
+                    #endif
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                         Button { ExperienceClipboard.copy(noteExport(session)) } label: { noteActionLabel("Copy", icon: "square.on.square").labelStyle(.iconOnly) }
                             .buttonStyle(.automatic).tint(ExperienceStyle.secondary)
@@ -652,6 +701,11 @@ struct CompanionRootView: View {
                     Text("View").font(.callout)
                 }.frame(minHeight: 44).contentShape(Rectangle())
             }.accessibilityLabel("Open live transcript").accessibilityIdentifier("showActiveRecording")
+            if let proactive {
+                ExperienceIconButton(proactive.isQuiet ? "Contributions quiet" : "Quiet contributions", icon: "bell.slash", bare: true) { proactive.quiet() }
+                    .disabled(proactive.isQuiet)
+                    .accessibilityIdentifier("quietContributions")
+            }
             ExperienceIconButton("Stop recording", icon: "stop.fill") { recording.stop() }
                 .disabled(recording.liveStatus != "Recording").accessibilityIdentifier("stopRecording")
         }.padding(.horizontal, 18).padding(.vertical, 6)

@@ -33,6 +33,7 @@ extension SessionController {
             }
             return SessionController(store: store, memorySync: sync,
                 makeConnection: { () -> any RecordingConnection in
+                    if arguments.contains("--proactive-qa") { return ProactiveUIRecording() }
                     if arguments.contains("--companion-ui-fixture") { return CompanionUIRecording() }
                     return MemoryUIRecording()
                 }, prepareRecording: {})
@@ -198,6 +199,22 @@ private final class CompanionUIRecording: RecordingConnection {
             try onEvent(GrokEvent(type: "transcript.partial", text: continuation, words: [], start: 2, duration: 1, is_final: true))
         }
         try onEvent(GrokEvent(type: "transcript.partial", text: "Maya enjoys swimming.", words: [], start: 0, duration: 2, is_final: true))
+    }
+    func stop() { stopped = true }
+    func cancel() { stopped = true }
+}
+#endif
+
+#if DEBUG
+@MainActor
+private final class ProactiveUIRecording: RecordingConnection {
+    private var stopped = false
+    func run(onReady: (Duration) -> Void, onFinishing: @escaping (RecordingStopReason) -> Void,
+             onEvent: (GrokEvent) throws -> Void) async throws {
+        onReady(.seconds(300))
+        try onEvent(GrokEvent(type: "transcript.partial", text: "We are discussing Alex waking at three with the doctor.", words: [], start: 0, duration: 2, is_final: true))
+        while !stopped { try await Task.sleep(for: .milliseconds(100)) }
+        onFinishing(.user)
     }
     func stop() { stopped = true }
     func cancel() { stopped = true }

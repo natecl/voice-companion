@@ -29,7 +29,7 @@ Canonical product/engineering documents retain authority. Maps describe verified
 | Corrections, time and maintenance | Qualified lifecycle and bounded expiry; source-scoped additions; no memory-management UI | [Lifecycle](features.md#corrections-time-and-maintenance) |
 | Retrieval and answer context | Unified notes/transcript discovery, one Jev ranking, independent evidence reserve; pre-retrieval classifier disabled | [Recall](features.md#retrieval-and-answer-context) |
 | Recording deletion and retained memory | Transcript removed; eligible learned knowledge retained with unavailable-source label | [Deletion](features.md#recording-deletion-and-retained-memory) |
-| Proactive contribution and connected context | Full product vision; missing from active implementation | [Gap map](../product-vision-audit-2026-09-28.md#capability-and-gap-map) |
+| Proactive contribution and connected context | Proactive past-note path verified locally, disabled for rollout; connected sources remain absent | [Gap map](../product-vision-audit-2026-09-28.md#capability-and-gap-map) |
 | Knowledge provenance and future sources | Current layers plus connector/participation gaps | [Knowledge](knowledge.md) |
 | Internal access, budgets and deployment | Explicit enrollment, admission caps, persistent single-instance service | [Operations](features.md#internal-access-budgets-and-rollout) |
 
@@ -61,7 +61,7 @@ These are data dependencies, not a guarantee that background learning has finish
 
 ## What is not delivered by these maps
 
-Proactive text or spoken participation; calendar/email/message connectors; fresh web retrieval; media import; voice recognition/enrollment; silent continuous recording; Mac computer-audio capture; note editing (generated notes are internally deployed with bounded physical acceptance); side chats; full recording-library synchronization between devices; public account/subscription/distribution operations; explicit memory-erasure UX. These need their own approved slices. Recording remains user-started and internally capped. Do not infer launch readiness from the bounded harness acceptance.
+Production proactive text participation and spoken participation; calendar/email/message connectors; fresh web retrieval; media import; voice recognition/enrollment; silent continuous recording; Mac computer-audio capture; note editing (generated notes are internally deployed with bounded physical acceptance); side chats; full recording-library synchronization between devices; public account/subscription/distribution operations; explicit memory-erasure UX. These need their own approved slices. Recording remains user-started and internally capped. Do not infer launch readiness from the bounded harness acceptance.
 
 ## Keep context useful
 
@@ -75,3 +75,5 @@ The [simpler memory foundation](../simple-memory-foundation.md) completed its bo
 Current next feature: [proactive contributions from past notes — MVP implementation plan](../proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. The plan and bounded $0.25 / 12-call QA approval are recorded; no proactive implementation or new live verification is claimed.
 
 Local candidate: [proactive foundation](../proactive-foundation.md) implements scheduling, local discovery and model contracts with free replay evidence. No hosted/native integration or live model acceptance yet.
+
+Local implementation update: [native proactive checkpoint](../proactive-native.md) and [bounded provider screen](../proactive-model-screen.md). These supersede the earlier missing-implementation status for the local proactive path, not the production or public-release status.

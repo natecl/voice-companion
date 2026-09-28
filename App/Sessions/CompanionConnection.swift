@@ -69,6 +69,8 @@ struct CompanionTurn: Decodable, Identifiable {
     let state: State
     let answer: String?
     let created_at: Double
+    var kind: String? = nil
+    var isProactive: Bool { kind == "proactive" }
     let citations: [CompanionCitation]
 }
 struct CompanionEvent: Decodable {
