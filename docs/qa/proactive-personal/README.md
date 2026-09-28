@@ -55,3 +55,11 @@ Actual iPhone Simulator execution with the local authenticated socket, durable b
 ![Actual native proactive message](native-message.png)
 
 Native UI code is unchanged in this checkpoint. The PR123 simulator run and inspected screenshot below remain applicable; the real-response backend replay above complements that synthetic-provider UI test rather than claiming a new physical-phone run.
+
+## Authorized backend rollout — September 28
+
+Founder authorized deployment after PR124 merged. Render deployment `dep-date7sou01pc73e9s5rg` is live at `734bb3d8583e4ac3d7a340024a4f8f05aed102a3`. Verified the running Git revision and exact v2 prompt hash against the tested source. General, notes and learning health returned HTTP 200; workers were idle with no reported failure. Service configuration was unchanged.
+
+Before deployment, backed up 24 active/QA SQLite databases using SQLite backup and integrity checks. Post-deployment comparison verified all 112 backed-up tables retained identical rows and every database passed integrity checks. Runtime reservations remained Ask 3,007,868, Jev 833,000 and STT 1,280,000 microUSD, with zero active requests. The exhausted personal-evaluation ledger was preserved. No model calls, transcription, account reseeding, quota increases or native installation occurred. Operator receipts are in ignored `work/proactive-v2-rollout/`.
+
+This deploys both the previously verified continuous-speech repair and v2 decision prompt. It does not activate proactive participation in the normal phone build or replenish the expired/exhausted internal test grant. A new bounded phone experiment requires its own allowance and readiness. Rollback target is prior hosted `ca8b1f1`; preserve current databases/ledgers rather than restoring backups or resurrecting deleted account data.
