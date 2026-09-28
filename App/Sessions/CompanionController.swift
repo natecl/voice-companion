@@ -76,7 +76,7 @@ final class CompanionController {
                     case "context":
                         self.response?.sources = event.sources ?? []
                         self.response?.memoryStatus = event.memory_status
-                        if event.memory_status == "unavailable" { self.notice = "Some past context could not be retrieved for this answer." }
+                        if event.memory_status == "unavailable" { self.notice = "Some earlier conversations weren’t available for this answer. You can still continue chatting." }
                     case "delta": self.response?.text += event.text ?? ""
                     case "done":
                         self.response?.references = event.references ?? []

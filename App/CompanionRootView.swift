@@ -21,6 +21,8 @@ struct CompanionRootView: View {
     @State private var needsChatRefresh = false
     @State private var sourceTask: Task<Void, Never>?
     @FocusState private var composing: Bool
+    @Namespace private var navigationSelection
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
 
     private static func config() throws -> RelayConfiguration {
@@ -56,7 +58,7 @@ struct CompanionRootView: View {
         VStack(spacing: 0) {
             navigation.padding(.horizontal, 16).padding(.vertical, 2)
             if let error = recording.errorMessage {
-                Text(error).font(.callout).foregroundStyle(.red).padding(.horizontal, 20)
+                ExperienceNotice(title: "Recording needs attention", message: error).padding(.horizontal, 20)
             }
             if recording.pendingMemoryDeletion {
                 Text("Deleting the source from companion memory… Chat will resume after synchronization.")
@@ -64,10 +66,12 @@ struct CompanionRootView: View {
             }
             ZStack {
                 chatContent.opacity(surface == "Companion" ? 1 : 0)
+                    .offset(x: reduceMotion || surface == "Companion" ? 0 : -10)
                     .allowsHitTesting(surface == "Companion").accessibilityHidden(surface != "Companion")
                 homeContent.opacity(surface == "Recordings" ? 1 : 0)
+                    .offset(x: reduceMotion || surface == "Recordings" ? 0 : 10)
                     .allowsHitTesting(surface == "Recordings").accessibilityHidden(surface != "Recordings")
-            }
+            }.animation(reduceMotion ? nil : .easeInOut(duration: 0.18), value: surface)
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             VStack(spacing: 12) {
@@ -80,16 +84,19 @@ struct CompanionRootView: View {
         .preferredColorScheme(.light)
         .foregroundStyle(ExperienceStyle.ink)
         .tint(ExperienceStyle.ink)
-        .buttonStyle(.plain)
+        .buttonStyle(ExperiencePressStyle())
         .frame(minWidth: 300, minHeight: 420)
         .accessibilityHidden(selectedID != nil || showingAccount || showingAttachments)
         .sheet(isPresented: Binding(get: { selectedID != nil && showingLiveRecording }, set: { if !$0 && showingLiveRecording { selectedID = nil; citedSource = nil } })) { recordingDetail }
         .overlay {
-            if selectedID != nil && !showingLiveRecording { recordingDetail }
+            if selectedID != nil && !showingLiveRecording { recordingDetail.transition(.opacity) }
         }
         .sheet(isPresented: $showingAttachments) { attachmentPicker }
-        .overlay { if showingAccount { accountContent.background(ExperienceStyle.canvas) } }
+        .overlay { if showingAccount { accountContent.background(ExperienceStyle.canvas).transition(.opacity) } }
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: showingAccount)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: selectedID)
         .onChange(of: recording.isActive) { wasActive, active in
+            ExperienceHaptics.recordingChanged()
             if wasActive && !active, let current = recording.current {
                 recordingDetent = .large; selectedID = current.id; recordingTab = "Notes"; citedSource = nil
             }
@@ -162,7 +169,7 @@ struct CompanionRootView: View {
                 }.padding(.horizontal, 24).padding(.bottom, 16)
 
             }
-            .background(ExperienceStyle.canvas).tint(ExperienceStyle.ink)
+            .buttonStyle(ExperiencePressStyle()).background(ExperienceStyle.canvas).tint(ExperienceStyle.ink)
             .presentationDetents([.fraction(0.68), .large], selection: $recordingDetent).presentationDragIndicator(.visible)
             .frame(minWidth: 300, minHeight: 420)
             .alert("Delete this recording?", isPresented: $confirmingDeletion) {
@@ -198,11 +205,10 @@ struct CompanionRootView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(turn.question).padding(.horizontal, 14).padding(.vertical, 12).experienceCard(radius: 18).frame(maxWidth: .infinity, alignment: .trailing)
                                 if let answer = turn.answer {
-                                    Text("Ellis").font(.system(.title2, design: .serif, weight: .bold)).padding(.top, 18).padding(.bottom, 8)
-                                    Text(CompanionMessageText.presented(answer)).font(.body).lineSpacing(3).textSelection(.enabled).accessibilityIdentifier("companionAnswer")
+                                    Text(CompanionMessageText.presented(answer)).padding(.top, 14).font(.body).lineSpacing(3).textSelection(.enabled).accessibilityIdentifier("companionAnswer")
                                     Button { ExperienceClipboard.copy(CompanionMessageText.presented(answer)) } label: { Image(systemName: "square.on.square").font(.system(size: 18)).foregroundStyle(ExperienceStyle.secondary).frame(width: 44, height: 44, alignment: .leading) }.accessibilityLabel("Copy answer")
                                 }
-                                if turn.state != .complete { Text(turnLabel(turn.state)).font(.caption).foregroundStyle(ExperienceStyle.secondary) }
+                                if turn.state != .complete { ExperienceNotice(title: "About this answer", message: turnLabel(turn.state)) }
                                 ForEach(CompanionMessageText.showsEvidence ? turn.citations : [], id: \.id) { citation in
                                     if citation.source.retained_claim_id != nil {
                                         Text("Memory \(citation.id) · recording deleted")
@@ -217,11 +223,10 @@ struct CompanionRootView: View {
                         }
                         if let response = chat.response {
                             Text(response.request.question).padding(.horizontal, 14).padding(.vertical, 12).experienceCard(radius: 18).frame(maxWidth: .infinity, alignment: .trailing)
-                            Text("Ellis").font(.system(.title2, design: .serif, weight: .bold)).padding(.top, 18)
                             Text(CompanionMessageText.presented(response.text, streaming: response.state == .streaming)).font(.body).lineSpacing(3).textSelection(.enabled).accessibilityIdentifier("companionPartial")
                             if response.state == .streaming { ExperienceThinkingStatus(label: "Answering…", active: surface == "Companion" && selectedID == nil) }
-                            else { Text(response.state == .saved ? "Saved" : "Completion not confirmed").font(.caption) }
-                            if response.memoryStatus == "unavailable" { Text("Past memory is unavailable for this answer.").font(.caption) }
+                            else if response.state != .saved { ExperienceNotice(title: "Answer interrupted", message: "We couldn’t confirm this answer was saved. Recover the question below to check or continue it.") }
+
                             if response.state == .uncertain {
                                 Button("Recover question") { chat.recoverUncertainResponse() }.disabled(chat.isBusy || recording.pendingMemoryDeletion)
                             }
@@ -238,7 +243,7 @@ struct CompanionRootView: View {
         if let chat {
             @Bindable var chat = chat
             VStack(alignment: .leading, spacing: 8) {
-                if let notice = chat.notice ?? sourceNotice { Text(notice).font(.caption).foregroundStyle(ExperienceStyle.secondary) }
+                if let notice = chat.notice ?? sourceNotice { ExperienceNotice(title: "Agent update", message: notice).accessibilityIdentifier("companionNotice") }
                 if let attachment = chat.attachment {
                     HStack(spacing: 12) {
                         Label("Attached recording", systemImage: "doc.text").font(.caption).accessibilityIdentifier("chatAttachment")
@@ -251,47 +256,55 @@ struct CompanionRootView: View {
                     Text(dictation.state == .starting ? "Preparing dictation…" : dictation.state == .finishing ? "Finishing dictation…" : "Listening for your message…")
                         .font(.caption).accessibilityIdentifier("dictationStatus")
                 }
-                if let notice = dictation.notice { Text(notice).font(.caption).accessibilityIdentifier("dictationNotice") }
+                if let notice = dictation.notice { ExperienceNotice(title: "Dictation update", message: notice).accessibilityIdentifier("dictationNotice") }
                 if recording.liveStatus == "Recording", SharedMicrophone.shared.meetingAudioPaused {
                     Text("Meeting capture is paused while you dictate. It resumes automatically.")
                         .font(.caption).accessibilityIdentifier("meetingDictationPause")
                 }
                 HStack(alignment: .bottom, spacing: 8) {
                     HStack(alignment: .bottom, spacing: 0) {
-                            Menu {
-                                Button("Attach a recording", systemImage: "doc.text") { composing = false; showingAttachments = true }
-                                    .accessibilityIdentifier("chooseRecordingAttachment")
-                                Divider()
-                                Toggle("Use past memory", isOn: $chat.useMemory)
-                                Button("Clear draft", role: .destructive) { dictation.discard(); chat.draft = "" }
-                                    .disabled(!dictation.isActive && chat.draft.isEmpty).accessibilityIdentifier("clearCompanionDraft")
-                                Button("Refresh conversation") { chat.refresh() }.disabled(chat.isBusy || recording.pendingMemoryDeletion)
-                            } label: { Image(systemName: "paperclip").font(.system(size: 20, weight: .regular)).rotationEffect(.degrees(-45)).frame(width: 44, height: 44).contentShape(Rectangle()) }
-                                .accessibilityLabel("Attachments and message options")
+                        Menu {
+                            Button("Attach a recording", systemImage: "doc.text") { composing = false; showingAttachments = true }
+                                .accessibilityIdentifier("chooseRecordingAttachment")
+                            Divider()
+                            Toggle("Use past memory", isOn: $chat.useMemory)
+                            Button("Clear draft", role: .destructive) { dictation.discard(); chat.draft = "" }
+                                .disabled(!dictation.isActive && chat.draft.isEmpty).accessibilityIdentifier("clearCompanionDraft")
+                            Button("Refresh conversation") { chat.refresh() }.disabled(chat.isBusy || recording.pendingMemoryDeletion)
+                        } label: { Image(systemName: "paperclip").font(.system(size: 20, weight: .regular)).rotationEffect(.degrees(-45)).frame(width: 44, height: 44).contentShape(Rectangle()) }
+                            .accessibilityLabel("Attachments and message options")
                         TextField("Message Agent", text: Binding(
                             get: { ComposerDictation.appending(dictation.text, to: chat.draft) },
                             set: { if !dictation.isActive { chat.draft = $0 } }), prompt: Text("Message Agent").foregroundStyle(ExperienceStyle.secondary), axis: .vertical)
                             .textFieldStyle(.plain).font(.callout).padding(.vertical, 11).disabled(dictation.isActive)
                             .focused($composing).lineLimit(1...5).frame(maxWidth: .infinity).accessibilityIdentifier("companionDraft")
-                            if dictation.isActive {
-                                ExperienceIconButton("Stop dictation", icon: "stop.fill") {
-                                    if dictation.state == .starting { dictation.interrupt() } else { dictation.finish(send: false) }
-                                }.disabled(dictation.state == .finishing).accessibilityIdentifier("stopDictation")
-                            } else if chat.isBusy {
-                                ExperienceIconButton("Cancel answer", icon: "stop.fill") { chat.cancel() }
-                            } else if !chat.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                                ExperienceIconButton("Send", icon: "arrow.up", filled: true) { sendDraft(chat) }
-                                    .disabled(recording.pendingMemoryDeletion)
-                                    .accessibilityIdentifier("sendCompanion")
-                            } else {
-                                ExperienceIconButton("Dictate message", icon: "mic", bare: true) {
-                                    composing = false
-                                    dictation.start { text, send in
-                                        chat.draft = ComposerDictation.appending(text, to: chat.draft)
-                                        if send, scenePhase == .active, !chat.isBusy, !recording.pendingMemoryDeletion { sendDraft(chat) }
-                                    }
-                                }.disabled(recording.pendingMemoryDeletion).accessibilityIdentifier("startDictation")
-                            }
+                        ZStack {
+                            Group {
+                                if dictation.isActive {
+                                    ExperienceIconButton("Stop dictation", icon: "stop.fill") {
+                                        if dictation.state == .starting { dictation.interrupt() } else { dictation.finish(send: false) }
+                                    }.disabled(dictation.state == .finishing).accessibilityIdentifier("stopDictation")
+                                } else if chat.isBusy {
+                                    ExperienceIconButton("Cancel answer", icon: "stop.fill") { chat.cancel() }
+                                } else if !chat.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                                    ExperienceIconButton("Send", icon: "arrow.up", filled: true) { sendDraft(chat) }
+                                        .disabled(recording.pendingMemoryDeletion)
+                                        .accessibilityIdentifier("sendCompanion")
+                                } else {
+                                    ExperienceIconButton("Dictate message", icon: "mic", bare: true) {
+                                        composing = false
+                                        dictation.start { text, send in
+                                            chat.draft = ComposerDictation.appending(text, to: chat.draft)
+                                            if send, scenePhase == .active, !chat.isBusy, !recording.pendingMemoryDeletion { sendDraft(chat) }
+                                        }
+                                    }.disabled(recording.pendingMemoryDeletion).accessibilityIdentifier("startDictation")
+                                }
+                            }.id(dictation.isActive ? "dictation" : chat.isBusy ? "busy" : chat.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "mic" : "send")
+                                .transition(reduceMotion ? .opacity : .scale(scale: 0.86).combined(with: .opacity))
+                        }.frame(width: 44, height: 44)
+                            .animation(reduceMotion ? nil : .smooth(duration: 0.2), value: chat.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                            .animation(reduceMotion ? nil : .smooth(duration: 0.2), value: dictation.isActive)
+                            .animation(reduceMotion ? nil : .smooth(duration: 0.2), value: chat.isBusy)
                     }.padding(.horizontal, 4).padding(.vertical, 3)
                         .background(.white, in: RoundedRectangle(cornerRadius: 24))
                         .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(ExperienceStyle.line, lineWidth: 1))
@@ -396,6 +409,21 @@ struct CompanionRootView: View {
                     Button { searchText = "" } label: { Image(systemName: "xmark").foregroundStyle(ExperienceStyle.secondary).frame(width: 30, height: 30).background(ExperienceStyle.surface, in: Circle()) }.accessibilityLabel("Clear search")
                 }.padding(.horizontal, 14).frame(height: 44).experienceCard(radius: 22)
             }
+        } else if surface == "Recordings" {
+            HStack(spacing: 12) {
+                ExperienceIconButton("Back to Agent", icon: "chevron.left") {
+                    withAnimation(reduceMotion ? nil : .smooth(duration: 0.24)) { surface = "Companion" }
+                }.accessibilityIdentifier("agentNavigation")
+                Text("Notes").font(.headline).padding(.horizontal, 18).frame(height: 44)
+                    .background(.white, in: Capsule()).shadow(color: .black.opacity(0.05), radius: 16, y: 7)
+                Spacer(minLength: 0)
+                HStack(spacing: 4) {
+                    ExperienceIconButton("Search recordings", icon: "magnifyingglass", bare: true) { searching = true }.accessibilityIdentifier("searchRecordings")
+                    Menu {
+                        Button("Account") { showingAccount = true }
+                    } label: { Image(systemName: "ellipsis").font(.system(size: 21, weight: .semibold)).frame(width: 44, height: 44) }.accessibilityLabel("Notes options")
+                }.padding(.horizontal, 5).background(.white, in: Capsule()).shadow(color: .black.opacity(0.05), radius: 16, y: 7)
+            }
         } else {
         HStack(spacing: 6) {
             ExperienceIconButton("Account", icon: "person") { composing = false; showingAccount = true }
@@ -414,14 +442,18 @@ struct CompanionRootView: View {
     }
 
     private func navigationPill(_ title: String, icon: String, value: String, identifier: String) -> some View {
-        Button { surface = value } label: {
+        Button { withAnimation(reduceMotion ? nil : .snappy(duration: 0.24, extraBounce: 0)) { surface = value } } label: {
             HStack(spacing: 9) {
                 ExperienceSymbol(name: icon).frame(width: 22, height: 22)
                 Text(title).font(.system(size: 15, weight: surface == value ? .semibold : .medium))
             }.padding(.horizontal, 17).frame(height: 42)
-                .background(surface == value ? ExperienceStyle.surface : .white, in: Capsule())
+                .background {
+                    if surface == value {
+                        Capsule().fill(ExperienceStyle.surface).matchedGeometryEffect(id: "selectedRootTab", in: navigationSelection)
+                    }
+                }
                 .overlay(Capsule().strokeBorder(surface == value ? .clear : ExperienceStyle.line, lineWidth: 1))
-        }.accessibilityIdentifier(identifier).accessibilityAddTraits(surface == value ? .isSelected : [])
+        }.buttonStyle(ExperiencePressStyle()).accessibilityIdentifier(identifier).accessibilityAddTraits(surface == value ? .isSelected : [])
     }
 
     private var attachmentPicker: some View {

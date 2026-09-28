@@ -46,7 +46,7 @@ struct ExperienceAccountView: View {
                     NavigationLink { ExperienceSignupView() } label: { row("Sign-up preview").padding(.horizontal, 14).experienceCard(radius: 14) }
                     Text("Sign-in, sign-out, account deletion and subscriptions are not connected in this build.").font(.caption).foregroundStyle(ExperienceStyle.secondary).padding(.horizontal, 12)
                 }.padding(.horizontal, 20).padding(.bottom, 24)
-            }.background(ExperienceStyle.canvas).foregroundStyle(ExperienceStyle.ink).tint(ExperienceStyle.ink)
+            }.buttonStyle(ExperiencePressStyle()).background(ExperienceStyle.canvas).foregroundStyle(ExperienceStyle.ink).tint(ExperienceStyle.ink)
                 .navigationTitle("")
                 .alert("Not configured", isPresented: $previewNotice) { Button("OK", role: .cancel) {} } message: { Text("Legal links are not yet configured for this internal build.") }
         }.frame(minWidth: 320, minHeight: 480)

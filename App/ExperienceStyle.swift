@@ -46,7 +46,9 @@ struct ExperienceIconButton: View {
                 .frame(width: size, height: size)
                 .background {
                     if filled {
-                        Circle().fill(enabled ? ExperienceStyle.ink : Color(white: 0.935))
+                        Circle().fill(enabled ? (icon == "plus" ? Color(red: 0.18, green: 0.17, blue: 0.21) : ExperienceStyle.ink) : Color(white: 0.935))
+                            .overlay(Circle().strokeBorder(.white.opacity(icon == "plus" ? 0.12 : 0), lineWidth: 1))
+                            .shadow(color: .black.opacity(icon == "plus" && enabled ? 0.16 : 0), radius: 12, y: 7)
                             .padding(size > 44 ? 0 : 4)
                     } else if !bare {
                         Circle().fill(.white)
@@ -54,13 +56,15 @@ struct ExperienceIconButton: View {
                     }
                 }
 
-        }.buttonStyle(.plain).accessibilityLabel(title)
+        }.buttonStyle(ExperiencePressStyle()).accessibilityLabel(title)
     }
 
     private var symbolSize: CGFloat { size > 44 ? (icon == "plus" ? 36 : 30) : 23 }
 
     @ViewBuilder private var buttonSymbol: some View {
-        if ["mic", "arrow.up", "xmark", "chevron.left", "stop.fill"].contains(icon) {
+        if icon == "plus" {
+            Image(systemName: "plus").font(.system(size: size > 44 ? 25 : 20, weight: .bold, design: .rounded))
+        } else if ["mic", "arrow.up", "xmark", "chevron.left", "stop.fill"].contains(icon) {
             Image(systemName: icon)
                 .font(.system(size: icon == "stop.fill" ? 17 : icon == "mic" ? 18 : 20, weight: icon == "mic" ? .regular : .semibold))
         } else {
@@ -100,7 +104,7 @@ struct ExperienceSignupView: View {
                     Button("Terms and Privacy Policy") { notice = true }.font(.caption).padding(.top, 12).padding(.bottom, 28)
                 }.padding(.horizontal, 22).frame(minHeight: geometry.size.height)
             }
-        }.background(ExperienceStyle.canvas).foregroundStyle(ExperienceStyle.ink).experienceNavigationTitle("")
+        }.buttonStyle(ExperiencePressStyle()).background(ExperienceStyle.canvas).foregroundStyle(ExperienceStyle.ink).experienceNavigationTitle("")
             .alert("Account preview", isPresented: $notice) { Button("OK", role: .cancel) {} } message: { Text("Sign-in and legal links are not configured in this internal build.") }
     }
 }
@@ -141,7 +145,7 @@ struct ExperiencePricingView: View {
                 Button("Continue free") { dismiss() }.font(.body.weight(.semibold)).frame(maxWidth: .infinity).frame(minHeight: 44)
                 Button("Terms   ·   Privacy   ·   Restore") { notice = true }.font(.caption).foregroundStyle(ExperienceStyle.secondary).frame(maxWidth: .infinity)
             }.padding(20)
-        }.background(ExperienceStyle.canvas).foregroundStyle(ExperienceStyle.ink).experienceNavigationTitle("").navigationBarBackButtonHidden(true)
+        }.buttonStyle(ExperiencePressStyle()).background(ExperienceStyle.canvas).foregroundStyle(ExperienceStyle.ink).experienceNavigationTitle("").navigationBarBackButtonHidden(true)
             .alert("Plan preview", isPresented: $notice) { Button("OK", role: .cancel) {} } message: { Text("Purchases, plan limits, legal links and restoration are not configured in this internal build.") }
     }
     private func feature(_ title: String, icon: String) -> some View {
@@ -190,4 +194,50 @@ struct ExperienceCard: ViewModifier {
 }
 extension View {
     func experienceCard(radius: CGFloat = 22, elevated: Bool = false) -> some View { modifier(ExperienceCard(radius: radius, elevated: elevated)) }
+}
+
+
+/// Small, interruptible feedback; the hit target never shrinks with the artwork.
+struct ExperiencePressStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .onChange(of: configuration.isPressed) { _, pressed in
+                if pressed { ExperienceHaptics.tap() }
+            }
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.96 : 1)
+            .opacity(configuration.isPressed ? 0.78 : 1)
+            .animation(reduceMotion ? nil : .snappy(duration: 0.18, extraBounce: 0), value: configuration.isPressed)
+    }
+}
+
+struct ExperienceNotice: View {
+    let title: String
+    let message: String
+    var body: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "exclamationmark.circle").font(.system(size: 18)).foregroundStyle(ExperienceStyle.secondary).padding(.top, 1)
+            VStack(alignment: .leading, spacing: 5) {
+                Text(title).font(.subheadline.weight(.semibold))
+                Text(message).font(.footnote).foregroundStyle(ExperienceStyle.secondary).fixedSize(horizontal: false, vertical: true)
+            }.frame(maxWidth: .infinity, alignment: .leading)
+        }.padding(14).background(ExperienceStyle.surface.opacity(0.65), in: RoundedRectangle(cornerRadius: 18))
+            .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(ExperienceStyle.line))
+            .accessibilityElement(children: .combine)
+    }
+}
+
+
+@MainActor
+enum ExperienceHaptics {
+    static func tap() {
+        #if os(iOS)
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.55)
+        #endif
+    }
+    static func recordingChanged() {
+        #if os(iOS)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        #endif
+    }
 }

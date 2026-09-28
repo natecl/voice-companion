@@ -49,6 +49,7 @@ final class CompanionPhoneUITests: XCTestCase {
         app.swipeDown()
         snapshot(app, "Search results")
         app.buttons["Cancel"].tap()
+        app.buttons["Notes options"].tap()
         app.buttons["Account"].tap()
         snapshot(app, "Account")
         app.buttons["Sign-up preview"].tap()
@@ -59,6 +60,8 @@ final class CompanionPhoneUITests: XCTestCase {
     }
 
     private func snapshot(_ app: XCUIApplication, _ name: String) {
+        // Capture settled artwork after the longest (240 ms) navigation transition.
+        Thread.sleep(forTimeInterval: 0.4)
         let image = XCTAttachment(screenshot: app.screenshot())
         image.name = name; image.lifetime = .keepAlways; add(image)
     }
@@ -167,6 +170,8 @@ final class CompanionPhoneUITests: XCTestCase {
         app.buttons["sendCompanion"].tap()
         XCTAssertTrue(app.buttons["companionSource"].firstMatch.waitForExistence(timeout: 5))
         app.swipeDown()
+        XCTAssertFalse(app.staticTexts["Ellis"].exists)
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "companionNotice").firstMatch.exists)
         snapshot(app, "Agent conversation during capture")
         app.buttons["showActiveRecording"].tap()
         snapshot(app, "Live transcript sheet")
