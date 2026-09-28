@@ -126,3 +126,6 @@ Latest UI refinement: paperclip menu contains Attach note, Use past memory and R
 
 
 September 28 local UI checkpoint: Notes swipe Delete and long-press Share/Delete verified with synthetic simulator notes. Deletion now preserves prior chat answers in the backend candidate, removing unavailable links without presenting a source-deleted notice. Client/backend rollout is pending; existing erased answers are not recoverable. See [UI QA](native-experience-ui.md#note-actions-and-preserved-chat--september-28).
+
+
+September 28 internal UI rollout complete: PR104 backend is live at `4dd5b70`; matching native app installed in place and launched on the founder’s iPhone. Includes welcome-message onboarding, stacked note cards with icon-only swipe actions, shared composer/dictation, refined motion, and preserved historical replies after note deletion. Verified all 20 databases/106 tables unchanged and no new paid usage. Physical feel/performance is not newly claimed. See [rollout receipt](native-experience-ui.md#approved-internal-rollout--september-28-2026).
