@@ -40,7 +40,7 @@ final class RecordingNotesUITests: XCTestCase {
         app.terminate()
         app.launchArguments = ["--ui-testing", "--companion-ui-fixture"]
         app.launch()
-        app.buttons["homeNavigation"].tap()
+        app.buttons["notesNavigation"].tap()
         XCTAssertTrue(app.buttons["savedSession"].firstMatch.waitForExistence(timeout: 5))
         app.buttons["savedSession"].firstMatch.tap()
         XCTAssertTrue(app.staticTexts["notesTitle"].waitForExistence(timeout: 10))

@@ -244,3 +244,7 @@ Founder composer interaction revision: one trailing control in the shared Home/A
 
 
 Founder all-screen fidelity direction, September 27: compare rendered native Home, Agent, saved notes, live transcript, sign-up, pricing, account and search against the eight supplied final mockups. Match shared typography, iconography, spacing, sizing, borders and shadows using screenshot iteration. Preserve subsequent interaction decisions: upright paperclip, shared Home/Agent composer with mic replaced by send for text, external capture plus, Stop without Pause, and recording-bar tap to open transcript. Visual reference content does not authorize fake authentication, billing, analytics or new product capabilities. Record actual differences and verification limits.
+
+Founder composer revision, September 27: Home and Agent use a single-row composer at rest. The upright paperclip, inline text entry and mic/send action share one row; text begins immediately to the right of the paperclip. Longer drafts wrap and increase the text field height naturally. This supersedes the earlier two-tier composer geometry while preserving attachment, dictation and capture behavior.
+
+Founder navigation revision, September 27: Agent is the main/default surface and first top tab; the recording library is named Notes and is the secondary tab. Keep both tabs available on both root surfaces. The recording bar uses the visible label “View” instead of an up chevron; Stop remains separate.

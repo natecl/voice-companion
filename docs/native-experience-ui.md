@@ -75,3 +75,10 @@ Final verification: all four isolated simulator scenarios passed on iPhone 17 Pr
 - [Account](qa/native-experience/account.png), [sign-up preview](qa/native-experience/signup.png), [pricing preview](qa/native-experience/pricing.png)
 
 These are close native adaptations, not pixel-identical reproductions. The simulator's status bar and iOS sheet chrome differ; content length and source links affect note height. The Agent capture test intentionally includes source-debug output and a partial-context retrieval notice; the live transcript uses synthetic stress text. Account, authentication and billing have explicit unconnected-service states instead of simulated signed-in or paid behavior. No physical-phone acceptance or Mac UI behavioral pass is implied.
+
+
+## Agent-first navigation and inline composer — September 27
+
+Agent is now the first/default root tab, with Notes second for the recording library. Both tabs remain visible on both root screens. Latest-answer sharing and refresh are available by long-pressing Agent. The recording bar now says View beside the separate Stop button. The shared composer starts on one row: upright paperclip, inline text, mic/send. Longer drafts wrap up to five visible lines and then scroll; clearing restores the compact mic state. The external capture plus remains separate.
+
+All four isolated simulator flows passed again (21.821s, 19.965s, 28.162s, 20.105s), including an explicit automatic-wrapping height check, screenshot, clearing and shared-draft check. Results: `/tmp/VoiceCompanion-ExperienceResults/20260927-200059/`. Mac compilation passed. Screenshots in the gallery are refreshed; `home.png` is retained as the filename for the renamed Notes screen. [Multiline composer](qa/native-experience/composer-multiline.png). This supersedes the prior two-tier composer and contextual Agent-only header. No paid calls, device installation or new physical-device acceptance.

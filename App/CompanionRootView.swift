@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Home and Agent share one draft, one conversation, and deliberate capture.
+/// Notes and Agent share one draft, one conversation, and deliberate capture.
 struct CompanionRootView: View {
     @State private var recording = SessionController.forApp()
     @State private var chat: CompanionController?
@@ -257,13 +257,7 @@ struct CompanionRootView: View {
                         .font(.caption).accessibilityIdentifier("meetingDictationPause")
                 }
                 HStack(alignment: .bottom, spacing: 8) {
-                    VStack(alignment: .leading, spacing: 6) {
-                        TextField("Message Agent", text: Binding(
-                            get: { ComposerDictation.appending(dictation.text, to: chat.draft) },
-                            set: { if !dictation.isActive { chat.draft = $0 } }), prompt: Text("Message Agent").foregroundStyle(ExperienceStyle.secondary), axis: .vertical)
-                            .textFieldStyle(.plain).font(.callout).padding(.horizontal, 2).disabled(dictation.isActive)
-                            .focused($composing).lineLimit(1...4).accessibilityIdentifier("companionDraft")
-                        HStack(spacing: 0) {
+                    HStack(alignment: .bottom, spacing: 0) {
                             Menu {
                                 Button("Attach a recording", systemImage: "doc.text") { composing = false; showingAttachments = true }
                                     .accessibilityIdentifier("chooseRecordingAttachment")
@@ -274,7 +268,11 @@ struct CompanionRootView: View {
                                 Button("Refresh conversation") { chat.refresh() }.disabled(chat.isBusy || recording.pendingMemoryDeletion)
                             } label: { Image(systemName: "paperclip").font(.system(size: 20, weight: .regular)).rotationEffect(.degrees(-45)).frame(width: 44, height: 44).contentShape(Rectangle()) }
                                 .accessibilityLabel("Attachments and message options")
-                            Spacer(minLength: 0)
+                        TextField("Message Agent", text: Binding(
+                            get: { ComposerDictation.appending(dictation.text, to: chat.draft) },
+                            set: { if !dictation.isActive { chat.draft = $0 } }), prompt: Text("Message Agent").foregroundStyle(ExperienceStyle.secondary), axis: .vertical)
+                            .textFieldStyle(.plain).font(.callout).padding(.vertical, 11).disabled(dictation.isActive)
+                            .focused($composing).lineLimit(1...5).frame(maxWidth: .infinity).accessibilityIdentifier("companionDraft")
                             if dictation.isActive {
                                 ExperienceIconButton("Stop dictation", icon: "stop.fill") {
                                     if dictation.state == .starting { dictation.interrupt() } else { dictation.finish(send: false) }
@@ -294,15 +292,14 @@ struct CompanionRootView: View {
                                     }
                                 }.disabled(recording.pendingMemoryDeletion).accessibilityIdentifier("startDictation")
                             }
-                        }.padding(.leading, -4).padding(.trailing, -10)
-                    }.padding(.horizontal, 14).padding(.top, 14).padding(.bottom, 5)
+                    }.padding(.horizontal, 4).padding(.vertical, 3)
                         .background(.white, in: RoundedRectangle(cornerRadius: 24))
                         .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(ExperienceStyle.line, lineWidth: 1))
                         .shadow(color: .black.opacity(0.075), radius: 20, y: 8)
                     if recording.liveStatus == nil {
                         ExperienceIconButton("Capture meeting note", icon: "plus", filled: true, size: 58) {
                             composing = false; dictation.interrupt(); surface = "Companion"; recording.startRecording()
-                        }.padding(.bottom, 12).accessibilityIdentifier("startRecording")
+                        }.accessibilityIdentifier("startRecording")
                     }
                 }
             }
@@ -399,28 +396,16 @@ struct CompanionRootView: View {
                     Button { searchText = "" } label: { Image(systemName: "xmark").foregroundStyle(ExperienceStyle.secondary).frame(width: 30, height: 30).background(ExperienceStyle.surface, in: Circle()) }.accessibilityLabel("Clear search")
                 }.padding(.horizontal, 14).frame(height: 44).experienceCard(radius: 22)
             }
-        } else if surface == "Companion" {
-            HStack(spacing: 12) {
-                ExperienceIconButton("Home", icon: "chevron.left") { surface = "Recordings" }.accessibilityIdentifier("homeNavigation")
-                Text("Agent").font(.headline).frame(minWidth: 90, alignment: .leading).padding(.horizontal, 14).frame(height: 44)
-                    .background(.white, in: Capsule()).shadow(color: .black.opacity(0.05), radius: 16, y: 7).accessibilityIdentifier("agentNavigation")
-                Spacer(minLength: 0)
-                HStack(spacing: 12) {
-                    if let answer = chat?.turns.last?.answer {
-                        ShareLink(item: CompanionMessageText.presented(answer)) { Image(systemName: "arrowshape.turn.up.right").font(.system(size: 21)).frame(width: 44, height: 44) }
-                    }
-                    Menu {
-                        Button("Account") { showingAccount = true }
-                        Button("Refresh conversation") { chat?.refresh() }
-                    } label: { Image(systemName: "ellipsis").font(.system(size: 22, weight: .semibold)).frame(width: 44, height: 44) }.accessibilityLabel("Agent options")
-                }.padding(.horizontal, 6).background(.white, in: Capsule()).shadow(color: .black.opacity(0.05), radius: 16, y: 7)
-            }
         } else {
         HStack(spacing: 6) {
             ExperienceIconButton("Account", icon: "person") { composing = false; showingAccount = true }
             Spacer(minLength: 8)
-            navigationPill("Home", icon: "house", value: "Recordings", identifier: "homeNavigation")
             navigationPill("Agent", icon: "bubble.left", value: "Companion", identifier: "agentNavigation")
+                .contextMenu {
+                    if let answer = chat?.turns.last?.answer { ShareLink(item: CompanionMessageText.presented(answer)) }
+                    Button("Refresh conversation") { chat?.refresh() }.disabled(chat?.isBusy ?? true)
+                }
+            navigationPill("Notes", icon: "doc.text", value: "Recordings", identifier: "notesNavigation")
             Spacer(minLength: 8)
             ExperienceIconButton("Search recordings", icon: "magnifyingglass") { surface = "Recordings"; searching.toggle() }
                 .accessibilityIdentifier("searchRecordings")
@@ -531,7 +516,7 @@ struct CompanionRootView: View {
                         Text(String(format: "%d:%02d", seconds / 60, seconds % 60)).monospacedDigit().font(.subheadline)
                     }
                     Spacer(minLength: 0)
-                    Image(systemName: "chevron.up").font(.caption)
+                    Text("View").font(.callout)
                 }.frame(minHeight: 44).contentShape(Rectangle())
             }.accessibilityLabel("Open live transcript").accessibilityIdentifier("showActiveRecording")
             ExperienceIconButton("Stop recording", icon: "stop.fill") { recording.stop() }

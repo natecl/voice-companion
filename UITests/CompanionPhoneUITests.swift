@@ -24,8 +24,8 @@ final class CompanionPhoneUITests: XCTestCase {
         app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = config
         app.launchEnvironment["VOICE_UI_SESSION_FIXTURE"] = String(data: try JSONSerialization.data(withJSONObject: samples), encoding: .utf8)
         app.launch(); defer { app.terminate() }
-        XCTAssertTrue(app.buttons["homeNavigation"].waitForExistence(timeout: 5))
-        app.buttons["homeNavigation"].tap()
+        XCTAssertTrue(app.buttons["notesNavigation"].waitForExistence(timeout: 5))
+        app.buttons["notesNavigation"].tap()
         XCTAssertEqual(app.buttons.matching(identifier: "savedSession").count, 4)
         // Open the first note to wait on actual fixture generation, then refresh library titles.
         app.buttons["savedSession"].firstMatch.tap()
@@ -43,7 +43,7 @@ final class CompanionPhoneUITests: XCTestCase {
         app.buttons["removeAttachment"].tap()
         app.buttons["agentNavigation"].tap()
         snapshot(app, "Polished Agent")
-        app.buttons["homeNavigation"].tap()
+        app.buttons["notesNavigation"].tap()
         app.buttons["searchRecordings"].tap()
         app.textFields["recordingSearch"].tap(); app.textFields["recordingSearch"].typeText("launch\n")
         app.swipeDown()
@@ -78,7 +78,16 @@ final class CompanionPhoneUITests: XCTestCase {
         XCTAssertTrue(app.buttons["sendCompanion"].exists)
         XCTAssertFalse(app.buttons["startDictation"].exists)
         snapshot(app, "Agent composer with send")
-        app.buttons["homeNavigation"].tap()
+        let singleLineHeight = draft.frame.height
+        draft.typeText(" and help me remember the people involved, the decisions we made, and what I should follow up on tomorrow.")
+        XCTAssertGreaterThan(draft.frame.height, singleLineHeight + 15)
+        snapshot(app, "Composer wrapping naturally")
+        app.buttons["Attachments and message options"].tap()
+        app.buttons["clearCompanionDraft"].tap()
+        XCTAssertTrue(app.buttons["startDictation"].exists)
+        draft.tap(); draft.typeText("Keep this thought")
+
+        app.buttons["notesNavigation"].tap()
         XCTAssertEqual(draft.value as? String, "Keep this thought")
         XCTAssertTrue(app.buttons["sendCompanion"].exists)
         XCTAssertFalse(app.buttons["startDictation"].exists)
@@ -94,7 +103,7 @@ final class CompanionPhoneUITests: XCTestCase {
         app.buttons["stopRecording"].tap()
         XCTAssertTrue(app.buttons["askAboutRecording"].waitForExistence(timeout: 8))
         app.buttons["Close recording"].tap()
-        app.buttons["homeNavigation"].tap()
+        app.buttons["notesNavigation"].tap()
         XCTAssertTrue(app.buttons["savedSession"].firstMatch.waitForExistence(timeout: 5))
         let home = XCTAttachment(screenshot: app.screenshot()); home.name = "Home with shared composer"; home.lifetime = .keepAlways; add(home)
         app.buttons["searchRecordings"].tap()
