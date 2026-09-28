@@ -259,7 +259,7 @@ enum ExperienceHaptics {
 /// The founder-provided chat reference uses quiet, content-sized incoming bubbles.
 struct ExperienceAgentBubble: ViewModifier {
     func body(content: Content) -> some View {
-        content.font(.body.weight(.semibold)).lineSpacing(4)
+        content.font(.body).lineSpacing(4)
             .padding(.horizontal, 16).padding(.vertical, 14)
             .background(Color(white: 0.945), in: RoundedRectangle(cornerRadius: 18))
             .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(Color(white: 0.90), lineWidth: 0.7))

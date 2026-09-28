@@ -133,3 +133,5 @@ Final verification: two controller regressions passed; menu/refresh and gallery/
 Agent saved and streaming replies now use the latest supplied reference: content-sized left-aligned light-gray rounded bubbles, subtle border, 16-point horizontal padding and semibold body type. This supersedes the earlier unboxed replies. The Agent capture screenshot contains debug-only source markers from the synthetic fixture.
 
 Source checkpoint `6ba4966` installed in place and launched successfully on the paired iPhone. Receipts: `/tmp/menu-bubbles-install.json`, `/tmp/menu-bubbles-launch.json`. No microphone or paid-provider run was initiated.
+
+Agent typography/copy correction: regular body text replaces semibold in incoming bubbles. The persistent copy icon is removed; saved and streaming replies expose Copy through the bubble context menu. Targeted simulator capture/chat test passed at `/tmp/VoiceCompanion-ExperienceResults/20260928-010213/`, including long-press and Copy selection. Screenshot inspected/refreshed; signed iPhone build passed. No paid calls or new physical behavior claims.

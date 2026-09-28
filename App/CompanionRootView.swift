@@ -205,8 +205,10 @@ struct CompanionRootView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(turn.question).padding(.horizontal, 14).padding(.vertical, 12).experienceCard(radius: 18).frame(maxWidth: .infinity, alignment: .trailing)
                                 if let answer = turn.answer {
-                                    Text(CompanionMessageText.presented(answer)).modifier(ExperienceAgentBubble()).padding(.top, 14).textSelection(.enabled).accessibilityIdentifier("companionAnswer")
-                                    Button { ExperienceClipboard.copy(CompanionMessageText.presented(answer)) } label: { Image(systemName: "square.on.square").font(.system(size: 18)).foregroundStyle(ExperienceStyle.secondary).frame(width: 44, height: 44, alignment: .leading) }.accessibilityLabel("Copy answer")
+                                    Text(CompanionMessageText.presented(answer)).modifier(ExperienceAgentBubble()).padding(.top, 14)
+                                        .contextMenu {
+                                            Button("Copy", systemImage: "doc.on.doc") { ExperienceClipboard.copy(CompanionMessageText.presented(answer)) }
+                                        }.accessibilityIdentifier("companionAnswer")
                                 }
                                 if turn.state != .complete { ExperienceNotice(title: "About this answer", message: turnLabel(turn.state)) }
                                 ForEach(CompanionMessageText.showsEvidence ? turn.citations : [], id: \.id) { citation in
@@ -223,7 +225,10 @@ struct CompanionRootView: View {
                         }
                         if let response = chat.response {
                             Text(response.request.question).padding(.horizontal, 14).padding(.vertical, 12).experienceCard(radius: 18).frame(maxWidth: .infinity, alignment: .trailing)
-                            Text(CompanionMessageText.presented(response.text, streaming: response.state == .streaming)).modifier(ExperienceAgentBubble()).textSelection(.enabled).accessibilityIdentifier("companionPartial")
+                            Text(CompanionMessageText.presented(response.text, streaming: response.state == .streaming)).modifier(ExperienceAgentBubble())
+                                .contextMenu {
+                                    Button("Copy", systemImage: "doc.on.doc") { ExperienceClipboard.copy(CompanionMessageText.presented(response.text, streaming: response.state == .streaming)) }
+                                }.accessibilityIdentifier("companionPartial")
                             if response.state == .streaming { ExperienceThinkingStatus(label: "Answering…", active: surface == "Companion" && selectedID == nil) }
                             else if response.state != .saved { ExperienceNotice(title: "Answer interrupted", message: "We couldn’t confirm this answer was saved. Recover the question below to check or continue it.") }
 

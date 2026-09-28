@@ -263,3 +263,5 @@ Founder paperclip-menu revision: call the attachment action “Attach note,” r
 Founder notice-dismissal refinement: dismissed error cards should fade and gently collapse with surrounding layout movement, respecting Reduce Motion.
 
 Founder incoming-message revision: Agent replies use the supplied Manus-style light-gray, subtly bordered, rounded content-sized bubbles with slightly heavier text, aligned left. Apply to streaming and saved replies; retain the no-repeated-author-label decision.
+
+Founder Agent-bubble correction: use regular body text, remove the persistent copy icon below replies, and expose Copy by long-pressing the reply bubble. This supersedes semibold reply text while retaining the gray bubble styling.
