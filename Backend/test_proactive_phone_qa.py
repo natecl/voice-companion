@@ -50,6 +50,45 @@ class PhoneQATests(unittest.TestCase):
         self.assertTrue(proactive_phone_funded(db,(5140000,),PROACTIVE_PHONE_POLICIES))
         self.assertEqual(db.execute('SELECT * FROM request').fetchall(),[('old','completed')])
 
+    def test_cedar_has_separate_six_call_grant_and_preserves_old_captures(self):
+        from proactive_phone_qa import CEDAR_APPROVAL
+        self.qa.enroll('owner','historical')
+        config=dict(self.qa.config,approval=CEDAR_APPROVAL)
+        (self.root/'proactive-phone-qa.json').write_text(json.dumps(config))
+        with sqlite3.connect(self.root/'cedar-phone-qa.sqlite') as db:
+            db.execute('CREATE TABLE capture(id TEXT PRIMARY KEY)')
+            db.execute("INSERT INTO capture VALUES('seed')")
+        folder=self.root/CEDAR_APPROVAL;folder.mkdir()
+        with sqlite3.connect(folder/'usage.sqlite') as db:
+            db.execute('CREATE TABLE attempts(id TEXT PRIMARY KEY,hash TEXT,reserved INTEGER,state TEXT,usage TEXT)')
+        qa=PhoneQA(self.root,clock=lambda:self.now)
+        qa.enroll('owner','live')
+        with self.assertRaises(Rejected):qa.enroll('owner','extra')
+        self.assertEqual(qa.sources('owner'),{'seed','live'})
+        self.assertTrue(qa.contains('owner','historical'))
+        self.assertFalse(qa.contains('other','historical'))
+        for i in range(6):qa.reserve(str(i),'gpt-6-luna');qa.finish(str(i))
+        with self.assertRaises(Rejected):qa.reserve('seventh','gpt-6-luna')
+        with self.assertRaises(Rejected):qa.reserve('0','gpt-6-luna')
+        with sqlite3.connect(self.qa.usage) as db:
+            self.assertEqual(db.execute('SELECT count(*) FROM attempts').fetchone()[0],7)
+        self.now=201
+        self.assertEqual(qa.sources('owner'),set())
+        self.assertTrue(qa.contains('owner','seed'))
+
+    def test_cedar_funding_preserves_old_grant_and_accepts_startup(self):
+        from service_policy import extend_cedar_phone_policy,cedar_phone_funded,CEDAR_PHONE_POLICIES,PROACTIVE_PHONE_APPROVAL
+        db=sqlite3.connect(':memory:')
+        self.addCleanup(db.close)
+        db.executescript('CREATE TABLE budget(id INTEGER,cap INTEGER);INSERT INTO budget VALUES(1,5140000);CREATE TABLE policy(category TEXT,cap INTEGER,reservation INTEGER,daily INTEGER);CREATE TABLE request(id TEXT,state TEXT);CREATE TABLE qa_budget_extension(id TEXT PRIMARY KEY,amount INTEGER);')
+        db.executemany('INSERT INTO policy VALUES(?,?,?,?)',[(k,*v) for k,v in PROACTIVE_PHONE_POLICIES.items()])
+        db.execute('INSERT INTO qa_budget_extension VALUES(?,90000)',(PROACTIVE_PHONE_APPROVAL,))
+        db.execute("INSERT INTO request VALUES('old','completed')")
+        extend_cedar_phone_policy(db);extend_cedar_phone_policy(db)
+        self.assertTrue(cedar_phone_funded(db,(5185000,),CEDAR_PHONE_POLICIES))
+        self.assertEqual(db.execute('SELECT * FROM request').fetchall(),[('old','completed')])
+        self.assertEqual(db.execute('SELECT count(*) FROM qa_budget_extension').fetchone()[0],2)
+
     def test_real_socket_uses_registered_prior_and_preserves_grant(self):
         import asyncio
         from websockets.asyncio.client import connect
