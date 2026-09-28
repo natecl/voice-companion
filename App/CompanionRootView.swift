@@ -55,6 +55,8 @@ struct CompanionRootView: View {
         }
         return sessions
     }
+    private var pageBackground: Color { surface == "Recordings" ? Color(white: 0.97) : ExperienceStyle.canvas }
+
     var body: some View {
         VStack(spacing: 0) {
             navigation.padding(.horizontal, 16).padding(.vertical, 2)
@@ -79,9 +81,9 @@ struct CompanionRootView: View {
                 if recording.liveStatus != nil, selectedID == nil { captureBar }
                 if !searching { composer }
             }.padding(.horizontal, 18).padding(.top, 14).padding(.bottom, 14)
-                .background(ExperienceStyle.canvas)
+                .background(pageBackground)
         }
-        .background(ExperienceStyle.canvas)
+        .background(pageBackground)
         .preferredColorScheme(.light)
         .foregroundStyle(ExperienceStyle.ink)
         .tint(ExperienceStyle.ink)
@@ -529,35 +531,37 @@ struct CompanionRootView: View {
                     if !searching && (index == 0 || dayTitle(session.createdAt) != dayTitle(matches[index - 1].createdAt)) {
                         Text(dayTitle(session.createdAt)).font(.footnote.weight(.semibold)).foregroundStyle(ExperienceStyle.secondary).padding(.top, index == 0 ? 8 : 14).padding(.bottom, 10)
                     }
-                    Button { composing = false; recordingDetent = .large; selectedID = session.id; citedSource = nil } label: {
-                        HStack(alignment: .center, spacing: 20) {
-                            ExperienceSymbol(name: "doc.text").frame(width: 24, height: 28).padding(.horizontal, 2)
-                            VStack(alignment: .leading, spacing: 3) {
-                                RecordingLibraryTitle(attachment: recording.companionAttachment(for: session), personal: session.source == "personal_text", refreshKey: "\(surface):\(selectedID?.uuidString ?? "")", configuration: { try Self.config() })
-                                    .font(.callout.weight(.semibold))
-                                Text(recordingMetadata(session)).font(.footnote).foregroundStyle(ExperienceStyle.secondary)
-                                Text(searchPreview(session))
-                                    .font(.footnote).foregroundStyle(ExperienceStyle.secondary).lineLimit(1)
-                            }.frame(maxWidth: .infinity, alignment: .leading)
-                        }.contentShape(Rectangle()).padding(.top, 2).padding(.bottom, 16)
-                            .overlay(alignment: .bottom) {
-                                if index + 1 < matches.count, searching || dayTitle(matches[index + 1].createdAt) == dayTitle(session.createdAt) {
-                                    Rectangle().fill(ExperienceStyle.line).frame(height: 0.5)
-                                }
-                            }.padding(.bottom, 10)
-                    }.accessibilityIdentifier("savedSession")
+                    Button { ExperienceHaptics.tap(); composing = false; recordingDetent = .large; selectedID = session.id; citedSource = nil } label: {
+                        VStack(alignment: .leading, spacing: 9) {
+                            RecordingLibraryTitle(attachment: recording.companionAttachment(for: session), personal: session.source == "personal_text", refreshKey: "\(surface):\(selectedID?.uuidString ?? "")", configuration: { try Self.config() })
+                                .font(.callout.weight(.semibold)).foregroundStyle(ExperienceStyle.ink)
+                            Text(searchPreview(session))
+                                .font(.callout).foregroundStyle(ExperienceStyle.secondary).lineLimit(3)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Text(recordingMetadata(session)).font(.caption).foregroundStyle(ExperienceStyle.secondary)
+                                .padding(.top, 5)
+                        }.padding(18).frame(maxWidth: .infinity, alignment: .leading)
+                            .background(.white, in: RoundedRectangle(cornerRadius: 24))
+                            .overlay { RoundedRectangle(cornerRadius: 24).stroke(ExperienceStyle.line.opacity(0.55), lineWidth: 0.5) }
+                            .contentShape(RoundedRectangle(cornerRadius: 24))
+                    }.buttonStyle(.plain).accessibilityIdentifier("savedSession")
+                    .padding(.bottom, 12)
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        Button("Copy", systemImage: "doc.on.doc") { ExperienceClipboard.copy(noteExport(session)) }
+                            .buttonStyle(.automatic).tint(ExperienceStyle.ink)
+                        ShareLink(item: noteExport(session)) { Label("Share", systemImage: "square.and.arrow.up") }
+                            .buttonStyle(.automatic).tint(ExperienceStyle.secondary)
                         if !(recording.isActive && recording.current?.id == session.id) {
-                            Button("Delete", systemImage: "trash", role: .destructive) { libraryDeletion = session }.buttonStyle(.automatic).tint(.red)
+                            Button("Delete", systemImage: "trash") { libraryDeletion = session }
+                                .buttonStyle(.automatic).tint(ExperienceStyle.ink)
                         }
                     }
                     .contextMenu {
-                        ShareLink(item: session.transcript.segments.map(\.text).joined(separator: "\n")) {
-                            Label("Share", systemImage: "square.and.arrow.up")
-                        }
                         if !(recording.isActive && recording.current?.id == session.id) {
-                            Button("Delete", systemImage: "trash", role: .destructive) { libraryDeletion = session }.buttonStyle(.automatic).tint(.red)
+                            Button("Delete", systemImage: "trash", role: .destructive) { libraryDeletion = session }
                         }
+                        ShareLink(item: noteExport(session)) { Label("Share", systemImage: "square.and.arrow.up") }
+                        Button("Copy", systemImage: "doc.on.doc") { ExperienceClipboard.copy(noteExport(session)) }
                     }
                 }
             }
@@ -574,6 +578,10 @@ struct CompanionRootView: View {
             } message: { _ in
                 Text("The note and transcript will be removed. Your conversation and learned memories will stay.")
             }
+    }
+
+    private func noteExport(_ session: CaptureSession) -> String {
+        session.transcript.segments.map(\.text).joined(separator: "\n")
     }
 
     private func deleteNote(_ note: CaptureSession) {

@@ -270,3 +270,5 @@ Founder Agent-bubble correction: use regular body text, remove the persistent co
 ## Note deletion preserves conversation — September 28, 2026
 
 Founder revision: deleting a note removes its recording/transcript but preserves already sent companion answers and follow-ups. Do not replace them with source-deleted notices. Remove unavailable source links and exclude unsupported historical answers from evidence context; learned-memory retention remains unchanged. Notes offer swipe Delete and long-press Share/Delete with confirmation. This supersedes answer-scrubbing behavior for ordinary note deletion; source corrections retain their existing validation rules.
+
+Founder UI refinement, September 28: Notes uses stacked title/preview/time cards without leading document icons. Taps open details; swipes reveal neutral Delete/Share/Copy actions; long-press exposes those same actions. Prefer native gesture arbitration so dragging never triggers navigation.
