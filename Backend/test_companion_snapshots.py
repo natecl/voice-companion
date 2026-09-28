@@ -37,7 +37,7 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(context['data']['history'][0]['assistant'],'Swimming [[p1]]')
         chat.start(self.owner,'q2','Say it briefly');chat.complete(self.owner,'q2','Swimming.',history_ids=context['history_ids'])
         reopened.delete_source(self.owner,'recording')
-        self.assertTrue(all(t['answer'] is None for t in chat.page(self.owner)['turns']))
+        self.assertTrue(all(t['answer'] is not None for t in chat.page(self.owner)['turns']))
         self.assertFalse(valid(reopened,self.owner,prepared['packets'][0]))
         with reopened.connect() as db:self.assertEqual(db.execute('SELECT count(*) FROM companion_snapshot').fetchone()[0],0)
         with self.assertRaisesRegex(Rejected,'live_snapshot_changed'):

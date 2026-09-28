@@ -164,12 +164,6 @@ final class CompanionController {
         connection?.cancel()
         task?.cancel()
     }
-    func clearForSourceDeletion() {
-        cancel()
-        turns = []
-        response = nil
-        nextBefore = nil
-    }
     func didEnterBackground() { cancel() }
     func didBecomeActive() { refresh() }
 }

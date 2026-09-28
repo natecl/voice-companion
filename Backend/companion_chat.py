@@ -43,7 +43,15 @@ def scrub(db,owner,turn):
 def invalidate_source(db,owner,session,*,deleting=True):
     # Dependents inherit every source used by previous answers in their context.
     turns=db.execute("SELECT DISTINCT turn FROM companion_dependency WHERE owner=? AND session=? AND json_extract(reference,'$.retained_claim_id') IS NULL AND (? OR json_extract(reference,'$.snapshot_id') IS NULL)",(owner,session,deleting)).fetchall()
-    for row in turns:scrub(db,owner,row['turn'])
+    for row in turns:
+        if deleting:
+            # Keep the conversation, but do not reuse unavailable evidence as current context.
+            db.execute("UPDATE companion_turn SET state='outdated' WHERE owner=? AND id=? AND state='complete'",(owner,row['turn']))
+            saved=db.execute('SELECT citations FROM companion_turn WHERE owner=? AND id=?',(owner,row['turn'])).fetchone()
+            citations=[c for c in json.loads(saved['citations']) if c['source'].get('session_id')!=session]
+            db.execute('UPDATE companion_turn SET citations=? WHERE owner=? AND id=?',(json.dumps(citations),owner,row['turn']))
+            db.execute('DELETE FROM companion_dependency WHERE owner=? AND turn=? AND session=?',(owner,row['turn'],session))
+        else:scrub(db,owner,row['turn'])
 
 
 def reference(item):
@@ -99,7 +107,7 @@ class CompanionChat:
         if row['state']!='complete':return False
         if not all(self._valid_dependency(db,owner,dep) for dep in self._dependencies(db,owner,row['id'])):
             # Qualification changes retire context, not the visible conversation.
-            # Keep dependencies so a later source deletion still scrubs this text.
+            # Keep provenance so deletion can remove unavailable source links.
             db.execute("UPDATE companion_turn SET state='outdated' WHERE owner=? AND id=?",(owner,row['id']))
             return False
         return True

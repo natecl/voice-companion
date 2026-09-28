@@ -265,3 +265,8 @@ Founder notice-dismissal refinement: dismissed error cards should fade and gentl
 Founder incoming-message revision: Agent replies use the supplied Manus-style light-gray, subtly bordered, rounded content-sized bubbles with slightly heavier text, aligned left. Apply to streaming and saved replies; retain the no-repeated-author-label decision.
 
 Founder Agent-bubble correction: use regular body text, remove the persistent copy icon below replies, and expose Copy by long-pressing the reply bubble. This supersedes semibold reply text while retaining the gray bubble styling.
+
+
+## Note deletion preserves conversation — September 28, 2026
+
+Founder revision: deleting a note removes its recording/transcript but preserves already sent companion answers and follow-ups. Do not replace them with source-deleted notices. Remove unavailable source links and exclude unsupported historical answers from evidence context; learned-memory retention remains unchanged. Notes offer swipe Delete and long-press Share/Delete with confirmation. This supersedes answer-scrubbing behavior for ordinary note deletion; source corrections retain their existing validation rules.

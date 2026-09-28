@@ -18,6 +18,7 @@ struct CompanionRootView: View {
     @State private var recordingDetent: PresentationDetent = .large
     @State private var notePassage: MemoryPassage?
     @State private var confirmingDeletion = false
+    @State private var libraryDeletion: CaptureSession?
     @State private var needsChatRefresh = false
     @State private var sourceTask: Task<Void, Never>?
     @FocusState private var composing: Bool
@@ -113,7 +114,7 @@ struct CompanionRootView: View {
         .onChange(of: selectedID) { _, _ in notePassage = nil; recordingTab = citedSource == nil ? "Notes" : "Transcript" }
         .onChange(of: surface) { _, value in if value == "Recordings" { composing = false; dictation.interrupt() } }
         .onChange(of: recording.pendingMemoryDeletion) { _, pending in
-            if pending { dictation.interrupt(); chat?.clearForSourceDeletion() }
+            if pending { dictation.interrupt() }
             else { needsChatRefresh = true; refreshWhenReady() }
         }
         .onChange(of: chat?.isBusy) { _, _ in refreshWhenReady() }
@@ -175,19 +176,12 @@ struct CompanionRootView: View {
             .alert("Delete this recording?", isPresented: $confirmingDeletion) {
                 Button("Cancel", role: .cancel) {}
                 Button("Delete", role: .destructive) {
-                    sourceTask?.cancel()
-                    if let selected, recording.deleteFromLibrary(selected) {
-                        if chat?.attachment?.session_id == selected.id.uuidString { chat?.attachment = nil }
-                        chat?.clearForSourceDeletion()
-                        selectedID = nil; citedSource = nil
-                        needsChatRefresh = true
-                        refreshWhenReady()
-                    }
+                    if let selected { deleteNote(selected) }
                 }.accessibilityIdentifier("confirmDeleteSession")
             } message: {
                 Text(selected?.source == "personal_text"
-                     ? "The personal note and answers that depend on its evidence will be removed."
-                     : "The transcript and answers tied to it will be removed. Learned memories and their supporting excerpts may remain with your companion.")
+                     ? "The note will be removed. Your conversation will stay."
+                     : "The note and transcript will be removed. Your conversation and learned memories will stay.")
             }
     }
 
@@ -213,7 +207,7 @@ struct CompanionRootView: View {
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .accessibilityIdentifier("companionAnswer")
                                 }
-                                if turn.state != .complete { ExperienceNotice(title: "About this answer", message: turnLabel(turn.state)) }
+                                if turn.state == .pending || turn.state == .failed { ExperienceNotice(title: "About this answer", message: turnLabel(turn.state)) }
                                 ForEach(CompanionMessageText.showsEvidence ? turn.citations : [], id: \.id) { citation in
                                     if citation.source.retained_claim_id != nil {
                                         Text("Memory \(citation.id) · recording deleted")
@@ -524,8 +518,8 @@ struct CompanionRootView: View {
     }
 
     private var homeContent: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
+        List {
+            Group {
                 let matches = library.filter { searchText.isEmpty || $0.transcript.segments.contains { $0.text.localizedCaseInsensitiveContains(searchText) } }
                 if matches.isEmpty {
                     ContentUnavailableView(searchText.isEmpty ? "Keep what matters" : "No matching recordings", systemImage: "doc.text", description: Text(searchText.isEmpty ? "Tap + to capture a conversation. Your saved notes will appear here." : "Try another word from the transcript."))
@@ -552,9 +546,43 @@ struct CompanionRootView: View {
                                 }
                             }.padding(.bottom, 10)
                     }.accessibilityIdentifier("savedSession")
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        if !(recording.isActive && recording.current?.id == session.id) {
+                            Button("Delete", systemImage: "trash", role: .destructive) { libraryDeletion = session }.buttonStyle(.automatic).tint(.red)
+                        }
+                    }
+                    .contextMenu {
+                        ShareLink(item: session.transcript.segments.map(\.text).joined(separator: "\n")) {
+                            Label("Share", systemImage: "square.and.arrow.up")
+                        }
+                        if !(recording.isActive && recording.current?.id == session.id) {
+                            Button("Delete", systemImage: "trash", role: .destructive) { libraryDeletion = session }.buttonStyle(.automatic).tint(.red)
+                        }
+                    }
                 }
-            }.padding(.horizontal, 20).padding(.top, 10).frame(maxWidth: 760).frame(maxWidth: .infinity)
-        }.scrollDismissesKeyboard(.interactively)
+            }
+            .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+            .listRowSeparator(.hidden).listRowBackground(Color.clear)
+        }.listStyle(.plain).scrollContentBackground(.hidden)
+            .environment(\.defaultMinListRowHeight, 0)
+            .padding(.top, 10).frame(maxWidth: 760).frame(maxWidth: .infinity)
+            .scrollDismissesKeyboard(.interactively)
+            .alert("Delete this note?", isPresented: Binding(get: { libraryDeletion != nil }, set: { if !$0 { libraryDeletion = nil } }), presenting: libraryDeletion) { note in
+                Button("Cancel", role: .cancel) { libraryDeletion = nil }
+                Button("Delete", role: .destructive) { deleteNote(note); libraryDeletion = nil }
+                    .accessibilityIdentifier("confirmDeleteLibraryNote")
+            } message: { _ in
+                Text("The note and transcript will be removed. Your conversation and learned memories will stay.")
+            }
+    }
+
+    private func deleteNote(_ note: CaptureSession) {
+        sourceTask?.cancel()
+        guard recording.deleteFromLibrary(note) else { return }
+        if chat?.attachment?.session_id == note.id.uuidString { chat?.attachment = nil }
+        if selectedID == note.id { selectedID = nil; citedSource = nil }
+        needsChatRefresh = true
+        refreshWhenReady()
     }
 
     private func searchPreview(_ session: CaptureSession) -> AttributedString {
@@ -627,7 +655,7 @@ struct CompanionRootView: View {
         case .pending: "Still processing · refresh to check"
         case .failed: "Answer did not finish"
         case .outdated: "Past answer · its context has changed"
-        case .invalidated: "Answer removed because its source changed or was deleted"
+        case .invalidated: "Past answer"
         }
     }
 }
