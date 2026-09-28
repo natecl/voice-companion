@@ -1,5 +1,6 @@
 """Local scheduling contract. No sockets, inference, storage, or UI side effects."""
 from dataclasses import dataclass, field
+import copy
 import hashlib
 import json
 import math
@@ -12,6 +13,22 @@ def cutoff(source):
     if source['completed'] or source.get('origin') is not None:
         raise Rejected('proactive_requires_live_recording')
     return hashlib.sha256(json.dumps(source, sort_keys=True).encode()).hexdigest()
+
+
+def extends(previous, current):
+    """Only additive speech can retain a short-lived analysis lease."""
+    if previous is None:return False
+    for key in ('session_id','captured_at','timezone','completed','origin'):
+        if previous.get(key)!=current.get(key):return False
+    old,new=previous['passages'],current['passages']
+    if len(new)<len(old):return False
+    for index,p in enumerate(old):
+        q=new[index]
+        if p==q:continue
+        if index!=len(old)-1:return False
+        if any(p[k]!=q[k] for k in ('id','start','speakers')):return False
+        if q['duration']<p['duration'] or not q['text'].startswith(p['text']):return False
+    return True
 
 
 @dataclass(frozen=True)
@@ -28,7 +45,8 @@ class ProactivePolicy:
     """Caller supplies monotonic time and only stable transcript updates.
 
     Quiet/background/stop invalidate a lease even if a provider cannot cancel.
-    Changing text invalidates an old result; there is no queued backlog.
+    Rewriting prior text invalidates an old result; additive speech retains the
+    original deadline. There is no queued backlog.
     """
     interval: float = 20.
     cooldown: float = 60.
@@ -40,6 +58,7 @@ class ProactivePolicy:
     enabled: bool = False
     foreground: bool = True
     latest: str | None = None
+    latest_source: dict | None = None
     attempted: set = field(default_factory=set)
     delivered: set = field(default_factory=set)
     pending: Attempt | None = None
@@ -53,6 +72,7 @@ class ProactivePolicy:
         self.generation += 1
         self.enabled = True
         self.latest = None
+        self.latest_source = None
         self.attempted.clear(); self.delivered.clear()
         self.pending = None
         self.last_attempt = self.last_delivery = -math.inf
@@ -85,8 +105,10 @@ class ProactivePolicy:
         if source['session_id'] != self.capture:
             raise Rejected('proactive_capture_changed')
         if digest != self.latest:
+            additive = extends(self.latest_source, source)
             self.latest = digest
-            if self.pending: self.invalidate()
+            self.latest_source = copy.deepcopy(source)
+            if self.pending and not additive: self.invalidate()
         if (not self.enabled or not self.foreground or not source['passages'] or self.pending
                 or digest in self.attempted or self.attempts >= self.max_attempts
                 or now-self.last_attempt < self.interval or now-self.last_delivery < self.cooldown):
@@ -101,7 +123,7 @@ class ProactivePolicy:
     def valid(self, lease, now):
         return (self.pending == lease and self.enabled and self.foreground
                 and self.owner == lease.owner and self.capture == lease.capture
-                and self.generation == lease.generation and self.latest == lease.cutoff
+                and self.generation == lease.generation
                 and 0 <= now-lease.started <= self.deadline)
 
     def finish(self, lease, now, connection_key=None):
