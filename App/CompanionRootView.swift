@@ -547,21 +547,21 @@ struct CompanionRootView: View {
                     }.buttonStyle(.plain).accessibilityIdentifier("savedSession")
                     .padding(.bottom, 12)
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                        Button("Copy", systemImage: "doc.on.doc") { ExperienceClipboard.copy(noteExport(session)) }
-                            .buttonStyle(.automatic).tint(ExperienceStyle.ink)
-                        ShareLink(item: noteExport(session)) { Label("Share", systemImage: "square.and.arrow.up") }
+                        Button { ExperienceClipboard.copy(noteExport(session)) } label: { noteActionLabel("Copy", icon: "square.on.square").labelStyle(.iconOnly) }
                             .buttonStyle(.automatic).tint(ExperienceStyle.secondary)
+                        ShareLink(item: noteExport(session)) { noteActionLabel("Share", icon: "arrowshape.turn.up.right").labelStyle(.iconOnly) }
+                            .buttonStyle(.automatic).tint(.blue)
                         if !(recording.isActive && recording.current?.id == session.id) {
-                            Button("Delete", systemImage: "trash") { libraryDeletion = session }
-                                .buttonStyle(.automatic).tint(ExperienceStyle.ink)
+                            Button { libraryDeletion = session } label: { noteActionLabel("Delete", icon: "trash").labelStyle(.iconOnly) }
+                                .buttonStyle(.automatic).tint(.red)
                         }
                     }
                     .contextMenu {
                         if !(recording.isActive && recording.current?.id == session.id) {
-                            Button("Delete", systemImage: "trash", role: .destructive) { libraryDeletion = session }
+                            Button(role: .destructive) { libraryDeletion = session } label: { noteActionLabel("Delete", icon: "trash") }
                         }
-                        ShareLink(item: noteExport(session)) { Label("Share", systemImage: "square.and.arrow.up") }
-                        Button("Copy", systemImage: "doc.on.doc") { ExperienceClipboard.copy(noteExport(session)) }
+                        ShareLink(item: noteExport(session)) { noteActionLabel("Share", icon: "arrowshape.turn.up.right") }
+                        Button { ExperienceClipboard.copy(noteExport(session)) } label: { noteActionLabel("Copy", icon: "square.on.square") }
                     }
                 }
             }
@@ -578,6 +578,13 @@ struct CompanionRootView: View {
             } message: { _ in
                 Text("The note and transcript will be removed. Your conversation and learned memories will stay.")
             }
+    }
+
+    private func noteActionLabel(_ title: String, icon: String) -> some View {
+        Label { Text(title) } icon: {
+            Image(systemName: icon).environment(\.symbolVariants, .none)
+                .font(.system(size: 20, weight: .medium))
+        }
     }
 
     private func noteExport(_ session: CaptureSession) -> String {

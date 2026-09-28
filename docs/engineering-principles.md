@@ -272,3 +272,7 @@ Founder Agent-bubble correction: use regular body text, remove the persistent co
 Founder revision: deleting a note removes its recording/transcript but preserves already sent companion answers and follow-ups. Do not replace them with source-deleted notices. Remove unavailable source links and exclude unsupported historical answers from evidence context; learned-memory retention remains unchanged. Notes offer swipe Delete and long-press Share/Delete with confirmation. This supersedes answer-scrubbing behavior for ordinary note deletion; source corrections retain their existing validation rules.
 
 Founder UI refinement, September 28: Notes uses stacked title/preview/time cards without leading document icons. Taps open details; swipes reveal neutral Delete/Share/Copy actions; long-press exposes those same actions. Prefer native gesture arbitration so dragging never triggers navigation.
+
+Founder note-action refinement, September 28: swipe Delete is red, Share blue, Copy the prior muted gray. Use simple outline symbols with consistent weight: trash, curved share arrow, overlapping squares for Copy. The same symbols appear in the long-press menu; retain native destructive-menu semantics.
+
+Founder refinement: hide visible captions beneath the swipe circles; preserve their accessibility labels and the long-press menu names.
