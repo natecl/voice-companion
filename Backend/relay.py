@@ -23,12 +23,13 @@ MAX_SESSIONS = 1
 SESSION_TIMEOUT = 330  # Connection setup + capture + bounded finalization.
 
 class Relay:
-    def __init__(self, key, token=None, *, admission=None, ask=None, memory=None, learning_status=None, companion=None, indexing_status=None, notes=None, notes_status=None):
+    def __init__(self, key, token=None, *, admission=None, ask=None, memory=None, learning_status=None, companion=None, indexing_status=None, notes=None, notes_status=None, proactive=None):
         self.key, self.token = key, token
         self.admission = admission
         self.ask = ask
         self.memory = memory
         self.companion = companion
+        self.proactive = proactive
         self.notes = notes
         self.notes_status = notes_status
         self.indexing_status = indexing_status
@@ -49,7 +50,7 @@ class Relay:
             return connection.respond(http.HTTPStatus.OK, json.dumps(status) + '\n')
         if request.path == '/health':
             return connection.respond(http.HTTPStatus.OK, 'ready\n')
-        if request.path != '/stt' and not (request.path == '/ask' and self.ask is not None) and not (request.path == '/memory' and self.memory is not None) and not (request.path == '/companion' and self.companion is not None) and not (request.path == '/notes' and self.notes is not None):
+        if request.path != '/stt' and not (request.path == '/ask' and self.ask is not None) and not (request.path == '/memory' and self.memory is not None) and not (request.path == '/companion' and self.companion is not None) and not (request.path == '/notes' and self.notes is not None) and not (request.path == '/proactive' and self.proactive is not None):
             return connection.respond(http.HTTPStatus.NOT_FOUND, 'Not found\n')
         try:
             supplied = request.headers.get('Authorization', '')
@@ -71,6 +72,8 @@ class Relay:
     async def handle(self, client):
         if client.request.path == "/notes" and self.notes is not None:
             return await self.notes.handle(client)
+        if client.request.path == "/proactive" and self.proactive is not None:
+            return await self.proactive.handle(client)
         if client.request.path == "/companion" and self.companion is not None:
             return await self.companion.handle(client)
         if client.request.path == "/memory" and self.memory is not None:

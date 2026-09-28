@@ -264,6 +264,8 @@ struct ExperienceAgentBubble: ViewModifier {
             .padding(.horizontal, 16).padding(.vertical, 14)
             .background(Color(white: 0.945), in: RoundedRectangle(cornerRadius: 18))
             .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(Color(white: 0.90), lineWidth: 0.7))
+            #if os(iOS)
             .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 18))
+            #endif
     }
 }

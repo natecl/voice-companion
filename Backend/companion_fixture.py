@@ -52,7 +52,27 @@ async def main(directory):
         notes_service=NotesService(ledger,store)
         worker=NotesWorker(NotesGenerator(store,note_provider,FixtureBudget()),ledger)
         asyncio.create_task(worker.run())
+    proactive=None
+    if '--proactive' in sys.argv:
+        from proactive_service import ProactiveService
+        from proactive_socket import ProactiveSocketService
+        store.put_source(store.owner_for(credential), dict(session_id='prior',revision=1,captured_at=100.,
+            timezone='UTC',completed=True,passages=[dict(id='p1',start=0.,duration=2.,speakers=[],
+                text='Alex has been waking at three each morning.')]))
+        class ProactiveModel:
+            async def extract(self,request):
+                await asyncio.sleep(.25)
+                state=json.loads(request['input'])
+                return dict(usage={},data=dict(decision='contribute',
+                    text='Earlier, Alex mentioned waking at three each morning. That may be worth bringing up.',
+                    evidence_ids=[state['sources'][0]['id']]))
+        class FreeBudget:
+            def reserve(self,*args):pass
+            def finish(self,*args):pass
+        proactive=ProactiveSocketService(ledger,ProactiveService(store,ProactiveModel(),FreeBudget()))
     async def handle(socket):
+        if socket.request.path=='/proactive' and proactive:
+            await proactive.handle(socket);return
         if socket.request.path=='/notes' and notes_service:await notes_service.handle(socket)
         elif socket.request.path=='/notes':
             await socket.send(json.dumps(dict(type='error',message='notes_disabled')));await socket.close()

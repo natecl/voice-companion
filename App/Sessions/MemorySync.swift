@@ -21,7 +21,7 @@ struct MemorySource: Codable, Equatable {
     let passages: [MemoryPassage]
 
     /// A frozen Ask cutoff, including interim words; never uploaded as learned memory.
-    init(live session: CaptureSession, revision: Int) {
+    init(live session: CaptureSession, revision: Int, finalizedOnly: Bool = false) {
         origin = nil
         session_id = session.id.uuidString
         self.revision = revision
@@ -29,6 +29,7 @@ struct MemorySource: Codable, Equatable {
         timezone = session.captureTimezone ?? "unknown"
         completed = false
         passages = session.transcript.segments.enumerated().compactMap { index, segment in
+            guard !finalizedOnly || segment.isFinal else { return nil }
             guard !segment.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
             return MemoryPassage(id: "p\(index + 1)", start: segment.start, duration: segment.duration,
                                  text: segment.text, speakers: Array(Set(segment.words.compactMap(\.speaker))).sorted())
