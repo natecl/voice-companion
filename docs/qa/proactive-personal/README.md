@@ -58,7 +58,7 @@ Native UI code is unchanged in this checkpoint. The PR123 simulator run and insp
 
 ## Authorized backend rollout — September 28
 
-Founder authorized deployment after PR124 merged. Render deployment `dep-date7sou01pc73e9s5rg` is live at `734bb3d8583e4ac3d7a340024a4f8f05aed102a3`. Verified the running Git revision and exact v2 prompt hash against the tested source. General, notes and learning health returned HTTP 200; workers were idle with no reported failure. Service configuration was unchanged.
+Founder authorized deployment after PR124 merged. Render deployment `dep-date7sou01pc73e9s5rg` is live at `734bb3d8583e4ac3d7a340024a4f8f05aed102a3`. Verified the running Git revision and exact v2 prompt hash against the tested source. General, notes and learning health returned HTTP 200; workers were idle with no reported failure. Service configuration was unchanged; comparison excludes only the deployment-updated `updatedAt` timestamp.
 
 Before deployment, backed up 24 active/QA SQLite databases using SQLite backup and integrity checks. Post-deployment comparison verified all 112 backed-up tables retained identical rows and every database passed integrity checks. Runtime reservations remained Ask 3,007,868, Jev 833,000 and STT 1,280,000 microUSD, with zero active requests. The exhausted personal-evaluation ledger was preserved. No model calls, transcription, account reseeding, quota increases or native installation occurred. Operator receipts are in ignored `work/proactive-v2-rollout/`.
 
