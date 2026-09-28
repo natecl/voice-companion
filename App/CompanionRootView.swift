@@ -276,8 +276,7 @@ struct CompanionRootView: View {
                                 }
                             }.frame(maxWidth: .infinity).frame(height: 44).padding(.horizontal, 8)
                                 .accessibilityLabel("Microphone level").accessibilityIdentifier("dictationWaveform")
-                            Button("Send") { dictation.finish(send: true) }
-                                .font(.callout.weight(.semibold)).frame(minWidth: 50, minHeight: 44)
+                            ExperienceIconButton("Send", icon: "arrow.up", filled: true) { dictation.finish(send: true) }
                                 .disabled(dictation.state != .listening || recording.pendingMemoryDeletion)
                                 .accessibilityIdentifier("sendDictation")
                         } else {

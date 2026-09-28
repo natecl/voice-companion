@@ -255,3 +255,5 @@ Founder motion/feedback revision, September 28: remove the repeated Ellis author
 Founder navigation clarification, September 28: Agent remains the primary page with the Agent/Notes selector. Notes opens as a secondary page with a back button to Agent, a Notes title pill and page-specific actions. This supersedes the requirement to retain both top tabs on the Notes page. The Notes content remains the recording library.
 
 Founder dictation revision, September 28: while dictating, replace the inline composer with trash, elapsed time, a real microphone-level waveform and Send (no Pause). Send finalizes recognition, appends to the existing draft and sends the combined message only after successful final recognition. Trash discards only the active dictated segment. Preserve interruption/failure recovery without automatic sending. User notices have a top-right dismiss X; profile/search circles use visible pale-gray borders matching the tabs.
+
+Founder dictation-control correction: use the same circular up-arrow send control as typed messages, not a visible Send text label. Preserve its accessible Send label and finalization behavior.
