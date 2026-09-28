@@ -434,7 +434,9 @@ struct CompanionRootView: View {
                             Group {
                                 if let title = readyTitles[session.id] { Text(title) }
                                 else { RecordingLibraryTitle(attachment: recording.companionAttachment(for: session), personal: session.source == "personal_text", configuration: { try Self.config() }) }
-                            }.font(.system(size: 30, weight: .semibold, design: .serif)).padding(.top, 20).accessibilityIdentifier("notesTitle")
+                            }.font(.system(size: 30, weight: .semibold, design: .serif))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .frame(maxWidth: .infinity, alignment: .leading).padding(.top, 20).accessibilityIdentifier("notesTitle")
                         } else { Text("Transcribing live").font(.callout).foregroundStyle(ExperienceStyle.secondary) }
                         if !(recording.isActive && recording.current?.id == session.id) { HStack {
                             Text(dayTitle(session.createdAt) + (session.recordingSeconds.map { " · \(Int($0 / 60)) minutes" } ?? "")).font(.subheadline).foregroundStyle(ExperienceStyle.secondary)
