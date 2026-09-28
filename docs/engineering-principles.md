@@ -235,3 +235,46 @@ Before changing an interaction, identify the user's context, intended action, in
 Use Libraries.dev regularly to evaluate useful feedback for capture, dictation, processing and responses. Read the selected component's reference before implementation; verify native SwiftUI compatibility and dependencies rather than assuming React examples work in the app. Connect effects to real state, preserve audio ownership, stop unnecessary offscreen animation and check performance. Frequent consultation does not require animation on every control. Home's approved styling and product purpose govern which effects earn a place.
 
 The free skill was installed locally as `libraries-dev` from `Jakubantalik/Libraries.dev`, `skills/libraries-dev`. Installation is an agent-environment change, not an app dependency. Other environments must install it separately. Source: https://libraries.dev/skill and https://github.com/Jakubantalik/Libraries.dev/tree/main/skills/libraries-dev. No paid Studio purchase or application package installation is implied.
+
+Founder fidelity correction, September 27: use the approved Home mockup for icon silhouettes (Home, Agent, profile, search and document), composer proportions and page continuity. The composer and external capture plus must share the white canvas without a separate material footer. The inner composer plus opens attachments; the external black plus starts capture. Verify rendered native screens against the reference and carry the shared styling through supporting pages.
+
+Founder revision: replace the inner composer attachment plus with a paperclip. Home and Agent use the same shared composer; the external capture plus is unchanged. This supersedes the attachment glyph specified above.
+
+Founder composer interaction revision: one trailing control in the shared Home/Agent composer. Empty or whitespace-only drafts show mic; nonempty drafts show send. Active dictation keeps Stop until text is ready for review, and an in-flight answer keeps Cancel. The supplied mobile screenshots illustrate the control substitution, not a change to the app branding or chat layout.
+
+
+Founder all-screen fidelity direction, September 27: compare rendered native Home, Agent, saved notes, live transcript, sign-up, pricing, account and search against the eight supplied final mockups. Match shared typography, iconography, spacing, sizing, borders and shadows using screenshot iteration. Preserve subsequent interaction decisions: upright paperclip, shared Home/Agent composer with mic replaced by send for text, external capture plus, Stop without Pause, and recording-bar tap to open transcript. Visual reference content does not authorize fake authentication, billing, analytics or new product capabilities. Record actual differences and verification limits.
+
+Founder composer revision, September 27: Home and Agent use a single-row composer at rest. The upright paperclip, inline text entry and mic/send action share one row; text begins immediately to the right of the paperclip. Longer drafts wrap and increase the text field height naturally. This supersedes the earlier two-tier composer geometry while preserving attachment, dictation and capture behavior.
+
+Founder navigation revision, September 27: Agent is the main/default surface and first top tab; the recording library is named Notes and is the secondary tab. Keep both tabs available on both root surfaces. The recording bar uses the visible label “View” instead of an up chevron; Stop remains separate.
+
+
+Founder motion/feedback revision, September 28: remove the repeated Ellis author heading from chat responses. Present user-facing errors and service notices in readable cards. Use the supplied Wispr Flow capture button as the visual reference (charcoal circle, rounded heavier plus, restrained shadow). Add light haptics to deliberate button presses and distinct recording-state confirmation; never tie vibration to streamed tokens or every keystroke. System haptic settings and platform suppression remain authoritative. Use native, interruptible transitions and honor Reduce Motion. Libraries.dev remains a source for useful state feedback, not an instruction to introduce React or decorative effects throughout the native app.
+
+Founder navigation clarification, September 28: Agent remains the primary page with the Agent/Notes selector. Notes opens as a secondary page with a back button to Agent, a Notes title pill and page-specific actions. This supersedes the requirement to retain both top tabs on the Notes page. The Notes content remains the recording library.
+
+Founder dictation revision, September 28: while dictating, replace the inline composer with trash, elapsed time, a real microphone-level waveform and Send (no Pause). Send finalizes recognition, appends to the existing draft and sends the combined message only after successful final recognition. Trash discards only the active dictated segment. Preserve interruption/failure recovery without automatic sending. User notices have a top-right dismiss X; profile/search circles use visible pale-gray borders matching the tabs.
+
+Founder dictation-control correction: use the same circular up-arrow send control as typed messages, not a visible Send text label. Preserve its accessible Send label and finalization behavior.
+
+Founder paperclip-menu revision: call the attachment action “Attach note,” remove Dictate message and Clear draft, and improve Refresh conversation feedback. Preserve drafts during refresh; keep existing history visible while revalidating and do not leave unvalidated source evidence presented as current after a failed refresh. Dictation remains available through the empty composer's microphone.
+
+Founder notice-dismissal refinement: dismissed error cards should fade and gently collapse with surrounding layout movement, respecting Reduce Motion.
+
+Founder incoming-message revision: Agent replies use the supplied Manus-style light-gray, subtly bordered, rounded content-sized bubbles with slightly heavier text, aligned left. Apply to streaming and saved replies; retain the no-repeated-author-label decision.
+
+Founder Agent-bubble correction: use regular body text, remove the persistent copy icon below replies, and expose Copy by long-pressing the reply bubble. This supersedes semibold reply text while retaining the gray bubble styling.
+
+
+## Note deletion preserves conversation — September 28, 2026
+
+Founder revision: deleting a note removes its recording/transcript but preserves already sent companion answers and follow-ups. Do not replace them with source-deleted notices. Remove unavailable source links and exclude unsupported historical answers from evidence context; learned-memory retention remains unchanged. Notes offer swipe Delete and long-press Share/Delete with confirmation. This supersedes answer-scrubbing behavior for ordinary note deletion; source corrections retain their existing validation rules.
+
+Founder UI refinement, September 28: Notes uses stacked title/preview/time cards without leading document icons. Taps open details; swipes reveal neutral Delete/Share/Copy actions; long-press exposes those same actions. Prefer native gesture arbitration so dragging never triggers navigation.
+
+Founder note-action refinement, September 28: swipe Delete is red, Share blue, Copy the prior muted gray. Use simple outline symbols with consistent weight: trash, curved share arrow, overlapping squares for Copy. The same symbols appear in the long-press menu; retain native destructive-menu semantics.
+
+Founder refinement: hide visible captions beneath the swipe circles; preserve their accessibility labels and the long-press menu names.
+
+Founder onboarding refinement, September 28: replace the empty-chat placeholder with a first agent message introducing the companion, deliberate capture/Notes and composer dictation. Render it as an ordinary reply at the beginning of the main conversation, not as a separate onboarding screen or a repeated author heading.

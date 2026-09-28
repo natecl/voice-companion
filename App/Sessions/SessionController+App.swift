@@ -18,7 +18,20 @@ extension SessionController {
                 .appendingPathComponent("VoiceCompanion-Memory-QA").appendingPathComponent(owner)
             let sync = MemorySync(outbox: MemoryOutbox(directory: base.appendingPathComponent("outbox"), owner: owner),
                                   transport: MemorySocketTransport(configuration: { config }))
-            return SessionController(store: SessionStore(directory: base.appendingPathComponent("sessions")), memorySync: sync,
+            let store = SessionStore(directory: base.appendingPathComponent("sessions"))
+            if arguments.contains("--experience-gallery"),
+               let raw = ProcessInfo.processInfo.environment["VOICE_UI_SESSION_FIXTURE"] {
+                do {
+                    let samples = try JSONDecoder().decode([CaptureSession].self, from: Data(raw.utf8))
+                    guard samples.allSatisfy({ $0.memoryOwnerID == owner && $0.completed }) else { throw CaptureFailure.noRelay }
+                    if try store.load().isEmpty { for sample in samples { try store.save(sample) } }
+                } catch {
+                    let controller = SessionController(store: store, prepareRecording: { throw CaptureFailure.noRelay })
+                    controller.errorMessage = "The isolated gallery fixture could not be loaded."
+                    return controller
+                }
+            }
+            return SessionController(store: store, memorySync: sync,
                 makeConnection: { () -> any RecordingConnection in
                     if arguments.contains("--companion-ui-fixture") { return CompanionUIRecording() }
                     return MemoryUIRecording()

@@ -60,14 +60,14 @@ enum AskFailure: LocalizedError {
         switch self {
         case .memoryContextChanged: "Past context changed while answering. Ask again using the updated conversation history."
         case .invalidQuestion: "Enter a question of at most 1,000 characters."
-        case .noTranscript: "This session has no transcript to ask about yet."
-        case .contextTooLarge: "This conversation is too long for the current Ask limit. Nothing was silently removed."
-        case .unavailable: "The answer could not finish. Any partial response is saved; you can try again."
-        case .invalidReferences: "The answer included an invalid source reference. Treat this partial response as unverified."
-        case .dailyLimit: "Today's Ask limit has been reached. Try again after midnight UTC."
-        case .budgetLimit: "The internal trial's answer budget has been reached."
+        case .noTranscript: "This recording doesn’t have a transcript yet. Try again once some speech has been captured."
+        case .contextTooLarge: "There’s too much conversation to include in one answer. Try asking about a shorter recording."
+        case .unavailable: "We couldn’t finish this answer. Review any partial text before trying again."
+        case .invalidReferences: "We couldn’t verify the sources for this answer. Please don’t rely on the partial response."
+        case .dailyLimit: "You’ve reached today’s message limit. It resets at midnight UTC."
+        case .budgetLimit: "Messaging has reached this test build’s usage limit. Contact the team to continue."
         case .busy: "Another answer is being generated. Wait for it to finish."
-        case .accessExpired: "Ask access has expired or was revoked. Renew the internal service credential."
+        case .accessExpired: "Your connection needs to be renewed. Contact the team to restore access."
         case .interrupted: "Answer generation stopped when the app left the foreground. Partial text is saved."
         }
     }

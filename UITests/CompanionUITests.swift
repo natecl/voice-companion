@@ -41,7 +41,7 @@ final class CompanionUITests: XCTestCase {
         app.buttons["backToCompanion"].tap()
         XCTAssertEqual(field.value as? String, "Keep this draft")
         app.buttons["stopRecording"].tap()
-        app.buttons["companionSource"].firstMatch.tap()
+        // Stopping now opens the saved recording sheet automatically.
         XCTAssertTrue(app.buttons["askAboutRecording"].waitForExistence(timeout: 5))
         app.buttons["askAboutRecording"].tap()
         XCTAssertTrue(app.staticTexts["chatAttachment"].exists)
@@ -61,9 +61,10 @@ final class CompanionUITests: XCTestCase {
         XCTAssertTrue(app.buttons["companionSource"].firstMatch.waitForExistence(timeout: 5))
         app.buttons["companionSource"].firstMatch.tap()
         XCTAssertTrue(app.staticTexts["citedPassage"].waitForExistence(timeout: 5))
+        app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "Recording options")).firstMatch.tap()
         app.buttons["deleteSession"].tap()
         app.buttons["confirmDeleteSession"].tap()
-        app.radioButtons["Companion"].tap()
+        app.buttons["agentNavigation"].tap()
         let removed = app.staticTexts["Answer removed because its source changed or was deleted"].firstMatch
         XCTAssertTrue(removed.waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["companionSource"].firstMatch.exists)
@@ -120,11 +121,13 @@ final class CompanionUITests: XCTestCase {
             attachment.name = "Empty final preserves editable speech — synthetic input"
             attachment.lifetime = .keepAlways; add(attachment)
             let clear = app.buttons["clearCompanionDraft"]
+            app.popUpButtons["Attachments and message options"].tap()
             clear.tap()
             XCTAssertEqual(field.value as? String, "")
             XCTAssertFalse(app.staticTexts["dictationNotice"].exists)
             dictate.tap()
             XCTAssertTrue(app.buttons["stopDictation"].waitForExistence(timeout: 3))
+            app.popUpButtons["Attachments and message options"].tap()
             clear.tap()
             XCTAssertEqual(field.value as? String, "")
             XCTAssertTrue(dictate.exists)

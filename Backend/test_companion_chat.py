@@ -52,15 +52,19 @@ class CompanionChatTests(unittest.TestCase):
         self.assertEqual(reopened.context(self.owner)['turns'],[])
         reopened.start(self.owner,'new','A new request')
 
-    def test_deletion_scrubs_answer_citations_and_uncited_followup_atomically(self):
+    def test_deletion_preserves_answers_and_removes_unavailable_citations(self):
         packet=self.evidence();citation=dict(id='m1',source=packet['items'][0])
         self.turn('a','What sport?','Maya enjoys swimming. [[m1]]',packets=[packet],citations=[citation])
         history=self.chat.context(self.owner)
         self.turn('b','Say it briefly','Swimming.',history_ids=history['history_ids'])
         self.store.delete_source(self.owner,'s')
         turns=self.chat.page(self.owner)['turns']
-        self.assertEqual([t['state'] for t in turns],['invalidated','invalidated'])
-        self.assertTrue(all(t['answer'] is None and t['citations']==[] for t in turns))
+        self.assertEqual([t['state'] for t in turns],['outdated','outdated'])
+        self.assertEqual([t['answer'] for t in turns],['Maya enjoys swimming. [[m1]]','Swimming.'])
+        self.assertTrue(all(t['citations']==[] for t in turns))
+        reopened=CompanionChat(MemoryStore(self.path))
+        self.assertEqual(reopened.page(self.owner)['turns'],turns)
+        with self.assertRaisesRegex(Rejected,'source_unavailable'):reopened.citation(self.owner,'a','m1')
         with self.store.connect() as db:
             self.assertEqual(db.execute('SELECT count(*) FROM companion_dependency').fetchone()[0],0)
         self.assertEqual(self.chat.context(self.owner)['turns'],[])
@@ -90,8 +94,8 @@ class CompanionChatTests(unittest.TestCase):
         self.assertEqual(self.chat.context(self.owner)['turns'],[])
         self.store.delete_source(self.owner,'s')
         turn=self.chat.page(self.owner)['turns'][0]
-        self.assertEqual(turn['state'],'invalidated')
-        self.assertIsNone(turn['answer'])
+        self.assertEqual(turn['state'],'outdated')
+        self.assertEqual(turn['answer'],'Hello back')
 
     def test_citations_must_match_canonical_evidence(self):
         packet=self.evidence();self.chat.start(self.owner,'a','What sport?')

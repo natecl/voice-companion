@@ -56,7 +56,7 @@ class CompanionServiceTests(unittest.IsolatedAsyncioTestCase):
             history=(await self.call(url,token,dict(operation='history',before=None)))[0]
             self.assertEqual(len(history['turns']),2)
             m.delete_source(owner,'recording')
-            self.assertTrue(all(t['answer'] is None for t in (await self.call(url,token,dict(operation='history',before=None)))[0]['turns']))
+            self.assertTrue(all(t['answer'] is not None for t in (await self.call(url,token,dict(operation='history',before=None)))[0]['turns']))
 
     async def test_source_read_is_owner_scoped_exact_and_free(self):
         async with self.service() as (a,token,m,owner,p,url):

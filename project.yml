@@ -11,9 +11,14 @@ settings:
     CODE_SIGN_STYLE: Automatic
     INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: "Turn your speech into an editable companion message when you tap Dictate."
     INFOPLIST_KEY_NSMicrophoneUsageDescription: "Capture speech when you record a conversation or dictate a message."
+packages:
+  ThinkingOrbsKit:
+    path: Vendor/ThinkingOrbsKit
 targets:
   VoiceCompanionMac:
     type: application
+    dependencies:
+      - package: ThinkingOrbsKit
     platform: macOS
     sources:
       - App
@@ -25,6 +30,8 @@ targets:
         PRODUCT_NAME: VoiceCompanion
   VoiceCompanionPhone:
     type: application
+    dependencies:
+      - package: ThinkingOrbsKit
     platform: iOS
     sources:
       - App

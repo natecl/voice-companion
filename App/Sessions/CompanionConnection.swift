@@ -116,9 +116,9 @@ enum CompanionFailure: LocalizedError {
         switch self {
         case .sourceUnavailable: "This source was deleted, changed, or is no longer available."
         case .invalidRequest: "This chat request could not be sent."
-        case .unavailable: "The companion connection could not finish. Refresh the chat to check what was saved."
-        case .invalidResponse: "The companion connection ended without a verified saved answer. Reload the chat to check its status."
-        case .requestConflict: "This question was already sent with different context. Reload the chat before asking again."
+        case .unavailable: "We couldn’t finish connecting. Check your connection, then refresh the chat to see what was saved."
+        case .invalidResponse: "The connection dropped before we could confirm your answer was saved. Refresh the chat to check."
+        case .requestConflict: "This question has already been sent. Refresh the chat before asking again."
         }
     }
 }

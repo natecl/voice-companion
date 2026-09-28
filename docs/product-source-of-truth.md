@@ -125,3 +125,8 @@ Founder decision: speech addressed to the companion through composer dictation i
 Founder decision: make the ICP's intended actions and desired feelings explicit throughout design and implementation. Continue serving the curious, ambitious, AI-comfortable person who thinks aloud across everyday life. The approved Home visual is the shared reference for all screens; actively consult Libraries.dev when developing useful interaction feedback. See [engineering guidance](engineering-principles.md#experience-led-ui-implementation--september-27-2026).
 
 Working experience targets, to validate rather than assert as research findings: feel present in the real conversation, confident capture is working, in control of starting/stopping, understood when turning to the Agent, and able to return to what mattered. Make the next touch and its result clear, especially during capture and while the keyboard is open. Visual polish should reinforce those outcomes. The exact one-liner and Proven, Better, New remain unchanged.
+
+
+## Note deletion preserves conversation — September 28, 2026
+
+Founder revision: deleting a note removes its recording/transcript but preserves already sent companion answers and follow-ups. Do not replace them with source-deleted notices. Remove unavailable source links and exclude unsupported historical answers from evidence context; learned-memory retention remains unchanged. Notes offer swipe Delete and long-press Share/Delete with confirmation. This supersedes answer-scrubbing behavior for ordinary note deletion; source corrections retain their existing validation rules.
