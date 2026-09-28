@@ -148,3 +148,8 @@ Working experience targets, to validate rather than assert as research findings:
 ## Note deletion preserves conversation — September 28, 2026
 
 Founder revision: deleting a note removes its recording/transcript but preserves already sent companion answers and follow-ups. Do not replace them with source-deleted notices. Remove unavailable source links and exclude unsupported historical answers from evidence context; learned-memory retention remains unchanged. Notes offer swipe Delete and long-press Share/Delete with confirmation. This supersedes answer-scrubbing behavior for ordinary note deletion; source corrections retain their existing validation rules.
+
+
+## MVP delivery selection — September 28, 2026
+
+Founder selects proactive contributions from past notes as the next implementation target and wants this MVP ready for the App Store before the YC application. Connected sources and outside knowledge remain in the full description, but are not required for this feature. The [implementation plan](proactive-contributions-plan.md) proposes the incremental path and preserves separate public-release readiness gates. The selected feature is not yet implemented.

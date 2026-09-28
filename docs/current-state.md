@@ -134,3 +134,6 @@ September 28 local UI checkpoint: Notes swipe Delete and long-press Share/Delete
 
 
 September 28 internal UI rollout complete: PR104 backend is live at `4dd5b70`; matching native app installed in place and launched on the founder’s iPhone. Includes welcome-message onboarding, stacked note cards with icon-only swipe actions, shared composer/dictation, refined motion, and preserved historical replies after note deletion. Verified all 20 databases/106 tables unchanged and no new paid usage. Physical feel/performance is not newly claimed. See [rollout receipt](native-experience-ui.md#approved-internal-rollout--september-28-2026).
+
+
+Current next feature: [proactive contributions from past notes — MVP implementation plan](proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. The plan and bounded $0.25 / 12-call QA approval are recorded; no proactive implementation or new live verification is claimed.

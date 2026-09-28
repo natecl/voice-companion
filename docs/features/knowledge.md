@@ -36,3 +36,6 @@ Explicit source connection is separate from permission to use every item in ever
 ## Debugging route
 
 For a missed or wrong contribution, inspect source availability → speaker/subject identity → time/revision → candidate retrieval → selected evidence → timing/silence decision → generated wording → delivery. Today only the source/retrieval/explicit-answer portions exist. Reuse saved events and judgments for local iteration; paid runs and physical checks must answer a specific unresolved question. [Lessons](lessons.md) preserve known failures; [audit](../product-vision-audit-2026-09-28.md) provides proposed build gates.
+
+
+Current next feature: [proactive contributions from past notes — MVP implementation plan](../proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. The plan and bounded $0.25 / 12-call QA approval are recorded; no proactive implementation or new live verification is claimed.

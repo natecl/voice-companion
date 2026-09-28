@@ -70,3 +70,6 @@ Update the affected feature entry when a checkpoint changes behavior, module own
 ## Current consolidation and follow-up
 
 The [simpler memory foundation](../simple-memory-foundation.md) completed its bounded learning/recall checkpoints and [internal rollout](../simple-memory-rollout.md). It reuses existing provenance/lifecycle tables; it is not a new notes-only store or removal of every legacy adapter. Dictation/personality and native UI internal rollout are recorded in [dictation and companion feel](../companion-feel-and-dictation.md) and [UI evidence](../native-experience-ui.md). Next proposed work is the [proactive product gap sequence](../product-vision-audit-2026-09-28.md#proposed-delivery-order). The [Jev gate experiment](../memory-gate-screen.md) is disabled by founder decision.
+
+
+Current next feature: [proactive contributions from past notes — MVP implementation plan](../proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. The plan and bounded $0.25 / 12-call QA approval are recorded; no proactive implementation or new live verification is claimed.
