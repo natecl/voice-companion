@@ -43,3 +43,5 @@ Current next feature: [proactive contributions from past notes — MVP implement
 The [proactive phone experiment](../proactive-phone-test.md) isolates two new video recordings from existing personal context and suppresses personal-learning jobs for those sources. Notes/transcript persistence remains enabled; this is an expiring test configuration, not a permanent change to knowledge learning.
 
 Saved-note layout regression (September 28): horizontal citation-button rows can force SwiftUI scroll content beyond the viewport and squeeze paragraph text. Source links now live in paragraph context menus; text wraps independently of source count. See [behavioral QA](../qa/note-layout/README.md) for the eight-passage native regression fixture and screenshot. First physical proactive-test note was already saved successfully; no regeneration was needed.
+
+Transcript speaker display restored September 28: companion transcript screens now render existing word-level speaker turns with numbered, unverified labels; missing attribution remains explicitly unknown. Saved transcripts and identity rules are unchanged. [Targeted rendering QA](../qa/transcript-speakers/README.md).

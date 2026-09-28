@@ -3,6 +3,35 @@ import XCTest
 #if os(iOS)
 @MainActor
 final class RecordingNotesPhoneUITests: XCTestCase {
+    func testTranscriptDisplaysSpeakerChanges() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--companion-ui-fixture", "--experience-gallery"]
+        let config = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"])
+        let object = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(config.utf8)) as? [String: Any])
+        let owner = try XCTUnwrap(object["memoryOwnerID"] as? String)
+        let words: [[String: Any]] = [["text": "First speaker.", "start": 0, "end": 1, "speaker": 0],
+                                     ["text": "Second speaker.", "start": 1, "end": 2, "speaker": 1]]
+        let segments: [[String: Any]] = [["start": 0, "duration": 2, "text": "First speaker. Second speaker.", "words": words, "isFinal": true],
+                                       ["start": 3, "duration": 1, "text": "Still readable without labels.", "words": [], "isFinal": true]]
+        let samples: [[String: Any]] = [["id": UUID().uuidString, "createdAt": Date().timeIntervalSinceReferenceDate,
+            "completed": true, "source": "microphone", "recordingSeconds": 4,
+            "memoryOwnerID": owner, "memoryTerminal": true, "transcript": ["segments": segments]]]
+        app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = config
+        app.launchEnvironment["VOICE_UI_SESSION_FIXTURE"] = String(data: try JSONSerialization.data(withJSONObject: samples), encoding: .utf8)
+        app.launch(); defer { app.terminate() }
+        app.buttons["notesNavigation"].tap()
+        XCTAssertTrue(app.buttons["savedSession"].firstMatch.waitForExistence(timeout: 5))
+        app.buttons["savedSession"].firstMatch.tap()
+        app.buttons["Transcript"].tap()
+        XCTAssertTrue(app.staticTexts["Speaker 1"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Speaker 2"].exists)
+        XCTAssertTrue(app.staticTexts["Speaker unknown"].exists)
+        XCTAssertTrue(app.staticTexts["Still readable without labels."].exists)
+        let screenshot = XCTAttachment(screenshot: app.screenshot())
+        screenshot.name = "Transcript speaker labels"; screenshot.lifetime = .keepAlways; add(screenshot)
+    }
+
     func testManyPassagesKeepNotesReadable() throws {
         continueAfterFailure = false
         let config = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"])
