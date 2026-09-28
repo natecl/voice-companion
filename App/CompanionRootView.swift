@@ -531,7 +531,7 @@ struct CompanionRootView: View {
                     if !searching && (index == 0 || dayTitle(session.createdAt) != dayTitle(matches[index - 1].createdAt)) {
                         Text(dayTitle(session.createdAt)).font(.footnote.weight(.semibold)).foregroundStyle(ExperienceStyle.secondary).padding(.top, index == 0 ? 8 : 14).padding(.bottom, 10)
                     }
-                    Button { ExperienceHaptics.tap(); composing = false; recordingDetent = .large; selectedID = session.id; citedSource = nil } label: {
+                    Button { composing = false; recordingDetent = .large; selectedID = session.id; citedSource = nil } label: {
                         VStack(alignment: .leading, spacing: 9) {
                             RecordingLibraryTitle(attachment: recording.companionAttachment(for: session), personal: session.source == "personal_text", refreshKey: "\(surface):\(selectedID?.uuidString ?? "")", configuration: { try Self.config() })
                                 .font(.callout.weight(.semibold)).foregroundStyle(ExperienceStyle.ink)
@@ -544,7 +544,7 @@ struct CompanionRootView: View {
                             .background(.white, in: RoundedRectangle(cornerRadius: 24))
                             .overlay { RoundedRectangle(cornerRadius: 24).stroke(ExperienceStyle.line.opacity(0.55), lineWidth: 0.5) }
                             .contentShape(RoundedRectangle(cornerRadius: 24))
-                    }.buttonStyle(.plain).accessibilityIdentifier("savedSession")
+                    }.buttonStyle(ExperiencePressStyle(pressedScale: 0.985)).accessibilityIdentifier("savedSession")
                     .padding(.bottom, 12)
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                         Button { ExperienceClipboard.copy(noteExport(session)) } label: { noteActionLabel("Copy", icon: "square.on.square").labelStyle(.iconOnly) }
@@ -593,7 +593,10 @@ struct CompanionRootView: View {
 
     private func deleteNote(_ note: CaptureSession) {
         sourceTask?.cancel()
-        guard recording.deleteFromLibrary(note) else { return }
+        let deleted = withAnimation(reduceMotion ? nil : .smooth(duration: 0.24)) {
+            recording.deleteFromLibrary(note)
+        }
+        guard deleted else { return }
         if chat?.attachment?.session_id == note.id.uuidString { chat?.attachment = nil }
         if selectedID == note.id { selectedID = nil; citedSource = nil }
         needsChatRefresh = true

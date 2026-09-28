@@ -156,3 +156,10 @@ Simulator gallery flow passed at `/tmp/VoiceCompanion-ExperienceResults/20260928
 
 
 Note action styling refinement: red Delete, blue Share, muted gray Copy. Native swipe circles are icon-only with accessible names retained; long-press menu keeps its readable action names. Explicit leaf-image symbol variants prevent iOS from filling the simple outline trash, curved arrow and overlapping-square symbols. Simulator gallery/gesture flow passed at `20260928-013003`, actual screenshot inspected and updated; Copy and Delete remain accessible in the test. Signed Phone build passed before the final label-only refinement (`/tmp/note-action-outline-device.log`); final simulator build and diff check passed. Not deployed.
+
+
+### Note action motion pass — September 28
+
+Retained native swipe reveal/retraction and automatic action-button feedback to preserve gesture arbitration. Shared press feedback now responds in 100ms and releases smoothly over 240ms, with a softer opacity change. Note cards use restrained 0.985 press scaling; compact controls retain 0.96. Confirmed deletion animates the list update over 240ms. Reduce Motion disables custom scaling/animation while retaining opacity feedback; native transitions remain system-controlled.
+
+Simulator gallery test passed at `20260928-013247`, now also exercising swipe-close/reopen without navigation, Copy dismissal and delete/cancel alongside existing taps, menus and screen navigation. Captured native motion in `docs/qa/native-experience/note-actions-motion.mp4` and inspected a 4fps contact sheet covering swipe close/reveal, confirmation and row removal. This is simulator behavior evidence, not physical haptic/120Hz performance acceptance. Diff check passed; no paid calls or deployment.

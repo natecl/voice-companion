@@ -200,15 +200,16 @@ extension View {
 
 /// Small, interruptible feedback; the hit target never shrinks with the artwork.
 struct ExperiencePressStyle: ButtonStyle {
+    var pressedScale: CGFloat = 0.96
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .onChange(of: configuration.isPressed) { _, pressed in
                 if pressed { ExperienceHaptics.tap() }
             }
-            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.96 : 1)
-            .opacity(configuration.isPressed ? 0.78 : 1)
-            .animation(reduceMotion ? nil : .snappy(duration: 0.18, extraBounce: 0), value: configuration.isPressed)
+            .scaleEffect(configuration.isPressed && !reduceMotion ? pressedScale : 1)
+            .opacity(configuration.isPressed ? 0.88 : 1)
+            .animation(reduceMotion ? nil : (configuration.isPressed ? .easeOut(duration: 0.1) : .smooth(duration: 0.24)), value: configuration.isPressed)
     }
 }
 
