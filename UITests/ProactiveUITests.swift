@@ -34,6 +34,10 @@ final class ProactiveUITests: XCTestCase {
         let message = app.staticTexts.matching(identifier: "companionAnswer").firstMatch
         XCTAssertTrue(message.waitForExistence(timeout: 8))
         XCTAssertTrue(message.label.contains("Alex"))
+        XCTAssertFalse(app.staticTexts["Ellis"].exists)
+        XCTAssertGreaterThan(message.frame.width, 100)
+        XCTAssertGreaterThanOrEqual(message.frame.minX, 16)
+        XCTAssertLessThanOrEqual(message.frame.maxX, app.frame.maxX - 16)
         XCTAssertEqual(field.value as? String, "Keep my draft")
         XCTAssertTrue(app.buttons["stopRecording"].isEnabled)
         app.buttons["quietContributions"].tap()
@@ -47,5 +51,10 @@ final class ProactiveUITests: XCTestCase {
         app.buttons["proactiveNewMessage"].tap()
         XCTAssertFalse(app.buttons["proactiveNewMessage"].exists)
         app.buttons["stopRecording"].tap()
+        app.terminate(); app.launch()
+        let restored = app.staticTexts.matching(identifier: "companionAnswer").firstMatch
+        XCTAssertTrue(restored.waitForExistence(timeout: 8))
+        XCTAssertEqual(restored.label, "Earlier, Alex mentioned waking at three each morning. That may be worth bringing up.")
+        XCTAssertEqual(app.staticTexts.matching(identifier: "companionAnswer").count, 1)
     }
 }
