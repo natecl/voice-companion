@@ -85,3 +85,10 @@ All four isolated simulator flows passed again (21.821s, 19.965s, 28.162s, 20.10
 
 
 Capture plus refinement: increased the symbol frame from 30 to 36 points while preserving the 58-point capture target. Gallery/attachment simulator flow passed on September 27; actual Notes and Agent renders inspected and updated. Results: `/tmp/VoiceCompanion-ExperienceResults/20260927-204416/`. Founder authorized UI deployment; device discovery reports the physical iPhone unavailable, so installation is pending device connection. No deployment or new physical acceptance is claimed.
+
+
+## Authorized internal iPhone installation — September 28
+
+After the founder connected/unlocked the phone and confirmed readiness for installation, the signed Phone build of `44bb9aa` succeeded with the existing development identity. `devicectl` installed the app as an in-place update on the paired physical iPhone 16 Pro and successfully launched `ai.voicecompanion.phone --enable-companion-ui`, persisting activation of the new interface. No uninstall, backend deployment, microphone capture or paid provider check was performed. Build/install/launch receipts: `/tmp/ui-device-build.log`, `/tmp/ui-device-install.json`, `/tmp/ui-device-launch.json`.
+
+This supersedes the prior unavailable-device installation blocker. It establishes installation and launch, not physical behavioral acceptance. Full device flow/interruption/touch checks and Mac UI acceptance remain pending; PR 104 remains draft.
