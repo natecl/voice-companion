@@ -1,0 +1,21 @@
+{
+  "data": {
+    "decision": "contribute",
+    "text": "A quick reminder: Alex had promised Jordan an annotated bibliography before this discussion, and it hadn\u2019t been sent yet.",
+    "evidence_ids": [
+      "m1"
+    ]
+  },
+  "usage": {
+    "input_tokens": 935,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 49,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 984
+  }
+}

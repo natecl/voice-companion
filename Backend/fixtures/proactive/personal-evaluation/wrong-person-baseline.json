@@ -1,0 +1,21 @@
+{
+  "data": {
+    "decision": "contribute",
+    "text": "Jordan had mentioned waking at 3 a.m. and wanting to discuss it at an appointment; Alex was listening to Jordan\u2019s story. Is that relevant to the concerns being asked about now?",
+    "evidence_ids": [
+      "m1"
+    ]
+  },
+  "usage": {
+    "input_tokens": 820,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 65,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 885
+  }
+}

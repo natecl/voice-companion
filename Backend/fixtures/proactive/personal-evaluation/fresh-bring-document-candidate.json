@@ -1,0 +1,21 @@
+{
+  "data": {
+    "decision": "contribute",
+    "text": "At Noor\u2019s next visit, the clinician asked them to bring the blood pressure log\u2014does Noor have it with them?",
+    "evidence_ids": [
+      "m1"
+    ]
+  },
+  "usage": {
+    "input_tokens": 998,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 51,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1049
+  }
+}

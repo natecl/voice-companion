@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-28",
+  "model": "gpt-6-luna",
+  "calls": 30,
+  "automatic_retries": 0,
+  "reserved_microusd": 600000,
+  "remote_ledger_states": {
+    "completed": 30
+  },
+  "input_tokens": 30951,
+  "output_tokens": 1247,
+  "billing": "Reservations are conservative bounds, not a provider invoice.",
+  "matched_baseline_decisions": {
+    "passed": 9,
+    "total": 10
+  },
+  "matched_candidate_decisions": {
+    "passed": 10,
+    "total": 10
+  },
+  "fresh_candidate_decisions": {
+    "passed": 10,
+    "total": 10
+  }
+}

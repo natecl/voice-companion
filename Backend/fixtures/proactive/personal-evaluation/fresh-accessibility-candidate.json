@@ -1,0 +1,21 @@
+{
+  "data": {
+    "decision": "contribute",
+    "text": "Maya has said she needs step-free access for in-person workshops, so the ground-floor room is the option that fits her stated need.",
+    "evidence_ids": [
+      "m1"
+    ]
+  },
+  "usage": {
+    "input_tokens": 886,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 54,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 940
+  }
+}

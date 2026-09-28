@@ -1,0 +1,21 @@
+{
+  "data": {
+    "decision": "contribute",
+    "text": "Alex had explicitly changed their preference: 8 a.m. works best, while 11 a.m. no longer works.",
+    "evidence_ids": [
+      "m1"
+    ]
+  },
+  "usage": {
+    "input_tokens": 1271,
+    "input_tokens_details": {
+      "cache_write_tokens": 1268,
+      "cached_tokens": 0
+    },
+    "output_tokens": 51,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1322
+  }
+}
