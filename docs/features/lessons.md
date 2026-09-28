@@ -92,3 +92,10 @@ Physical Dictate startup crashed after permission because the Swift closure pass
 ### Empty speech completion must not erase visible work
 
 Stop can expose terminal hypotheses that differ from earlier partial text. The composer previously replaced visible speech with an empty final, reproduced by a failing regression after the physical report. Preserve nonblank text across blank resets; if final recognition cannot confirm it, keep an editable draft and prevent automatic Send. Continue accepting real nonempty corrections. Test Stop and Send, pre-existing typed text, blank intermediate events and the native binding—not only the normal happy-path recognizer. [Evidence](../companion-feel-and-dictation.md#stop-lost-the-visible-draft-reproduced-empty-final-boundary).
+
+
+## Product scope and proactive claims — September 28
+
+An attractive chat UI, background memory worker or automatic welcome message is not evidence of proactive conversation participation. Trace the initiating event through context selection, contribution/silence decision and actual delivery. Current chat starts from an explicit question. Likewise, generic model knowledge is not live web retrieval, and an account/pricing preview is not an operational account or subscription. Audit active code and dated deployment evidence before making capability claims. [Gap audit](../product-vision-audit-2026-09-28.md).
+
+Keep current maps reconciled after rollout: PR104 ordinary note deletion preserves existing replies; release chat source controls are hidden; v3 is deployed; composer Clear draft was removed. Older checkpoint statements remain historical evidence, not instructions to restore those behaviors.

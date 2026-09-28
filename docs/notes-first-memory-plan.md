@@ -1,5 +1,7 @@
 # Notes-first companion memory
 
+> Historical/bounded delivery document. The [September 28 product definition](product-source-of-truth.md#full-product-vision--september-28-2026) and [current gap audit](product-vision-audit-2026-09-28.md) govern the full vision and next proposed sequence. Older one-liners, exclusions and pending stages below retain their original checkpoint meaning.
+
 > Historical delivery plan. For the implemented simplified memory path and verified internal deployment, read [current state](current-state.md), [foundation](simple-memory-foundation.md) and [rollout](simple-memory-rollout.md). Earlier pending stages, visible chat citations and deletion contracts below must be read with the later founder revisions.
 
 Founder-authorized implementation, September 27, 2026. Preserve the exact one-liner and companion-first experience. This is a consolidation of the memory implementation, not a new product scope.

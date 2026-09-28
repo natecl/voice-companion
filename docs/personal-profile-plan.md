@@ -1,8 +1,10 @@
 # Personal companion profile — implementation plan
 
+> Historical/bounded delivery document. The [September 28 product definition](product-source-of-truth.md#full-product-vision--september-28-2026) and [current gap audit](product-vision-audit-2026-09-28.md) govern the full vision and next proposed sequence. Older one-liners, exclusions and pending stages below retain their original checkpoint meaning.
+
 Superseded delivery direction: the founder-approved companion-first architecture is now planned in [memory rework](memory-rework-plan.md). Retain this document as checkpoint history; its failed correction gate remains unresolved, not accepted.
 
-Status: checkpoints 1–2 implemented and verified within their bounded scopes; checkpoint 3 implemented with local/provider QA; hosted rollout complete; physical acceptance pending. See [recall evidence](personal-profile-recall.md). See [learning evidence](personal-profile-learning.md). See [foundation evidence](personal-profile-foundation.md). Founder direction, September 25, 2026. Follow the [engineering principles](engineering-principles.md) and [product source of truth](product-source-of-truth.md). Voice recognition follows this slice.
+Status: checkpoints 1–2 implemented and verified within their bounded scopes; checkpoint 3 implemented with local/provider QA; hosted rollout complete; physical acceptance pending. See [historical recall evidence](https://github.com/natecl/voice-companion/blob/c3b8e9a1ccc6e3355ee3a7fe63fcd075b4f195df/docs/personal-profile-recall.md). See [learning evidence](personal-profile-learning.md). See [foundation evidence](personal-profile-foundation.md). Founder direction, September 25, 2026. Follow the [engineering principles](engineering-principles.md) and [product source of truth](product-source-of-truth.md). Voice recognition follows this slice.
 
 ## Outcome and boundary
 

@@ -1,5 +1,7 @@
 # Automatic cross-session memory — implementation plan
 
+> Historical/bounded delivery document. The [September 28 product definition](product-source-of-truth.md#full-product-vision--september-28-2026) and [current gap audit](product-vision-audit-2026-09-28.md) govern the full vision and next proposed sequence. Older one-liners, exclusions and pending stages below retain their original checkpoint meaning.
+
 Status: checkpoints 1–3 are implemented and verified for the bounded internal founder trial. Final phone corrected recall, source opening and saved reopening passed. See [acceptance and rollout record](memory-recall.md#final-physical-acceptance-and-checkpoint-review) for the recovery provenance, one conservative retention miss, and exhausted testing allocation. The original research/proposed steps below are retained as the design and verification plan, not a claim of production readiness. Follow the [product source of truth](product-source-of-truth.md) and [engineering principles](engineering-principles.md).
 
 

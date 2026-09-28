@@ -1,5 +1,7 @@
 # V1 implementation plan — companion on tap
 
+> Historical/bounded delivery document. The [September 28 product definition](product-source-of-truth.md#full-product-vision--september-28-2026) and [current gap audit](product-vision-audit-2026-09-28.md) govern the full vision and next proposed sequence. Older one-liners, exclusions and pending stages below retain their original checkpoint meaning.
+
 Status: checkpoints 1–3 and 5 verified, including physical-iPhone Ask while listening and speech captured after the answer completes. Jev checkpoint 4 is deferred by founder decision. Checkpoint 6 is complete for the founder-only internal trial; see [final acceptance](v1-acceptance.md) and [runbook](v1-runbook.md). Preserve the five-minute cap and monetary budgets. See [live Ask evidence](v1-live-ask-validation.md) and [Jev decision](v1-jev-decision.md). Canonical authorities remain the product source of truth and engineering principles.
 
 ## Outcome
