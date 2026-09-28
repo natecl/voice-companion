@@ -190,7 +190,7 @@ class RetentionTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(before,migrated.search(self.owner,historical=True))
         self.assertIsNotNone(migrated.source(self.owner,self.sources[0]['session_id']))
         with migrated.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],18)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],19)
             self.assertEqual(db.execute('SELECT count(*) FROM retained_recording').fetchone()[0],0)
 
 

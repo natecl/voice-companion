@@ -22,7 +22,7 @@ import companion_snapshots
 import memory_retention
 import recording_notes
 
-VERSION = 18
+VERSION = 19
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -86,7 +86,7 @@ class MemoryStore:
         self.embedding_model = embedding_model
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, VERSION):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, VERSION):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -183,6 +183,9 @@ class MemoryStore:
             if version < 18:
                 import notes_search
                 notes_search.migrate(db)
+            if version < 19:
+                from proactive_store import migrate as migrate_proactive
+                migrate_proactive(db)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)

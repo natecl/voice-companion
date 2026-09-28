@@ -23,3 +23,15 @@ Current official contracts were checked before adapter construction: [Responses 
 ## Remaining gates
 
 Durable contribution persistence without a phantom user turn; authenticated service and cancel/revalidation protocol; budgeted live model comparison; native event wiring and ordinary agent-message rendering; physical-iPhone acceptance and separately authorized rollout. The approved $0.25 / 12-call grant remains unused. Do not infer active proactivity or natural-language quality from local replay success.
+
+## Durable service checkpoint — September 28
+
+`proactive_service.py` now runs bounded local discovery, optional Jev judgment, Luna drafting, revalidation and atomic persistence behind an internal interface. It is **not enabled in hosted routing or the app**. Contribution turns have `kind=proactive`, no fabricated user prompt, and retain original evidence for subsequent ordinary questions. Durable attempt/connection keys prevent repeated payment for a replayed cutoff and duplicate messages; interrupted attempts remain terminal for retry purposes. A pending normal Ask prevents contribution persistence. Source deletion preserves delivered text while excluding unavailable evidence from subsequent context.
+
+Verification:
+
+- 77 targeted tests passed: proactive policy/models/service, chat/context/snapshots, memory, retention unit cases and recording notes.
+- `PYTHONPATH=Backend python3 scripts/evaluations/proactive_service_replay.py` exercised actual localhost WebSockets, isolated SQLite persistence/reopen, duplicate requests, owner isolation, follow-up evidence assembly and deletion. One explicitly synthetic model response; zero external/paid calls. This harness does not establish hosted authentication or native capture behavior.
+- The broader run also exposed `RecordedRetentionAcceptance.test_exact_provider_replay_through_companion_sockets`: its historical saved response expects an older companion instruction string. The current committed prompt has since changed persona and hidden-citation wording; exact replay rejects the unmatched request. This change does not alter that prompt or replace the saved response. Do not describe that historical provider acceptance check as passing.
+
+Schema 19 adds contribution kind and attempt/connection bookkeeping. Existing replies default to `reply`. Rollback must retain schema-19-compatible code and disable contribution execution; an older schema-18 binary cannot open the migrated database. No production database has been migrated by this checkpoint. Provider quality, cadence under continuous speech, hosted lifecycle authorization, native rendering, live model comparison and physical acceptance remain unverified.

@@ -116,40 +116,43 @@ class CompanionChat:
         if not isinstance(answer,str) or not answer.strip() or len(answer.encode())>16000:raise Rejected('invalid_answer')
         if len(packets)>4 or len(history_ids)>8 or len(set(history_ids))!=len(history_ids):raise Rejected('chat_context_too_large')
         with self.store.transaction() as db:
-            turn=db.execute('SELECT * FROM companion_turn WHERE owner=? AND id=?',(owner,question_id)).fetchone()
-            if not turn or turn['state']!='pending':raise Rejected('chat_turn_not_pending')
-            deps={}
-            # Carry provenance through follow-ups even when they do not cite the original recording.
-            for old_id in history_ids:
-                old=db.execute('SELECT * FROM companion_turn WHERE owner=? AND id=? AND sequence<?',(owner,old_id,turn['sequence'])).fetchone()
-                if not old or not self._validate_turn(db,owner,old):raise Rejected('chat_history_changed')
-                for dep in self._dependencies(db,owner,old_id):deps[dep['reference']]=dep
-            for packet in packets:
-                if packet.get('owner')!=owner or packet.get('version')!='selected-evidence-v1' or len(packet.get('items',[]))>50:
-                    raise Rejected('invalid_chat_evidence')
-                if memory_context.fingerprint(packet['items'])!=packet.get('digest'):raise Rejected('invalid_chat_evidence')
-                for item in packet['items']:
-                    dep=dict(reference=reference(item),session=item['session_id'],fingerprint=memory_context.fingerprint([item]))
-                    if not self._valid_dependency(db,owner,dep):raise Rejected('memory_context_changed')
-                    prior=deps.get(dep['reference'])
-                    if prior and prior['fingerprint']!=dep['fingerprint']:raise Rejected('memory_context_changed')
-                    deps[dep['reference']]=dep
-            if len(deps)>50:raise Rejected('chat_context_too_large')
-            if len(citations)>50:raise Rejected('invalid_chat_citations')
-            citation_ids=set();normalized_citations=[]
-            for citation in citations:
-                if (not isinstance(citation,dict) or set(citation)!={'id','source'}
-                        or not isinstance(citation['id'],str) or not re.fullmatch(r'[pm][1-9][0-9]*',citation['id'])
-                        or citation['id'] in citation_ids):raise Rejected('invalid_chat_citations')
-                citation_ids.add(citation['id'])
-                try:ref=reference(citation['source'])
-                except (KeyError,TypeError):raise Rejected('invalid_chat_citations') from None
-                if ref not in deps:raise Rejected('invalid_chat_citations')
-                normalized_citations.append(dict(id=citation['id'],source=json.loads(ref)))
-            if set(re.findall(r'\[\[([^\[\]]+)\]\]',answer))!=citation_ids:raise Rejected('invalid_chat_citations')
-            for dep in deps.values():
-                db.execute('INSERT INTO companion_dependency VALUES(?,?,?,?,?)',(owner,question_id,dep['session'],dep['reference'],dep['fingerprint']))
-            db.execute("UPDATE companion_turn SET state='complete',answer=?,citations=? WHERE owner=? AND id=?",(answer,json.dumps(normalized_citations),owner,question_id))
+            self._complete(db,owner,question_id,answer,packets,history_ids,citations)
+
+    def _complete(self,db,owner,question_id,answer,packets,history_ids,citations):
+        turn=db.execute('SELECT * FROM companion_turn WHERE owner=? AND id=?',(owner,question_id)).fetchone()
+        if not turn or turn['state']!='pending':raise Rejected('chat_turn_not_pending')
+        deps={}
+        # Carry provenance through follow-ups even when they do not cite the original recording.
+        for old_id in history_ids:
+            old=db.execute('SELECT * FROM companion_turn WHERE owner=? AND id=? AND sequence<?',(owner,old_id,turn['sequence'])).fetchone()
+            if not old or not self._validate_turn(db,owner,old):raise Rejected('chat_history_changed')
+            for dep in self._dependencies(db,owner,old_id):deps[dep['reference']]=dep
+        for packet in packets:
+            if packet.get('owner')!=owner or packet.get('version')!='selected-evidence-v1' or len(packet.get('items',[]))>50:
+                raise Rejected('invalid_chat_evidence')
+            if memory_context.fingerprint(packet['items'])!=packet.get('digest'):raise Rejected('invalid_chat_evidence')
+            for item in packet['items']:
+                dep=dict(reference=reference(item),session=item['session_id'],fingerprint=memory_context.fingerprint([item]))
+                if not self._valid_dependency(db,owner,dep):raise Rejected('memory_context_changed')
+                prior=deps.get(dep['reference'])
+                if prior and prior['fingerprint']!=dep['fingerprint']:raise Rejected('memory_context_changed')
+                deps[dep['reference']]=dep
+        if len(deps)>50:raise Rejected('chat_context_too_large')
+        if len(citations)>50:raise Rejected('invalid_chat_citations')
+        citation_ids=set();normalized_citations=[]
+        for citation in citations:
+            if (not isinstance(citation,dict) or set(citation)!={'id','source'}
+                    or not isinstance(citation['id'],str) or not re.fullmatch(r'[pm][1-9][0-9]*',citation['id'])
+                    or citation['id'] in citation_ids):raise Rejected('invalid_chat_citations')
+            citation_ids.add(citation['id'])
+            try:ref=reference(citation['source'])
+            except (KeyError,TypeError):raise Rejected('invalid_chat_citations') from None
+            if ref not in deps:raise Rejected('invalid_chat_citations')
+            normalized_citations.append(dict(id=citation['id'],source=json.loads(ref)))
+        if set(re.findall(r'\[\[([^\[\]]+)\]\]',answer))!=citation_ids:raise Rejected('invalid_chat_citations')
+        for dep in deps.values():
+            db.execute('INSERT INTO companion_dependency VALUES(?,?,?,?,?)',(owner,question_id,dep['session'],dep['reference'],dep['fingerprint']))
+        db.execute("UPDATE companion_turn SET state='complete',answer=?,citations=? WHERE owner=? AND id=?",(answer,json.dumps(normalized_citations),owner,question_id))
 
     def fail(self,owner,question_id):
         # Explicit terminal failure, including reviewed interrupted requests. Never auto-retry inference.
@@ -193,7 +196,10 @@ class CompanionChat:
         for turn in reversed(page['turns']):
             if turn['state']=='pending':continue
             if turn['state']!='complete':omitted=True;break
-            pair=dict(id=turn['id'],user=turn['question'],assistant=turn['answer'],citations=turn['citations'])
+            if turn['kind']=='proactive':
+                pair=dict(id=turn['id'],assistant=turn['answer'],citations=turn['citations'],origin='proactive')
+            else:
+                pair=dict(id=turn['id'],user=turn['question'],assistant=turn['answer'],citations=turn['citations'])
             if len(selected)>=max_turns or len(json.dumps([pair]+selected,ensure_ascii=False).encode())>max_bytes:
                 omitted=True;break
             selected.insert(0,pair)
