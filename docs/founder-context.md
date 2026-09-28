@@ -1,6 +1,18 @@
 # Founder context
 
-These notes summarize the founder's clarification on September 24, 2026. They elaborate use cases without replacing the product source of truth.
+## Current clarification — September 28, 2026
+
+The founder already records school material and important appointments. They sometimes know a past idea is relevant but cannot remember exactly what to ask or where they encountered it. They would skim/search a transcript or ask across all captured material. These are founder-reported experiences, not market validation or a fabricated dated customer incident.
+
+The agreed direction is an AI note-taking app acting as a third smart person at the table. It proactively contributes through text, using both personal context and new ideas/outside knowledge, and adapts to the conversation. Study discussions, work, doctor/therapy appointments and financial conversations are intended contexts; no single launch audience has been selected. Study discussions were an assistant-proposed test setting, not a founder-approved exclusive ICP.
+
+Full vision includes calendar, email and messages. Initial sources are captured notes/conversations. Example: “You mentioned a concern about sleeping last week. It might be worth bringing up now.” The hypothesis is useful contributions leading to repeated voluntary use, not an obligation to record everything. The founder paused application drafting; the YC page must remain unchanged. The current task updates project knowledge and audits gaps, not a from-scratch code rewrite.
+
+See [current product definition](product-source-of-truth.md) and [audit](product-vision-audit-2026-09-28.md).
+
+## Earlier context — September 24, 2026
+
+The following records the earlier discussion. Current positioning and scope above take precedence.
 
 ## Intended experience
 

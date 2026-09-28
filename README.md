@@ -1,12 +1,16 @@
 # Voice Companion
 
-> Granola with an AI that listens alongside you and can join the conversation.
+> AI notes that proactively contribute to discussions
 
-An iPhone-first companion for everyday conversations, with Mac support. Working name: Voice Companion. The installed internal V1 build records microphone audio through the hosted service, supports locked-screen capture, saves transcripts locally, and answers typed questions during or after a conversation with fixed source references. Recording remains capped at five minutes; speaker labels are best-effort. See the [V1 runbook](docs/v1-runbook.md) for use, setup, quotas and known limits, and [final acceptance](docs/v1-acceptance.md) for evidence. The [V0 runbook](docs/v0-runbook.md) retains local Mac relay instructions and historical scope. This private repository is not a public release.
+An iPhone-first AI note-taking app intended to act like a third smart person in conversations, with Mac support. Proactive text contributions and calendar/email/message context are the agreed product vision, not delivered features. Working name: Voice Companion. The installed internal V1 build records microphone audio through the hosted service, supports locked-screen capture, saves transcripts locally, and answers typed questions during or after a conversation with fixed source references. Recording remains capped at five minutes; speaker labels are best-effort. See the [V1 runbook](docs/v1-runbook.md) for use, setup, quotas and known limits, and [final acceptance](docs/v1-acceptance.md) for evidence. The [V0 runbook](docs/v0-runbook.md) retains local Mac relay instructions and historical scope. This private repository is not a public release.
 
 ## Current knowledge and delivery status
 
 Start with the [current product and implementation brief](docs/current-state.md) for decisions, model roles, deployed versus candidate behavior, research outcomes and remaining gates. The [feature map](docs/features/README.md) connects those decisions to code and targeted QA. PR 99 is merged and internally deployed: native dictation/plain-message behavior passed bounded acceptance, and backend v3 personality rollout passed health, prompt-selection and data-preservation checks. The experimental Jev retrieval gate remains disabled.
+
+## Current direction and gap audit
+
+The [full product description](docs/product-source-of-truth.md#full-product-vision--september-28-2026) defines the target. The [implementation audit and proposed build sequence](docs/product-vision-audit-2026-09-28.md) shows what remains, and the [knowledge feature map](docs/features/knowledge.md) separates source evidence, generated notes, memory, model knowledge and future connected context. This is an internal capture/notes/chat foundation; proactive usefulness and repeat use are not yet validated.
 
 ## Product source of truth
 
@@ -57,7 +61,7 @@ See [development commands and foundation QA](docs/development.md). The shared Sw
 
 ## Internal memory checkpoint
 
-The enrolled iPhone can synchronize session evidence and ask with source-linked past context. Final corrected recall and saved-source reopening are verified; Luna extracts and Jev independently verifies. See [acceptance](docs/memory-recall.md#final-physical-acceptance-and-checkpoint-review) for the recovered correction, bounded tests, and known conservative retention miss. The $0.28 memory QA allocation is exhausted; more provider-backed memory work requires a newly approved allowance. This is an internal trial, not a public release.
+The enrolled iPhone can synchronize session evidence and ask with past context. The active recording learner uses Luna extraction, Sol factual entailment and Jev modality/time judgments; older evidence below describes its historical roles. Release chat hides source controls while Notes retains passage navigation. See [acceptance](docs/memory-recall.md#final-physical-acceptance-and-checkpoint-review) for the recovered correction, bounded tests, and known conservative retention miss. That checkpoint’s $0.28 QA allocation is historical and exhausted; use current operator receipts and explicit scope-specific approval before new paid QA. This is an internal trial, not a public release.
 
 
 ## Companion rework rollout

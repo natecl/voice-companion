@@ -1,12 +1,30 @@
 # Product source of truth
 
-Status: Agreed with the founder on September 24, 2026.
+Status: Current positioning revised with the founder on September 28, 2026. Earlier dated decisions below remain history; this opening definition supersedes their one-liner and reactive-only product framing.
 
-Current interpretation: later dated refinements below supersede conflicting earlier delivery descriptions. See [current implementation and decision brief](current-state.md) for deployed versus candidate status. In particular, notes are implemented; release chat hides visible sources; TTS/voice identity remain deferred; the experimental retrieval gate is disabled.
+Current interpretation: the opening September 28 vision governs positioning; dated refinements govern their implementation contracts unless explicitly superseded. See [current implementation and decision brief](current-state.md) for deployed versus candidate status. In particular, notes are implemented; release chat hides visible sources; TTS/voice identity remain deferred; the experimental retrieval gate is disabled.
 
 ## One-liner
 
-> Granola with an AI that listens alongside you and can join the conversation.
+> AI notes that proactively contribute to discussions
+
+This agreed wording is 51 characters. For YC’s 50-character field, the audit records a shorter proposed variant; no application wording has been changed.
+
+## Full product vision — September 28, 2026
+
+> We’re building an AI note-taking app that acts like a third smart person in your conversations. It captures lectures, meetings, appointments, and voice notes, then connects what’s being discussed with relevant context from your past notes, calendar, email, and messages. During a conversation, it proactively surfaces useful reminders, questions, and ideas through text—for example, reminding you during an appointment that you mentioned trouble sleeping last week. You can also ask questions across everything you’ve captured.
+
+This is the complete intended product, not a statement of delivered functionality. Calendar, email and messages are part of the product vision; the initial implementation uses deliberately captured notes and conversations. Provider/platform selection, access feasibility and connector delivery are unresolved. No connected account access is authorized by this vision alone.
+
+The differentiating hypothesis: an AI participant that knows relevant personal context and proactively contributes is useful enough that people repeatedly choose to bring it into their conversations. Capturing every conversation is a possible adoption outcome, not a requirement or permission for silent recording. It does not literally know everything about a person.
+
+Example: “You mentioned a concern about sleeping last week. It might be worth bringing up now.” The prior concern needs a supported source and appropriate identity/time qualification; the suggested action is a suggestion, not a remembered fact.
+
+Contribution includes both relevant past context and new ideas/outside knowledge. It adapts to the discussion (study, work, appointments, therapy, financial conversations) and can remain silent. Exact trigger, timing, frequency, display controls and domain behavior need design and validation. Text-first proactive participation is agreed; spoken interruption is not required. Existing deliberate capture, one main chat and Notes library remain the implementation baseline, not a mandate to redesign navigation in this documentation pass.
+
+Position this as an AI/voice note-taking product. Connected calendar, email and messages enrich conversation understanding; they do not make this an iMessage assistant or authorize external actions. Existing general chat can remain, but it is not the defining product promise. The [gap audit](product-vision-audit-2026-09-28.md) and [knowledge map](features/knowledge.md) distinguish implemented foundations, gaps and proposed delivery.
+
+The previous one-liner, “Granola with an AI that listens alongside you and can join the conversation,” is retired from current positioning. Historical references to an unchanged one-liner below describe their dates, not an instruction to restore it.
 
 ## Proven, Better, New
 
@@ -14,7 +32,7 @@ Use the breakdown discussed by Mark Pincus and Garry Tan in the first source vid
 
 - **Proven:** Granola.
 - **Better:** Faster responses, lower latency, lower price—the improvements existing users would clearly recognize.
-- **New:** An iPhone-first AI companion that listens alongside you in everyday conversations and can join in when you turn to it.
+- **New:** An iPhone-first AI note-taking app that proactively contributes relevant personal context, questions and ideas through text during conversations, adapting to the conversation. Usefulness and repeat invitation are hypotheses to test.
 
 This is the product source of truth. Everyday capture scenarios are applications of this vision, and Jev is a potential way to implement it.
 
@@ -24,7 +42,7 @@ Explicit founder decision, September 24, 2026: make this a true mobile consumer 
 
 The intended differentiation is the everyday companion experience and its usefulness with captured personal context, not merely having an iPhone app. Conversations with friends, lectures, and appointments such as a vet visit are central use cases alongside meetings. The phone makes the companion accessible throughout the day. Whether this experience creates a durable consumer habit remains a hypothesis to validate.
 
-“Always-on” remains the long-term listening-companion vision. The practical starting experience is deliberate capture: start listening, put the phone away, stay present, then revisit or ask about the conversation. This decision does not authorize silent continuous recording, presume the AI knows everything about the user, or claim that locked-screen/background recording already exists in V0. Proactive participation remains a later hypothesis beyond responding when explicitly addressed.
+“Always-on” remains the long-term listening-companion vision. The practical starting experience is deliberate capture: start listening, put the phone away, stay present, then revisit or ask about the conversation. This decision does not authorize silent continuous recording, presume the AI knows everything about the user, or claim that locked-screen/background recording already exists in V0. Proactive text participation is now the core product hypothesis (September 28 revision above); it remains unimplemented.
 
 Roadmap implications: prioritize independent iPhone use without a Mac relay, practical capture while the phone is put away, and useful recall/questions about captured conversations. Define and verify each as a separate slice. Stronger attribution is needed before memories or responses depend on who said something. Preserve the shared native foundation and the Proven → Better → New delivery discipline; this direction does not add all companion features to V0.
 
@@ -69,7 +87,7 @@ Founder decision: personal memory should understand the person across their whol
 
 Build the profile memory slice before voice enrollment. Start with explicit personal text as a source of known user authorship; authorship alone does not make every mentioned fact about the user. Unknown recorded speakers remain unknown. Reuse automatic learning, source links, corrections and internal forgetting; no per-memory approval inbox or management screen. Voice recognition is a separate later identity feature. See the [personal-profile plan](personal-profile-plan.md). The agreed one-liner and PBN are unchanged.
 
-## Companion-first interaction refinement — September 26, 2026
+## Companion-first interaction refinement — September 26, 2026 (historical positioning)
 
 Founder-approved ICP: a curious, ambitious, AI-comfortable person who thinks out loud and wants an attentive personal companion that understands their life without repeated explanation. The founder, Mark Pincus and Garry Tan are reference personas; the initial audience is a shared mindset rather than a job title. Whole-life understanding includes family, relationships, interests, goals, studies, work and appointments.
 

@@ -278,3 +278,12 @@ Founder note-action refinement, September 28: swipe Delete is red, Share blue, C
 Founder refinement: hide visible captions beneath the swipe circles; preserve their accessibility labels and the long-press menu names.
 
 Founder onboarding refinement, September 28: replace the empty-chat placeholder with a first agent message introducing the companion, deliberate capture/Notes and composer dictation. Render it as an ordinary reply at the beginning of the main conversation, not as a separate onboarding screen or a repeated author heading.
+
+
+## Proactive note-taking product revision — September 28, 2026
+
+Founder replaces the old one-liner with “AI notes that proactively contribute to discussions” and adopts the full description in [product source of truth](product-source-of-truth.md#full-product-vision--september-28-2026). Proactive context-aware text contributions are the core New hypothesis. Calendar, email and messages are included in the complete product vision, while deliberately captured notes/conversations are the first source set. The earlier reactive-only release scopes remain historical evidence, not the complete product definition.
+
+Preserve the native capture/notes/chat/memory baseline. This authorization is a documentation and implementation-gap audit, not a code rewrite, provider run, connector authorization, deployment or new spending grant. A proposed roadmap is not implementation acceptance. Source content remains untrusted data; preserve owner, identity, revision, lifecycle and deletion contracts across future connectors. Separate remembered evidence, general model knowledge and new suggestions. For proactive behavior, prove relevance, timing, appropriate silence and user control, as well as factual correctness. Do not infer a particular judge model or always-on architecture from the product description.
+
+Current navigation need not change merely because external positioning is note-taking-led. Medical, therapy and financial settings are intended contexts; current generic chat is not evidence of specialized readiness in those settings. Fresh outside information needs an independently validated retrieval path; general model knowledge is not web research. Connector-specific access, disconnect/erasure rules, realistic capture duration, cost and physical-device execution need bounded checkpoints in the [audit](product-vision-audit-2026-09-28.md).
