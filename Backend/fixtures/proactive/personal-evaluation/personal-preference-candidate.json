@@ -1,0 +1,21 @@
+{
+  "data": {
+    "decision": "contribute",
+    "text": "Alex has said early mornings are difficult and prefers meetings after 10 a.m.; 11 a.m. fits that preference better than 8 a.m.",
+    "evidence_ids": [
+      "m2"
+    ]
+  },
+  "usage": {
+    "input_tokens": 1261,
+    "input_tokens_details": {
+      "cache_write_tokens": 1258,
+      "cached_tokens": 0
+    },
+    "output_tokens": 57,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1318
+  }
+}

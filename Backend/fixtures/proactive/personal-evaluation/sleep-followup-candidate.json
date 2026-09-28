@@ -1,0 +1,21 @@
+{
+  "data": {
+    "decision": "contribute",
+    "text": "Alex previously said they\u2019d been waking at 3 a.m. repeatedly and kept forgetting to mention it at appointments\u2014this may be a good time to bring it up.",
+    "evidence_ids": [
+      "m3"
+    ]
+  },
+  "usage": {
+    "input_tokens": 1134,
+    "input_tokens_details": {
+      "cache_write_tokens": 1131,
+      "cached_tokens": 0
+    },
+    "output_tokens": 60,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1194
+  }
+}

@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 from companion_chat import CompanionChat
 from memory_store import MemoryStore
 from proactive_service import ProactiveService
@@ -32,6 +33,12 @@ def source(session,text,completed):
         passages=[dict(id='p1',start=0.,duration=5.,text=text,speakers=[])])
 
 class RecordedScreen(unittest.IsolatedAsyncioTestCase):
+    def setUp(self):
+        # These receipts were generated with v1; retain exact historical requests.
+        archived=(Path(__file__).parent/"prompts/proactive-v1.md").read_text()
+        prompt=patch("proactive_models.PROMPT",archived)
+        prompt.start();self.addCleanup(prompt.stop)
+
     async def test_exact_live_screen_through_service(self):
         cases={c['id']:c for name in ('cases.json','semantic-cases.json')
             for c in json.loads((ROOT/name).read_text())}

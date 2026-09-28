@@ -77,3 +77,5 @@ Current next feature: [proactive contributions from past notes — MVP implement
 Foundation checkpoint: [proactive foundation](../proactive-foundation.md) implements scheduling, local discovery and model contracts with free replay evidence. The subsequent native and model checkpoints below extend that historical boundary.
 
 Local implementation update: [native proactive checkpoint](../proactive-native.md) and [bounded provider screen](../proactive-model-screen.md). These supersede the earlier missing-implementation status for the local proactive path, not the production or public-release status.
+
+Personal proactive evaluation completed locally: v2 selected after 30 real Luna calls (matched decisions v1 9/10, v2 10/10; fresh v2 10/10). The baseline wrongly raised a third party’s sleep issue; v2 stayed silent. All 30 responses replay through the durable service with exact requests; 38 proactive tests pass. Native presentation/draft/quiet/reopen evidence from PR123 remains applicable. Small fictional screen, not physical or broad quality acceptance; hosted deployment remains pending. [Results, limitations and screenshot](../qa/proactive-personal/README.md).

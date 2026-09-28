@@ -1,0 +1,21 @@
+{
+  "data": {
+    "decision": "contribute",
+    "text": "The team still needs to assign who will invite the five testers; Alex said that should be decided before the pilot starts.",
+    "evidence_ids": [
+      "m1"
+    ]
+  },
+  "usage": {
+    "input_tokens": 1132,
+    "input_tokens_details": {
+      "cache_write_tokens": 1129,
+      "cached_tokens": 0
+    },
+    "output_tokens": 50,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1182
+  }
+}
