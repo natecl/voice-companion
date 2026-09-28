@@ -23,3 +23,11 @@ Do not preload the video's full transcript. The two captured excerpts are third-
 Continuous speech remains an unresolved acceptance question: new finalized revisions cancel old analysis, so uninterrupted audio can yield no contribution. Do not report this setup checkpoint as physical proactive acceptance. Deployment and signed-device build evidence will be recorded after completion.
 
 Signed generic-iPhone Debug build succeeded (`Phone`, iOS SDK 26.5, team configured locally). An actual local WebSocket check through the new phone gate registered prior/live captures, produced one synthetic contribution as an ordinary stored turn, and consumed exactly one fixture-ledger reservation. No paid provider calls were used for this setup QA.
+
+## Internal setup deployed
+
+Merged PR [115](https://github.com/natecl/voice-companion/pull/115), commit `ca8b1f103f71b678ca1c320f0bd5770f4b9d0811`, is internally deployed. Render reported live; general, notes and learning health checks succeeded. The signed Debug app is installed and launched on the physical iPhone 16 Pro with the real-audio test argument. The gate expires September 29 around 13:25 America/New_York.
+
+Twenty databases were backed up before explicit provisioning. A copied-ledger dry run validated startup and the notes allowance first. Post-deployment checks covered 104 historical tables and preserved prior charges. One note deletion synced after app launch; its acknowledged device-outbox deletion was inspected, and its expected source/notes lifecycle changes were excluded explicitly from the preservation comparison. Other historical rows were preserved. Seven prior proactive calls/$0.11 reserved remain unchanged; no new provider calls or test captures ran during setup. The additional $0.09 allowance is provisioned.
+
+Physical capture, usefulness and continuous-speech timing remain unverified. Awaiting the founder's explicit readiness before the first excerpt; do not label the setup as a completed proactive test.
