@@ -41,7 +41,7 @@ struct ExperienceIconButton: View {
     var body: some View {
         Button(action: action) {
             buttonSymbol
-                .frame(width: size > 44 ? 30 : 23, height: size > 44 ? 30 : 23)
+                .frame(width: symbolSize, height: symbolSize)
                 .foregroundStyle(filled && enabled ? .white : ExperienceStyle.ink.opacity(enabled ? 1 : 0.40))
                 .frame(width: size, height: size)
                 .background {
@@ -56,6 +56,8 @@ struct ExperienceIconButton: View {
 
         }.buttonStyle(.plain).accessibilityLabel(title)
     }
+
+    private var symbolSize: CGFloat { size > 44 ? (icon == "plus" ? 36 : 30) : 23 }
 
     @ViewBuilder private var buttonSymbol: some View {
         if ["mic", "arrow.up", "xmark", "chevron.left", "stop.fill"].contains(icon) {
