@@ -39,6 +39,7 @@ class ProactiveSocketService:
             async with asyncio.timeout(5):first=request(await socket.recv())
             if first['operation']!='open':raise Rejected('proactive_open_required')
             if owner in self.connected:raise Rejected('proactive_already_connected')
+            if self.service.phone_qa:self.service.phone_qa.enroll(owner,first['capture'])
             key=(owner,first['capture'])
             if key not in self.policies:
                 if len(self.policies)>=128:raise Rejected('proactive_session_limit')
@@ -51,7 +52,7 @@ class ProactiveSocketService:
             async def evaluate(lease,live):
                 def current():
                     self.admission.authorized(token)
-                    return policy.valid(lease,self.clock())
+                    return policy.valid(lease,self.clock()) and (not self.service.phone_qa or self.service.phone_qa.active(owner))
                 try:
                     result=await self.service.evaluate(owner,live,current)
                     if not current():return

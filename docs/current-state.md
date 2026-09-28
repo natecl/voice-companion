@@ -137,3 +137,5 @@ September 28 internal UI rollout complete: PR104 backend is live at `4dd5b70`; m
 
 
 Current next feature: [proactive contributions from past notes — MVP implementation plan](proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. The [local native checkpoint](proactive-native.md) is implemented and simulator-verified, with seven bounded model calls including three retrieved-evidence silence cases. The [model evidence](proactive-model-screen.md) records $0.11 conservative reservations under the $0.25 / 12-call grant. Production enablement, broader quality and physical acceptance remain pending.
+
+September 28 phone-test preparation: [bounded proactive test](proactive-phone-test.md) scopes the next physical check to two video excerpts, Luna only and five remaining feature-QA calls, with a separately approved $0.09 recording/notes extension. Preparation is not physical acceptance or broad rollout.

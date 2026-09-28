@@ -27,3 +27,7 @@ Reproduce backend checks with `PYTHONPATH=Backend python3 -m unittest Backend.te
 Continuous-speech timing and relevance need stronger evidence; a new finalized revision deliberately cancels old analysis and may reduce opportunities during uninterrupted speech. A subsequent three-case screen verified silence for retrieved wrong-person, fictional-example and instruction-bearing notes; it is not broad accuracy evidence. Study connections and corrected/obsolete claims still need live-model evidence. Repeated-connection suppression is deliberately conservative and can miss a second useful fact from the same passage.
 
 A real iPhone conversation, foreground/background transitions, stop/reopen and perceived usefulness still require a separately scheduled consented check. Before that check, prepare the runtime allowance and matching deployment, verify available transcription capacity, explain the short steps and wait for founder readiness. The $0.25 model QA grant does not authorize ongoing runtime usage, new paid transcription or deployment. Calendar/email/messages, outside knowledge and locked-screen proactive delivery remain outside this slice.
+
+## Bounded phone-test setup
+
+The [physical test setup](proactive-phone-test.md) adds an explicit expiring hosted gate and a separate real-audio Debug launch argument. This supersedes the absolute hosted-disabled statement above only for the funded two-capture experiment. Release builds and ordinary accounts remain disabled; physical relevance/timing acceptance is still pending.

@@ -112,6 +112,11 @@ async def main():
         embedder = None
         companion = None
         notes = None
+        proactive = None
+        phone_qa = None
+        if (directory/"proactive-phone-qa.json").exists():
+            from proactive_phone_qa import PhoneQA
+            phone_qa=PhoneQA(directory)
         notes_task = None
         notes_worker = None
         try:
@@ -139,7 +144,7 @@ async def main():
                     retain_recording_memories=retain_recording_memories)
                 memory_store.recover_jobs()
                 memory_store.maintain()
-                memory = MemoryService(store, memory_store, generate_notes=notes_enabled)
+                memory = MemoryService(store, memory_store, generate_notes=notes_enabled,phone_qa=phone_qa)
                 if notes_enabled:
                     from notes_generation import NotesGenerator
                     from notes_service import NotesService, NotesWorker
@@ -196,10 +201,16 @@ async def main():
                 from companion_service import CompanionService
                 companion=CompanionService(store,memory_store,Luna(answer_key),ask.recall)
                 companion.chat.recover_interrupted()
+            if phone_qa:
+                if not companion_enabled:raise ValueError('Phone QA requires companion')
+                from proactive_service import ProactiveService
+                from proactive_socket import ProactiveSocketService
+                proactive=ProactiveSocketService(store,ProactiveService(memory_store,
+                    MemoryModels(answer_key,""),phone_qa,embedder=embedder,phone_qa=phone_qa))
             relay = Relay(key, admission=store, ask=ask, memory=memory,
                           learning_status=learning_worker.status if learning_worker else None,companion=companion,
                           indexing_status=indexing_worker.status if indexing_worker else None, notes=notes,
-                          notes_status=notes_worker.status if notes_worker else None)
+                          notes_status=notes_worker.status if notes_worker else None,proactive=proactive)
             if notes_worker:notes_worker.busy=lambda: relay.active
             async with serve(relay.handle, '0.0.0.0', int(os.environ.get('PORT', '10000')),
                              process_request=relay.authorize, max_size=64000, max_queue=8,

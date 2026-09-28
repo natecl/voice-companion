@@ -5,8 +5,9 @@ from admission import Rejected
 
 
 class MemoryService:
-    def __init__(self, admission, store, *, generate_notes=False):
+    def __init__(self, admission, store, *, generate_notes=False, phone_qa=None):
         self.admission, self.store = admission, store
+        self.phone_qa = phone_qa
         self.generate_notes = generate_notes
         self.slots = asyncio.Semaphore(2)
 
@@ -37,7 +38,13 @@ class MemoryService:
                             raise Rejected('invalid_memory_request')
                         # Recheck after async owner lookup, before persistence dispatch.
                         self.admission.authorized(token)
-                        result = await asyncio.to_thread(self.store.put_source, owner, data['source'], generate_notes=self.generate_notes)
+                        if self.phone_qa and self.phone_qa.active(owner):
+                            from memory_store import validate_source
+                            validate_source(data['source'])
+                            if data['source'].get('origin') is None and data['source']['captured_at'] >= self.phone_qa.config['starts']:
+                                self.phone_qa.enroll(owner,data['source']['session_id'])
+                        qa_source = self.phone_qa is not None and self.phone_qa.contains(owner, data['source'].get('session_id'))
+                        result = await asyncio.to_thread(self.store.put_source, owner, data['source'], generate_notes=self.generate_notes, learn=not qa_source)
                     elif operation == 'delete' and set(data) == {'version', 'owner', 'operation', 'session_id'}:
                         self.admission.authorized(token)
                         result = await asyncio.to_thread(self.store.delete_source, owner, data['session_id'])

@@ -8,7 +8,7 @@ from proactive_policy import cutoff
 from proactive_models import bounded
 
 
-def prepare(store,owner,live,previous=(),embedder=None):
+def prepare(store,owner,live,previous=(),embedder=None,allowed_sources=None):
     digest = cutoff(live)
     current = live['passages'][-8:]
     if not current: return None
@@ -16,6 +16,8 @@ def prepare(store,owner,live,previous=(),embedder=None):
         raise Rejected('proactive_live_context_too_large')
     query = ' '.join(p['text'] for p in current)[-1000:]
     pool = collect(store,owner,query,exclude_session=live['session_id'],embedder=embedder)
+    if allowed_sources is not None:
+        pool=[c for c in pool if all(i["session_id"] in allowed_sources for i in c["packet"]["items"])]
     if not pool: return None
     items=[];notes=[]
     for candidate in pool[:4]:
@@ -26,6 +28,7 @@ def prepare(store,owner,live,previous=(),embedder=None):
         notes.extend(candidate['notes'])
     packet = dict(version='selected-evidence-v1',owner=owner,items=items,digest=memory_context.fingerprint(items))
     packet = memory_related.expand(store,owner,packet,max_items=8)
+    if allowed_sources is not None and any(i["session_id"] not in allowed_sources for i in packet["items"]):return None
     # Do not trim away correction context to fit. Oversize attempts stay quiet.
     if any(i['session_id'] == live['session_id'] for i in packet['items']):
         raise Rejected('proactive_active_source_dependency')

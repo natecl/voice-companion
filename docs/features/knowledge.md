@@ -39,3 +39,5 @@ For a missed or wrong contribution, inspect source availability → speaker/subj
 
 
 Current next feature: [proactive contributions from past notes — MVP implementation plan](../proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. A [local native slice](../proactive-native.md) now reuses local evidence discovery without a user question. The initial model comparison favors Luna provisionally; three additional retrieved-evidence negatives returned silence (seven calls total). See the [model evidence](../proactive-model-screen.md). Hosted/release enablement, broader quality and physical acceptance remain pending.
+
+The [proactive phone experiment](../proactive-phone-test.md) isolates two new video recordings from existing personal context and suppresses personal-learning jobs for those sources. Notes/transcript persistence remains enabled; this is an expiring test configuration, not a permanent change to knowledge learning.
