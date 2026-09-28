@@ -37,6 +37,11 @@ async def main(directory):
             def finish(self,*args):pass
         async def note_provider(request):
             await asyncio.sleep(.5)
+            if 'Layout regression example' in request['input']:
+                refs=[p['id'] for p in json.loads(request['input'])['passages']][:8]
+                item=dict(text='The speakers discuss how a helpful participant can connect earlier conversations with new ideas. These notes should remain readable across the full page, even when a paragraph has eight supporting passages.',passages=refs)
+                return dict(data=dict(title='A thoughtful conversation about testing useful product ideas',overview=item,
+                    sections=[dict(heading='Ideas worth testing',items=[item,item])]),usage={})
             for title, summary in [
                 ('Product planning', 'Test the first version with five people.'),
                 ('Walk with Sam', 'A simple direction for the launch.'),

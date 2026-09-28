@@ -34,6 +34,7 @@ final class RecordingNotesUITests: XCTestCase {
         let screenshot = XCTAttachment(screenshot: app.screenshot())
         screenshot.name = "Recording notes — actual native app and local service, synthetic input"
         screenshot.lifetime = .keepAlways; add(screenshot)
+        app.staticTexts["notesText"].firstMatch.rightClick()
         app.buttons["notesPassage"].firstMatch.tap()
         XCTAssertTrue(app.staticTexts["notesSupportingPassage"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["notesSupportingPassage"].value as? String ?? app.staticTexts["notesSupportingPassage"].label, "Maya enjoys swimming.")

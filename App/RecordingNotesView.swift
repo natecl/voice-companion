@@ -19,15 +19,15 @@ struct RecordingNotesView: View {
                 if result.incomplete { Text("Notes from an incomplete recording").font(.caption) }
                 VStack(alignment: .leading, spacing: 16) {
                 Text("Overview").font(.system(.title2, design: .serif, weight: .bold))
-                bullet(notes.overview)
+                paragraph(notes.overview)
                 ForEach(Array(notes.sections.enumerated()), id: \.offset) { _, section in
                     Divider().padding(.vertical, 3)
                     Text(section.heading).font(.headline)
-                    ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in bullet(item) }
+                    ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in paragraph(item, bulleted: true) }
                 }
                 }.padding(18).frame(maxWidth: .infinity, alignment: .leading).experienceCard(radius: 15)
                 Label("Notes ready", systemImage: "checkmark").font(.callout).foregroundStyle(.green)
-                Text("Generated from this transcript. Check the supporting passages for details.").font(.caption).foregroundStyle(ExperienceStyle.secondary)
+                Text("Generated from this transcript. Long-press a paragraph to view its supporting transcript.").font(.caption).foregroundStyle(ExperienceStyle.secondary)
             } else if loading {
                 ExperienceThinkingStatus(label: "Preparing notes…").accessibilityIdentifier("notesLoading")
             } else {
@@ -72,13 +72,22 @@ struct RecordingNotesView: View {
         default: return "No notes have been generated for this recording."
         }
     }
-    private func bullet(_ item: RecordingNotes.Bullet) -> some View {
-        HStack(alignment: .top, spacing: 6) {
-            Text(item.text).textSelection(.enabled).accessibilityIdentifier("notesText").frame(maxWidth: .infinity, alignment: .leading)
+    private func paragraph(_ item: RecordingNotes.Bullet, bulleted: Bool = false) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
+            if bulleted { Text("•").foregroundStyle(ExperienceStyle.secondary) }
+            Text(item.text)
+                .font(.body.weight(.regular))
+                .lineSpacing(4)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .accessibilityIdentifier("notesText")
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(Rectangle())
+        .contextMenu {
             ForEach(item.passages, id: \.self) { passage in
-                Button { onPassage(passage) } label: {
-                    ExperienceSymbol(name: "doc.text").frame(width: 12, height: 14).foregroundStyle(ExperienceStyle.secondary).frame(width: 44, height: 44)
-                }.accessibilityLabel("Supporting passage \(passage.dropFirst())").accessibilityIdentifier("notesPassage")
+                Button("View passage \(passage.dropFirst())") { onPassage(passage) }
+                    .accessibilityIdentifier("notesPassage")
             }
         }
     }
