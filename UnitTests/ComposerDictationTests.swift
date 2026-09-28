@@ -3,6 +3,7 @@ import XCTest
 @MainActor
 private final class DictationStub: DictationRecognizing {
     let events = AsyncThrowingStream<DictationEvent, Error>.makeStream()
+    var audioLevel = 0.6
     var failure: Error?
     var finished = false
     var cancelled = false
@@ -16,6 +17,29 @@ private final class DictationStub: DictationRecognizing {
 @MainActor
 final class ComposerDictationTests: XCTestCase {
     private func settle() async { for _ in 0..<20 { await Task.yield() } }
+
+    func testMeterFollowsRecognizerAndStopsAfterDiscard() async throws {
+        let speech = DictationStub(); let composer = ComposerDictation(makeRecognizer: { speech })
+        composer.start { _, _ in }; await settle()
+        try await Task.sleep(for: .milliseconds(180))
+        XCTAssertEqual(composer.levels.last, 0.6)
+        composer.discard()
+        let frozen = composer.levels
+        speech.audioLevel = 1
+        try await Task.sleep(for: .milliseconds(180))
+        XCTAssertEqual(composer.levels, frozen)
+    }
+
+    func testPCMLevelTracksSilenceAndAmplitude() {
+        func level(_ value: Int16) -> Double {
+            Array(repeating: value, count: 160).withUnsafeBufferPointer {
+                AppleDictationRecognizer.level(samples: $0.baseAddress!, count: $0.count)
+            }
+        }
+        XCTAssertEqual(level(0), 0)
+        XCTAssertGreaterThan(level(12000), level(1000))
+        XCTAssertLessThanOrEqual(level(Int16.min), 1)
+    }
 
     func testStopAppendsOnlyFinalRevisionAndDoesNotSend() async {
         let speech = DictationStub(); let composer = ComposerDictation(makeRecognizer: { speech })

@@ -263,9 +263,30 @@ struct CompanionRootView: View {
                 }
                 HStack(alignment: .bottom, spacing: 8) {
                     HStack(alignment: .bottom, spacing: 0) {
+                        if dictation.isActive {
+                            ExperienceIconButton("Discard dictation", icon: "trash", bare: true) { dictation.discard() }
+                                .accessibilityIdentifier("discardDictation")
+                            Text(String(format: "%d:%02d", dictation.elapsedSeconds / 60, dictation.elapsedSeconds % 60))
+                                .font(.callout.weight(.medium)).monospacedDigit().foregroundStyle(ExperienceStyle.secondary)
+                                .frame(height: 44).accessibilityLabel("Dictation duration")
+                            HStack(spacing: 3) {
+                                ForEach(dictation.levels.indices, id: \.self) { index in
+                                    Capsule().fill(ExperienceStyle.ink)
+                                        .frame(maxWidth: 4).frame(height: 3 + dictation.levels[index] * 23)
+                                }
+                            }.frame(maxWidth: .infinity).frame(height: 44).padding(.horizontal, 8)
+                                .accessibilityLabel("Microphone level").accessibilityIdentifier("dictationWaveform")
+                            Button("Send") { dictation.finish(send: true) }
+                                .font(.callout.weight(.semibold)).frame(minWidth: 50, minHeight: 44)
+                                .disabled(dictation.state != .listening || recording.pendingMemoryDeletion)
+                                .accessibilityIdentifier("sendDictation")
+                        } else {
                         Menu {
                             Button("Attach a recording", systemImage: "doc.text") { composing = false; showingAttachments = true }
                                 .accessibilityIdentifier("chooseRecordingAttachment")
+                            Button("Dictate message", systemImage: "mic") { startDictation(chat) }
+                                .disabled(chat.isBusy || recording.pendingMemoryDeletion)
+                                .accessibilityIdentifier("dictateIntoDraft")
                             Divider()
                             Toggle("Use past memory", isOn: $chat.useMemory)
                             Button("Clear draft", role: .destructive) { dictation.discard(); chat.draft = "" }
@@ -280,11 +301,7 @@ struct CompanionRootView: View {
                             .focused($composing).lineLimit(1...5).frame(maxWidth: .infinity).accessibilityIdentifier("companionDraft")
                         ZStack {
                             Group {
-                                if dictation.isActive {
-                                    ExperienceIconButton("Stop dictation", icon: "stop.fill") {
-                                        if dictation.state == .starting { dictation.interrupt() } else { dictation.finish(send: false) }
-                                    }.disabled(dictation.state == .finishing).accessibilityIdentifier("stopDictation")
-                                } else if chat.isBusy {
+                                if chat.isBusy {
                                     ExperienceIconButton("Cancel answer", icon: "stop.fill") { chat.cancel() }
                                 } else if !chat.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                                     ExperienceIconButton("Send", icon: "arrow.up", filled: true) { sendDraft(chat) }
@@ -292,11 +309,7 @@ struct CompanionRootView: View {
                                         .accessibilityIdentifier("sendCompanion")
                                 } else {
                                     ExperienceIconButton("Dictate message", icon: "mic", bare: true) {
-                                        composing = false
-                                        dictation.start { text, send in
-                                            chat.draft = ComposerDictation.appending(text, to: chat.draft)
-                                            if send, scenePhase == .active, !chat.isBusy, !recording.pendingMemoryDeletion { sendDraft(chat) }
-                                        }
+                                        startDictation(chat)
                                     }.disabled(recording.pendingMemoryDeletion).accessibilityIdentifier("startDictation")
                                 }
                             }.id(dictation.isActive ? "dictation" : chat.isBusy ? "busy" : chat.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "mic" : "send")
@@ -305,6 +318,7 @@ struct CompanionRootView: View {
                             .animation(reduceMotion ? nil : .smooth(duration: 0.2), value: chat.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                             .animation(reduceMotion ? nil : .smooth(duration: 0.2), value: dictation.isActive)
                             .animation(reduceMotion ? nil : .smooth(duration: 0.2), value: chat.isBusy)
+                        }
                     }.padding(.horizontal, 4).padding(.vertical, 3)
                         .background(.white, in: RoundedRectangle(cornerRadius: 24))
                         .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(ExperienceStyle.line, lineWidth: 1))
@@ -323,6 +337,14 @@ struct CompanionRootView: View {
                 ExperienceIconButton("Capture meeting note", icon: "plus", filled: true, size: 58) { recording.startRecording() }
                     .accessibilityIdentifier("startRecording")
             }
+        }
+    }
+
+    private func startDictation(_ chat: CompanionController) {
+        composing = false
+        dictation.start { text, send in
+            chat.draft = ComposerDictation.appending(text, to: chat.draft)
+            if send, scenePhase == .active, !chat.isBusy, !recording.pendingMemoryDeletion { sendDraft(chat) }
         }
     }
 

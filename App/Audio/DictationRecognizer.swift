@@ -20,14 +20,18 @@ enum DictationFailure: LocalizedError {
 
 @MainActor
 protocol DictationRecognizing: AnyObject {
+    var audioLevel: Double { get }
     func start() async throws -> AsyncThrowingStream<DictationEvent, Error>
     func finish()
     func cancel()
 }
 
+extension DictationRecognizing { var audioLevel: Double { 0 } }
+
 /// Composer-only speech recognition. No relay calls, saved sessions, or automatic cloud fallback.
 @MainActor
 final class AppleDictationRecognizer: DictationRecognizing {
+    private(set) var audioLevel: Double = 0
     private let capture: any AudioCapture
     private var recognizer: SFSpeechRecognizer?
     private var request: SFSpeechAudioBufferRecognitionRequest?
@@ -69,6 +73,7 @@ final class AppleDictationRecognizer: DictationRecognizing {
                               let samples = buffer.int16ChannelData else { throw DictationFailure.unavailable }
                         buffer.frameLength = buffer.frameCapacity
                         frame.copyBytes(to: UnsafeMutableRawBufferPointer(start: samples[0], count: frame.count))
+                        audioLevel = Self.level(samples: samples[0], count: Int(buffer.frameLength))
                         request.append(buffer)
                     }
                     request.endAudio()
@@ -100,8 +105,18 @@ final class AppleDictationRecognizer: DictationRecognizing {
         }
     }
 
-    func finish() { capture.stop() } // Drain already captured frames before endAudio.
+    /// RMS from the same PCM frames sent to recognition; no second microphone consumer.
+    nonisolated static func level(samples: UnsafePointer<Int16>, count: Int) -> Double {
+        guard count > 0 else { return 0 }
+        var energy = 0.0
+        for i in 0..<count { let sample = Double(samples[i]) / 32768; energy += sample * sample }
+        let rms = sqrt(energy / Double(count))
+        return min(1, max(0, (20 * log10(max(rms, 0.00001)) + 50) / 50))
+    }
+
+    func finish() { audioLevel = 0; capture.stop() } // Drain already captured frames before endAudio.
     func cancel() {
+        audioLevel = 0
         capture.stop(); audioTask?.cancel(); audioTask = nil
         recognition?.cancel(); recognition = nil
         continuation?.finish(); continuation = nil

@@ -52,6 +52,7 @@ struct ExperienceIconButton: View {
                             .padding(size > 44 ? 0 : 4)
                     } else if !bare {
                         Circle().fill(.white)
+                            .overlay(Circle().strokeBorder(ExperienceStyle.line, lineWidth: ["person", "magnifyingglass"].contains(icon) ? 1.5 : 0))
                             .shadow(color: .black.opacity(0.06), radius: 16, y: 7)
                     }
                 }
@@ -214,16 +215,25 @@ struct ExperiencePressStyle: ButtonStyle {
 struct ExperienceNotice: View {
     let title: String
     let message: String
+    @State private var dismissed = false
     var body: some View {
+        Group {
+        if !dismissed {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "exclamationmark.circle").font(.system(size: 18)).foregroundStyle(ExperienceStyle.secondary).padding(.top, 1)
             VStack(alignment: .leading, spacing: 5) {
                 Text(title).font(.subheadline.weight(.semibold))
                 Text(message).font(.footnote).foregroundStyle(ExperienceStyle.secondary).fixedSize(horizontal: false, vertical: true)
             }.frame(maxWidth: .infinity, alignment: .leading)
-        }.padding(14).background(ExperienceStyle.surface.opacity(0.65), in: RoundedRectangle(cornerRadius: 18))
+            Button { dismissed = true } label: {
+                Image(systemName: "xmark").font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(ExperienceStyle.secondary).frame(width: 44, height: 44)
+            }.buttonStyle(ExperiencePressStyle()).accessibilityLabel("Dismiss \(title)")
+        }.padding(10).background(ExperienceStyle.surface.opacity(0.65), in: RoundedRectangle(cornerRadius: 18))
             .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(ExperienceStyle.line))
-            .accessibilityElement(children: .combine)
+            .accessibilityElement(children: .contain)
+        }
+        }.onChange(of: message) { _, _ in dismissed = false }
     }
 }
 

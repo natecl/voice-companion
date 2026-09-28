@@ -8,6 +8,9 @@ final class ComposerDictation {
     private(set) var state: State = .idle
     private(set) var text = ""
     private(set) var notice: String?
+    private(set) var elapsedSeconds = 0
+    private(set) var levels = Array(repeating: 0.0, count: 18)
+    private var meterTask: Task<Void, Never>?
     var isActive: Bool { state != .idle }
     private let makeRecognizer: () -> any DictationRecognizing
     private let limit: Duration
@@ -27,6 +30,7 @@ final class ComposerDictation {
     func start(completion: @escaping (String, Bool) -> Void) {
         guard !isActive else { return }
         state = .starting; text = ""; notice = nil; sendRequested = false
+        elapsedSeconds = 0; levels = Array(repeating: 0, count: 18)
         self.completion = completion
         let current = UUID(); generation = current
         let recognizer = makeRecognizer(); self.recognizer = recognizer
@@ -35,6 +39,14 @@ final class ComposerDictation {
                 let events = try await recognizer.start()
                 guard generation == current, !Task.isCancelled else { recognizer.cancel(); return }
                 state = .listening
+                let started = ContinuousClock.now
+                meterTask = Task {
+                    while !Task.isCancelled, generation == current, state == .listening {
+                        elapsedSeconds = Int(started.duration(to: .now).components.seconds)
+                        levels.removeFirst(); levels.append(recognizer.audioLevel)
+                        try? await Task.sleep(for: .milliseconds(80))
+                    }
+                }
                 deadline = Task {
                     try? await Task.sleep(for: limit)
                     if !Task.isCancelled, generation == current { finish(send: false) }
@@ -65,6 +77,7 @@ final class ComposerDictation {
     func finish(send: Bool) {
         guard state == .listening else { return }
         state = .finishing; sendRequested = send
+        meterTask?.cancel(); meterTask = nil
         recognizer?.finish(); deadline?.cancel()
         let current = generation
         deadline = Task {
@@ -93,6 +106,7 @@ final class ComposerDictation {
         let send = success && sendRequested && !captured.isEmpty
         let completion = completion; self.completion = nil
         generation = UUID(); state = .idle; sendRequested = false; text = ""; notice = message
+        meterTask?.cancel(); meterTask = nil
         task?.cancel(); task = nil; deadline?.cancel(); deadline = nil
         recognizer?.cancel(); recognizer = nil
         completion?(captured, send)
@@ -119,6 +133,7 @@ extension ComposerDictation {
 #if DEBUG
 @MainActor
 private final class DictationUIFixture: DictationRecognizing {
+    var audioLevel: Double { 0.55 } // Synthetic meter, only under explicit UI fixture flags.
     private let events = AsyncThrowingStream<DictationEvent, Error>.makeStream()
     func start() async throws -> AsyncThrowingStream<DictationEvent, Error> {
         events.continuation.yield(.init(text: "What does Maya", isFinal: false))
