@@ -253,7 +253,7 @@ class MemoryStore:
         memory_transitions.reopen_invalid(db, owner)
         db.execute("UPDATE job SET state='obsolete',lease=NULL WHERE owner=? AND session=?", (owner, session))
 
-    def put_source(self, owner, source, *, generate_notes=False):
+    def put_source(self, owner, source, *, generate_notes=False, learn=True):
         payload = validate_source(source)
         digest = hashlib.sha256(payload.encode()).hexdigest()
         session, revision = source['session_id'], source['revision']
@@ -280,7 +280,7 @@ class MemoryStore:
             companion_snapshots.reconcile(db,owner,source)
             memory_search.index_source(db,owner,source)
             memory_indexing.enqueue(db,owner,source,self.embedding_model)
-            db.execute('INSERT INTO job(id,owner,session,revision,extractor,state,lease) VALUES(?,?,?,?,?,?,NULL)', (str(uuid.uuid4()), owner, session, revision, EXTRACTOR_VERSION, 'profile_pending' if source.get('origin') == 'personal_text' and not self.personal_learning else 'queued'))
+            if learn:db.execute('INSERT INTO job(id,owner,session,revision,extractor,state,lease) VALUES(?,?,?,?,?,?,NULL)', (str(uuid.uuid4()), owner, session, revision, EXTRACTOR_VERSION, 'profile_pending' if source.get('origin') == 'personal_text' and not self.personal_learning else 'queued'))
             return {'status': 'stored', 'revision': revision}
 
     def delete_source(self, owner, session):

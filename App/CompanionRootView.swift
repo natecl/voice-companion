@@ -111,8 +111,9 @@ struct CompanionRootView: View {
                 guard let owner = config.memoryOwnerID else { throw CaptureFailure.noRelay }
                 chat = CompanionController(owner: owner, makeConnection: { connection(owner: owner) })
                 #if DEBUG
-                // Deliberate local QA only; release enablement awaits rollout approval and a runtime allowance.
-                if ProcessInfo.processInfo.arguments.contains("--proactive-qa"), config.url.host == "127.0.0.1" {
+                // Debug-only QA; hosted phone tests additionally require server enrollment and funding.
+                if (ProcessInfo.processInfo.arguments.contains("--proactive-qa") && config.url.host == "127.0.0.1") ||
+                    ProcessInfo.processInfo.arguments.contains("--proactive-phone-qa") {
                     proactive = ProactiveCoordinator(makeConnection: {
                         ProactiveSocketConnection(configuration: {
                             let current = try Self.config()
