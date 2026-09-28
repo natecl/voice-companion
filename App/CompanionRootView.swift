@@ -68,10 +68,10 @@ struct CompanionRootView: View {
                     .font(.caption).padding(.horizontal, 20).accessibilityIdentifier("deletionPending")
             }
             ZStack {
-                chatContent.opacity(surface == "Companion" ? 1 : 0)
+                chatContent.opacity(surface == "Companion" ? 1 : 0).zIndex(surface == "Companion" ? 1 : 0)
                     .offset(x: reduceMotion || surface == "Companion" ? 0 : -10)
                     .allowsHitTesting(surface == "Companion").accessibilityHidden(surface != "Companion")
-                homeContent.opacity(surface == "Recordings" ? 1 : 0)
+                homeContent.opacity(surface == "Recordings" ? 1 : 0).zIndex(surface == "Recordings" ? 1 : 0)
                     .offset(x: reduceMotion || surface == "Recordings" ? 0 : 10)
                     .allowsHitTesting(surface == "Recordings").accessibilityHidden(surface != "Recordings")
             }.animation(reduceMotion ? nil : .easeInOut(duration: 0.18), value: surface)
@@ -187,6 +187,14 @@ struct CompanionRootView: View {
             }
     }
 
+    private static let welcomeMessage = """
+    Hey, I’m Ellis. I’m here to help you think things through and keep track of what matters.
+
+    Tap + to capture a conversation. You can chat with me while it records, then find your notes and transcript in Notes.
+
+    Type below or tap the mic to dictate a message. What’s on your mind?
+    """
+
     @ViewBuilder private var chatContent: some View {
         if let chat {
             @Bindable var chat = chat
@@ -196,7 +204,14 @@ struct CompanionRootView: View {
                         if chat.nextBefore != nil {
                             Button("Earlier messages") { chat.loadEarlier() }.disabled(chat.isBusy)
                         }
-                        if chat.turns.isEmpty, chat.response == nil { VStack(alignment: .leading, spacing: 12) { Text("What’s on your mind?").font(.title2.weight(.semibold)); Text("Talk things through, or capture a conversation to come back to.").foregroundStyle(ExperienceStyle.secondary) }.padding(.vertical, 48) }
+                        if chat.nextBefore == nil, chat.turns.first.map({ $0.sequence == 1 }) ?? true {
+                            Text(Self.welcomeMessage).modifier(ExperienceAgentBubble())
+                                .contextMenu {
+                                    Button("Copy", systemImage: "square.on.square") { ExperienceClipboard.copy(Self.welcomeMessage) }
+                                }
+                                .padding(.trailing, 32).frame(maxWidth: .infinity, alignment: .leading)
+                                .accessibilityIdentifier("agentWelcome")
+                        }
                         ForEach(chat.turns) { turn in
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(turn.question).padding(.horizontal, 14).padding(.vertical, 12).experienceCard(radius: 18).frame(maxWidth: .infinity, alignment: .trailing)
@@ -238,7 +253,7 @@ struct CompanionRootView: View {
                             }
                         }
                     }.padding(24).frame(maxWidth: 760, alignment: .leading).frame(maxWidth: .infinity)
-                }.scrollDismissesKeyboard(.interactively).defaultScrollAnchor(.bottom).defaultScrollAnchor(chat.turns.isEmpty && chat.response == nil ? .center : .top, for: .alignment)
+                }.scrollDismissesKeyboard(.interactively).defaultScrollAnchor(.bottom).defaultScrollAnchor(.top, for: .alignment)
             }
         } else {
             ContentUnavailableView("Your companion", systemImage: "bubble.left", description: Text(sourceNotice ?? "Connecting…"))

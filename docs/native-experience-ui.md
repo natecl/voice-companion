@@ -163,3 +163,10 @@ Note action styling refinement: red Delete, blue Share, muted gray Copy. Native 
 Retained native swipe reveal/retraction and automatic action-button feedback to preserve gesture arbitration. Shared press feedback now responds in 100ms and releases smoothly over 240ms, with a softer opacity change. Note cards use restrained 0.985 press scaling; compact controls retain 0.96. Confirmed deletion animates the list update over 240ms. Reduce Motion disables custom scaling/animation while retaining opacity feedback; native transitions remain system-controlled.
 
 Simulator gallery test passed at `20260928-013247`, now also exercising swipe-close/reopen without navigation, Copy dismissal and delete/cancel alongside existing taps, menus and screen navigation. Captured native motion in `docs/qa/native-experience/note-actions-motion.mp4` and inspected a 4fps contact sheet covering swipe close/reveal, confirmation and row removal. This is simulator behavior evidence, not physical haptic/120Hz performance acceptance. Diff check passed; no paid calls or deployment.
+
+
+### Agent welcome message — September 28
+
+Replaced the centered placeholder with a normal agent bubble introducing Ellis, explaining deliberate + capture and Notes, and inviting typing or mic dictation. It stays at the start of the loaded conversation, including after the first turn, and supports long-press Copy. This is deterministic local onboarding copy, not a model call or a stored evidence-bearing turn; it appears only when the oldest history is loaded. Short conversations align at the top.
+
+The longer initial conversation exposed a hidden native Notes List competing with chat hit-testing. Active-page z-order now follows the selected surface while preserving both page instances. The first two runs reproduced an inaccessible reply-copy target; active-page ordering resolved it. Capture/reply Copy/source/reopen flow passed at `20260928-013917`, Notes swipe/menu/attachment/gallery regression passed at `20260928-014015`. Welcome screenshot inspected and updated in the gallery. Diff check passed. No paid calls or deployment.

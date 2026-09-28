@@ -276,3 +276,5 @@ Founder UI refinement, September 28: Notes uses stacked title/preview/time cards
 Founder note-action refinement, September 28: swipe Delete is red, Share blue, Copy the prior muted gray. Use simple outline symbols with consistent weight: trash, curved share arrow, overlapping squares for Copy. The same symbols appear in the long-press menu; retain native destructive-menu semantics.
 
 Founder refinement: hide visible captions beneath the swipe circles; preserve their accessibility labels and the long-press menu names.
+
+Founder onboarding refinement, September 28: replace the empty-chat placeholder with a first agent message introducing the companion, deliberate capture/Notes and composer dictation. Render it as an ordinary reply at the beginning of the main conversation, not as a separate onboarding screen or a repeated author heading.

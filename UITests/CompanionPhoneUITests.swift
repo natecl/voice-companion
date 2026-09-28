@@ -203,6 +203,9 @@ final class CompanionPhoneUITests: XCTestCase {
         defer { app.terminate() }
         let field = app.descendants(matching: .any).matching(identifier: "companionDraft").firstMatch
         XCTAssertTrue(field.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["agentWelcome"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.staticTexts["What’s on your mind?"].exists)
+        snapshot(app, "Agent welcome message")
         app.buttons["startRecording"].tap()
         XCTAssertTrue(app.buttons["showActiveRecording"].waitForExistence(timeout: 5))
         field.tap(); field.typeText("What does Maya enjoy?")
@@ -215,6 +218,7 @@ final class CompanionPhoneUITests: XCTestCase {
         app.buttons["Dismiss Agent update"].tap()
         XCTAssertFalse(app.buttons["Dismiss Agent update"].exists)
         XCTAssertFalse(app.buttons["Copy answer"].exists)
+        app.swipeUp()
         app.staticTexts["companionAnswer"].firstMatch.press(forDuration: 0.8)
         XCTAssertTrue(app.buttons["Copy"].waitForExistence(timeout: 3))
         snapshot(app, "Copy bubble preview")
