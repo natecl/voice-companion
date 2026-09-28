@@ -205,10 +205,13 @@ struct CompanionRootView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(turn.question).padding(.horizontal, 14).padding(.vertical, 12).experienceCard(radius: 18).frame(maxWidth: .infinity, alignment: .trailing)
                                 if let answer = turn.answer {
-                                    Text(CompanionMessageText.presented(answer)).modifier(ExperienceAgentBubble()).padding(.top, 14)
+                                    Text(CompanionMessageText.presented(answer)).modifier(ExperienceAgentBubble())
                                         .contextMenu {
                                             Button("Copy", systemImage: "doc.on.doc") { ExperienceClipboard.copy(CompanionMessageText.presented(answer)) }
-                                        }.accessibilityIdentifier("companionAnswer")
+                                        }
+                                        .padding(.top, 14).padding(.trailing, 32)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .accessibilityIdentifier("companionAnswer")
                                 }
                                 if turn.state != .complete { ExperienceNotice(title: "About this answer", message: turnLabel(turn.state)) }
                                 ForEach(CompanionMessageText.showsEvidence ? turn.citations : [], id: \.id) { citation in
@@ -228,7 +231,9 @@ struct CompanionRootView: View {
                             Text(CompanionMessageText.presented(response.text, streaming: response.state == .streaming)).modifier(ExperienceAgentBubble())
                                 .contextMenu {
                                     Button("Copy", systemImage: "doc.on.doc") { ExperienceClipboard.copy(CompanionMessageText.presented(response.text, streaming: response.state == .streaming)) }
-                                }.accessibilityIdentifier("companionPartial")
+                                }
+                                .padding(.trailing, 32).frame(maxWidth: .infinity, alignment: .leading)
+                                .accessibilityIdentifier("companionPartial")
                             if response.state == .streaming { ExperienceThinkingStatus(label: "Answering…", active: surface == "Companion" && selectedID == nil) }
                             else if response.state != .saved { ExperienceNotice(title: "Answer interrupted", message: "We couldn’t confirm this answer was saved. Recover the question below to check or continue it.") }
 

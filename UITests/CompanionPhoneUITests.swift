@@ -190,6 +190,7 @@ final class CompanionPhoneUITests: XCTestCase {
         XCTAssertFalse(app.buttons["Copy answer"].exists)
         app.staticTexts["companionAnswer"].firstMatch.press(forDuration: 0.8)
         XCTAssertTrue(app.buttons["Copy"].waitForExistence(timeout: 3))
+        snapshot(app, "Copy bubble preview")
         app.buttons["Copy"].tap()
         app.buttons["showActiveRecording"].tap()
         snapshot(app, "Live transcript sheet")
