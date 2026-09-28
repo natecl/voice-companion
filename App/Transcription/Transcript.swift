@@ -16,6 +16,29 @@ struct TranscriptSegment: Codable, Identifiable {
     let isFinal: Bool
 }
 
+struct TranscriptSpeakerTurn {
+    let speaker: Int?
+    var text: String
+}
+
+extension TranscriptSegment {
+    var speakerTurns: [TranscriptSpeakerTurn] {
+        // Preserve the complete provider text when attribution has not arrived.
+        guard words.contains(where: { $0.speaker != nil }) else {
+            return [TranscriptSpeakerTurn(speaker: nil, text: text)]
+        }
+        var turns: [TranscriptSpeakerTurn] = []
+        for word in words {
+            if let last = turns.last, last.speaker == word.speaker {
+                turns[turns.count - 1].text += " " + word.text
+            } else {
+                turns.append(TranscriptSpeakerTurn(speaker: word.speaker, text: word.text))
+            }
+        }
+        return turns
+    }
+}
+
 struct Transcript: Codable {
     var segments: [TranscriptSegment] = []
     var receivedThroughSeconds: Double {

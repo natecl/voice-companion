@@ -1,6 +1,19 @@
 import XCTest
 
 final class TranscriptTests: XCTestCase {
+    func testSpeakerTurnsPreserveChangesAndUnknownAttribution() {
+        let words = [TranscriptWord(text: "Hello", start: 0, end: 1, speaker: 0),
+                     TranscriptWord(text: "there.", start: 1, end: 2, speaker: 0),
+                     TranscriptWord(text: "Hi!", start: 2, end: 3, speaker: 1),
+                     TranscriptWord(text: "Unclear.", start: 3, end: 4, speaker: nil)]
+        let segment = TranscriptSegment(start: 0, duration: 4, text: "Hello there. Hi! Unclear.", words: words, isFinal: true)
+        XCTAssertEqual(segment.speakerTurns.map(\.speaker), [0, 1, nil])
+        XCTAssertEqual(segment.speakerTurns.map(\.text), ["Hello there.", "Hi!", "Unclear."])
+        let pending = TranscriptSegment(start: 0, duration: 4, text: "Full text before labels.", words: [], isFinal: false)
+        XCTAssertEqual(pending.speakerTurns.first?.text, pending.text)
+        XCTAssertNil(pending.speakerTurns.first?.speaker)
+    }
+
     func testStitchedResultReplacesChunksAndPreservesPreviousUtterance() {
         var transcript = Transcript()
         func segment(_ start: Double, _ duration: Double, _ text: String) -> TranscriptSegment {

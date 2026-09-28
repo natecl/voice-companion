@@ -484,7 +484,17 @@ struct CompanionRootView: View {
                             ForEach(session.transcript.segments) { segment in
                                 VStack(alignment: .leading) {
                                     Text(String(format: "%02d:%02d", Int(segment.start) / 60, Int(segment.start) % 60)).font(.caption).foregroundStyle(ExperienceStyle.secondary).padding(.bottom, 5)
-                                    Text(segment.text).font(.body).lineSpacing(3).textSelection(.enabled)
+                                    ForEach(Array(segment.speakerTurns.enumerated()), id: \.offset) { _, turn in
+                                        VStack(alignment: .leading, spacing: 6) {
+                                            if session.source != "personal_text" {
+                                                Text(turn.speaker.map { "Speaker \($0 + 1)" } ?? "Speaker unknown")
+                                                    .font(.caption.weight(.medium))
+                                                    .foregroundStyle(ExperienceStyle.secondary)
+                                                    .accessibilityIdentifier("transcriptSpeaker")
+                                            }
+                                            Text(turn.text).font(.body).lineSpacing(3).textSelection(.enabled)
+                                        }.padding(.bottom, 6)
+                                    }
                                 }.padding(.vertical, 10).accessibilityIdentifier("transcriptSegment")
                             }
                         }
