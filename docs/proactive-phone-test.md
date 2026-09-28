@@ -31,3 +31,19 @@ Merged PR [115](https://github.com/natecl/voice-companion/pull/115), commit `ca8
 Twenty databases were backed up before explicit provisioning. A copied-ledger dry run validated startup and the notes allowance first. Post-deployment checks covered 104 historical tables and preserved prior charges. One note deletion synced after app launch; its acknowledged device-outbox deletion was inspected, and its expected source/notes lifecycle changes were excluded explicitly from the preservation comparison. Other historical rows were preserved. Seven prior proactive calls/$0.11 reserved remain unchanged; no new provider calls or test captures ran during setup. The additional $0.09 allowance is provisioned.
 
 Physical capture, usefulness and continuous-speech timing remain unverified. Awaiting the founder's explicit readiness before the first excerpt; do not label the setup as a completed proactive test.
+
+## Physical run findings — September 28
+
+Both founder-played video recordings completed and both generated notes are ready. Read-only hosted inspection found two registered captures. First capture had 12 silence outcomes and no paid proactive evaluations. Second capture had three silence, two cancelled and one unavailable outcome; no contribution was stored. Five additional Luna reservations were consumed: three completed responses and two uncertain/cancelled requests. The shared grant is now at 12 calls and $0.21 reserved, so its call ceiling is exhausted despite remaining monetary headroom. No retry is authorized by this result.
+
+Saved source review confirms the first excerpt discusses an AI participant and Proven/Better/New; the second discusses inference costs, continuous listening and free consumer products. This establishes topical connection, not that an unsolicited message would have been useful at a particular moment. Exact live request packets and model outputs were not retained; the three silence decisions cannot be fully audited from the final transcript.
+
+Code inspection and a local policy reproduction found:
+
+- Any changed source digest invalidates the pending lease, even an append-only additional sentence. The socket cancels that job. Thus ordinary ongoing speech can discard a paid in-flight analysis. The two recorded cancellations are consistent with this mechanism, but the ledger does not retain their precise lifecycle cause.
+- Context is selected by the last eight passages, then rejected if its serialized size exceeds 5,000 bytes. The second saved transcript's eight passages serialize to 5,331 bytes, with individual passages of 1,882 and 1,739 characters. The final saved form therefore deterministically exceeds the limit. We cannot prove this caused the historical unavailable result: budget exhaustion is another possible cause, and the terminal reason is not stored.
+- A generic unavailable event sets the native coordinator's unavailable flag for the remainder of the capture. A transient oversized window can therefore disable subsequent evaluation. This is code evidence, not a separate observed phone event.
+
+Recommended next bounded fix: retain reason-coded, content-minimal diagnostics; build a size-bounded recent context window with valid original offsets; distinguish appended speech from revisions to evidence used by a pending analysis while retaining stop/background/correction invalidation and freshness checks. Verify with synthetic continuous-speech replay before requesting another paid physical test. Do not increase limits or weaken evidence validation as a shortcut.
+
+No new model/transcription calls, device access, hosted changes or recording retries were used in this investigation. Physical capture/notes succeeded; proactive usefulness remains unverified and no message was delivered. UI formatting/speaker repairs are separate merged checkpoints.
