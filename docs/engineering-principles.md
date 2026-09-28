@@ -297,3 +297,5 @@ The current request is the [implementation plan](proactive-contributions-plan.md
 
 
 Founder presentation clarification: proactive contributions appear as ordinary agent messages in the persistent main chat, with the same styling and follow-up interaction as other replies. Do not add a separate suggestion card, badge/label or per-contribution dismissal workflow. Internal provenance and trigger metadata remain distinct for validation. This supersedes the suggestion-specific presentation proposed in the [implementation plan](proactive-contributions-plan.md).
+
+Founder authorizes starting the proactive implementation on September 28, following the approved plan and normal checkpoint verification. The earlier planning-only boundary is superseded for implementation; paid QA stays within the separate $0.25 / 12-call grant and deployment/physical readiness remain separate.

@@ -73,3 +73,5 @@ The [simpler memory foundation](../simple-memory-foundation.md) completed its bo
 
 
 Current next feature: [proactive contributions from past notes — MVP implementation plan](../proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. The plan and bounded $0.25 / 12-call QA approval are recorded; no proactive implementation or new live verification is claimed.
+
+Local candidate: [proactive foundation](../proactive-foundation.md) implements scheduling, local discovery and model contracts with free replay evidence. No hosted/native integration or live model acceptance yet.
