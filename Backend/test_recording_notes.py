@@ -128,6 +128,6 @@ class RecordingNotesTests(unittest.TestCase):
         migrated=MemoryStore(self.path)
         with migrated.connect() as db:
             self.assertEqual([tuple(r) for r in db.execute('SELECT * FROM source')],before)
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],18)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],19)
             self.assertEqual(db.execute('SELECT count(*) FROM recording_notes').fetchone()[0],0)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0],'ok')
