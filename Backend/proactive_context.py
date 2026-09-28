@@ -8,12 +8,36 @@ from proactive_policy import cutoff
 from proactive_models import bounded
 
 
+def recent_window(passages, limit=5000):
+    """Bound UTF-8 JSON bytes, keeping original passage IDs and character offsets."""
+    current=[]
+    for p in reversed(passages[-8:]):
+        item=dict(p)
+        if len(json.dumps([item]+current,ensure_ascii=False).encode())<=limit:
+            current.insert(0,item)
+            continue
+        if current:break
+        # One provider utterance can span minutes. Keep its recent tail, with
+        # explicit clipping metadata and exact source offsets for citations.
+        low,high=0,len(p['text'])
+        while low<high:
+            mid=(low+high)//2
+            trial=dict(item,text=p['text'][mid:],text_start=mid,text_end=len(p['text']),truncated=True)
+            if len(json.dumps([trial],ensure_ascii=False).encode())<=limit:high=mid
+            else:low=mid+1
+        offset=low
+        # Avoid starting in the middle of a word when a boundary is available.
+        while offset<len(p['text']) and offset>0 and not p['text'][offset-1].isspace():offset+=1
+        if offset<len(p['text']):
+            current=[dict(item,text=p['text'][offset:],text_start=offset,text_end=len(p['text']),truncated=True)]
+        break
+    return current
+
+
 def prepare(store,owner,live,previous=(),embedder=None,allowed_sources=None):
     digest = cutoff(live)
-    current = live['passages'][-8:]
+    current = recent_window(live['passages'])
     if not current: return None
-    if len(json.dumps(current,ensure_ascii=False).encode()) > 5000:
-        raise Rejected('proactive_live_context_too_large')
     query = ' '.join(p['text'] for p in current)[-1000:]
     pool = collect(store,owner,query,exclude_session=live['session_id'],embedder=embedder)
     if allowed_sources is not None:

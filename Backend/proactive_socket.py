@@ -72,6 +72,7 @@ class ProactiveSocketService:
                     if data['capture']!=policy.capture:raise Rejected('proactive_capture_changed')
                     policy.quiet()
                     if job:
+                        print(json.dumps(dict(event='proactive_cancel',reason=data['operation'])),flush=True)
                         job.cancel();await asyncio.gather(job,return_exceptions=True);job=None
                     await send(dict(type='quiet'))
                     if data['operation']=='stop':return
@@ -84,6 +85,7 @@ class ProactiveSocketService:
                     # observe invalidates an older lease before cancellation can complete.
                     lease=policy.observe(data['live'],self.clock())
                     if job and not job.done() and (lease is not None or policy.pending is None):
+                        print(json.dumps(dict(event='proactive_cancel',reason='source_revised')),flush=True)
                         job.cancel();await asyncio.gather(job,return_exceptions=True);job=None
                     if lease is not None:job=asyncio.create_task(evaluate(lease,data['live']))
         except Exception:
@@ -93,5 +95,6 @@ class ProactiveSocketService:
             if registered:
                 policy.background()
                 if job:
+                    if not job.done():print(json.dumps(dict(event='proactive_cancel',reason='connection_closed')),flush=True)
                     job.cancel();await asyncio.gather(job,return_exceptions=True)
                 self.connected.discard(owner)
