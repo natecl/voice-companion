@@ -560,7 +560,7 @@ struct CompanionRootView: View {
                             .overlay { RoundedRectangle(cornerRadius: 24).stroke(ExperienceStyle.line.opacity(0.55), lineWidth: 0.5) }
                             .contentShape(RoundedRectangle(cornerRadius: 24))
                     }.buttonStyle(ExperiencePressStyle(pressedScale: 0.985)).accessibilityIdentifier("savedSession")
-                    .padding(.bottom, 12)
+                    .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 24))
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                         Button { ExperienceClipboard.copy(noteExport(session)) } label: { noteActionLabel("Copy", icon: "square.on.square").labelStyle(.iconOnly) }
                             .buttonStyle(.automatic).tint(ExperienceStyle.secondary)
@@ -578,6 +578,7 @@ struct CompanionRootView: View {
                         ShareLink(item: noteExport(session)) { noteActionLabel("Share", icon: "arrowshape.turn.up.right") }
                         Button { ExperienceClipboard.copy(noteExport(session)) } label: { noteActionLabel("Copy", icon: "square.on.square") }
                     }
+                    .padding(.bottom, 12)
                 }
             }
             .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
