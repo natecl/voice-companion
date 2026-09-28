@@ -131,3 +131,5 @@ Focused refresh-controller tests cover visible-history preservation, replacement
 Final verification: two controller regressions passed; menu/refresh and gallery/attachment flows passed at `/tmp/VoiceCompanion-ExperienceResults/20260928-005534/`. The shorter Refresh chat label and dismissal update passed at `20260928-005732`; the subsequent incoming-bubble revision passed capture/chat/source/reopen plus dismissal at `20260928-005903`. Actual menu, attachment sheet and Agent bubble screenshots inspected. Final signed iPhone and Mac builds passed. No paid calls or physical behavioral acceptance.
 
 Agent saved and streaming replies now use the latest supplied reference: content-sized left-aligned light-gray rounded bubbles, subtle border, 16-point horizontal padding and semibold body type. This supersedes the earlier unboxed replies. The Agent capture screenshot contains debug-only source markers from the synthetic fixture.
+
+Source checkpoint `6ba4966` installed in place and launched successfully on the paired iPhone. Receipts: `/tmp/menu-bubbles-install.json`, `/tmp/menu-bubbles-launch.json`. No microphone or paid-provider run was initiated.
