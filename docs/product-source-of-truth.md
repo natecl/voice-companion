@@ -153,3 +153,6 @@ Founder revision: deleting a note removes its recording/transcript but preserves
 ## MVP delivery selection — September 28, 2026
 
 Founder selects proactive contributions from past notes as the next implementation target and wants this MVP ready for the App Store before the YC application. Connected sources and outside knowledge remain in the full description, but are not required for this feature. The [implementation plan](proactive-contributions-plan.md) proposes the incremental path and preserves separate public-release readiness gates. The selected feature is not yet implemented.
+
+
+Founder presentation clarification: proactive contributions appear as ordinary agent messages in the persistent main chat, with the same styling and follow-up interaction as other replies. Do not add a separate suggestion card, badge/label or per-contribution dismissal workflow. Internal provenance and trigger metadata remain distinct for validation. This supersedes the suggestion-specific presentation proposed in the [implementation plan](proactive-contributions-plan.md).
