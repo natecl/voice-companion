@@ -26,7 +26,6 @@ struct RecordingNotesView: View {
                     ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in paragraph(item, bulleted: true) }
                 }
                 }.padding(18).frame(maxWidth: .infinity, alignment: .leading).experienceCard(radius: 15)
-                Label("Notes ready", systemImage: "checkmark").font(.callout).foregroundStyle(.green)
                 Text("Generated from this transcript. Long-press a paragraph to view its supporting transcript.").font(.caption).foregroundStyle(ExperienceStyle.secondary)
             } else if loading {
                 ExperienceThinkingStatus(label: "Preparing notes…").accessibilityIdentifier("notesLoading")
