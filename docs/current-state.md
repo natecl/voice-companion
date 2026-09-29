@@ -1,5 +1,15 @@
 # Current product, implementation and research knowledge
 
+> Current September 29 release status and remaining phases: [TestFlight handoff](execution/testflight-release-handoff.md). UI/integration PR154–155 are merged and the internal phone build is installed; backend rollout, independent accounts and paid plans remain pending. Earlier dated evidence below is historical, not a fresh release attestation.
+
+## Current release snapshot — September 29
+
+UI PR154 and phased integration PR155 are merged at `5a04ea3`. The shared WKWebView UI is the accepted interface; native audio, dictation and storage remain behind it. Note caching is integrated and locally verified, including offline relaunch and invalidation. The signed internal phone build is installed; full Release enrollment, owner lifecycle, subscriptions and TestFlight are not complete. Last inspected hosted backend remains `70f494b`, so merged backend fixes must not be described as deployed. See the handoff for evidence, permissions and exact remaining packets.
+
+The next sequence is accounts → selected plans/limits → subscriptions/paywall → Release validation → independent TestFlight pilot. A free pilot before commercial billing remains an explicit decision. No price or auth provider has been selected. The September 29 social-presence direction governs positioning; the following September 28 material is retained as dated history.
+
+## Historical September 28 implementation and research
+
 September 29 direction: [invited social presence](social-presence-experience.md) supersedes note-taking-led positioning; see the [revised execution phases](execution/demo-testflight-phases.md). Earlier implementation and rollout claims below remain dated evidence, not fresh runtime inspection.
 
 Updated September 28, 2026 against main `660e4c7` for the proactive AI note-taking vision. Last recorded backend rollout: `4dd5b70` (PR104); latest installed native fix: `3954284` (PR106). This audit did not query the live service or rerun physical/provider QA. See [UI rollout evidence](native-experience-ui.md#approved-internal-rollout--september-28-2026).

@@ -1,4 +1,6 @@
-# Tester access and account controls
+# Accounts and personal data
+
+> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
 
 Feature ID: `access` · Context reviewed September 29, 2026 against main `3a30e25`.
 
@@ -8,11 +10,11 @@ Independent per-tester enrollment, isolation and revocation. Product direction: 
 
 ## Current implementation
 
-Internal credential, admission, quotas and administration foundations exist. Single-instance service startup owns migrations and interruption recovery.
+Internal admission/credential foundations exist; fresh Release enrollment, sign-out, owner switching and full account deletion are not delivered.
 
 ## Gaps and non-goals
 
-Independent invited-tester enrollment and public account operations are not established. Sign-up/account UI can contain previews. Full account/memory erasure is not delivered.
+Session refresh/revocation, owner-scoped cache clearing, existing-account migration and complete account erasure are required release work. Sign in with Apple is proposed; Google is not yet selected.
 
 ## Flow and implementation entry points
 
@@ -34,17 +36,11 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Verification and delivery state
 
-- Repository state: internal foundation; independent beta readiness unverified.
-- [Feature verifier contract](../verification/access.json): `python3 scripts/verify_feature.py access`.
-- [Mechanical baseline and unresolved checks](../verification-map.md#initial-mechanical-check-results--september-29-2026). Automated success is not full-feature acceptance.
-- Required real-path evidence: Actual authenticated service paths with two isolated users and revocation; Fresh enrollment, sign-out/data clearing and actionable failure UI.
-- Merged/deployed/installed are separate states. This map is a repository context audit; it does not freshly inspect hosted flags or the phone. Historical evidence below applies only to its recorded versions and scenarios. Obtain actual version/configuration identities before a runtime claim.
+Release feature remains incomplete. [Verifier](../verification/access.json): `python3 scripts/verify_feature.py access`. Its updated gates require final-configuration lifecycle evidence; existing local checks or preview navigation alone do not satisfy them. See the [handoff delivery ledger](../../execution/testflight-release-handoff.md) for merged, installed and deployed boundaries. No new account, billing or release behavior was tested in this documentation pass.
 
 ## Next bounded work
 
-Audit and select the smallest private-pilot enrollment path; prove fresh access, two-user isolation and revocation before distribution.
-
-Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.
+Select the account provider with the founder, then implement fresh Release enrollment and prove two-user isolation before lifecycle/migration work.
 
 ## Supporting context and evidence
 

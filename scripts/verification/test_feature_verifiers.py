@@ -41,11 +41,12 @@ class FeatureVerifierTests(unittest.TestCase):
                 feature.verify('meeting-notes;echo unsafe')
             run.assert_not_called()
 
-    def test_planned_cache_has_no_fake_automated_success(self):
-        with patch.object(checkpoint, 'run') as run:
-            with self.assertRaises(ValueError):
-                feature.verify('note-cache', checks_only=True)
-            run.assert_not_called()
+    def test_unimplemented_release_features_have_no_fake_automated_success(self):
+        for feature_id in ('pricing', 'subscriptions', 'distribution'):
+            with self.subTest(feature=feature_id), patch.object(checkpoint, 'run') as run:
+                with self.assertRaises(ValueError):
+                    feature.verify(feature_id, checks_only=True)
+                run.assert_not_called()
 
     def test_full_feature_uses_linked_manifest_and_never_self_approves(self):
         with patch.object(checkpoint, 'run', return_value={'status': 'needs_review'}) as run:

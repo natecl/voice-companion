@@ -1,5 +1,7 @@
 # Shared companion-room interface
 
+> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+
 Status: internal candidate installed on the founder’s iPhone; physical acceptance remains in progress. Depends on PR 154's native baseline. Founder revision: approved prototype UI is the source of truth, now shared literally instead of translated into SwiftUI.
 
 ## Owned boundary

@@ -1,10 +1,11 @@
 {
   "packet": "FEATURE-access",
-  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "base": "5a04ea30d05dcf78537340e66da9e695465249ee",
   "acceptance": [
-    "Independent per-tester enrollment, isolation and revocation",
-    "Actual authenticated service paths with two isolated users and revocation",
-    "Fresh enrollment, sign-out/data clearing and actionable failure UI"
+    "Fresh Release enrollment, authenticated session refresh and revoked-session handling without developer credential import",
+    "Two-user server isolation and owner-switch/sign-out clearing of local notes, chat and memory state",
+    "Account deletion and existing-owner migration preserve the selected lifecycle contract without leaking or losing unrelated data",
+    "Lead inspects exact final-configuration evidence before dependent work advances"
   ],
   "checks": [
     {
@@ -18,21 +19,28 @@
       "group": "live_behavior_checks",
       "kind": "fixture",
       "evidence": "work/feature-evidence/access/behavior-1.json",
-      "claim": "Actual authenticated service paths with two isolated users and revocation"
+      "claim": "Fresh Release enrollment, authenticated session refresh and revoked-session handling without developer credential import"
     },
     {
       "id": "access-behavior-2",
       "group": "live_behavior_checks",
-      "kind": "simulator",
+      "kind": "fixture",
       "evidence": "work/feature-evidence/access/behavior-2.json",
-      "claim": "Fresh enrollment, sign-out/data clearing and actionable failure UI"
+      "claim": "Two-user server isolation and owner-switch/sign-out clearing of local notes, chat and memory state"
+    },
+    {
+      "id": "access-behavior-3",
+      "group": "live_behavior_checks",
+      "kind": "simulator",
+      "evidence": "work/feature-evidence/access/behavior-3.json",
+      "claim": "Account deletion and existing-owner migration preserve the selected lifecycle contract without leaking or losing unrelated data"
     },
     {
       "id": "access-inspection",
       "group": "inspection",
       "kind": "review",
       "evidence": "work/feature-evidence/access/inspection.json",
-      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+      "claim": "Inspect raw final-build evidence, negative cases, unmet gates and account isolation; simulated fixtures do not establish sandbox or physical behavior"
     }
   ],
   "not_applicable": {}

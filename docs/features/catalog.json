@@ -223,9 +223,9 @@
     "context_map": "docs/features/maps/proactive.md"
   },
   "access": {
-    "name": "Tester access and account controls",
+    "name": "Accounts and personal data",
     "outcome": "Independent per-tester enrollment, isolation and revocation",
-    "status": "internal foundation; independent beta readiness unverified",
+    "status": "internal foundations only; release implementation and real-path acceptance pending",
     "implementation": [
       "Backend/admission.py",
       "Backend/admin.py",
@@ -237,13 +237,13 @@
       "Backend.test_hosted_startup"
     ],
     "manifest": "docs/features/verification/access.json",
-    "verification_scope": "Actual authenticated service paths with two isolated users and revocation; Fresh enrollment, sign-out/data clearing and actionable failure UI",
+    "verification_scope": "Fresh Release enrollment, authenticated session refresh and revoked-session handling without developer credential import; Two-user server isolation and owner-switch/sign-out clearing of local notes, chat and memory state; Account deletion and existing-owner migration preserve the selected lifecycle contract without leaking or losing unrelated data",
     "context_map": "docs/features/maps/access.md"
   },
   "distribution": {
     "name": "TestFlight install and update",
     "outcome": "Correct signed release configuration and independently usable beta",
-    "status": "internal foundation; independent beta readiness unverified",
+    "status": "internal foundations only; release implementation and real-path acceptance pending",
     "implementation": [
       "project.yml",
       "scripts/check.sh",
@@ -251,20 +251,20 @@
     ],
     "test_modules": [],
     "manifest": "docs/features/verification/distribution.json",
-    "verification_scope": "Signed release install/update and independent tester access; intended native/backend version pairing",
+    "verification_scope": "Signed Release archive and exact backend/native configuration pairing pass deployment health, migration, preservation and rollback checks; Fresh independent TestFlight install and update preserve account data and exercise capture, notes, chat and bounded proactive controls without Debug activation; Signing, app record, authorized artwork/icon, privacy/legal/support metadata and selected free-or-paid release gates are reviewed",
     "context_map": "docs/features/maps/distribution.md"
   },
   "subscriptions": {
-    "name": "Sign-up and pricing previews",
+    "name": "Subscriptions and paywall",
     "outcome": "Current preview surfaces; real purchase/subscription implementation is deferred",
-    "status": "preview/deferred; not delivered as a working integration",
+    "status": "preview only; real billing planned and unverified",
     "implementation": [
       "App/ExperienceStyle.swift",
       "App/ExperienceAccountView.swift"
     ],
     "test_modules": [],
     "manifest": "docs/features/verification/subscriptions.json",
-    "verification_scope": "Verify pilot navigation accurately marks or excludes unavailable sign-up/pricing flows",
+    "verification_scope": "Sandbox purchase binds a verified transaction and entitlement to the correct account; cancelled and pending purchases do not grant access; Sandbox restore, renewal, expiration, refund/revocation and grace/recovery reconcile idempotently without cross-account entitlement transfer; Approved paywall shows actual localized product terms and working restore/manage actions; offline and failed purchase states are truthful",
     "context_map": "docs/features/maps/subscriptions.md"
   },
   "connected-sources": {
@@ -292,5 +292,18 @@
     "manifest": "docs/features/verification/social-presence.json",
     "verification_scope": "Reviewed prototype, actual native state transitions, accessible controls, drafts and history; changed model judgment verified through proactive contract",
     "context_map": "docs/features/maps/social-presence.md"
+  },
+  "pricing": {
+    "name": "Plans and usage limits",
+    "outcome": "Selected Free/Pro plans with server-enforced allowances and clear usage feedback",
+    "status": "planned; prices and allowances undecided",
+    "implementation": [
+      "Backend/admission.py",
+      "Backend/admin.py"
+    ],
+    "test_modules": [],
+    "manifest": "docs/features/verification/pricing.json",
+    "verification_scope": "Founder-approved Free/Pro matrix with measured costs, allowances, reset policy and disclosed assumptions; Authenticated server enforcement handles concurrent reservations, failures, resets and entitlement changes without duplicate spending; At limits, clear remaining-usage feedback and saved-note access work in the actual app",
+    "context_map": "docs/features/maps/pricing.md"
   }
 }
