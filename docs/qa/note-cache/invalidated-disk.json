@@ -1,0 +1,18 @@
+[
+  {
+    "case": "stale",
+    "payload_files": 0,
+    "metadata": [
+      "invalid-1",
+      "revision"
+    ]
+  },
+  {
+    "case": "deleted",
+    "payload_files": 0,
+    "metadata": [
+      "deleted",
+      "revision"
+    ]
+  }
+]
