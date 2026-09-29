@@ -1,0 +1,46 @@
+{
+  "provenance": "Five real Luna calls with predeclared synthetic history; not a closed-loop physical conversation",
+  "calls": 5,
+  "reserved_microusd": 100000,
+  "usage": {
+    "input_tokens": 6623,
+    "output_tokens": 187
+  },
+  "results": [
+    {
+      "case": "missing-prerequisite",
+      "expected": "contribute",
+      "actual": "contribute",
+      "characters": 197,
+      "seconds": 1.9917744314298034
+    },
+    {
+      "case": "acknowledged-after-cooldown",
+      "expected": "silence",
+      "actual": "silence",
+      "characters": 0,
+      "seconds": 1.3717693043872714
+    },
+    {
+      "case": "topic-covered",
+      "expected": "silence",
+      "actual": "silence",
+      "characters": 0,
+      "seconds": 1.122017682529986
+    },
+    {
+      "case": "new-useful-opening",
+      "expected": "contribute",
+      "actual": "contribute",
+      "characters": 133,
+      "seconds": 1.5620753401890397
+    },
+    {
+      "case": "duplicate-output-defense",
+      "expected": "silence",
+      "actual": "silence",
+      "characters": 0,
+      "seconds": 1.2559651704505086
+    }
+  ]
+}
