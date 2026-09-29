@@ -60,3 +60,9 @@ Default verification environment is isolated QA with the real integrations, not 
 Specialize step 3: fresh provider outputs for changed model behavior; running app/screenshots for UI; real microphone/device for microphone/device claims; real authenticated service requests with isolated users for access controls; actual disk write/relaunch/offline/update tests for caching; migration/reopen/rollback checks for storage changes; archive/configuration/install checks for distribution. Fixtures are appropriate to isolate unchanged upstream dependencies, but never replace the very integration being claimed.
 
 The orchestrator reviews correctness, not just report completeness. Include exact source/configuration identity, raw evidence paths and failures/limitations so the review can be independently reproduced. A worker may repair and reverify failures within the packet without repeated permission, but only the orchestrator accepts the checkpoint and releases dependent work.
+
+## Required feature context
+
+Every packet names the feature IDs and links their [individual context maps](../features/context-map.md), plus their verifier manifests. Before implementation, the worker states the current behavior, specific gap being closed, shared contracts and files it may modify. Resolve contradictions against canonical guidance and inspected code; do not infer live configuration from historical rollout notes.
+
+The final report supplies a map delta: what changed, what remains missing, verification evidence with source/configuration identity, merged/deployed/installed status separately, and the next unresolved question. The orchestrator incorporates accepted deltas into the feature maps before releasing dependent work. Shared map edits are serialized.

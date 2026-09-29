@@ -13,7 +13,8 @@
       "Backend.test_hosted_relay"
     ],
     "manifest": "docs/features/verification/capture.json",
-    "verification_scope": "Actual microphone/provider capture, interruption and save/reopen"
+    "verification_scope": "Actual microphone/provider capture, interruption and save/reopen",
+    "context_map": "docs/features/maps/capture.md"
   },
   "library": {
     "name": "Recording library and sync",
@@ -28,7 +29,8 @@
       "Backend.test_memory"
     ],
     "manifest": "docs/features/verification/library.json",
-    "verification_scope": "Offline save/relaunch, sync recovery and attaching a recording"
+    "verification_scope": "Offline save/relaunch, sync recovery and attaching a recording",
+    "context_map": "docs/features/maps/library.md"
   },
   "meeting-notes": {
     "name": "Meeting note summaries",
@@ -47,7 +49,8 @@
       "Backend.test_notes_budget"
     ],
     "manifest": "docs/features/verification/meeting-notes.json",
-    "verification_scope": "Final note-generation configuration produces a faithful summary through service/storage; Render the actual summary and supporting passage; inspect failures/retry"
+    "verification_scope": "Final note-generation configuration produces a faithful summary through service/storage; Render the actual summary and supporting passage; inspect failures/retry",
+    "context_map": "docs/features/maps/meeting-notes.md"
   },
   "note-cache": {
     "name": "On-device note caching",
@@ -59,7 +62,8 @@
     ],
     "test_modules": [],
     "manifest": "docs/features/verification/note-cache.json",
-    "verification_scope": "Implement and exercise disk persistence, invalidation, owner separation and refresh coalescing; Cold launch/offline read, refresh success/failure, deletion and sign-out"
+    "verification_scope": "Implement and exercise disk persistence, invalidation, owner separation and refresh coalescing; Cold launch/offline read, refresh success/failure, deletion and sign-out",
+    "context_map": "docs/features/maps/note-cache.md"
   },
   "chat": {
     "name": "Companion chat and follow-ups",
@@ -77,7 +81,8 @@
       "Backend.test_companion_snapshots"
     ],
     "manifest": "docs/features/verification/chat.json",
-    "verification_scope": "Actual answer/follow-up pipeline with final model configuration; Streaming, draft preservation, attachment, failed delivery and reopen"
+    "verification_scope": "Actual answer/follow-up pipeline with final model configuration; Streaming, draft preservation, attachment, failed delivery and reopen",
+    "context_map": "docs/features/maps/chat.md"
   },
   "dictation": {
     "name": "Composer dictation",
@@ -92,7 +97,8 @@
       "Backend.test_dictation_budget"
     ],
     "manifest": "docs/features/verification/dictation.json",
-    "verification_scope": "Actual dictation recognition, discard/send, permission and interruption; backend budget test alone is insufficient"
+    "verification_scope": "Actual dictation recognition, discard/send, permission and interruption; backend budget test alone is insufficient",
+    "context_map": "docs/features/maps/dictation.md"
   },
   "notes-search": {
     "name": "Notes search",
@@ -106,7 +112,8 @@
       "Backend.test_notes_search"
     ],
     "manifest": "docs/features/verification/notes-search.json",
-    "verification_scope": "Search results, empty/error state and opening the correct note"
+    "verification_scope": "Search results, empty/error state and opening the correct note",
+    "context_map": "docs/features/maps/notes-search.md"
   },
   "memory-learning": {
     "name": "Automatic memory learning",
@@ -123,7 +130,8 @@
       "Backend.test_memory_atomic"
     ],
     "manifest": "docs/features/verification/memory-learning.json",
-    "verification_scope": "Real extraction/verification on bounded source, accepted/rejected claims and resulting durable memory"
+    "verification_scope": "Real extraction/verification on bounded source, accepted/rejected claims and resulting durable memory",
+    "context_map": "docs/features/maps/memory-learning.md"
   },
   "recall": {
     "name": "Past-context retrieval",
@@ -139,7 +147,8 @@
       "Backend.test_memory_context"
     ],
     "manifest": "docs/features/verification/recall.json",
-    "verification_scope": "Actual ranked context \u2192 answer pipeline, irrelevant and conflicting evidence cases"
+    "verification_scope": "Actual ranked context \u2192 answer pipeline, irrelevant and conflicting evidence cases",
+    "context_map": "docs/features/maps/recall.md"
   },
   "identity": {
     "name": "Personal context and identity",
@@ -155,7 +164,8 @@
       "Backend.test_memory_recording_identity"
     ],
     "manifest": "docs/features/verification/identity.json",
-    "verification_scope": "Named, unknown and third-party subject cases through the active identity path"
+    "verification_scope": "Named, unknown and third-party subject cases through the active identity path",
+    "context_map": "docs/features/maps/identity.md"
   },
   "memory-lifecycle": {
     "name": "Memory corrections and time",
@@ -172,7 +182,8 @@
       "Backend.test_uncertain_memory_time"
     ],
     "manifest": "docs/features/verification/memory-lifecycle.json",
-    "verification_scope": "Changed temporal/relationship judgments on real model output; never infer event completion"
+    "verification_scope": "Changed temporal/relationship judgments on real model output; never infer event completion",
+    "context_map": "docs/features/maps/memory-lifecycle.md"
   },
   "deletion": {
     "name": "Note deletion and retained answers",
@@ -187,7 +198,8 @@
       "Backend.test_companion_chat"
     ],
     "manifest": "docs/features/verification/deletion.json",
-    "verification_scope": "Swipe/long-press deletion, source unavailable, preserved replies and reopen"
+    "verification_scope": "Swipe/long-press deletion, source unavailable, preserved replies and reopen",
+    "context_map": "docs/features/maps/deletion.md"
   },
   "proactive": {
     "name": "Proactive contributions",
@@ -205,7 +217,8 @@
       "Backend.test_proactive_models"
     ],
     "manifest": "docs/features/verification/proactive.json",
-    "verification_scope": "Active decision \u2192 output \u2192 storage/delivery; relevant, resolved and same-topic-irrelevant cases; Actual bubbles, Quiet/stop, no stale/duplicate deliveries in intended configuration"
+    "verification_scope": "Active decision \u2192 output \u2192 storage/delivery; relevant, resolved and same-topic-irrelevant cases; Actual bubbles, Quiet/stop, no stale/duplicate deliveries in intended configuration",
+    "context_map": "docs/features/maps/proactive.md"
   },
   "access": {
     "name": "Tester access and account controls",
@@ -222,7 +235,8 @@
       "Backend.test_hosted_startup"
     ],
     "manifest": "docs/features/verification/access.json",
-    "verification_scope": "Actual authenticated service paths with two isolated users and revocation; Fresh enrollment, sign-out/data clearing and actionable failure UI"
+    "verification_scope": "Actual authenticated service paths with two isolated users and revocation; Fresh enrollment, sign-out/data clearing and actionable failure UI",
+    "context_map": "docs/features/maps/access.md"
   },
   "distribution": {
     "name": "TestFlight install and update",
@@ -235,7 +249,8 @@
     ],
     "test_modules": [],
     "manifest": "docs/features/verification/distribution.json",
-    "verification_scope": "Signed release install/update and independent tester access; intended native/backend version pairing"
+    "verification_scope": "Signed release install/update and independent tester access; intended native/backend version pairing",
+    "context_map": "docs/features/maps/distribution.md"
   },
   "subscriptions": {
     "name": "Sign-up and pricing previews",
@@ -247,7 +262,8 @@
     ],
     "test_modules": [],
     "manifest": "docs/features/verification/subscriptions.json",
-    "verification_scope": "Verify pilot navigation accurately marks or excludes unavailable sign-up/pricing flows"
+    "verification_scope": "Verify pilot navigation accurately marks or excludes unavailable sign-up/pricing flows",
+    "context_map": "docs/features/maps/subscriptions.md"
   },
   "connected-sources": {
     "name": "Calendar, email and messages",
@@ -258,6 +274,7 @@
     ],
     "test_modules": [],
     "manifest": "docs/features/verification/connected-sources.json",
-    "verification_scope": "No implemented verifier: requires scoped connector design, consent, ownership and disconnect contract before implementation"
+    "verification_scope": "No implemented verifier: requires scoped connector design, consent, ownership and disconnect contract before implementation",
+    "context_map": "docs/features/maps/connected-sources.md"
   }
 }
