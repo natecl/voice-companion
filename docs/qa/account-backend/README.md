@@ -44,3 +44,5 @@ Admission and memory use separate databases. A failed/crashed exchange may leave
 Sources checked: [Google backend authentication](https://developers.google.com/identity/sign-in/ios/backend-auth), [Apple user verification](https://developer.apple.com/documentation/signinwithapple/verifying-a-user), [PyJWT API](https://pyjwt.readthedocs.io/en/stable/api.html).
 
 Additional review evidence: the actual PyJWT JWKS client fetched keys from a local HTTP fixture, reused its cache, refreshed for a rotated key ID and rejected a retired unknown key. Two simultaneous refreshes through separate SQLite connections yielded exactly one rotation, then committed replay revocation of the family. These are local protocol checks, not live provider acceptance.
+
+The first JWKS rotation run failed because PyJWT 2.15.1 suppresses unknown-key refetches during its 30-second cooldown. The corrected fixture asserts rejection during that cooldown, advances only fixture monotonic time, then verifies a refetch and successful rotation. Production retains the default cooldown. No acceptance assertion was removed.

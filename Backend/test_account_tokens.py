@@ -2,7 +2,7 @@
 import time
 import unittest
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from cryptography.hazmat.primitives.asymmetric import rsa
 import jwt
@@ -116,7 +116,13 @@ class JWKSIntegrationTests(unittest.TestCase):
             self.assertEqual(state['requests'], 1)
             state['keys'] = [jwk(second, 'second')]
             rotated = jwt.encode(claims, second, algorithm='RS256', headers={'kid':'second'})
-            self.assertEqual(verifier.verify('google', rotated).subject, 'synthetic')
+            with self.assertRaisesRegex(Rejected, '^invalid_identity_token$'):
+                verifier.verify('google', rotated)
+            self.assertEqual(state['requests'], 1)
+            # Preserve the library's anti-abuse cooldown; advance fixture time.
+            after_cooldown = time.monotonic() + 31
+            with patch('jwt.jwks_client.time.monotonic', return_value=after_cooldown):
+                self.assertEqual(verifier.verify('google', rotated).subject, 'synthetic')
             self.assertEqual(state['requests'], 2)
             with self.assertRaisesRegex(Rejected, '^invalid_identity_token$'):
                 verifier.verify('google', token)
