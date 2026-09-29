@@ -54,3 +54,7 @@ Confirm capture continues and no new contribution appears. Stop recording. Tell 
 ## Review
 
 Inspect the actual transcript, saved turns, cutoff timestamps, reservations and generation status. Distinguish no scheduled attempt from evaluated silence, duplicate rejection, failed provider, missing retrieval and successful delivery. Founder feedback establishes perceived timing; server persistence alone does not measure phone render latency. No new visual quality claim is needed because UI source and installation stay unchanged.
+
+## Setup compatibility verification
+
+Founder approved the proposed $0.21 limit. Implemented explicit operator provisioning and startup compatibility, new three-source registry/eight-call ledger, historical test learning exclusion and preserved prior grants. Local provisioning/retrieval/startup exercise passed: two seeds, zero learning jobs, one live capture, other-owner/extra-capture/ninth-call/reprovision rejection, expiry and history preservation. The initial fixture attempted to recreate an existing table; corrected fixture creation and passed. Existing SQLite ResourceWarnings remain. Forty-four proactive tests plus the new setup test pass. Hosted activation follows backup and verified deployment; physical recording remains pending readiness.
