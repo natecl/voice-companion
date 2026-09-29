@@ -1,0 +1,54 @@
+<!doctype html><meta charset="utf-8"><title>Room motion regression</title>
+<style>body{font:14px system-ui;margin:20px;display:flex;gap:20px}iframe{width:402px;height:780px;border:1px solid #ddd}button{padding:15px}pre{max-width:650px;white-space:pre-wrap}</style>
+<iframe src="../../App/RoomUI/index.html" title="Shared room"></iframe>
+<div><button id="run">Run isolated motion checks</button><pre id="result">Uses fictional browser state only. No microphone or service calls.</pre></div>
+<script>
+document.querySelector('#run').onclick=async()=>{
+ const w=document.querySelector('iframe').contentWindow,d=w.document,q=s=>d.querySelector(s),out=document.querySelector('#result'),results=[];
+ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+ const check=(name,ok,detail)=>{results.push({name,pass:!!ok,detail});out.textContent=JSON.stringify(results,null,2);if(!ok)throw Error(name)};
+ const state={messages:[],notes:[{id:'qa',title:'Motion fixture',preview:'A local note to exercise gestures.',day:'Today',metadata:'12 minutes',attachable:true}],busy:false,ready:true,draft:'',draftVersion:0,appearance:'light'};
+ try{
+ w.room.render(state);await sleep(750);
+ const messages=[...d.querySelectorAll('[data-message]')];let moves=0;
+ const observer=new w.MutationObserver(records=>records.forEach(r=>r.removedNodes.forEach(n=>{if(messages.includes(n))moves++})));
+ observer.observe(q('.chat'),{childList:true});
+ for(let i=0;i<20;i++)w.room.render({...state,draftVersion:i});await sleep(50);observer.disconnect();
+ check('State updates preserve bubble nodes without moving them',moves===0,{moves});
+ const library=q('.library');let measured;
+ library.addEventListener('transitionend',e=>{if(e.propertyName==='transform')measured=e.elapsedTime},{once:true});
+ const chat=q('.chat');
+ const navigate=(type,x,y)=>chat.dispatchEvent(new w.PointerEvent(type,{bubbles:true,isPrimary:true,pointerId:8,pointerType:'touch',button:0,clientX:x,clientY:y}));
+ navigate('pointerdown',300,300);navigate('pointermove',295,360);navigate('pointerup',295,360);
+ check('Chat vertical scroll does not navigate',!q('.device').classList.contains('notes-open'));
+ navigate('pointerdown',300,300);navigate('pointermove',100,302);navigate('pointerup',100,302);await sleep(750);
+ check('Left swipe from chat opens Notes',q('.device').classList.contains('notes-open'));
+ await sleep(450);
+ check('Notes slide completes at prototype duration',Math.abs(measured-.62)<.02,{seconds:measured});
+ // Synthetic pointer events exercise the real gesture handler; OS touch arbitration is checked by XCTest.
+ const card=q('.note-card'),wrap=card.closest('.note-wrap');card.setPointerCapture=()=>{};
+ const pointer=(type,x,y)=>card.dispatchEvent(new w.PointerEvent(type,{bubbles:true,isPrimary:true,pointerId:7,pointerType:'touch',button:0,clientX:x,clientY:y}));
+ pointer('pointerdown',260,330);pointer('pointermove',210,331);
+ const offset=()=>new w.DOMMatrixReadOnly(w.getComputedStyle(card).transform).m41;
+ check('Partial drag follows finger before release',Math.abs(offset()+50)<1,{offset:offset()});
+ pointer('pointermove',110,331);await sleep(120);pointer('pointerup',110,331);await sleep(600);
+ check('Release reveals all three actions',wrap.classList.contains('revealed')&&!wrap.querySelector('.note-actions').inert&&Math.abs(offset()+180)<1,{offset:offset()});
+ check('Swipe does not open note',q('.overlay').hidden);
+ pointer('pointerdown',110,330);pointer('pointermove',235,331);await sleep(120);pointer('pointerup',235,331);await sleep(600);
+ check('Reverse swipe closes actions',!wrap.classList.contains('revealed')&&Math.abs(offset())<1,{offset:offset()});
+ pointer('pointerdown',260,330);pointer('pointermove',258,380);pointer('pointerup',258,380);await sleep(50);
+ check('Vertical scrolling leaves actions closed',!wrap.classList.contains('revealed')&&Math.abs(offset())<1);
+ pointer('pointerdown',260,330);pointer('pointermove',130,331);pointer('pointercancel',130,331);await sleep(600);
+ check('Cancelled drag restores prior state',!wrap.classList.contains('revealed')&&Math.abs(offset())<1);
+ await sleep(450);q('[data-act=chat]').click();await sleep(750);
+ q('[data-act=invite-friends]').click();await sleep(750);
+ let ended=false;q('.panel').addEventListener('animationend',e=>{if(e.animationName==='room-sheet-out')ended=true});
+ q('[data-act=close]').click();await sleep(480);
+ check('Panel exit reaches animation end before removal',ended&&q('.overlay').hidden,{ended});
+ w.room.toast('A local toast',true);await sleep(50);q('[data-act=dismiss-toast]').click();await sleep(100);
+ check('Toast remains visible during its exit',!q('.toast').hidden);await sleep(350);
+ check('Toast hides after its exit',q('.toast').hidden);
+ out.textContent=JSON.stringify({pass:true,results},null,2);
+ }catch(error){out.textContent=JSON.stringify({pass:false,error:String(error),results},null,2)}
+};
+</script>

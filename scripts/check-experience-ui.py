@@ -18,6 +18,7 @@ TESTS = [
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--simulator', required=True)
+    parser.add_argument('--proactive', action='store_true', help='Enable the synthetic local proactive provider')
     parser.add_argument('--derived-data', default='/tmp/VoiceCompanion-ExperienceQA')
     parser.add_argument('--test', action='append', help='Run only this PhoneUITests class/method')
     parser.add_argument('--results', default='/tmp/VoiceCompanion-ExperienceResults')
@@ -27,7 +28,7 @@ def main():
     subprocess.run(['xcodegen', 'generate'], cwd=ROOT, check=True)
     for test in args.test or TESTS:
         with tempfile.TemporaryDirectory(prefix='companion-ui-') as directory:
-            service = subprocess.Popen([os.sys.executable, str(ROOT / 'Backend/companion_fixture.py'), directory, '--ui', '--notes'], cwd=ROOT)
+            service = subprocess.Popen([os.sys.executable, str(ROOT / 'Backend/companion_fixture.py'), directory, '--ui', '--notes'] + (['--proactive'] if args.proactive else []), cwd=ROOT)
             try:
                 config = Path(directory) / 'config.json'
                 deadline = time.monotonic() + 10

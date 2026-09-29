@@ -6,6 +6,18 @@ import UIKit
 import AppKit
 #endif
 
+/// Rendered prototype body uses the system family at CSS weight 430, between
+/// regular and medium. UIKit/AppKit express the same interval as 0...0.23.
+enum RoomTypography {
+    static func body(_ size: CGFloat) -> Font {
+        #if os(iOS)
+        Font(UIFont.systemFont(ofSize: size, weight: UIFont.Weight(rawValue: 0.069)))
+        #else
+        Font(NSFont.systemFont(ofSize: size, weight: NSFont.Weight(rawValue: 0.069)))
+        #endif
+    }
+}
+
 enum ExperienceClipboard {
     static func copy(_ text: String) {
         #if os(iOS)
@@ -17,13 +29,32 @@ enum ExperienceClipboard {
     }
 }
 
-/// Shared neutral surfaces and typography, derived from the approved Home screen.
+/// Shared lavender/plum surfaces from the approved companion-room prototype.
 enum ExperienceStyle {
-    static let canvas = Color.white
-    static let ink = Color(red: 0.035, green: 0.045, blue: 0.055)
-    static let surface = Color(white: 0.945)
-    static let secondary = Color(red: 0.46, green: 0.47, blue: 0.52)
-    static let line = Color(white: 0.925)
+    static let canvas = adaptive(0xf3f2f5, 0x141317)
+    static let card = adaptive(0xffffff, 0x252329)
+    static let accent = adaptive(0x665283, 0xcbb9e4)
+    static let onAccent = adaptive(0xffffff, 0x292032)
+    static let ink = adaptive(0x302d37, 0xf2eff6)
+    static let surface = adaptive(0xe9e5ef, 0x35303d)
+    static let secondary = adaptive(0x85808e, 0xaaa4b2)
+    static let line = adaptive(0xe6e3eb, 0x38353e)
+    static let captureButton = adaptive(0x35303f, 0xe0d7eb)
+    static let onCaptureButton = adaptive(0xffffff, 0x282130)
+
+    private static func adaptive(_ light: UInt32, _ dark: UInt32) -> Color {
+        #if os(iOS)
+        return Color(uiColor: UIColor { traits in
+            let hex = traits.userInterfaceStyle == .dark ? dark : light
+            return UIColor(red: CGFloat((hex >> 16) & 255) / 255, green: CGFloat((hex >> 8) & 255) / 255, blue: CGFloat(hex & 255) / 255, alpha: 1)
+        })
+        #else
+        return Color(nsColor: NSColor(name: nil) { appearance in
+            let hex = appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? dark : light
+            return NSColor(red: CGFloat((hex >> 16) & 255) / 255, green: CGFloat((hex >> 8) & 255) / 255, blue: CGFloat(hex & 255) / 255, alpha: 1)
+        })
+        #endif
+    }
 }
 
 struct ExperienceIconButton: View {
@@ -42,32 +73,29 @@ struct ExperienceIconButton: View {
         Button(action: action) {
             buttonSymbol
                 .frame(width: symbolSize, height: symbolSize)
-                .foregroundStyle(filled && enabled ? .white : ExperienceStyle.ink.opacity(enabled ? 1 : 0.40))
+                .foregroundStyle(filled && enabled ? (icon == "plus" ? ExperienceStyle.onCaptureButton : ExperienceStyle.onAccent) : ExperienceStyle.ink.opacity(enabled ? 1 : 0.40))
                 .frame(width: size, height: size)
                 .background {
                     if filled {
-                        Circle().fill(enabled ? (icon == "plus" ? Color(red: 0.18, green: 0.17, blue: 0.21) : ExperienceStyle.ink) : Color(white: 0.935))
+                        Circle().fill(enabled ? (icon == "plus" ? ExperienceStyle.captureButton : ExperienceStyle.accent) : Color(white: 0.935))
                             .overlay(Circle().strokeBorder(.white.opacity(icon == "plus" ? 0.12 : 0), lineWidth: 1))
                             .shadow(color: .black.opacity(icon == "plus" && enabled ? 0.16 : 0), radius: 12, y: 7)
                             .padding(size > 44 ? 0 : 4)
                     } else if !bare {
-                        Circle().fill(.white)
-                            .overlay(Circle().strokeBorder(ExperienceStyle.line, lineWidth: ["person", "magnifyingglass"].contains(icon) ? 1.5 : 0))
-                            .shadow(color: .black.opacity(0.06), radius: 16, y: 7)
+                        Circle().fill(ExperienceStyle.card)
+                            .overlay(Circle().strokeBorder(ExperienceStyle.line.opacity(0.65), lineWidth: 1))
+                            .shadow(color: ExperienceStyle.ink.opacity(0.035), radius: 12, y: 5)
                     }
                 }
 
         }.buttonStyle(ExperiencePressStyle()).accessibilityLabel(title)
     }
 
-    private var symbolSize: CGFloat { size > 44 ? (icon == "plus" ? 36 : 30) : 23 }
+    private var symbolSize: CGFloat { icon == "plus" ? 30 : icon == "stop.fill" ? 16 : 23 }
 
     @ViewBuilder private var buttonSymbol: some View {
-        if icon == "plus" {
-            Image(systemName: "plus").font(.system(size: size > 44 ? 25 : 20, weight: .bold, design: .rounded))
-        } else if ["mic", "arrow.up", "xmark", "chevron.left", "stop.fill"].contains(icon) {
-            Image(systemName: icon)
-                .font(.system(size: icon == "stop.fill" ? 17 : icon == "mic" ? 18 : 20, weight: icon == "mic" ? .regular : .semibold))
+        if let name = RoomIcon.assets[icon] {
+            Image(name).resizable().scaledToFit()
         } else {
             ExperienceSymbol(name: icon)
         }
@@ -188,7 +216,7 @@ struct ExperienceCard: ViewModifier {
     var radius: CGFloat
     var elevated: Bool
     func body(content: Content) -> some View {
-        content.background(.white, in: RoundedRectangle(cornerRadius: radius))
+        content.background(ExperienceStyle.card, in: RoundedRectangle(cornerRadius: radius))
             .overlay(RoundedRectangle(cornerRadius: radius).strokeBorder(ExperienceStyle.line, lineWidth: 0.8))
             .shadow(color: .black.opacity(elevated ? 0.065 : 0), radius: 18, y: 8)
     }
@@ -209,7 +237,7 @@ struct ExperiencePressStyle: ButtonStyle {
             }
             .scaleEffect(configuration.isPressed && !reduceMotion ? pressedScale : 1)
             .opacity(configuration.isPressed ? 0.88 : 1)
-            .animation(reduceMotion ? nil : (configuration.isPressed ? .easeOut(duration: 0.1) : .smooth(duration: 0.24)), value: configuration.isPressed)
+            .animation(reduceMotion ? nil : (configuration.isPressed ? .easeOut(duration: 0.1) : .spring(response: 0.28, dampingFraction: 0.82)), value: configuration.isPressed)
     }
 }
 
@@ -259,13 +287,34 @@ enum ExperienceHaptics {
 
 /// The founder-provided chat reference uses quiet, content-sized incoming bubbles.
 struct ExperienceAgentBubble: ViewModifier {
+    var grouped = false
+    private var shape: UnevenRoundedRectangle { UnevenRoundedRectangle(topLeadingRadius: grouped ? 10 : 23, bottomLeadingRadius: 23, bottomTrailingRadius: 23, topTrailingRadius: 23) }
     func body(content: Content) -> some View {
-        content.font(.body).lineSpacing(4)
+        content.font(RoomTypography.body(16)).lineSpacing(4.2).frame(minHeight: 23.2, alignment: .leading)
             .padding(.horizontal, 16).padding(.vertical, 14)
-            .background(Color(white: 0.945), in: RoundedRectangle(cornerRadius: 18))
-            .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(Color(white: 0.90), lineWidth: 0.7))
+            .background(ExperienceStyle.card, in: shape)
+            .overlay(shape.strokeBorder(ExperienceStyle.line.opacity(0.4), lineWidth: 0.5))
             #if os(iOS)
-            .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 18))
+            .contentShape(.contextMenuPreview, shape)
             #endif
+    }
+}
+
+
+struct RoomUserBubble: ViewModifier {
+    func body(content: Content) -> some View {
+        content.font(RoomTypography.body(16)).lineSpacing(4.2)
+            .padding(.horizontal, 16).padding(.vertical, 14)
+            .background(ExperienceStyle.surface, in: RoundedRectangle(cornerRadius: 23))
+            .padding(.leading, 44).frame(maxWidth: .infinity, alignment: .trailing)
+    }
+}
+
+
+struct RoomIcon: View {
+    let name: String
+    static let assets = ["chevron-right": "Room-chevron-right", "refresh": "Room-refresh", "close": "Room-close","equal": "Room-equal", "plus": "Room-plus", "arrow.left": "Room-back", "magnifyingglass": "Room-search", "mic": "Room-mic", "arrow.up": "Room-send", "stop.fill": "Room-stop", "xmark": "Room-close", "bell": "Room-bell", "paperclip": "Room-paperclip"]
+    var body: some View {
+        Image(Self.assets[name] ?? name).resizable().scaledToFit().frame(width: 23, height: 23)
     }
 }

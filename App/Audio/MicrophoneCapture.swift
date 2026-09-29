@@ -1,4 +1,5 @@
 import AVFoundation
+import OSLog
 
 /// Owns one converter, accessed only by the serial audio tap callback.
 private final class PCMEncoder: @unchecked Sendable {
@@ -72,6 +73,10 @@ final class MicrophoneCapture: AudioCapture {
         #if os(iOS)
         let session = AVAudioSession.sharedInstance()
         try session.setCategory(.record, mode: .measurement, options: [.allowBluetoothHFP])
+        // iOS otherwise suppresses button feedback for the duration of microphone capture.
+        // Optional feedback must never prevent the recording itself from starting.
+        do { try session.setAllowHapticsAndSystemSoundsDuringRecording(true) }
+        catch { Logger(subsystem: "ai.voicecompanion", category: "haptics").error("Recording haptics unavailable: \(error.localizedDescription, privacy: .public)") }
         try session.setActive(true)
         #endif
         let input = engine.inputNode
