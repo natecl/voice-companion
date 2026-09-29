@@ -16,7 +16,9 @@ from proactive_store import ProactiveStore
 class ProactiveService:
     def __init__(self,store,models,budget,*,route='llm',embedder=None,phone_qa=None,grouped_messages=False,structured_delivery=False):
         if grouped_messages and structured_delivery:raise ValueError("Choose one proactive format")
-        if route not in ('llm','jev'):raise ValueError('Unknown proactive route')
+        if route not in ('llm','jev','jev_writer'):raise ValueError('Unknown proactive route')
+        if route=='jev_writer' and (grouped_messages or structured_delivery):
+            raise ValueError('Jev writer owns its delivery format')
         self.store,self.models,self.budget=store,models,budget
         self.route,self.embedder=route,embedder
         self.phone_qa=phone_qa
@@ -63,15 +65,20 @@ class ProactiveService:
                         raise Rejected('memory_context_changed')
                 check()
                 key='proactive:'+owner+':'+capture+':'+digest
-                if self.route=='jev':
+                if self.route in ('jev','jev_writer'):
                     req=judge_request(state)
                     judged=await self._call(key+':judge',req,self.models.judge)
                     check()
                     if not allow_draft(judged,req):
                         terminal='silence';reason='judge_silence';return dict(type='silence')
-                format_options=(dict(structured_delivery=True) if self.structured_delivery else dict(grouped_messages=self.grouped_messages))
-                result=await self._call(key+':draft',draft_request(state,**format_options),self.models.extract)
-                check();result=parse_draft(result,state,**format_options)
+                if self.route=='jev_writer':
+                    from proactive_writer import writer_request, parse_writer
+                    result=await self._call(key+':draft',writer_request(state),self.models.extract)
+                    check();result=parse_writer(result,state)
+                else:
+                    format_options=(dict(structured_delivery=True) if self.structured_delivery else dict(grouped_messages=self.grouped_messages))
+                    result=await self._call(key+':draft',draft_request(state,**format_options),self.models.extract)
+                    check();result=parse_draft(result,state,**format_options)
                 if result['decision']=='silence':
                     terminal='silence';reason='model_silence';return dict(type='silence')
                 selected=[s for s in state['sources'] if s['id'] in result['evidence_ids']]

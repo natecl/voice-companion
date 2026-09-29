@@ -165,3 +165,6 @@ V4 wording is internally deployed at `839d2c9`; health and 28-database/134-table
 [Two-topic physical test](two-topic-phone-test.md) has two locally prepared fictional sources and a spoken script that explicitly waits past cooldown. Zero provider calls/learning jobs. Hosted seeding, a new allowance and activation are pending approval; existing exhausted grants are not reused.
 
 Two-topic phone pilot is activated at `74f7cdb`: two fictional histories seeded, one capture/one generated note/eight Luna checks funded within $0.21, 24-hour gate expiring September 29 at 23:49 Eastern. Data/health checks passed and unchanged installed phone app launched with test flags. No capture or provider call started. Await founder readiness; see [script and receipt](two-topic-phone-test.md).
+
+
+September 29 candidate update: founder approved separating proactive opportunity detection (Jev) from conversational writing (Luna), with unchanged retrieval and phone UI. The opt-in `jev_writer` route passes local contract checks; live timing/voice acceptance and rollout remain pending. This is not a change to deployed model selection or memory roles. See [evaluation status](proactive-conversational-wording.md#separate-jev-gate-and-luna-writer--local-candidate).
