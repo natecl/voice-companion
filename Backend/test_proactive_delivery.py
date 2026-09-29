@@ -113,3 +113,46 @@ class DeliveryServiceTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(CompanionChat(store).page(owner)['turns'][0]['answer'],result['text'])
                 self.assertEqual((await service.evaluate(owner,live,lambda:True))['type'],'existing')
                 self.assertEqual(len(calls),1);self.assertEqual(len(budget.attempts),1)
+
+class LiveDeliveryReplayTests(unittest.IsolatedAsyncioTestCase):
+    async def test_exact_live_outputs_preserve_message_boundaries_and_silence(self):
+        from test_proactive_personal import RecordedModel
+        from test_proactive_conversation import run
+        fixtures=ROOT/'fixtures/proactive/structured-delivery-evaluation'
+        for row in json.loads((fixtures/'requests.json').read_text()):
+            with self.subTest(case=row['case']):
+                saved=json.loads((fixtures/(row['case']+'.json')).read_text())
+                state=json.loads(row['request']['input'])
+                self.assertEqual(row['request'],draft_request(state,structured_delivery=True))
+                parsed=parse_draft(saved['data'],state,structured_delivery=True)
+                self.assertEqual(parsed['decision'],row['expected'])
+                scenario=row['case'].removeprefix('structured-')
+                if scenario != 'rescheduled-study-session':
+                    result=await run(dict(case=scenario,request=row['request'],response=saved),structured_delivery=True)
+                    self.assertEqual(result['steps'][-1]['result'],'silence' if row['expected']=='silence' else 'contribution')
+                else:
+                    with tempfile.TemporaryDirectory() as directory:
+                        path=Path(directory)/'memory.sqlite';store=MemoryStore(path,clock=lambda:300.)
+                        owner=store.owner_for('fictional-structured-live-replay')
+                        source=state['sources'][0]
+                        store.put_source(owner,recording(source['session_id'],source['text']))
+                        live=dict(recording('capture','',completed=False),passages=state['current']['passages'])
+                        model=RecordedModel(row['request'],saved)
+                        service=ProactiveService(store,model,Budget(),structured_delivery=True)
+                        result=await service.evaluate(owner,live,lambda:True)
+                        self.assertEqual(result['type'],'contribution')
+                        turns=CompanionChat(MemoryStore(path)).page(owner)['turns']
+                        self.assertEqual([t['answer'] for t in turns],[parsed['text']])
+                        self.assertEqual(turns[0]['answer'].split('\n\n'),[m['text'] for m in saved['data']['messages']])
+                        self.assertEqual((await service.evaluate(owner,live,lambda:True))['type'],'existing')
+                        self.assertEqual(model.calls,1)
+
+    def test_retains_known_quality_misses(self):
+        fixtures=ROOT/'fixtures/proactive/structured-delivery-evaluation'
+        cedar=json.loads((fixtures/'structured-missing-prerequisite.json').read_text())['data']
+        self.assertEqual(len(cedar['messages']),3)
+        self.assertIn('five people before adding features',cedar['messages'][0]['text'])
+        self.assertIn("hadn't happened",cedar['messages'][1]['text'])
+        schedule=json.loads((fixtures/'structured-rescheduled-study-session.json').read_text())['data']
+        self.assertNotIn('unavailable',' '.join(f['quote'] for f in schedule['facts']))
+        self.assertFalse(json.loads((fixtures/'summary.json').read_text())['selected'])

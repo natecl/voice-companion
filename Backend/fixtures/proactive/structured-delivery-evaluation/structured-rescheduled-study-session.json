@@ -1,0 +1,46 @@
+{
+  "data": {
+    "decision": "contribute",
+    "facts": [
+      {
+        "evidence_id": "m1",
+        "quote": "The biology study group changed its meeting from 3 PM to 5 PM"
+      },
+      {
+        "evidence_id": "m1",
+        "quote": "Everyone agreed to the new time."
+      },
+      {
+        "evidence_id": "m1",
+        "quote": "The location is still the library."
+      }
+    ],
+    "messages": [
+      {
+        "fact_index": 0,
+        "text": "The meeting changed from 3 PM to 5 PM."
+      },
+      {
+        "fact_index": 1,
+        "text": "Everyone agreed to the new time."
+      },
+      {
+        "fact_index": 2,
+        "text": "It\u2019s still at the library."
+      }
+    ]
+  },
+  "usage": {
+    "input_tokens": 1097,
+    "input_tokens_details": {
+      "cache_write_tokens": 1094,
+      "cached_tokens": 0
+    },
+    "output_tokens": 134,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1231
+  },
+  "seconds": 2.0729313753545284
+}

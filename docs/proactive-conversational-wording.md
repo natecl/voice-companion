@@ -78,3 +78,17 @@ The schema uses required fields and closed objects per [official Structured Outp
 Local verification: 28 targeted tests pass, including a handwritten Cedar output through the real service, evidence validation, SQLite save/reopen, three intact message boundaries, source-deletion retention and duplicate suppression. Malformed quotes, missing/duplicate mappings, invalid indices (including booleans), nonempty silence, embedded breaks and oversized delivery are rejected. A test explicitly demonstrates that structurally valid but semantically wrong wording cannot be proven correct by this validator. Historical exact-response replays remain passing. No paid calls or native UI changes; previous simulator rendering evidence applies to the unchanged output protocol, not to new model quality.
 
 Export with `python3 scripts/evaluations/prepare_structured_proactive.py work/proactive-structured/requests.json`. Prepared live screen: three fictional requests (Cedar agreement/status, the biology time-change reason, and acknowledged Cedar silence), under `work/proactive-structured/requests.json`. Request up to $0.06 / three calls, no retries, using a fresh isolated ledger if approved. This is not funded yet. Stop after inspecting actual outputs; do not silently select an unsuccessful result. No new recording, notes generation, runtime allowance or personal-data mutation.
+
+## Structured live screen — delivery passes, quality not accepted
+
+Founder approved the prepared isolated $0.06 / three-call screen. All three requests completed without retries in `structured-delivery-20260929-060`; ledger has three completed reservations totaling $0.06 capacity (not verified invoice cost). Prior grants, personal data and runtime quotas are unchanged. The allowance is exhausted.
+
+Real Luna accepted the new schema and fit within the unchanged 600-output-token cap: Cedar used 150 output tokens, scheduling 134, silence 23. All responses passed quote/index validation. Cedar returned three distinct messages of 89, 48 and 52 characters:
+
+1. “The team agreed to test the basic recording flow with five people before adding features.”
+2. “Those tests hadn't happened when this was noted.”
+3. “So calendar integration should wait until afterward.”
+
+The agreement, quantity, broader prerequisite and historical status survive; actual model-selected separate delivery works. The wording still reads like a source recap, so conversational tone is not accepted. Scheduling also selected the time change, agreement and location but omitted the room-availability reason from facts and messages. This demonstrates the validator's known limit: it can enforce coverage of selected facts, not detect every omitted relevant fact. Acknowledged Cedar correctly returned silence.
+
+Exact requests/responses are in `Backend/fixtures/proactive/structured-delivery-evaluation/`. Thirty targeted tests pass, including actual outputs through real retrieval, validation and save/reopen with exact request matching. Multi-step preceding context remains synthetic/teacher-forced. No new native UI, audio or physical-phone claim. The candidate remains opt-in, PR stays draft, and no rollout occurred. Do not add more prompt rules or purchase another near-identical run without a distinct testable hypothesis; the structural issue is resolved in these cases, while tone and evidence selection remain open.
