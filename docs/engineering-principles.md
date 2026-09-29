@@ -349,3 +349,5 @@ Founder approves implementing a structured single-call proactive response, Septe
 Founder approves an isolated $0.06 / three-call structured-delivery screen, September 29, no retries. Use the prepared Cedar, scheduling and acknowledgment cases; preserve all existing runtime quotas and exhausted ledgers.
 
 Founder clarifies the proactive voice, September 29: behave as the third smart person participating in the live conversation, not a bookkeeper reciting stored facts. Lead with a useful contribution to the current decision; use remembered details as support. Preserve useful content, uncertainty, separate messages and the accepted phone UI. The approved implementation work does not replenish exhausted paid evaluation grants.
+
+Founder approves the predeclared contribution-first screen: up to $0.10 / five Luna calls, September 29, no retries. Use the prepared matched cases plus completion-update and venue-choice cases; preserve existing runtime quotas and prior exhausted ledgers.

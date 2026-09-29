@@ -104,3 +104,19 @@ Thirty local tests pass. Historical fact-first model outputs replay with their a
 The prepared screen (`python3 scripts/evaluations/prepare_contribution_first.py work/contribution-first/requests.json`) contains five fictional cases: the matched Cedar decision, time-change reason and acknowledged silence; a current update that the tests are complete (must not nag); and a fresh venue/budget choice (must help decide). Each has an explicit human-review rubric excluded from the model input. Compare the matched cases to already-paid archived outputs; do not rerun the old prompt. Judge the new opening's usefulness and naturalness along with complete supporting detail and silence. No assumption that a quote/index validator can grade those qualities.
 
 Proposed next allowance: up to $0.10 / five calls, no retries, to run this predeclared screen. Not funded yet; all previous grants remain exhausted. No new recording, notes generation, personal data change or phone installation. Do not deploy before actual output satisfies the combined criteria.
+
+## Contribution-first screen — rejected
+
+Founder approved the five-case $0.10 screen. All five calls completed without retries in the isolated `contribution-first-20260929-100` ledger ($0.10 reserved capacity, not invoice cost). The allowance is exhausted. Hosted configuration, phone build, personal data and runtime quotas were not changed.
+
+Observed outcomes against the predeclared rubric:
+
+- Cedar: a more direct suggestion, but only one message. The model put the entire multi-fact source into one excerpt, omitted the explicit broader before-features agreement from its delivery, and did not preserve historical completion uncertainty in the text. FAIL.
+- Study schedule: the provider emitted commentary text containing JSON plus stray text, then a final JSON block. The real SDK `output_text` aggregates both, so the existing `MemoryModels.extract` rejects it as `invalid_extraction`. Do not salvage a final block and call this a transport pass. FAIL.
+- Acknowledged Cedar: silence. PASS.
+- Tests completed in current conversation: unnecessary contribution (“The five-person test gate is cleared, so calendar integration can move ahead.”) instead of silence. FAIL.
+- Venue: direct recommendation, but several facts compressed into one message, with no explicit availability. FAIL on separate conversational beats/completeness.
+
+Generation ordering did not solve conversational participation and regressed separation/silence on this screen. The facts/index format admits a whole-paragraph excerpt, so mapping coverage cannot establish atomicity. No candidate is selected; PR 144 stays draft. Do not spend another near-identical grant or present this as a production improvement.
+
+Evidence: `Backend/fixtures/proactive/contribution-first-evaluation/` contains exact requests, responses and the malformed raw response. Thirty-two targeted tests pass: actual successful payloads replay through retrieval/validation/save/reopen; the malformed response runs through the real SDK response object and `MemoryModels.extract` using a no-network client, yielding unavailable, no chat write and no retry. The tests preserve the unwanted completion contribution rather than weakening its expected product rubric. Earlier context for multi-step cases is teacher-forced. No new microphone or physical UI claim.

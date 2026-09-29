@@ -1,0 +1,38 @@
+{
+  "calls": 5,
+  "reserved_usd": 0.1,
+  "retries": 0,
+  "selected": false,
+  "results": [
+    {
+      "case": "contribution-first-missing-prerequisite",
+      "decision": "contribute",
+      "characters": [
+        100
+      ]
+    },
+    {
+      "case": "contribution-first-rescheduled-study-session",
+      "error": "invalid_extraction"
+    },
+    {
+      "case": "contribution-first-acknowledged-after-cooldown",
+      "decision": "silence",
+      "characters": []
+    },
+    {
+      "case": "contribution-first-tests-completed",
+      "decision": "contribute",
+      "characters": [
+        77
+      ]
+    },
+    {
+      "case": "contribution-first-venue-choice",
+      "decision": "contribute",
+      "characters": [
+        128
+      ]
+    }
+  ]
+}

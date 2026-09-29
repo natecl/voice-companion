@@ -1,0 +1,30 @@
+{
+  "data": {
+    "decision": "contribute",
+    "messages": [
+      {
+        "text": "I wouldn\u2019t confirm the $450 hall; it\u2019s $150 over the agreed venue budget. The 30-seat room fits the 20 attendees and costs $240.",
+        "fact_index": 0
+      }
+    ],
+    "facts": [
+      {
+        "evidence_id": "m1",
+        "quote": "The Juniper group agreed on a total venue budget of $300. Only 20 people are attending. The 30-seat room costs $240, while the 80-seat hall costs $450. Both rooms are available for the meetup."
+      }
+    ]
+  },
+  "usage": {
+    "input_tokens": 1190,
+    "input_tokens_details": {
+      "cache_write_tokens": 1187,
+      "cached_tokens": 0
+    },
+    "output_tokens": 124,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1314
+  },
+  "seconds": 4.771798034198582
+}
