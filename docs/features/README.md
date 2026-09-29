@@ -1,5 +1,7 @@
 # Feature and context map
 
+Start with the [dedicated context map for your feature](context-map.md): current behavior, gaps, dependencies, evidence and next bounded work.
+
 See the [feature verification map](verification-map.md) for each feature’s executable verifier, required real-path evidence, and implementation gaps.
 
 Reconciled against main `660e4c7` on September 28, 2026 and recorded rollout evidence. This documentation audit did not re-inspect the live service. Read [current state](../current-state.md) and the [product vision gap audit](../product-vision-audit-2026-09-28.md) for the implementation/vision boundary.
@@ -11,7 +13,7 @@ The product vision is an iPhone-first AI note-taking app that proactively contri
 ## Read in this order
 
 1. [Product source of truth](../product-source-of-truth.md), [engineering principles](../engineering-principles.md), and [historical V0 boundary](../v0-scope.md).
-2. The relevant feature below in [feature details](features.md), then its named implementation files and evidence.
+2. The relevant [per-feature context map](context-map.md), then its named implementation files, acceptance verifier and evidence.
 3. [Knowledge feature map](knowledge.md) and [full-vision gap audit](../product-vision-audit-2026-09-28.md) for missing capabilities and proposed next checkpoints.
 4. [Learned lessons and debugging routes](lessons.md) before changing a known failure path.
 

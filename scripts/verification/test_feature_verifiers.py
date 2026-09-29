@@ -18,6 +18,18 @@ class FeatureVerifierTests(unittest.TestCase):
                 manifest = json.loads((feature.ROOT / entry['manifest']).read_text())
                 checkpoint.validate(manifest)
                 self.assertEqual(manifest['packet'], 'FEATURE-' + key)
+                context = feature.ROOT / entry['context_map']
+                self.assertTrue(context.is_file())
+                contents = context.read_text()
+                for section in ('Current implementation', 'Gaps and non-goals', 'Contracts and dependencies',
+                                'Verification and delivery state', 'Next bounded work'):
+                    self.assertIn('## ' + section, contents)
+                self.assertIn('verify_feature.py ' + key, contents)
+                import re
+                for target in re.findall(r'\]\(([^)]+)\)', contents):
+                    if '://' not in target:
+                        self.assertTrue((context.parent / target.split('#')[0]).is_file(), target)
+
                 for path in entry['implementation']:
                     self.assertTrue((feature.ROOT / path).is_file(), path)
                 self.assertTrue(any(c['group'] == 'inspection' for c in manifest['checks']))
