@@ -57,3 +57,49 @@ Before editing, read this map and linked code, identify affected contracts, and 
 ## Maintenance
 
 Update this map when behavior, dependencies, verification, deployment evidence or the next blocker changes. Update the linked catalog/verifier with it. Preserve failed evidence and label superseded experiments; do not append contradictory status updates or replace missing verification with a claim of completion.
+
+## PROACTIVE-1 bounded controls checkpoint — September 29, 2026
+
+Base `47eadb4c8be3a46593bb6f17250f4c24335ea02c`; branch `codex/proactive-controls`.
+An expired service result was correctly discarded, but its pending policy lease
+could block all subsequent additive speech. `observe` now invalidates an expired
+lease before scheduling. The original cutoff remains consumed: this does not retry
+a failed provider call. New context still obeys interval, cooldown and attempt caps.
+Quiet and End remain suppressive after expiry.
+
+Reproduce the original failure by running
+`PYTHONPATH=Backend python3 -m unittest Backend.test_proactive_policy.ProactivePolicyTests.test_expired_pending_lease_releases_new_additive_context`
+with the five-line expiry guard removed: `next_lease` is unexpectedly `None`.
+
+Verification command (local Python 3.13, macOS 26.6.2 arm64):
+
+```sh
+PYTHONPATH=Backend python3 -m unittest Backend.test_proactive_policy Backend.test_proactive_service Backend.test_proactive_socket Backend.test_proactive_stream Backend.test_proactive_phone_qa Backend.test_proactive_conversation
+python3 scripts/verify_feature.py proactive
+```
+
+The targeted suite passes 44 tests. Actual authenticated loopback WebSockets run
+through `ProactiveSocketService` and `ProactiveService`, using deterministic fake
+provider responses and isolated SQLite files. Inspected outcomes: expired result
+writes no turn; additive speech later delivers exactly one reopened turn; Quiet
+and End reject a response even when the provider ignores task cancellation; Quiet
+continues accepting live transcript updates without further model calls. This
+establishes transcript/control mechanics, not microphone capture. Existing replay
+and service checks cover duplicate retries, source-connection deduplication and
+cached historical responses. Multi-paragraph text persists as one turn and incurs
+one cooldown. Budget denial makes zero provider calls and consumes the cutoff;
+local phone-QA ledger tests preserve caps and no-refund/no-retry behavior.
+
+Runtime selection is unchanged: hosted source wires the `llm` default only when
+explicit PhoneQA configuration exists; `proactive_models.PROMPT` selects v4 and
+`grouped_messages=False`. The selected text schema accepts paragraph-separated
+text; the experimental grouped schema/prompt is not enabled. No hosted config or
+installed build was inspected or changed by this packet.
+
+The feature verifier's mechanical checks pass; full-feature status remains
+**incomplete** for live-provider, simulator and inspection receipts. These tests
+are fresh service/control execution with synthetic or historical cached outputs,
+not fresh LLM judgment. Paid calls: zero. No UI/device/capture-quality, distribution
+activation, deployment or broad relevance claims. The wider targeted run emits
+pre-existing SQLite ResourceWarnings from fixture helpers; checks still pass.
+Primary review/merge is pending; this packet does not advance dependent phases.
