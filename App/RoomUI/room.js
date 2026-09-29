@@ -125,7 +125,7 @@
       else if(detail?.notes){html+='<div class="paper">'+detail.notes.map(p=>p.heading?`<h3>${escape(p.heading)}</h3>`:`<p class="note-paragraph" data-passages="${escape(JSON.stringify(p.passages||[]))}">${escape(p.text)}</p>`).join('')+'</div>';}
       else{html+=`<p>${escape(detail?.status||'Preparing notes…')}</p><button class="row" data-act="refresh-note">Refresh notes</button>${detail?.retryable?'<button class="row" data-act="retry-note">Retry notes</button>':''}`;}
       if(live)html+=`<button class="primary" data-act="end"${state.capture?.canStop?'':' disabled'}>Stop recording</button>`;
-      else html+=`<button class="primary" data-act="ask-note"${n.attachable?'':' disabled'}>Talk about this</button>${n.attachable?'':'<p class="subtitle">This note isn’t ready to attach yet.</p>'}`;
+      else html+=`</div><div class="note-footer"><button class="primary" data-act="ask-note"${n.attachable?'':' disabled'}>Talk about this</button>${n.attachable?'':'<p class="subtitle">This note isn’t ready to attach yet.</p>'}`;
       html+='</div>';
     }
     if(page==='note-actions'&&n){title=n.title;html=actions(n,true);}
@@ -137,7 +137,10 @@
     const sheet=q('.panel');
     if(wasOpen&&page==='note'&&sheet.dataset.noteId===selected&&q('.note-content')&&q('.segment')){
       const template=document.createElement('template');template.innerHTML=html;
-      q('.note-content').innerHTML=template.content.querySelector('.note-content').innerHTML;
+      const content=q('.note-content'),scrollTop=content.scrollTop;
+      content.innerHTML=template.content.querySelector('.note-content').innerHTML;
+      content.scrollTop=animateContent?0:scrollTop;
+      q('.note-footer').innerHTML=template.content.querySelector('.note-footer').innerHTML;
       const segment=q('.segment');segment.classList.toggle('transcript-selected',transcript);
       segment.querySelectorAll('button').forEach(button=>{const active=(button.dataset.act==='transcript-tab')===transcript;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));});
       if(animateContent&&!matchMedia('(prefers-reduced-motion:reduce)').matches)q('.note-content').animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:560,easing:'cubic-bezier(.22,.65,.28,1)'});

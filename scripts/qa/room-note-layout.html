@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><title>Note sheet layout checks</title>
+<style>body{font:14px system-ui;display:flex;gap:20px}iframe{width:402px;height:778px}pre{white-space:pre-wrap;max-width:500px}</style>
+<iframe src="../../App/RoomUI/index.html" title="Shared room"></iframe><div><button id="run">Check note sheet scrolling</button><pre id="result">Fictional local notes only.</pre></div>
+<script>
+document.querySelector('#run').onclick=async()=>{
+ const w=document.querySelector('iframe').contentWindow,d=w.document,q=s=>d.querySelector(s),out=document.querySelector('#result'),results=[];
+ const wait=()=>new Promise(r=>setTimeout(r,900));
+ const check=(name,ok,detail)=>{results.push({name,pass:!!ok,detail});out.textContent=JSON.stringify(results,null,2);if(!ok)throw Error(name)};
+ const notes=Array.from({length:20},(_,i)=>({id:'layout-'+i,title:'Conversation '+i,metadata:'Today · 12 min',preview:'Layout fixture',day:'Today',attachable:true}));
+ try{
+ w.room.render({messages:[],notes,ready:true,draft:'',draftVersion:0,appearance:'light'});
+ q('[data-act=attach]').click();await wait();
+ const list=q('.panel-body');list.scrollTop=list.scrollHeight;
+ const last=list.lastElementChild;
+ check('Attachment list scrolls to its last card',list.scrollTop>0&&Math.abs(last.getBoundingClientRect().bottom-list.getBoundingClientRect().bottom)<2,{scrollTop:list.scrollTop,gap:last.getBoundingClientRect().bottom-list.getBoundingClientRect().bottom});
+ check('Picker is bounded and content scrolls',q('.panel').getBoundingClientRect().height<=w.innerHeight*.64+1);
+ q('[data-act=close]').click();await wait();q('[data-act=notes]').click();await wait();q('[data-act=note]').click();await wait();
+ const content=q('.note-content'),button=q('[data-act=ask-note]'),bottom=button.getBoundingClientRect().bottom;content.scrollTop=content.scrollHeight;
+ check('Note scrolls independently of pinned action',content.scrollTop>0&&button.getBoundingClientRect().bottom===bottom,{scrollTop:content.scrollTop,bottom});
+ check('Action has bottom inset without extra space',Math.abs(w.innerHeight-bottom-20)<2);
+ check('Note sheet is compact',Math.abs(q('.panel').getBoundingClientRect().height-w.innerHeight*.64)<2);
+ }catch(e){out.textContent+='\n'+e.message}
+};
+</script>

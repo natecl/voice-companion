@@ -7,7 +7,7 @@ The founder's scope is the approved prototype as the baseline, retaining later f
 The preview at port 61715 and the simulator load the same `App/RoomUI` HTML, CSS, icons, artwork and interaction code. `scripts/check-room-bundle.py` passed byte equality against the built simulator app and original approved CSS. Native controllers supply actual data; browser fixtures do not run on iPhone.
 
 - Search previously focused the field, then the navigation callback stole focus. Search now retains focus and filters the native library; zero-results and clearing were exercised.
-- Attachment and note sheets enter over 780 ms with gentler easing. Their baseline heights are 42% and 72% respectively.
+- Attachment and note sheets enter over 780 ms with gentler easing. The later compact-sheet revision caps attachment height and fixes note height at 64%.
 - Notes/Transcript keeps the segment mounted, moves its indicator over 520 ms, and reveals content over 560 ms. Data updates do not replay the explicit tab-switch animation.
 - Every saved note exposes the purple Talk about this action. Pending/unavailable notes show a disabled action with an explanation, rather than silently omitting it. Ready notes still attach to the persistent main chat.
 
@@ -20,7 +20,7 @@ The preview at port 61715 and the simulator load the same `App/RoomUI` HTML, CSS
 | Composer, upright paperclip, mic/arrow, plus | Native keyboard entry and send; square bounds asserted for arrow button. Native dictation is retained later functionality. |
 | Listening bar, red dot, View, Quiet, Stop | Shared markup; synthetic native capture/View/Stop exercised. Earlier proactive verifier covers Quiet. No new real-microphone claim. |
 | Notes page, search, empty results, cards | Browser and native navigation/filtering exercised; content differs by fixture. |
-| Note sheet, Notes/Transcript, Talk about this | Browser tabs inspected, native tabs/attachment exercised. Long transcripts scroll; the action follows content as in the prototype. |
+| Note sheet, Notes/Transcript, Talk about this | Browser tabs inspected, native tabs/attachment exercised. Long transcripts scroll above the pinned footer, per the subsequent founder revision. |
 | Attachment picker and attached-note chip | Browser picker inspected; native attach/remove tested. Availability reflects actual synchronized notes. |
 | Profile, appearance, memory information | Browser profile and memory panels inspected; native profile/dark screenshots and memory-panel coverage. |
 | Black error popup, dismiss, uncertain-reply recovery | Native failure test passed; screenshot inspected. Existing recovery action retained. |

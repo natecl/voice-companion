@@ -25,7 +25,8 @@ import XCTest
         web.buttons["View"].tap()
         XCTAssertTrue(web.staticTexts.containing(NSPredicate(format: "label CONTAINS 'Maya'")).firstMatch.waitForExistence(timeout: 8))
         shot(app, "Shared room — live transcript")
-        tapSettled(web.buttons["Close panel"])
+        waitUntilSettled(web.buttons["Close panel"], timeout: 15, stableFor: 2)
+        web.buttons["Close panel"].tap()
         XCTAssertTrue(web.buttons["End recording"].waitForExistence(timeout: 3))
         web.buttons["End recording"].tap()
         XCTAssertTrue(web.buttons["Invite Ellis into the conversation"].waitForExistence(timeout: 8))
@@ -59,8 +60,18 @@ import XCTest
         tapSettled(note)
         XCTAssertTrue(web.buttons["Talk about this"].waitForExistence(timeout: 12))
         shot(app,"Shared room — note and purple action")
+        let noteAction = web.buttons["Talk about this"]
+        let actionBottom = noteAction.frame.maxY
+        XCTAssertEqual(web.frame.maxY - actionBottom, 20, accuracy: 2)
         web.switches["Transcript"].tap()
         XCTAssertTrue(web.staticTexts.containing(NSPredicate(format: "label CONTAINS 'Maya'")).firstMatch.waitForExistence(timeout: 5))
+        waitUntilSettled(noteAction)
+        XCTAssertEqual(noteAction.frame.maxY, actionBottom, accuracy: 2)
+        let scrollStart = web.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: web.frame.width / 2, dy: noteAction.frame.minY - web.frame.minY - 25))
+        let scrollEnd = scrollStart.withOffset(CGVector(dx: 0, dy: -90))
+        scrollStart.press(forDuration: 0.05, thenDragTo: scrollEnd)
+        XCTAssertEqual(noteAction.frame.maxY, actionBottom, accuracy: 2)
+        XCTAssertTrue(noteAction.isHittable)
         shot(app,"Shared room — transcript tab")
         web.switches["Notes"].tap()
 
@@ -165,14 +176,14 @@ import XCTest
         web.buttons["Copy"].tap()
         XCTAssertTrue(web.buttons["Open notes"].waitForExistence(timeout: 4))
     }
-    private func waitUntilSettled(_ element: XCUIElement, timeout: TimeInterval = 5) {
+    private func waitUntilSettled(_ element: XCUIElement, timeout: TimeInterval = 5, stableFor: TimeInterval = 0.5) {
         var lastFrame = CGRect.zero
         var stableSince = Date()
         let settled = NSPredicate { _, _ in
             guard element.exists, element.isHittable else { stableSince = Date(); return false }
             let frame = element.frame
             if frame != lastFrame { lastFrame = frame; stableSince = Date(); return false }
-            return Date().timeIntervalSince(stableSince) > 0.5
+            return Date().timeIntervalSince(stableSince) > stableFor
         }
         XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: settled, object: nil)], timeout: timeout), .completed)
     }

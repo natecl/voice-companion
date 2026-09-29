@@ -1,7 +1,7 @@
 {
   "source": "companion-room.html",
-  "sha256": "1abaeb41c51db09970fca24928e90d5c6f973fe2e6cb769c63a646971519bbec",
-  "cssSHA256": "f0c7fa964b89de85209ff7af32ff4b5933f34d457ee5ad515ba51c3cc107c20b",
+  "sha256": "4ce6d8f3ef8c0167c9afe1556433dfb7aa82bdc73a40c3f92364ce2bca2f6d95",
+  "cssSHA256": "4ebfdd45d9b8bdcd2239b060bcd5496b58c31e842671b192309a7eddb96c06cf",
   "date": "2026-09-29",
-  "revision": "Calmer accessory and note entry, animated note tabs, neutral surfaces with purple accents"
+  "revision": "Compact note sheet with pinned action and bounded attachment scrolling"
 }
