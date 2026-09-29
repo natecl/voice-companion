@@ -1,0 +1,24 @@
+{
+  "data": {
+    "decision": "contribute",
+    "evidence_ids": [
+      "m2"
+    ],
+    "messages": [
+      "Mina needs step-free access, and the upstairs room has only stairs."
+    ]
+  },
+  "usage": {
+    "input_tokens": 1705,
+    "input_tokens_details": {
+      "cache_write_tokens": 661,
+      "cached_tokens": 1041
+    },
+    "output_tokens": 43,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1748
+  },
+  "seconds": 1.314506004564464
+}

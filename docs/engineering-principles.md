@@ -339,3 +339,5 @@ Founder wording refinement, September 29: companion messages should feel like a 
 Founder separate-message clarification, September 29: proactive contributions must support multiple actual chat bubbles, not merely paragraph breaks in one bubble. Preserve each bubble’s accepted styling and margins. Provide an explicit ordered messages model contract and verify model output → validation → persistence → rendered bubbles, with one contribution notification/cooldown and no per-bubble paid calls. This supersedes the earlier prohibition on grouping while retaining ordinary reply behavior.
 
 Founder authorizes reallocation of the three remaining two-topic proactive calls to conversational, separate-message QA, September 29; no additional spending or automatic retries. Deploy/install the matching behavior only if actual outputs and local verification meet acceptance.
+
+Founder approves an isolated $0.06 / three-call conversational v6 screen, September 29, with no retries. Preserve all prior ledgers and runtime limits. Deployment remains conditional on verified behavior and accepted wording.
