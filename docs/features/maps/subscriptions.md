@@ -1,4 +1,6 @@
-# Sign-up and pricing previews
+# Subscriptions and paywall
+
+> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
 
 Feature ID: `subscriptions` · Context reviewed September 29, 2026 against main `3a30e25`.
 
@@ -8,11 +10,11 @@ Current preview surfaces; real purchase/subscription implementation is deferred.
 
 ## Current implementation
 
-Freemium plus subscription is the agreed business model. Preview UI exists; working purchase/subscription integration is not claimed.
+Freemium plus subscription is agreed. Existing surfaces are previews; StoreKit purchases, verified entitlements and restore are not implemented.
 
 ## Gaps and non-goals
 
-Purchases, entitlement state, restore and billing lifecycle require a separate implementation. They are outside the current demo/private-pilot critical path.
+Commercial prices, allowances and billing periods are undecided. A free pilot before billing is an option, not an approved waiver. No paid launch before purchase lifecycle acceptance.
 
 ## Flow and implementation entry points
 
@@ -33,17 +35,11 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Verification and delivery state
 
-- Repository state: preview/deferred; not delivered as a working integration.
-- [Feature verifier contract](../verification/subscriptions.json): `python3 scripts/verify_feature.py subscriptions`.
-- [Mechanical baseline and unresolved checks](../verification-map.md#initial-mechanical-check-results--september-29-2026). Automated success is not full-feature acceptance.
-- Required real-path evidence: Verify pilot navigation accurately marks or excludes unavailable sign-up/pricing flows.
-- Merged/deployed/installed are separate states. This map is a repository context audit; it does not freshly inspect hosted flags or the phone. Historical evidence below applies only to its recorded versions and scenarios. Obtain actual version/configuration identities before a runtime claim.
+Release feature remains incomplete. [Verifier](../verification/subscriptions.json): `python3 scripts/verify_feature.py subscriptions`. Its updated gates require final-configuration lifecycle evidence; existing local checks or preview navigation alone do not satisfy them. See the [handoff delivery ledger](../../execution/testflight-release-handoff.md) for merged, installed and deployed boundaries. No new account, billing or release behavior was tested in this documentation pass.
 
 ## Next bounded work
 
-For the pilot, inspect and hide or clearly mark unavailable purchase flows. Do not start a billing integration without a bounded product packet.
-
-Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.
+After account/plan contracts are accepted, implement the first sandbox purchase-to-entitlement slice with failure and restore evidence.
 
 ## Supporting context and evidence
 

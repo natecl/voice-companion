@@ -1,5 +1,7 @@
 # Invited social presence and interface
 
+> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+
 Feature ID: `social-presence` · Planned September 29, 2026; baseline main `cdd17dc`.
 
 ## Purpose and user outcome

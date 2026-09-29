@@ -1,5 +1,7 @@
 # Recording library and sync
 
+> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+
 Feature ID: `library` · Context reviewed September 29, 2026 against main `3a30e25`.
 
 ## Purpose and user outcome

@@ -1,5 +1,7 @@
 # TestFlight install and update
 
+> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+
 Feature ID: `distribution` · Context reviewed September 29, 2026 against main `47eadb4`.
 
 ## Purpose and user outcome
@@ -8,11 +10,11 @@ Correct signed release configuration and independently usable beta. Product dire
 
 ## Current implementation
 
-Native build/check tooling and historical internal phone installs exist. The [P0-C offline audit](../../qa/testflight-readiness/README.md) confirms resolved Release settings and local development-signing availability; it does not establish a signed archive or independent TestFlight use. Release reads existing Keychain credentials only; fresh enrollment/import and proactive activation currently depend on Debug paths.
+UI PR154 and integration PR155 are merged; the merged Debug phone build was installed and launched in place. Backend remains at last-inspected 70f494b; no TestFlight upload or signed distribution archive is established.
 
 ## Gaps and non-goals
 
-Current signing/access, release flags, independent enrollment and full install/update acceptance remain unverified. Five-minute capture cap must be accurately disclosed.
+App Store Connect showed no app record and an updated agreement pending Account Holder review. Acceptance remains unverified. Distribution signing, icon, permitted artwork, privacy/legal/support metadata and fresh-tester access remain open.
 
 ## Flow and implementation entry points
 
@@ -34,17 +36,11 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Verification and delivery state
 
-- Repository state: internal foundation; independent beta readiness unverified.
-- [Feature verifier contract](../verification/distribution.json): `python3 scripts/verify_feature.py distribution`.
-- [Mechanical baseline and unresolved checks](../verification-map.md#initial-mechanical-check-results--september-29-2026). Automated success is not full-feature acceptance.
-- Required real-path evidence: Signed release install/update and independent tester access; intended native/backend version pairing.
-- Merged/deployed/installed are separate states. This map is a repository context audit; it does not freshly inspect hosted flags or the phone. Historical evidence below applies only to its recorded versions and scenarios. Obtain actual version/configuration identities before a runtime claim.
+Release feature remains incomplete. [Verifier](../verification/distribution.json): `python3 scripts/verify_feature.py distribution`. Its updated gates require final-configuration lifecycle evidence; existing local checks or preview navigation alone do not satisfy them. See the [handoff delivery ledger](../../execution/testflight-release-handoff.md) for merged, installed and deployed boundaries. No new account, billing or release behavior was tested in this documentation pass.
 
 ## Next bounded work
 
-Review the [completed offline audit and prioritized slices](../../qa/testflight-readiness/README.md#prioritized-next-acceptance-slices). First deliver selected Release tester enrollment/sign-out and owner-state invalidation; then accepted distribution configuration and exact native/backend pairing, followed by authorized signing/archive and independent install/update QA. The feature verifier remains incomplete; the fresh local access tests do not satisfy device or release gates.
-
-Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.
+Resolve Release enrollment, activation and assets; review backend backup/deploy/rollback and version pairing; then archive/upload and test independent install/update.
 
 ## Supporting context and evidence
 

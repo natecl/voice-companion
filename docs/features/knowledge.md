@@ -1,5 +1,7 @@
 # Knowledge feature map
 
+> Current September 29 release status and remaining phases: [TestFlight handoff](../execution/testflight-release-handoff.md). UI/integration PR154–155 are merged and the internal phone build is installed; backend rollout, independent accounts and paid plans remain pending. Earlier dated evidence below is historical, not a fresh release attestation.
+
 September 29 direction: [invited social presence](../social-presence-experience.md) supersedes note-taking-led positioning; see the [revised execution phases](../execution/demo-testflight-phases.md). Earlier implementation and rollout claims below remain dated evidence, not fresh runtime inspection.
 
 Updated September 28, 2026 against main `660e4c7`. Read [product definition](../product-source-of-truth.md), [current state](../current-state.md), [feature details](features.md) and [gap audit](../product-vision-audit-2026-09-28.md). This map distinguishes implemented storage/knowledge from target capabilities; it does not claim all sources are connected.

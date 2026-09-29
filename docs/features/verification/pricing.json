@@ -1,0 +1,43 @@
+{
+  "packet": "FEATURE-pricing",
+  "checks": [
+    {
+      "id": "pricing-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "fixture",
+      "evidence": "work/feature-evidence/pricing/behavior-1.json",
+      "claim": "Founder-approved Free/Pro matrix with measured costs, allowances, reset policy and disclosed assumptions"
+    },
+    {
+      "id": "pricing-behavior-2",
+      "group": "live_behavior_checks",
+      "kind": "fixture",
+      "evidence": "work/feature-evidence/pricing/behavior-2.json",
+      "claim": "Authenticated server enforcement handles concurrent reservations, failures, resets and entitlement changes without duplicate spending"
+    },
+    {
+      "id": "pricing-behavior-3",
+      "group": "live_behavior_checks",
+      "kind": "simulator",
+      "evidence": "work/feature-evidence/pricing/behavior-3.json",
+      "claim": "At limits, clear remaining-usage feedback and saved-note access work in the actual app"
+    },
+    {
+      "id": "pricing-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/pricing/inspection.json",
+      "claim": "Inspect raw final-build evidence, negative cases, unmet gates and account isolation; simulated fixtures do not establish sandbox or physical behavior"
+    }
+  ],
+  "not_applicable": {
+    "mechanical_checks": "No dedicated implemented plan suite yet; add real tests with implementation. Missing coverage is not acceptance."
+  },
+  "base": "5a04ea30d05dcf78537340e66da9e695465249ee",
+  "acceptance": [
+    "Founder-approved Free/Pro matrix with measured costs, allowances, reset policy and disclosed assumptions",
+    "Authenticated server enforcement handles concurrent reservations, failures, resets and entitlement changes without duplicate spending",
+    "At limits, clear remaining-usage feedback and saved-note access work in the actual app",
+    "Lead inspects exact final-configuration evidence before dependent work advances"
+  ]
+}

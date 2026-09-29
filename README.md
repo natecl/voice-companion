@@ -6,6 +6,10 @@ An iPhone-first AI companion you deliberately invite into conversations: a third
 
 This is a private internal foundation, not a public release. The exact prior one-liner above is retained pending a selected replacement. Capture remains deliberately started and internally capped at five minutes; speaker labels are best-effort. Historical capture evidence is in the [V1 runbook](docs/v1-runbook.md) and [acceptance](docs/v1-acceptance.md). Proactive judgment and repeated invitation remain product hypotheses; this plan does not establish current deployed/installed versions or connector availability.
 
+## Release handoff
+
+[Start here for TestFlight, accounts, plans and billing](docs/execution/testflight-release-handoff.md). Includes merged-versus-deployed status, remaining gates, permissions and next-agent instructions.
+
 ## Current knowledge and delivery status
 
 Start with the [current product and implementation brief](docs/current-state.md) for decisions, model roles, deployed versus candidate behavior, research outcomes and remaining gates. The [feature map](docs/features/README.md) connects those decisions to code and targeted QA. PR 99 is merged and internally deployed: native dictation/plain-message behavior passed bounded acceptance, and backend v3 personality rollout passed health, prompt-selection and data-preservation checks. The experimental Jev retrieval gate remains disabled.

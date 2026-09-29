@@ -1,5 +1,7 @@
 # Invited companion → demo → TestFlight
 
+> Current September 29 release status and remaining phases: [TestFlight handoff](execution/testflight-release-handoff.md). UI/integration PR154–155 are merged and the internal phone build is installed; backend rollout, independent accounts and paid plans remain pending. Earlier dated evidence below is historical, not a fresh release attestation.
+
 Founder revision, September 29, 2026: build the experience of inviting a third intelligent participant into a conversation. Personal continuity, good participation judgment and a personable interface are the product reward. Capture, notes and caching support that experience. See the [canonical direction](product-source-of-truth.md#invited-social-presence--september-29-2026) and [experience/UI proposal](social-presence-experience.md). The earlier exact one-liner is preserved pending a selected replacement; note-taking-led positioning is superseded.
 
 This is the overview of the [execution plan](execution/demo-testflight-phases.md), not an additional sequence or a claim of deployment.

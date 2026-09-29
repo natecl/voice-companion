@@ -174,3 +174,7 @@ Founder presentation clarification: proactive contributions appear as ordinary a
 ## Shared prototype interface — September 29, 2026
 
 Founder confirms the approved companion-room prototype as the exact interface source of truth, including its components and motion. Use one shared local UI bundle for the preview and iPhone rather than independently translating its styling into SwiftUI. Real capture, dictation, persistent chat and saved notes remain native-backed; the prototype's simulated behavior is not product functionality. See the engineering revision for migration and verification gates.
+
+## Release planning clarification — September 29, 2026
+
+Founder requests accounts, paywall and price plans in the TestFlight/release handoff. Freemium plus subscription remains agreed; exact provider, prices, allowances and billing periods remain undecided. A free pilot before commercial billing is a proposal requiring selection, not a delivered capability. See [remaining phases](execution/testflight-release-handoff.md). Preserve the agreed one-liner and current shared UI.

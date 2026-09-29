@@ -2,9 +2,13 @@
 
 Revised September 29, 2026. Founder direction: an invited third intelligent participant with personal continuity and judgment; a non-traditional, personable interface supports that presence. Notes and capture remain foundations. Read the [canonical revision](../product-source-of-truth.md#invited-social-presence--september-29-2026) and [experience/UI brief](../social-presence-experience.md). The existing one-liner is retained pending explicit replacement. This is an implementation plan, not a claim of finished behavior or authority to launch workers, spend, deploy or invite testers.
 
+## Current continuation
+
+The background wave and UI are merged in PR155/main `5a04ea3`. Follow [TestFlight release handoff](testflight-release-handoff.md) for remaining work; do not redispatch the historical first wave below.
+
 ## Outcomes and constraints
 
-Deliver a convincing short conversation in which the companion adds something useful from shared history, accepts a correction, stays quiet when appropriate, and is worth inviting again. Reliability, local notes, private-pilot access and TestFlight remain necessary. Granola remains Proven; build on its already implemented foundations. No graph-database rewrite, voice replies, always-on capture, connector integrations or subscriptions in this critical path.
+Deliver a convincing short conversation in which the companion adds something useful from shared history, accepts a correction, stays quiet when appropriate, and is worth inviting again. Reliability, local notes, private-pilot access and TestFlight remain necessary. Granola remains Proven; build on its already implemented foundations. No graph-database rewrite, voice replies, always-on capture or connector integrations in this release slice. Accounts, plans and subscriptions now have explicit remaining-work phases in the handoff; a free pilot before billing remains a founder decision.
 
 Use GPT-6 Astra/low workers with bounded ownership. Maximum three active workers plus orchestrator, fewer when shared UI/device resources are occupied. Workers receive their [feature maps](../features/context-map.md), linked verifiers, exact files/base SHA, failure cases and budget. The orchestrator reviews actual evidence and releases dependent packets. No feature is done because a script is green.
 
@@ -68,7 +72,7 @@ Exit: honest continuous demo and reviewed failure cases. The five-minute cap sta
 
 ## Phase 4 — invited TestFlight
 
-After integrated demo/access acceptance: verify archive/signing, release configuration, native/backend pairing, independent install/update, account isolation, sign-out, limits and feedback path. Show real listening/quiet/error states without Debug-only activation. Hide or clearly mark unavailable preview purchase/account paths. One release operator; upload/invitations require the applicable authorization. No full subscriptions to unblock a private pilot.
+After integrated demo/access acceptance: verify archive/signing, release configuration, native/backend pairing, independent install/update, account isolation, sign-out, limits and feedback path. Show real listening/quiet/error states without Debug-only activation. Hide or clearly mark unavailable preview purchase/account paths. One release operator; upload/invitations require the applicable authorization. A free pilot before full subscriptions is an option requiring an explicit founder choice; paid release requires billing acceptance.
 
 Exit: a fresh invited tester can use the approved short-session experience without a developer-connected phone. Notes/capture reliability remains required even though the pitch has changed.
 

@@ -1,9 +1,11 @@
 {
   "packet": "FEATURE-subscriptions",
-  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "base": "5a04ea30d05dcf78537340e66da9e695465249ee",
   "acceptance": [
-    "Current preview surfaces; real purchase/subscription implementation is deferred",
-    "Verify pilot navigation accurately marks or excludes unavailable sign-up/pricing flows"
+    "Sandbox purchase binds a verified transaction and entitlement to the correct account; cancelled and pending purchases do not grant access",
+    "Sandbox restore, renewal, expiration, refund/revocation and grace/recovery reconcile idempotently without cross-account entitlement transfer",
+    "Approved paywall shows actual localized product terms and working restore/manage actions; offline and failed purchase states are truthful",
+    "Lead inspects exact final-configuration evidence before dependent work advances"
   ],
   "checks": [
     {
@@ -11,14 +13,28 @@
       "group": "live_behavior_checks",
       "kind": "simulator",
       "evidence": "work/feature-evidence/subscriptions/behavior-1.json",
-      "claim": "Verify pilot navigation accurately marks or excludes unavailable sign-up/pricing flows"
+      "claim": "Sandbox purchase binds a verified transaction and entitlement to the correct account; cancelled and pending purchases do not grant access"
+    },
+    {
+      "id": "subscriptions-behavior-2",
+      "group": "live_behavior_checks",
+      "kind": "simulator",
+      "evidence": "work/feature-evidence/subscriptions/behavior-2.json",
+      "claim": "Sandbox restore, renewal, expiration, refund/revocation and grace/recovery reconcile idempotently without cross-account entitlement transfer"
+    },
+    {
+      "id": "subscriptions-behavior-3",
+      "group": "live_behavior_checks",
+      "kind": "simulator",
+      "evidence": "work/feature-evidence/subscriptions/behavior-3.json",
+      "claim": "Approved paywall shows actual localized product terms and working restore/manage actions; offline and failed purchase states are truthful"
     },
     {
       "id": "subscriptions-inspection",
       "group": "inspection",
       "kind": "review",
       "evidence": "work/feature-evidence/subscriptions/inspection.json",
-      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+      "claim": "Inspect raw final-build evidence, negative cases, unmet gates and account isolation; simulated fixtures do not establish sandbox or physical behavior"
     }
   ],
   "not_applicable": {

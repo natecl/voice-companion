@@ -1,0 +1,62 @@
+# TestFlight and paid-launch handoff
+
+Updated September 29, 2026. **Start here when continuing in a new agent.** This is the current remaining-work overview; it supersedes the pending-work sequence in demo-testflight-phases.md, whose earlier execution and evidence remain historical. Read README.md, product-source-of-truth.md, v0-scope.md and engineering-principles.md first. Preserve the exact agreed one-liner and the approved shared UI.
+
+## Verified baseline and delivery ledger
+
+- UI PR154 merged as `dd907d4`. Integration PR155 merged as `5a04ea30d05dcf78537340e66da9e695465249ee`; it includes background PR149–153. These are accepted bounded checkpoints, not full TestFlight acceptance.
+- [Integration review](../qa/phase-integration/README.md): 85 local backend tests, 19 native lifecycle/cache tests, eight staged shared-shell cache runs, five live-transcript-close repetitions, and the full synthetic native UI pipeline passed. No new live provider calls or physical capture acceptance was established by those checks.
+- Shared note cache is wired into the iPhone shell. Offline relaunch, refresh, revision invalidation and deletion were exercised. Sign-out/owner-switch integration remains missing.
+- A real close-button tap loss during transcript updates was reproduced and repaired. Approved shared CSS, HTML, iconography, typography and motion were preserved.
+- Merged phone build was signed, installed in place and launched on the existing iPhone; no reset. Receipts: `/tmp/integration-device-install-retry.json`, `/tmp/integration-device-launch.json`, `/tmp/integration-device-bundle.json`. Temporary local receipts may disappear; preserve sanitized durable evidence before release.
+- Latest phone inspection used the same baseline with temporary DEBUG-only font diagnostics. User/agent computed font family, size (16px) and weight (430) matched; Bold Text was enabled. Founder confirmed they look the same. Diagnostics were reverted from source; no UI fix or data change. Receipt `/tmp/message-font-phone-final.json`; do not mistake this diagnostic binary for an archived release.
+- Last inspected hosted backend: `70f494b50bf7b82f9e350ed220485b2cde7a1f26`, Render deploy `dep-datjp56k1f9s738i5nig`, service `srv-daqtfs7lot8c73dleuug`. Auto-deploy was off. **Merged backend changes have not been deployed in this task.** Recheck before action.
+- App Store Connect login worked. No app record existed. Apple displayed an updated Developer Program License Agreement requiring Account Holder acceptance. Acceptance has not been verified; later “ready” replies do not prove it. Xcode team `7HF6VDCZF7` was available for development signing; archive/distribution signing remains unverified.
+- No TestFlight build uploaded and no testers invited. Accounts, prices, paywall and real subscriptions remain unfinished.
+
+## Product decisions versus proposals
+
+Founder asks to include accounts, paywall and price plans in this release plan. Freemium plus subscription is already agreed. Exact prices, allowances, billing periods, authentication provider and paid-pilot timing are **not selected**. Suggested starting point: Sign in with Apple, optional Google later; Free and Pro; a free student pilot before charging while purchases are tested in sandbox. These remain proposals for review, not implementation facts or permission to charge.
+
+Keep the five-minute internal capture cap until separately changed and validated. Do not promise full lectures. Calendar/email/messages, outside-knowledge expansion, TTS and silent always-on capture remain outside this release slice. Preserve the single persistent chat, ordinary multi-message interjections, Quiet/End bounds, upright paperclip, purple actions and approved shared interface. New account/paywall surfaces should follow that design, not redesign the app.
+
+## Phases, packets and gates
+
+| Phase | Bounded packets | Dependency and completion gate |
+| --- | --- | --- |
+| 0: establish release baseline | REBASE-0 verify main/runtime/build identities; DECIDE-0 prepare concrete account/provider and plan choices; APPLE-0 resolve agreement/app record | No assumption that a Debug install or old receipts prove Release readiness. Founder handles legal acceptance; no automatic paid calls. |
+| 1: accounts and data lifecycle | ACCOUNT-1 authenticated enrollment/session refresh; ACCOUNT-2 sign-out, revocation and owner cache clearing; ACCOUNT-3 account deletion and existing-owner migration | Select auth contract first. Fresh Release install works without bundled developer credentials. Two actual users cannot read each other's notes/chat/memory or cached data. Preserve founder data during migration; prove deletion scope and retention policy. |
+| 2: plans and limits | PLAN-1 measured cost/allowance proposal; PLAN-2 server-enforced allowance reservations and remaining-usage API; PLAN-3 limit/error UX | Founder selects numbers. Stable account identity first for enforcement. Cover capture, chat, notes, learning and proactive spending, including concurrent requests and retries. Existing notes remain readable at limit. No client-only enforcement. |
+| 3: subscriptions and paywall | BILLING-1 StoreKit product/paywall UI; BILLING-2 verified transaction-to-account entitlement; BILLING-3 restore/manage lifecycle | Account and entitlement contracts accepted first. Sandbox purchase/cancel/pending/renew/refund/revoke/restore and expired/grace states; idempotent updates, account binding and offline reconciliation. Never ship a preview purchase button as working billing. |
+| 4: deploy and validate Release | RELEASE-1 reviewed backend deploy/backup/rollback; RELEASE-2 bounded proactive Release wiring; RELEASE-3 assets/disclosures/archive; RELEASE-4 fresh install/update validation | Final native/backend version pairing; all critical failure paths pass. Release enrollment cannot depend on Debug import. Quiet/End/cancellation/budgets survive Release. Signing, app icon, permitted companion artwork, privacy/legal/support configuration and distribution metadata completed. |
+| 5: TestFlight student pilot | PILOT-1 upload and independent installation; PILOT-2 short guided conversation and feedback | Explicit selected cohort/release route. A free pilot may precede commercial billing only by founder decision; exclude misleading purchase flows, keep real quotas. Paid launch requires phases 2–3 fully accepted. Capture real consented feedback without default transcript collection. |
+
+## Safe parallelization
+
+After contracts are fixed, account implementation, pricing/cost analysis and read-only release-assets audit can run independently. Serialize owner migration/cache invalidation, entitlements/usage reservations, schema migrations, deployment, signing and physical-device access. No concurrent writers in RoomWebModel/shared UI without explicit file ownership. Preserve the accepted baseline and use separate worktrees/DerivedData for authorized workers.
+
+If the founder authorizes workers for execution, use bounded Astra/low packets with exact base SHA, files, feature map, verifier, failure cases and budget. This documentation request launches no workers. Workers submit reproducible evidence to the lead; the lead reviews actual outputs and explicitly accepts dependent work. No worker self-approval or broad “own billing” assignment.
+
+## Verifiers and evidence
+
+Use `python3 scripts/verify_feature.py --list` and [feature index](../features/context-map.md). Primary release gates: `access`, `pricing`, `subscriptions`, `distribution`, with impacted `note-cache`, `deletion`, `capture`, `chat`, `proactive` and `social-presence` contracts. Every feature keeps its own context and verifier. Planned feature evidence gates are runnable but intentionally incomplete until real receipts exist; this update does not implement missing auth/StoreKit tests.
+
+Use `--checks-only` for existing local contracts, never as feature acceptance. Add purpose-built automated suites when the implementation exists. Submit exact source/configuration, fixture provenance, expected/observed behavior, raw sanitized receipt and inspected UI evidence. Review the final commit, not an earlier candidate. Real LLM changes require bounded approved final-model calls through the claimed pipeline; UI/cache mechanics should use fixtures. Simulator/StoreKit-local checks cannot establish App Store sandbox, physical haptics or actual microphone behavior.
+
+Run manifest tooling checks after edits: `python3 -m unittest discover -s scripts/verification -p 'test_*.py'`. No requirement may be weakened to produce a green verifier. Account deletion differs from note deletion: deleting a note preserves past answers under existing policy; account erasure must address the account's full data lifecycle.
+
+## Operational handoff and permissions
+
+Continue from latest main in a suitable free worktree. Current working checkout: `/Users/n.chinlue/.codex/worktrees/dictation-qa-budget/voice-companion`; original `/Users/n.chinlue/code/voice-companion` has unrelated local state and must be preserved. Never store keys/tokens in docs or evidence.
+
+Founder authorized internal deployment and TestFlight setup/release validation. That does not authorize accepting legal agreements, choosing commercial prices, charging, arbitrary tester invitations, resetting production data, changing Render tier, or paid model runs without a bounded allowance. No new provider budget was granted for this handoff. Observe canonical stop-and-wait rules for required founder input. Ask for physical readiness before timed manual QA.
+
+Render SSH previously failed with publickey authentication; investigate existing authorized deployment configuration rather than assuming access works. Do not deploy until current config, active work, backup, migration and rollback checks are satisfied. Preserve runtime quotas and historical ledgers. App Store Connect agreement is a separate founder-dependent gate; do not silently accept it.
+
+## First action for the next agent
+
+Read this handoff and linked maps, verify current git/runtime state, and prepare the smallest accounts packet plus a concrete auth-provider decision. Recheck whether Apple agreement acceptance is still pending before signing/upload work. Keep pricing/pilot decisions visibly open. Do not restart the completed UI redesign or rerun all paid evaluations just because the agent changed.
+
+## Handoff documentation validation
+
+The 15 verifier self-tests pass, including catalog/manifest schema and context-map links. The stale cache-is-unimplemented self-test was updated to require pricing/subscriptions/distribution (which have no automated suites yet) to reject checks-only verification. Feature discovery lists the new pricing contract. This validates tooling and documentation structure, not account, billing or TestFlight behavior. App source and UI assets are unchanged by this checkpoint.

@@ -1,5 +1,7 @@
 # On-device note caching
 
+> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+
 Feature ID: `note-cache` · Context reviewed September 29, 2026 against integration `b9bfb68` and UI main `dd907d4`.
 
 ## Purpose and user outcome

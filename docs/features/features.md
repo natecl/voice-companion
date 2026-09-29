@@ -1,5 +1,7 @@
 # Feature details
 
+> Current September 29 release status and remaining phases: [TestFlight handoff](../execution/testflight-release-handoff.md). UI/integration PR154–155 are merged and the internal phone build is installed; backend rollout, independent accounts and paid plans remain pending. Earlier dated evidence below is historical, not a fresh release attestation.
+
 Start with the [dedicated context map for your feature](context-map.md): current behavior, gaps, dependencies, evidence and next bounded work.
 
 See the [feature verification map](verification-map.md) for each feature’s executable verifier, required real-path evidence, and implementation gaps.
