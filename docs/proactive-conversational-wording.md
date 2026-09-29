@@ -171,3 +171,16 @@ The failure's actual text: “The club’s snack order is $65, but delivery woul
 All six raw provider responses parse through the actual SDK/parser and replay with exact requests through real retrieval, validation, durable save/reopen and duplicate suppression. Twenty-one targeted tests pass. The replay deliberately preserves the false interruption rather than grading it as accepted. No physical UI, microphone or conversational timing claim; no deployment. Evidence: `Backend/fixtures/proactive/usefulness-evaluation/` and `Backend/test_proactive_usefulness_screen.py`.
 
 Recommended next engineering question: can the opportunity decision distinguish “same project/person” from “helps the current question or decision”? Use paired relevant/irrelevant contexts, including this failure, with separate held-out cases. Do not tune only to this example, weaken silence expectations, or assume Jev already solves it. No additional paid calls are authorized by this result.
+
+
+## Current-focus candidate — original bug not fixed
+
+Founder approved $0.12 / six Luna calls, no retries. The isolated `proactive-focus-20260929-120` screen completed six calls, exhausting $0.12 reserved capacity (not invoice cost). The candidate replaces one relevance paragraph in v4: identify the latest discussion first, reject shared-entity matches and do not invent a new agenda for old facts. No retrieval, schema, generation settings or phone UI change.
+
+Three positive cases contributed: club budget, trail closure and changed choir venue. Two fresh negative cases stayed silent: leaf identification did not trigger a trail reminder, and breathing technique did not trigger a venue reminder. The original constellation negative still incorrectly raised the snack budget. Five of six decisions matched, but the actual bug remains. There is no live baseline for the four fresh cases, so their success is not evidence of improvement over v4.
+
+Inspection confirms the sent current passage explicitly asks how to find Orion; the candidate instructions are present and the unrelated budget source is supplied as evidence. The actual response is: “The club’s snack budget is at most $80, but the $65 grocery order plus $25 delivery comes to $90. Is delivery optional before placing the order?” This is a model relevance failure, not a missing current passage or wrong prompt selection. The screen cannot establish the model's internal reason.
+
+Twenty targeted tests pass, replaying all six outputs through the actual SDK parser and real retrieval/service/save-reopen. Exact requests are checked and the original false interruption remains asserted as an observed failure, not a passing product outcome. The candidate is rejected for rollout; deployed behavior remains unchanged. Receipts: `Backend/fixtures/proactive/focus-evaluation/`. Test: `Backend/test_proactive_focus_screen.py`.
+
+Do not keep adding equivalent relevance sentences or silently lower acceptance. Next candidate should evaluate the existing separate opportunity gate on this actual failure and independent matched pairs before any writer call; its prior 3/4 screen does not show that it solves this case. This is an unfunded next hypothesis, not an implemented fix or automatic authorization for more calls.

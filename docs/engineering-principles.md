@@ -358,3 +358,5 @@ Founder role-separation revision, September 29: evaluate Jev for deciding whethe
 Founder approves the prepared Jev/writer evaluation, September 29: up to $0.06 and six calls, four Jev and two Luna, no retries. Use isolated fictional cases and preserve runtime quotas and prior exhausted ledgers. Deployment remains conditional on quality acceptance.
 
 Founder approves the prepared autonomous baseline usefulness screen: up to $0.12 and six Luna calls, no retries. Use six fictional text contexts without phone/audio, preserve existing quotas and data, and judge relevance, silence, corrections and response usefulness separately from wording polish. No deployment implied.
+
+Founder approves the prepared current-focus candidate screen: up to $0.12 / six Luna calls, no retries, using three paired relevant/irrelevant contexts. Preserve deployed behavior until verification; no changes to phone UI, runtime quotas or prior ledgers.
