@@ -1,0 +1,20 @@
+{
+  "status": "incomplete-not-selected",
+  "planned_calls": 5,
+  "sent_calls": 2,
+  "completed_calls": 1,
+  "failed_or_uncertain_calls": 1,
+  "unsent_reserved_calls": 3,
+  "reserved_microusd": 100000,
+  "results": {
+    "cedar-prerequisite": {
+      "content": "preserved",
+      "grouping": "failed-single-paragraph"
+    },
+    "qualified-plan": {
+      "error": "HTTPError",
+      "status_code": "not captured by initial operator runner"
+    }
+  },
+  "runtime_prompt": "proactive-v2.md"
+}

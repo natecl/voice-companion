@@ -19,3 +19,19 @@ Explicit blank-line paragraphs in a proactive answer render as closely spaced or
 ## Remaining gates
 
 Candidate wording needs bounded real Luna QA for completeness, appropriate silence and natural boundaries, followed by separate deployment/native installation. Simulator output proves rendering, not generated wording quality, optimal engagement, physical feel or accessibility across every Dynamic Type setting. No new provider allowance has been consumed.
+
+## Authorized wording screen — incomplete
+
+Founder authorized reusing the five remaining Cedar calls without increasing budget. Five fictional requests and rubrics were prepared before invocation in `Backend/fixtures/proactive/readability-evaluation/requests.json` and `cases.json`: Cedar prerequisite, qualified multi-part plan, changed preference, unknown subject, and resolved commitment.
+
+All five slots were atomically reserved in the existing Cedar ledger to prevent concurrent phone activity overspending. **Only two requests were sent**: Cedar completed in 1.77 seconds; qualified-plan returned `HTTPError`. The batch stopped without retry. The initial runner retained only the exception class, not HTTP status/body, so the provider cause is unknown. Diagnostic status capture was corrected locally afterward, but no failed call was repeated. Three never-sent calls remain reserved, not spent or available to automatic phone traffic; no additional budget was created. The $0.10 reservation is a conservative hold, not an invoice or five successful calls. Prior pilot usage remains intact.
+
+Cedar output:
+
+> The Cedar team agreed to test the basic recording flow with five people before adding features, and those tests had not happened yet. Calendar integration was meant to wait until afterward.
+
+Manual review: key content and prerequisite preserved, but **grouping failed**—one paragraph with no blank-line message boundary. Past tense preserves historical framing but explicit “as of that note” would be clearer. Do not select v3 on this evidence. No conclusion about the two planned silence cases is possible because they were never sent.
+
+The exact successful request/response replays through retrieval, validation, durable main-chat storage and reopen with `PYTHONPATH=Backend python3 -m unittest Backend.test_proactive_readability -v` (one test passed). That test explicitly records the single-paragraph output, not a presentation success. Existing UI grouping remains locally verified by PR129. Runtime v2 and the physical phone are unchanged.
+
+Next: improve the candidate’s message-boundary instruction and resolve provider error observability before any further provider execution. Retain this failed candidate and predeclared cases; never present this partial screen as a passed wording checkpoint. Request shape was checked against [official Structured Outputs documentation](https://developers.openai.com/api/docs/guides/structured-outputs); schema validity alone does not establish content or presentation quality.

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "cedar-prerequisite",
+    "past": "For the Cedar pilot, the team agreed to test the basic recording flow with five people before adding features. Those tests have not happened yet. Calendar integration should wait until afterward.",
+    "live": "For the Cedar pilot, the recording flow is working. I want to add calendar integration now. Should we prioritize that next?",
+    "expected": "contribute",
+    "rubric": "Preserve team agreement, basic recording flow, five people, before adding features, pending status qualified to prior note and calendar waiting until afterward. Natural grouped messages."
+  },
+  {
+    "id": "qualified-plan",
+    "past": "For the Harbor study, Mina and Joel agreed to interview four nurses before choosing the scheduling design. Two interviews had happened as of this note; two remained. They agreed not to collect patient names during the interviews.",
+    "live": "Mina and Joel are discussing the Harbor study. Joel suggests choosing the scheduling design today and asks whether there are any constraints to remember as they finish interviewing nurses.",
+    "expected": "contribute",
+    "rubric": "Preserve four required interviews before design, two completed/two remaining as of note, no patient names, and named team. Do not assert current completion status. Natural grouped messages."
+  },
+  {
+    "id": "fresh-changed-preference",
+    "past": "Alex used to prefer meetings after 10 a.m., but explicitly changed that preference: 8 a.m. is now best and 11 a.m. no longer works.",
+    "live": "Alex and Jordan are scheduling their recurring meeting. Jordan suggests 8 a.m. or 11 a.m. and asks which time fits best.",
+    "expected": "contribute",
+    "rubric": "Use the corrected 8 a.m. preference; never recommend the superseded 11 a.m. option."
+  },
+  {
+    "id": "fresh-unknown-subject",
+    "past": "An unidentified speaker said: I need to bring my blood pressure log to my next appointment. The recording does not identify whose appointment it was.",
+    "live": "Noor is leaving for an appointment. Noor asks a partner if anything important has been forgotten.",
+    "expected": "silence",
+    "rubric": "Do not assign an anonymous person's health requirement to Noor."
+  },
+  {
+    "id": "fresh-resolved",
+    "past": "Alex promised Jordan an annotated bibliography before their next research discussion. It had not yet been sent when this note was made.",
+    "live": "At their research discussion, Jordan thanks Alex for sending the annotated bibliography yesterday and says they have read it. They move on to discussing the argument.",
+    "expected": "silence",
+    "rubric": "Current conversation resolves the old commitment. Do not remind about a completed task."
+  }
+]
