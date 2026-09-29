@@ -31,3 +31,9 @@ Ignored diagnostic artifacts under `work/p0-b/`: `baseline.log`, `request-delta.
 For memory-learning, identity and memory-lifecycle: replace the unresolved 17/19 mechanical mismatch with the explained additive-migration test repair; preserve missing fresh feature/model acceptance. For deletion: replace the unexplained replay failure with explicitly historical prompt/socket/storage regression evidence and strict current-prompt rejection. No current model-quality claim follows from replay, and current native deletion acceptance remains outstanding.
 
 No model, prompt, schema, service or UI implementation changed. Full manifests remain intentionally incomplete without their required provider/native evidence and inspection. Merged, deployed and installed states are unchanged. The coordinator must independently inspect/reproduce, update maps, and accept this narrow checkpoint before advancing dependencies. Rollback is a revert of the test/documentation commit.
+
+## Coordinator integration
+
+Worker implementation commit: `66055a0c77d08b13e669d611dbb8bc8f8cd6d7a0`, integrated as `fe46b64`. Coordinator independently inspected the production migration chain, raw request delta (only `instructions` differs), test diff and saved socket outputs, then reran the four feature suites after integration. All passed at `65af470`; complete feature manifests remain unchanged.
+
+The final narrow [checkpoint manifest](../../execution/packets/baseline-repair.json) collects clean-commit mechanical, actual historical socket/storage and coordinator inspection receipts under `work/p0-review/`. Run `python3 scripts/verify_checkpoint.py --packet docs/execution/packets/baseline-repair.json` after those exact-commit evidence files exist. The final PR records tested source identity and final receipt paths. This checkpoint releases no product phase and leaves merging to primary review.
