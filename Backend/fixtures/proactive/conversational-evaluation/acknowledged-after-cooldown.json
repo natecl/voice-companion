@@ -1,0 +1,20 @@
+{
+  "data": {
+    "decision": "silence",
+    "evidence_ids": [],
+    "messages": []
+  },
+  "usage": {
+    "input_tokens": 1596,
+    "input_tokens_details": {
+      "cache_write_tokens": 1593,
+      "cached_tokens": 0
+    },
+    "output_tokens": 24,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1620
+  },
+  "seconds": 1.323819288983941
+}

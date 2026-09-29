@@ -28,3 +28,17 @@ class ConversationReplayTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(result['steps'][-1]['case'],row['case'])
                 self.assertEqual(result['steps'][-1]['result'],
                     'contribution' if row['expected_model_decision']=='contribute' else 'silence')
+
+    async def test_grouped_live_candidates_replay_without_claiming_style_acceptance(self):
+        root=Path(__file__).parent/'fixtures/proactive/conversational-evaluation'
+        for row in json.loads((root/'requests.json').read_text()):
+            with self.subTest(case=row['case']):
+                response=json.loads((root/(row['case']+'.json')).read_text())
+                result=await run(dict(case=row['case'],request=row['request'],response=response),grouped_messages=True)
+                self.assertEqual(result['steps'][-1]['result'],
+                    'silence' if row['case']=='acknowledged-after-cooldown' else 'contribution')
+        # Keep the observed failure visible; two bubbles alone is not the desired tone.
+        cedar=json.loads((root/'missing-prerequisite.json').read_text())['data']['messages']
+        self.assertEqual(len(cedar),2)
+        self.assertIn(';',cedar[0])
+        self.assertIn('as of the note',cedar[0])

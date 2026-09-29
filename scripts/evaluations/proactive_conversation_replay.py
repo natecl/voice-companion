@@ -53,6 +53,8 @@ class ScriptedModel:
         if self.recorded and step['id']==self.recorded['case']:
             assert request==self.recorded['request'], 'Exact request changed; no live fallback'
             return self.recorded['response']
+        if 'messages' in request['text']['format']['schema']['properties']:
+            data=dict(decision=data['decision'],messages=[data['text']] if data['text'] else [],evidence_ids=data['evidence_ids'])
         return dict(data=data,usage={})
 
 
@@ -63,14 +65,14 @@ class SyntheticBudget:
     def finish(self,key,usage=None):pass
 
 
-async def run(recorded=None):
+async def run(recorded=None, *, grouped_messages=False):
     with tempfile.TemporaryDirectory() as folder:
         path=Path(folder)/'memory.sqlite';store=MemoryStore(path,clock=lambda:300.)
         owner=store.owner_for('fictional-conversation-replay')
         for name,text in SOURCES.items():store.put_source(owner,recording(name,text))
         policy=ProactivePolicy();policy.start(owner,'capture')
         model=ScriptedModel(recorded);budget=SyntheticBudget()
-        service=ProactiveService(store,model,budget)
+        service=ProactiveService(store,model,budget,grouped_messages=grouped_messages)
         passages=[];results=[];delivered=[]
         for index,step in enumerate(STEPS,1):
             if step.get('quiet'):policy.quiet()

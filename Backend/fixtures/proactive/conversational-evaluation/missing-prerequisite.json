@@ -1,0 +1,25 @@
+{
+  "data": {
+    "decision": "contribute",
+    "evidence_ids": [
+      "m1"
+    ],
+    "messages": [
+      "The Cedar team wanted to test the basic recording flow with five people before adding features; those tests hadn\u2019t happened as of the note.",
+      "Calendar integration was meant to wait until after those tests."
+    ]
+  },
+  "usage": {
+    "input_tokens": 1307,
+    "input_tokens_details": {
+      "cache_write_tokens": 1304,
+      "cached_tokens": 0
+    },
+    "output_tokens": 66,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1373
+  },
+  "seconds": 2.6123550133779645
+}

@@ -1,0 +1,24 @@
+{
+  "data": {
+    "decision": "contribute",
+    "evidence_ids": [
+      "m2"
+    ],
+    "messages": [
+      "No\u2014the upstairs room has only stairs, and Mina needs step-free access. The first-floor room meets that requirement."
+    ]
+  },
+  "usage": {
+    "input_tokens": 1725,
+    "input_tokens_details": {
+      "cache_write_tokens": 661,
+      "cached_tokens": 1061
+    },
+    "output_tokens": 51,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1776
+  },
+  "seconds": 1.4512776331976056
+}
