@@ -54,3 +54,7 @@ Before editing, read this map and linked code, identify affected contracts, and 
 ## Maintenance
 
 Update this map when behavior, dependencies, verification, deployment evidence or the next blocker changes. Update the linked catalog/verifier with it. Preserve failed evidence and label superseded experiments; do not append contradictory status updates or replace missing verification with a claim of completion.
+
+## Companion-room presentation candidate — September 29
+
+The approved redesign opens Notes from the left home control with horizontal motion and integrated search styling. Existing tap/swipe arbitration, long-press Share/Delete/Copy, confirmations, attachment and source contracts remain. See [native candidate and QA](../../qa/companion-room/README.md); this does not establish cache/offline feature acceptance or phone rollout.

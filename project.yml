@@ -26,6 +26,7 @@ targets:
         buildPhase: resources
     settings:
       base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
         PRODUCT_BUNDLE_IDENTIFIER: ai.voicecompanion.mac
         PRODUCT_NAME: VoiceCompanion
   VoiceCompanionPhone:
@@ -43,6 +44,7 @@ targets:
         UIBackgroundModes: [audio]
     settings:
       base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
         PRODUCT_BUNDLE_IDENTIFIER: ai.voicecompanion.phone
         PRODUCT_NAME: VoiceCompanion
         TARGETED_DEVICE_FAMILY: '1'

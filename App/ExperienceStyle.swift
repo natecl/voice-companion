@@ -17,13 +17,15 @@ enum ExperienceClipboard {
     }
 }
 
-/// Shared neutral surfaces and typography, derived from the approved Home screen.
+/// Shared lavender/plum surfaces from the approved companion-room prototype.
 enum ExperienceStyle {
-    static let canvas = Color.white
-    static let ink = Color(red: 0.035, green: 0.045, blue: 0.055)
-    static let surface = Color(white: 0.945)
-    static let secondary = Color(red: 0.46, green: 0.47, blue: 0.52)
-    static let line = Color(white: 0.925)
+    static let canvas = Color(red: 0.953, green: 0.949, blue: 0.961)
+    static let card = Color.white
+    static let accent = Color(red: 0.40, green: 0.322, blue: 0.514)
+    static let ink = Color(red: 0.188, green: 0.176, blue: 0.216)
+    static let surface = Color(red: 0.914, green: 0.898, blue: 0.937)
+    static let secondary = Color(red: 0.48, green: 0.455, blue: 0.52)
+    static let line = Color(red: 0.902, green: 0.890, blue: 0.922)
 }
 
 struct ExperienceIconButton: View {
@@ -53,7 +55,7 @@ struct ExperienceIconButton: View {
                     } else if !bare {
                         Circle().fill(.white)
                             .overlay(Circle().strokeBorder(ExperienceStyle.line, lineWidth: ["person", "magnifyingglass"].contains(icon) ? 1.5 : 0))
-                            .shadow(color: .black.opacity(0.06), radius: 16, y: 7)
+                            .shadow(color: ExperienceStyle.ink.opacity(0.035), radius: 12, y: 5)
                     }
                 }
 
@@ -65,7 +67,7 @@ struct ExperienceIconButton: View {
     @ViewBuilder private var buttonSymbol: some View {
         if icon == "plus" {
             Image(systemName: "plus").font(.system(size: size > 44 ? 25 : 20, weight: .bold, design: .rounded))
-        } else if ["mic", "arrow.up", "xmark", "chevron.left", "stop.fill"].contains(icon) {
+        } else if ["mic", "arrow.up", "xmark", "chevron.left", "stop.fill", "equal"].contains(icon) {
             Image(systemName: icon)
                 .font(.system(size: icon == "stop.fill" ? 17 : icon == "mic" ? 18 : 20, weight: icon == "mic" ? .regular : .semibold))
         } else {
@@ -209,7 +211,7 @@ struct ExperiencePressStyle: ButtonStyle {
             }
             .scaleEffect(configuration.isPressed && !reduceMotion ? pressedScale : 1)
             .opacity(configuration.isPressed ? 0.88 : 1)
-            .animation(reduceMotion ? nil : (configuration.isPressed ? .easeOut(duration: 0.1) : .smooth(duration: 0.24)), value: configuration.isPressed)
+            .animation(reduceMotion ? nil : (configuration.isPressed ? .easeOut(duration: 0.1) : .spring(response: 0.28, dampingFraction: 0.82)), value: configuration.isPressed)
     }
 }
 
@@ -262,10 +264,10 @@ struct ExperienceAgentBubble: ViewModifier {
     func body(content: Content) -> some View {
         content.font(.body).lineSpacing(4)
             .padding(.horizontal, 16).padding(.vertical, 14)
-            .background(Color(white: 0.945), in: RoundedRectangle(cornerRadius: 18))
-            .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(Color(white: 0.90), lineWidth: 0.7))
+            .background(ExperienceStyle.card, in: RoundedRectangle(cornerRadius: 23, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 23, style: .continuous).strokeBorder(ExperienceStyle.line.opacity(0.4), lineWidth: 0.5))
             #if os(iOS)
-            .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 18))
+            .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 23, style: .continuous))
             #endif
     }
 }

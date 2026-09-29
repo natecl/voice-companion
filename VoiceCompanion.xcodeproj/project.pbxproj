@@ -86,6 +86,7 @@
 		93B191BE382CDD95F0602F1A /* RecordingConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82134446B9A07E479203081 /* RecordingConnection.swift */; };
 		953786CBFDF701A69F732EE8 /* transcript-events.json in Resources */ = {isa = PBXBuildFile; fileRef = F68208B8B28B93C1AEA78F78 /* transcript-events.json */; };
 		96A1D7506C6172D690F2E072 /* SessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07AC85400C84CD8C0027 /* SessionController.swift */; };
+		9B6F2E215CA52CD15089676D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC14791FCF725C447B490BB1 /* Assets.xcassets */; };
 		9BA0683EC8CC162389FE99A7 /* CompanionMessageTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE5D916C772B85F0A028924 /* CompanionMessageTextTests.swift */; };
 		9D2FB921F7C8AAE0ED0E5E19 /* CompanionRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99563154DEC736333441A95 /* CompanionRootView.swift */; };
 		9E0A95F6529756FB8AC11B4B /* SavedRecordingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D820E88D807B0651015E9212 /* SavedRecordingUITests.swift */; };
@@ -111,6 +112,7 @@
 		CDE41D8ECE47CDB51321D5A9 /* RecordingFinalizationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84C0859642B21DF9D960467 /* RecordingFinalizationTask.swift */; };
 		CF683A29AF90105093BA69D2 /* CompanionConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DC5EAF399C9BA0167DE08F /* CompanionConnection.swift */; };
 		CF98D9F5C759893150FD81B1 /* SessionController+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220AAC839C8995F4A61DD83B /* SessionController+App.swift */; };
+		D382AEFDFEEA645F020722EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC14791FCF725C447B490BB1 /* Assets.xcassets */; };
 		D7AFA0F1877EA170A074738E /* CompanionConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DC5EAF399C9BA0167DE08F /* CompanionConnection.swift */; };
 		D8B28119A0523D7FE8BFD708 /* RecordingNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0334F10394B21E44457D8F6D /* RecordingNotes.swift */; };
 		DA748D84B8051DB984056BCE /* ComposerDictationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB896610CA7C35AA4B7618D7 /* ComposerDictationTests.swift */; };
@@ -214,6 +216,7 @@
 		E78DF2FA0976B69003E482D9 /* RelayCredentialStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelayCredentialStore.swift; sourceTree = "<group>"; };
 		E84C0859642B21DF9D960467 /* RecordingFinalizationTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingFinalizationTask.swift; sourceTree = "<group>"; };
 		EB9EC7C7D2F4D7A26C239554 /* RecordingLifecycleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingLifecycleTests.swift; sourceTree = "<group>"; };
+		EC14791FCF725C447B490BB1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EE3F8A7C9C6A23D538E310C0 /* CoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFDA0E3F2FEAB048B99422E9 /* CompanionRefreshTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionRefreshTests.swift; sourceTree = "<group>"; };
 		F68208B8B28B93C1AEA78F78 /* transcript-events.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "transcript-events.json"; sourceTree = "<group>"; };
@@ -335,6 +338,7 @@
 		E65D87751E2FBF6633A37121 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				EC14791FCF725C447B490BB1 /* Assets.xcassets */,
 				A99563154DEC736333441A95 /* CompanionRootView.swift */,
 				88BF1AC516A3299E1DFBF855 /* ConversationAskView.swift */,
 				AF68AD805B6E63CBC2628D1C /* ExperienceAccountView.swift */,
@@ -538,6 +542,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B6F2E215CA52CD15089676D /* Assets.xcassets in Resources */,
 				777B22E0271AEF80B05980A4 /* transcript-events.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -546,6 +551,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D382AEFDFEEA645F020722EA /* Assets.xcassets in Resources */,
 				5E2D19B3C8B069259C1890FD /* Phone-Info.plist in Resources */,
 				953786CBFDF701A69F732EE8 /* transcript-events.json in Resources */,
 			);
@@ -744,7 +750,7 @@
 		2B30F763434A3BB858357C2D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -834,7 +840,7 @@
 		86CC104E18C12CFB68E07DAC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "App/Phone-Info.plist";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect to your Mac development relay for live transcription.";
@@ -853,7 +859,7 @@
 		8748483F24FD1716972C492D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "App/Phone-Info.plist";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect to your Mac development relay for live transcription.";
@@ -889,7 +895,7 @@
 		8D5AB97AF3F8D9F7B19027B5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

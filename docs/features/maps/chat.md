@@ -57,3 +57,7 @@ Before editing, read this map and linked code, identify affected contracts, and 
 ## Maintenance
 
 Update this map when behavior, dependencies, verification, deployment evidence or the next blocker changes. Update the linked catalog/verifier with it. Preserve failed evidence and label superseded experiments; do not append contradictory status updates or replace missing verification with a claim of completion.
+
+## Companion-room presentation candidate — September 29
+
+Founder approved replacing the native shell with the reviewed lavender/plum prototype. See [bounded implementation and QA](../../qa/companion-room/README.md). Two-line Notes entry and Invite replace root tabs/search; the existing chat/controllers remain. Temporary reference art is debug-only presentation (still bundled; remove before distribution). Invitation delivery is not implemented. This candidate is not a hosted or phone rollout.

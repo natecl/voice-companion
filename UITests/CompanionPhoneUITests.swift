@@ -61,6 +61,7 @@ final class CompanionPhoneUITests: XCTestCase {
         app.buttons["Delete"].tap()
         app.buttons["confirmDeleteLibraryNote"].firstMatch.tap()
         XCTAssertEqual(app.buttons.matching(identifier: "savedSession").count, 3)
+        app.buttons["agentNavigation"].tap()
         app.buttons["Attachments and message options"].tap()
         app.buttons["chooseRecordingAttachment"].tap()
         XCTAssertTrue(app.buttons["attachRecordingRow"].firstMatch.waitForExistence(timeout: 5))
@@ -68,7 +69,6 @@ final class CompanionPhoneUITests: XCTestCase {
         app.buttons["attachRecordingRow"].firstMatch.tap()
         XCTAssertTrue(app.staticTexts["chatAttachment"].waitForExistence(timeout: 5))
         app.buttons["removeAttachment"].tap()
-        app.buttons["agentNavigation"].tap()
         snapshot(app, "Polished Agent")
         app.buttons["notesNavigation"].tap()
         app.buttons["searchRecordings"].tap()
@@ -84,6 +84,31 @@ final class CompanionPhoneUITests: XCTestCase {
         app.navigationBars.buttons.firstMatch.tap()
         app.buttons["Plan preview"].tap()
         snapshot(app, "Pricing preview")
+    }
+
+    func testCompanionRoomHeaderAndInvite() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--companion-ui-fixture"]
+        app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"])
+        app.launch(); defer { app.terminate() }
+        XCTAssertTrue(app.buttons["notesNavigation"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["searchRecordings"].exists)
+        XCTAssertTrue(app.buttons["inviteFriends"].exists)
+        snapshot(app, "Companion room home")
+        app.buttons["inviteFriends"].tap()
+        XCTAssertTrue(app.staticTexts["Friend invitations aren’t available in this internal build yet."].waitForExistence(timeout: 3))
+        snapshot(app, "Invitation boundary")
+        app.buttons["Close invitation"].tap()
+        app.buttons["notesNavigation"].tap()
+        XCTAssertTrue(app.buttons["agentNavigation"].waitForExistence(timeout: 3))
+        XCTAssertFalse(app.buttons["inviteFriends"].exists)
+        app.buttons["agentNavigation"].tap()
+        XCTAssertTrue(app.buttons["inviteFriends"].waitForExistence(timeout: 3))
+        app.buttons["startRecording"].tap()
+        XCTAssertTrue(app.buttons["showActiveRecording"].waitForExistence(timeout: 5))
+        snapshot(app, "Companion room capture")
+        app.buttons["stopRecording"].tap()
     }
 
     private func snapshot(_ app: XCUIApplication, _ name: String) {
@@ -118,10 +143,12 @@ final class CompanionPhoneUITests: XCTestCase {
         draft.tap(); draft.typeText("Keep this thought")
 
         app.buttons["notesNavigation"].tap()
+        XCTAssertFalse(draft.exists, "Notes is a separate reading surface")
+        app.buttons["agentNavigation"].tap()
         XCTAssertEqual(draft.value as? String, "Keep this thought")
         XCTAssertTrue(app.buttons["sendCompanion"].exists)
         XCTAssertFalse(app.buttons["startDictation"].exists)
-        snapshot(app, "Home composer with send")
+        snapshot(app, "Companion draft preserved after Notes")
         app.buttons["startRecording"].tap()
         XCTAssertTrue(app.buttons["showActiveRecording"].waitForExistence(timeout: 5))
         app.buttons["showActiveRecording"].tap()
@@ -135,7 +162,8 @@ final class CompanionPhoneUITests: XCTestCase {
         app.buttons["Close recording"].tap()
         app.buttons["notesNavigation"].tap()
         XCTAssertTrue(app.buttons["savedSession"].firstMatch.waitForExistence(timeout: 5))
-        let home = XCTAttachment(screenshot: app.screenshot()); home.name = "Home with shared composer"; home.lifetime = .keepAlways; add(home)
+        XCTAssertTrue(app.buttons["searchRecordings"].waitForExistence(timeout: 5))
+        let home = XCTAttachment(screenshot: app.screenshot()); home.name = "Notes after capture"; home.lifetime = .keepAlways; add(home)
         app.buttons["searchRecordings"].tap()
         let search = app.textFields["recordingSearch"]
         search.tap(); search.typeText("zzznomatch")
