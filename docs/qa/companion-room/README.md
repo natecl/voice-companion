@@ -1,6 +1,6 @@
 # Companion room native candidate
 
-September 29, 2026. Based on verified main `47eadb4`; independent of the pending background phase PRs. This is a native presentation checkpoint, not a backend/model or capture-provider change. It is not installed on the physical phone or deployed.
+September 29, 2026. Based on verified main `47eadb4`; independent of the pending background phase PRs. This is a native presentation checkpoint, not a backend/model or capture-provider change. The native build was subsequently installed internally on the founder’s phone; see the installation receipt below.
 
 ## Founder-approved direction
 
@@ -37,6 +37,12 @@ Screenshots inspected: [home](home.png), [capture](capture.png), [notes](notes.p
 
 ## Remaining delivery boundary
 
-This is a light-appearance native candidate. Dark appearance, physical motion/haptic judgment, final companion artwork, invitation delivery and release app icon are not complete. The temporary artwork and Invite state must not be mistaken for finished distribution features. No phone install, deployment or merge is claimed.
+This is a light-appearance native candidate. Dark appearance, physical motion/haptic judgment, final companion artwork, invitation delivery and release app icon are not complete. The temporary artwork and Invite state must not be mistaken for finished distribution features. No production backend deployment, merge or completed physical behavioral acceptance is claimed.
 
 Follow-up: red Listening indicator and left-entry Notes navigation verified through `testCompanionRoomHeaderAndInvite` (13.016 s, passed), result bundle `/tmp/CompanionRoomQA/20260929-063859/`. Updated capture screenshot. Prototype capture and Notes/back interactions also exercised. Pause/connection/finishing labels remain unchanged.
+
+## Authorized internal phone installation
+
+September 29: founder explicitly requested phone deployment after reviewing the prototype. Signed Debug build of `0272c5f` succeeded with the existing development team. `devicectl` installed `ai.voicecompanion.phone` as an in-place update on the paired physical iPhone 16 Pro and successfully launched it with `--enable-companion-ui`. No uninstall, data reset, credential replacement, backend deployment or paid call was performed. Existing app container was retained.
+
+Receipts: `/tmp/companion-room-device-build.log`, `/tmp/companion-room-device-install.json`, `/tmp/companion-room-device-launch.json`. This verifies signed build, installation and process launch, not physical touch/haptics, capture or production response acceptance. The draft PR remains open.
