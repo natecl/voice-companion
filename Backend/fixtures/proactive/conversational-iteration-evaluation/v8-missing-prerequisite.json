@@ -1,0 +1,25 @@
+{
+  "data": {
+    "decision": "contribute",
+    "evidence_ids": [
+      "m1"
+    ],
+    "messages": [
+      "I'd wait on calendar integration until the five-person test is done.",
+      "The team agreed to test the basic recording flow with five people before adding features, and those tests hadn't happened when recorded."
+    ]
+  },
+  "usage": {
+    "input_tokens": 1557,
+    "input_tokens_details": {
+      "cache_write_tokens": 1554,
+      "cached_tokens": 0
+    },
+    "output_tokens": 65,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1622
+  },
+  "seconds": 6.620481910184026
+}

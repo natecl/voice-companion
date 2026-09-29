@@ -1,0 +1,123 @@
+{
+  "provenance": "Ten real Luna calls on fictional contexts; no audio or user-data writes",
+  "reserved_usd": 0.2,
+  "calls": 10,
+  "retries": 0,
+  "selected": false,
+  "results": [
+    {
+      "case": "missing-prerequisite",
+      "version": 7,
+      "messages": [
+        "I'd hold off on calendar integration until after the five-person test of the basic recording flow.",
+        "Those tests hadn't happened when that was recorded."
+      ],
+      "characters": [
+        98,
+        51
+      ],
+      "decision": "contribute"
+    },
+    {
+      "case": "rescheduled-study-session",
+      "version": 7,
+      "messages": [
+        "The group had changed the meeting to 5 because the library room isn\u2019t available before then. The library is still the location."
+      ],
+      "characters": [
+        127
+      ],
+      "decision": "contribute"
+    },
+    {
+      "case": "acknowledged-after-cooldown",
+      "version": 7,
+      "messages": [],
+      "characters": [],
+      "decision": "silence"
+    },
+    {
+      "case": "v8-missing-prerequisite",
+      "version": 8,
+      "messages": [
+        "I'd wait on calendar integration until the five-person test is done.",
+        "The team agreed to test the basic recording flow with five people before adding features, and those tests hadn't happened when recorded."
+      ],
+      "characters": [
+        68,
+        136
+      ],
+      "decision": "contribute"
+    },
+    {
+      "case": "v8-rescheduled-study-session",
+      "version": 8,
+      "messages": [
+        "The group\u2019s meeting is at 5 now, not 3. Everyone agreed to the change because the library room isn\u2019t available before 5."
+      ],
+      "characters": [
+        120
+      ],
+      "decision": "contribute"
+    },
+    {
+      "case": "v9-missing-prerequisite",
+      "version": 9,
+      "messages": [
+        "The team agreed to test the basic recording flow with five people before adding features.",
+        "Those tests hadn\u2019t happened when that was recorded, and calendar integration was meant to wait until afterward."
+      ],
+      "characters": [
+        89,
+        111
+      ],
+      "decision": "contribute"
+    },
+    {
+      "case": "v9-rescheduled-study-session",
+      "version": 9,
+      "messages": [
+        "The group\u2019s meeting time changed to 5 PM, not 3.",
+        "Everyone agreed to the new time, and it\u2019s still at the library."
+      ],
+      "characters": [
+        48,
+        63
+      ],
+      "decision": "contribute"
+    },
+    {
+      "case": "v10-missing-prerequisite",
+      "version": 10,
+      "messages": [
+        "I'd hold off on calendar integration for now.",
+        "The team agreed to test the basic recording flow with five people first, and those tests hadn't happened when this was recorded."
+      ],
+      "characters": [
+        45,
+        128
+      ],
+      "decision": "contribute"
+    },
+    {
+      "case": "v10-rescheduled-study-session",
+      "version": 10,
+      "messages": [
+        "The group\u2019s meeting is at 5, not 3\u2014the library room isn\u2019t available before then.",
+        "The location is still the library."
+      ],
+      "characters": [
+        80,
+        34
+      ],
+      "decision": "contribute"
+    },
+    {
+      "case": "v10-acknowledged-after-cooldown",
+      "version": 10,
+      "messages": [],
+      "characters": [],
+      "decision": "silence"
+    }
+  ]
+}

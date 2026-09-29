@@ -1,0 +1,25 @@
+{
+  "data": {
+    "decision": "contribute",
+    "evidence_ids": [
+      "m1"
+    ],
+    "messages": [
+      "The group\u2019s meeting is at 5, not 3\u2014the library room isn\u2019t available before then.",
+      "The location is still the library."
+    ]
+  },
+  "usage": {
+    "input_tokens": 1054,
+    "input_tokens_details": {
+      "cache_write_tokens": 1051,
+      "cached_tokens": 0
+    },
+    "output_tokens": 56,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1110
+  },
+  "seconds": 1.644393628463149
+}

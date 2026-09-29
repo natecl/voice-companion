@@ -1,0 +1,24 @@
+{
+  "data": {
+    "decision": "contribute",
+    "evidence_ids": [
+      "m1"
+    ],
+    "messages": [
+      "The group\u2019s meeting is at 5 now, not 3. Everyone agreed to the change because the library room isn\u2019t available before 5."
+    ]
+  },
+  "usage": {
+    "input_tokens": 1558,
+    "input_tokens_details": {
+      "cache_write_tokens": 247,
+      "cached_tokens": 1308
+    },
+    "output_tokens": 58,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1616
+  },
+  "seconds": 3.691411478444934
+}

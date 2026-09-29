@@ -341,3 +341,5 @@ Founder separate-message clarification, September 29: proactive contributions mu
 Founder authorizes reallocation of the three remaining two-topic proactive calls to conversational, separate-message QA, September 29; no additional spending or automatic retries. Deploy/install the matching behavior only if actual outputs and local verification meet acceptance.
 
 Founder approves an isolated $0.06 / three-call conversational v6 screen, September 29, with no retries. Preserve all prior ledgers and runtime limits. Deployment remains conditional on verified behavior and accepted wording.
+
+Founder approves an isolated allowance of up to $0.20 / ten Luna calls for conversational proactive refinement, September 29, with no automatic retries. Start with three purposeful wording/transfer/silence cases; inspect actual outputs before further calls. Preserve exhausted ledgers, runtime quotas, personal data and accepted bubble styling. Select or deploy only after factual, conversational and separate-message acceptance.

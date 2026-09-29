@@ -40,3 +40,27 @@ Founder approved a fresh $0.06 / three-call allowance, no retries. The isolated 
 Cedar now returns three separate messages (89, 44 and 55 characters), retaining agreement, five people, basic recording flow, before features, historical pending status and calendar afterward. Acknowledgment returns silence. Harbor returns one short 67-character accessibility constraint; the alternative room is not repeated, but the requested suitability question is directly resolved. Mechanical chunking and decision acceptance pass. Cedar still uses "as of the note," so the conversational-tone instruction is not fully satisfied. Do not call this full style acceptance or silently lower that criterion. No production selection/deployment or phone installation occurred; founder can judge this actual output before further spending or rollout.
 
 Exact-response replay uses the v6 instructions with the unchanged messages schema, real source validation/storage/reopen and synthetic earlier context. It does not claim a new physical capture, closed-loop conversation or consistent behavior across arbitrary topics. The prepared provider runner is `proactive_conversational_v6_provider.py` and refuses a second run on the consumed ledger.
+
+
+## Founder rejects v6 tone; v7 prepared
+
+Founder wants the voice more conversational still. V6 remains unselected. V7 shifts from reporting the source to contributing to the immediate decision, allowing a grounded, clearly framed suggestion followed by short supporting messages. It preserves separate-message delivery, decision-critical facts and historical qualifications without forced friendliness. No new calls or deployment.
+
+Proposed bounded next screen: up to $0.20 / ten calls, with no retries. Start with Cedar, a fresh changed-time planning case and an acknowledged/silence case; inspect actual output, then use remaining calls only for necessary revised-prompt checks and fresh transfer cases. No recording or note generation. Evaluate usefulness, natural voice, distinct short messages, factual completeness/qualification and appropriate silence together. This allowance is proposed, not authorized; all previous wording budgets are exhausted.
+
+## Approved ten-call refinement — no candidate selected
+
+Founder approved up to $0.20 / ten calls, no retries, and emphasized purposeful engineering. The isolated `conversational-v7-20260929-200` ledger contains ten completed calls and $0.20 reserved capacity; reservation is not an invoice. Runtime quotas, old grants, personal notes and installed UI were untouched.
+
+The first three calls tested v7 on Cedar, a fresh biology-group scheduling correction and acknowledged Cedar. V7 sounded more direct but dropped the broader before-features agreement; the schedule reply combined beats. V8 used two calls to check stronger preservation/splitting guidance: Cedar retained the agreement but packed recorded status into it, and the schedule reply remained one paragraph. V9 used two calls to test simpler delivery guidance: Cedar still combined status/calendar facts; the scheduling reply dropped the room-availability reason. V10 used the final three calls for a shorter prompt with an explicit one-sentence-per-item delivery contract, those two problem cases and acknowledgment. Both acknowledgment cases returned silence. No automatic retries or repeated identical requests occurred.
+
+Actual final Cedar output:
+
+1. “I'd hold off on calendar integration for now.”
+2. “The team agreed to test the basic recording flow with five people first, and those tests hadn't happened when this was recorded.”
+
+The second message remains dense (128 characters), and “first” weakens the explicit broader condition “before adding features.” This does **not** meet the founder's combined tone, completeness and separation requirement. It is not selected or deployed. Continued prompt-only edits have not demonstrated reliable compliance; another nearly identical trial would add little evidence. The next implementation hypothesis is a structured content plan separating the supported agreement, its qualifier and conversational delivery in the same model call, followed by lossless presentation validation. That hypothesis is unimplemented and untested; it is not a reason to substitute template wording or silently drop facts.
+
+Exact requests, responses, usage and message lengths: `Backend/fixtures/proactive/conversational-iteration-evaluation/`. `scripts/evaluations/proactive_conversational_v7_provider.py` bounds batches against the isolated ledger, rejects duplicate requests, counts every reservation and refuses continuation after an uncertain/incomplete attempt. The allowance is exhausted.
+
+Verification: 23 targeted backend tests pass. All ten actual outputs replay with exact prompt/request matching through real retrieval/validation/persistence/reopen (earlier multi-step context is teacher-forced, not closed-loop). Separate message boundaries survive storage; duplicate calls remain suppressed. These tests establish mechanics and preserve the observed style failure, not tone acceptance. No Swift or bubble UI change; the previously verified simulator rendering remains applicable to the unchanged code. Hosted v4 and the installed margin-only phone build remain unchanged. No physical-phone or new microphone claim.
