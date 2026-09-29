@@ -4,6 +4,7 @@ import AVFoundation
 @main
 struct VoiceCompanionApp: App {
     private let companionEnabled: Bool
+    private let sharedRoomEnabled: Bool
     init() {
         let arguments = ProcessInfo.processInfo.arguments
         var key = "companionEnabled"
@@ -16,11 +17,21 @@ struct VoiceCompanionApp: App {
         if arguments.contains("--enable-companion-ui") { UserDefaults.standard.set(true, forKey: key) }
         if arguments.contains("--disable-companion-ui") { UserDefaults.standard.set(false, forKey: key) }
         companionEnabled = arguments.contains("--companion-ui") || UserDefaults.standard.bool(forKey: key)
+        let roomKey = key + "-shared-room"
+        if arguments.contains("--shared-room-ui") { UserDefaults.standard.set(true, forKey: roomKey) }
+        if arguments.contains("--disable-shared-room-ui") { UserDefaults.standard.set(false, forKey: roomKey) }
+        sharedRoomEnabled = UserDefaults.standard.bool(forKey: roomKey)
     }
     var body: some Scene {
         WindowGroup {
             if companionEnabled {
+                #if os(iOS)
+                if sharedRoomEnabled {
+                    SharedRoomRootView()
+                } else { CompanionRootView() }
+                #else
                 CompanionRootView()
+                #endif
             } else { SessionsView() }
         }
     }

@@ -21,7 +21,11 @@ targets:
       - package: ThinkingOrbsKit
     platform: macOS
     sources:
-      - App
+      - path: App
+        excludes: [RoomUI]
+      - path: App/RoomUI
+        type: folder
+        buildPhase: resources
       - path: Fixtures/transcript-events.json
         buildPhase: resources
     settings:
@@ -35,7 +39,11 @@ targets:
       - package: ThinkingOrbsKit
     platform: iOS
     sources:
-      - App
+      - path: App
+        excludes: [RoomUI]
+      - path: App/RoomUI
+        type: folder
+        buildPhase: resources
       - path: Fixtures/transcript-events.json
         buildPhase: resources
     info:
