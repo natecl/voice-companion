@@ -43,3 +43,7 @@ Friends/family can expose installation and usability problems. Students are the 
 ## Execution boundaries
 
 All historical provider allowances, including the latest current-focus six-call/$0.12 grant, are exhausted. Local fixtures, tests and inspection can proceed without a new grant. Prepare any necessary paid verification before requesting a bounded allowance. Physical checks requiring founder participation wait for explicit readiness. Keep failed prompt experiments out of a verified release checkpoint. Start implementation checkpoints from latest verified main and use focused PRs.
+
+## Parallel execution
+
+The [phased orchestration plan](execution/demo-testflight-phases.md) defines worker ownership, dependency gates, resource limits and the first dispatch wave. Use the [worker packet](execution/worker-packet-template.md) and [verifier specification](execution/verifier-contract.md). These are prepared execution artifacts; workers and verifier tooling have not been launched/built by this planning checkpoint.
