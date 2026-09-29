@@ -67,3 +67,37 @@ Final targeted execution: gallery, shared draft/composer/transcript and header f
 These are actual native screens driven by synthetic local fixtures. No paid calls. The operating system still supplies safe areas, keyboard and native sheet margins/dismissal; real note/chat contents vary. This is not a claim of pixel identity between a fixed-height browser frame and every physical screen. The bell is visible but disabled when contributions are unavailable. Physical haptic and motion feel still require device judgment.
 
 The corrected signed Debug build was installed in place and launched successfully on the paired physical iPhone 16 Pro at the end of this pass. Installation and launch receipts are `/tmp/companion-room-device-install.json` and `/tmp/companion-room-device-launch.json`; build receipt `/tmp/companion-room-device-build.log`. No reset, uninstall or backend change occurred. Device rendering and interaction acceptance remain distinct from these successful receipts.
+
+
+## Accessory fidelity correction — September 29, 2026
+
+The previous installation matched the main surface but retained old system sheets, an intermediary paperclip menu, inline error cards, and unrelated account previews. The approved prototype now governs these secondary surfaces too. The founder additionally requested a circular send button after noticing the prototype's vertically stretched control; both the reference HTML and native composer now use a 36 × 36 filled control centered within the composer slot.
+
+| Surface | Native mapping and verification |
+| --- | --- |
+| Paperclip | One tap opens the note picker; real notes appear as white cards. Selecting one attaches its actual title. No intermediary action menu or note icons. |
+| Accessory panels | Shared `RoomPanel`: canvas background, 32-point top corners, 20-point horizontal padding, 38-point close control, content-sized height capped at 88%, dimmed/scaled underlying page. |
+| Notes / transcript | Same shared panel, serif note title, pill segment selector, white reading paper, real transcript/speaker content and Talk about this action. |
+| Invite / profile / memory | Same panel hierarchy and typography. Appearance switches actual app light/dark mode. Memory preference remains connected to the existing controller. Invite stays explicitly unavailable. |
+| Errors | Compact ink toast overlays the screen and has an x. No composer displacement or empty failed-answer bubble; uncertain replies retain their existing idempotent recovery path. |
+| Composer | Upright paperclip, matching body text, circular send control, mic/send substitution, expanding draft, actual dictation controls retained. |
+| Typography / icons | Prototype-rendered system body weight 430 approximated using the native font weight interval; Georgia headings, explicit line heights, existing Lucide vector assets plus matching chevron. |
+| Existing note gestures | Swipe and hold Delete / Share / Copy preserved; swipe does not enter note detail. |
+
+The screenshot loop exposed fixed-height panels, partly untappable settings rows, and a disappearing capture bar behind a modal. Panels now measure their content, complete rows have hit areas, and the capture bar retains layout space. Covered controls remain disabled through panel dismissal; tests wait for enabled controls rather than sending taps through a departing modal. An explicit regression checks that the stop button returns to the same vertical position.
+
+Reviewed native screenshots: [composer](composer-send.png), [attachments](attachment-panel.png), [note](note-panel.png), [profile](profile-panel.png), [memory](memory-panel.png), [dark Invite](invite-dark.png). All contain synthetic local fixture content.
+
+Behavioral differences from the prototype are deliberate: real capture/dictation replace simulations; actual note contents determine panel height; unavailable invitations are not implemented; memory copy describes real capabilities; iOS keyboard, share and hold menus remain native. This is not a claim that every OS-owned pixel or unimplemented backend feature matches a browser simulation.
+
+Final accessory verification:
+
+- `testExperienceGalleryAndAttachmentPicker`: passed 43.122 s (notes, swipe/hold actions, picker, search, profile/memory).
+- `testCompanionRoomHeaderAndInvite`: passed 16.450 s (home, Invite, Notes, capture).
+- `testPrototypePanelsToastAndAppearance`: passed 21.993 s (empty picker, appearance, dark panel, service failure, toast dismissal, no empty bubble, original-request recovery without duplication).
+- `testHomeSearchSharedDraftAndTranscriptSheet`: passed 42.987 s (wrapping, mic/send, preserved draft, transcript panel, stable stop-button position, stop/save, dictation and refresh).
+- Signed iPhone and Mac builds succeeded. No paid calls; no production backend changes.
+
+Results: `/tmp/CompanionRoomQA/20260929-072907/` (gallery/header) and `/tmp/CompanionRoomQA/20260929-073249/` (final toast/composer). The last visual review corrected an empty failed-answer bubble and clarified the existing recovery action as “Check reply”; affected error and composer flows were rerun after that correction. [Final toast](error-toast.png), [live transcript](transcript-panel.png), [review sheet](accessory-review.png).
+
+Installed in place on the paired iPhone 16 Pro September 29 after these checks; install receipt `/tmp/room-accessories-install.json`. No app uninstall, data reset, paid provider run or backend deployment. Physical haptics and real-audio capture were not re-tested for this presentation change. This candidate remains draft for founder visual review.

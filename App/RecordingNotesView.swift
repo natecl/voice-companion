@@ -23,10 +23,9 @@ struct RecordingNotesView: View {
                 ForEach(Array(notes.sections.enumerated()), id: \.offset) { _, section in
                     Color.clear.frame(height: 8)
                     Text(section.heading).font(.system(size: 17, weight: .medium))
-                    ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in paragraph(item, bulleted: true) }
+                    ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in paragraph(item) }
                 }
                 }.padding(23).frame(maxWidth: .infinity, alignment: .leading).experienceCard(radius: 24)
-                Text("Generated from this transcript. Long-press a paragraph to view its supporting transcript.").font(.caption).foregroundStyle(ExperienceStyle.secondary)
             } else if loading {
                 ExperienceThinkingStatus(label: "Preparing notes…").accessibilityIdentifier("notesLoading")
             } else {
@@ -75,8 +74,8 @@ struct RecordingNotesView: View {
         HStack(alignment: .firstTextBaseline, spacing: 10) {
             if bulleted { Text("•").foregroundStyle(ExperienceStyle.secondary) }
             Text(item.text)
-                .font(.system(size: 15, weight: .regular))
-                .lineSpacing(4)
+                .font(RoomTypography.body(15))
+                .lineSpacing(5.3)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityIdentifier("notesText")

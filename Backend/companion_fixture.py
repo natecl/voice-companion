@@ -12,6 +12,8 @@ from memory_service import MemoryService
 
 class Provider:
     async def stream(self, data):
+        if data['question'] == 'UI failure fixture':
+            raise RuntimeError('Synthetic UI provider failure')
         yield dict(type='delta', text='Maya swims. [[p1]]' if data['sources'] else 'Hello from the saved companion.')
         if data['question']=='Wait forever':await asyncio.Future()
         if '--ui' in sys.argv:await asyncio.sleep(.6)

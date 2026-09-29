@@ -6,6 +6,18 @@ import UIKit
 import AppKit
 #endif
 
+/// Rendered prototype body uses the system family at CSS weight 430, between
+/// regular and medium. UIKit/AppKit express the same interval as 0...0.23.
+enum RoomTypography {
+    static func body(_ size: CGFloat) -> Font {
+        #if os(iOS)
+        Font(UIFont.systemFont(ofSize: size, weight: UIFont.Weight(rawValue: 0.069)))
+        #else
+        Font(NSFont.systemFont(ofSize: size, weight: NSFont.Weight(rawValue: 0.069)))
+        #endif
+    }
+}
+
 enum ExperienceClipboard {
     static func copy(_ text: String) {
         #if os(iOS)
@@ -278,7 +290,7 @@ struct ExperienceAgentBubble: ViewModifier {
     var grouped = false
     private var shape: UnevenRoundedRectangle { UnevenRoundedRectangle(topLeadingRadius: grouped ? 10 : 23, bottomLeadingRadius: 23, bottomTrailingRadius: 23, topTrailingRadius: 23) }
     func body(content: Content) -> some View {
-        content.font(.system(size: 16)).lineSpacing(4.2).frame(minHeight: 23.2, alignment: .leading)
+        content.font(RoomTypography.body(16)).lineSpacing(4.2).frame(minHeight: 23.2, alignment: .leading)
             .padding(.horizontal, 16).padding(.vertical, 14)
             .background(ExperienceStyle.card, in: shape)
             .overlay(shape.strokeBorder(ExperienceStyle.line.opacity(0.4), lineWidth: 0.5))
@@ -291,7 +303,7 @@ struct ExperienceAgentBubble: ViewModifier {
 
 struct RoomUserBubble: ViewModifier {
     func body(content: Content) -> some View {
-        content.font(.system(size: 16)).lineSpacing(4.2)
+        content.font(RoomTypography.body(16)).lineSpacing(4.2)
             .padding(.horizontal, 16).padding(.vertical, 14)
             .background(ExperienceStyle.surface, in: RoundedRectangle(cornerRadius: 23))
             .padding(.leading, 44).frame(maxWidth: .infinity, alignment: .trailing)
@@ -301,7 +313,7 @@ struct RoomUserBubble: ViewModifier {
 
 struct RoomIcon: View {
     let name: String
-    static let assets = ["equal": "Room-equal", "plus": "Room-plus", "arrow.left": "Room-back", "magnifyingglass": "Room-search", "mic": "Room-mic", "arrow.up": "Room-send", "stop.fill": "Room-stop", "xmark": "Room-close", "bell": "Room-bell", "paperclip": "Room-paperclip"]
+    static let assets = ["chevron-right": "Room-chevron-right", "refresh": "Room-refresh", "close": "Room-close","equal": "Room-equal", "plus": "Room-plus", "arrow.left": "Room-back", "magnifyingglass": "Room-search", "mic": "Room-mic", "arrow.up": "Room-send", "stop.fill": "Room-stop", "xmark": "Room-close", "bell": "Room-bell", "paperclip": "Room-paperclip"]
     var body: some View {
         Image(Self.assets[name] ?? name).resizable().scaledToFit().frame(width: 23, height: 23)
     }
