@@ -1,7 +1,7 @@
 {
   "source": "companion-room.html",
-  "sha256": "55b96b8a4be02bac511e3ab34590565920dedc288022b539902e00db89fb388e",
-  "cssSHA256": "0fdaa30aa4a123eb4f870a14b96440b159df14e5e174a569b6c2cebda6d31f49",
+  "sha256": "5e279d213a9da6c7a766afba8dc7a49469708c876895b8f4ae756e2efbc954ff",
+  "cssSHA256": "a39c47f8ee6cbcbec761dff94c10a079967567dd7297992eece1b11a1faec0c8",
   "date": "2026-09-29",
-  "revision": "Content-sized note sheets and readable multiline titles"
+  "revision": "Use note preview system typeface throughout the shared interface"
 }
