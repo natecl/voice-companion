@@ -37,7 +37,7 @@ Screenshots inspected: [home](home.png), [capture](capture.png), [notes](notes.p
 
 ## Remaining delivery boundary
 
-This is a light-appearance native candidate. Dark appearance, physical motion/haptic judgment, final companion artwork, invitation delivery and release app icon are not complete. The temporary artwork and Invite state must not be mistaken for finished distribution features. No production backend deployment, merge or completed physical behavioral acceptance is claimed.
+Light and dark appearances are implemented and visually inspected in the fidelity correction below. Physical motion/haptic judgment, final companion artwork, invitation delivery and release app icon are not complete. The temporary artwork and Invite state must not be mistaken for finished distribution features. No production backend deployment, merge or completed physical behavioral acceptance is claimed.
 
 Follow-up: red Listening indicator and left-entry Notes navigation verified through `testCompanionRoomHeaderAndInvite` (13.016 s, passed), result bundle `/tmp/CompanionRoomQA/20260929-063859/`. Updated capture screenshot. Prototype capture and Notes/back interactions also exercised. Pause/connection/finishing labels remain unchanged.
 
@@ -46,3 +46,24 @@ Follow-up: red Listening indicator and left-entry Notes navigation verified thro
 September 29: founder explicitly requested phone deployment after reviewing the prototype. Signed Debug build of `0272c5f` succeeded with the existing development team. `devicectl` installed `ai.voicecompanion.phone` as an in-place update on the paired physical iPhone 16 Pro and successfully launched it with `--enable-companion-ui`. No uninstall, data reset, credential replacement, backend deployment or paid call was performed. Existing app container was retained.
 
 Receipts: `/tmp/companion-room-device-build.log`, `/tmp/companion-room-device-install.json`, `/tmp/companion-room-device-launch.json`. This verifies signed build, installation and process launch, not physical touch/haptics, capture or production response acceptance. The draft PR remains open.
+
+## Prototype fidelity correction
+
+Founder rejected the first phone candidate as insufficiently faithful. The approved `arrival-prototype/companion-room.html` remains unchanged. This correction maps its components into SwiftUI rather than proposing another design.
+
+| Prototype element | Native mapping |
+| --- | --- |
+| Light/dark palette | Exact background, card, ink, muted, wash, line, plum and capture-button hex pairs |
+| Header | 126-point content header, 46-point edge controls, centered 76 × 72 companion and 14-point name |
+| Chat | 16-point regular text, 14 × 16 padding, 23-point corners with 10-point grouped leading corner, 8-point gaps |
+| Composer | 29-point corner, 5-point inset, upright clip, expanding text, mic/send and separate 58-point capture control |
+| Capture | 58-point bar, red circle and Listening, time, View, bell and stop |
+| Notes | Left-entry whole page, centered title, underlined search, serif heading, stacked 27-point cards |
+| Note detail | Rounded sheet, Your note header, serif title, segmented content, 24-point paper card, plum Talk about this |
+| Icon paths | Ten prototype Lucide paths exported as template vector PDFs; regeneration script and license retained |
+
+Final targeted execution: gallery, shared draft/composer/transcript and header flows all passed in `/tmp/CompanionRoomQA/20260929-065014/`. Final minor styling refinements passed header/capture again in light (12.942 s, `20260929-065520`) and dark (13.213 s, `20260929-065229`). Mac and signed physical-device builds passed. Screenshots inspected: [home](home.png), [capture](capture.png), [dark capture](capture-dark.png), [Notes](notes.png), [note detail](note-detail.png), [hold actions](note-context.png).
+
+These are actual native screens driven by synthetic local fixtures. No paid calls. The operating system still supplies safe areas, keyboard and native sheet margins/dismissal; real note/chat contents vary. This is not a claim of pixel identity between a fixed-height browser frame and every physical screen. The bell is visible but disabled when contributions are unavailable. Physical haptic and motion feel still require device judgment.
+
+The corrected signed Debug build was installed in place and launched successfully on the paired physical iPhone 16 Pro at the end of this pass. Installation and launch receipts are `/tmp/companion-room-device-install.json` and `/tmp/companion-room-device-launch.json`; build receipt `/tmp/companion-room-device-build.log`. No reset, uninstall or backend change occurred. Device rendering and interaction acceptance remain distinct from these successful receipts.

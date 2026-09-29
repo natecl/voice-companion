@@ -44,6 +44,7 @@
 		3C75C64C08EE5D24FE4D01EB /* ProactiveUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41C90D7A71AD128D64B3958 /* ProactiveUITests.swift */; };
 		437BE63711960B3995A94AF9 /* RelayCredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78DF2FA0976B69003E482D9 /* RelayCredentialStore.swift */; };
 		46B4EFC25395B55EEE20F581 /* ExperienceStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108FDE335235A814407D563A /* ExperienceStyle.swift */; };
+		4A00966820B6350799653C26 /* Lucide-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1EB98735F45BAE3A547067BB /* Lucide-LICENSE.txt */; };
 		5156B4BA3496FC0F5762C29E /* DictationRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6172DF9BAB6444CEE3A4A1B /* DictationRecognizer.swift */; };
 		5264F592DD3FBFC7A0E32C5C /* ProactiveConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17299C35871EB9F6BF75A7D7 /* ProactiveConnection.swift */; };
 		52A8E8107BDE78C3673B60C0 /* MicrophoneCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BE8C55AFCE2A84D18222B0 /* MicrophoneCapture.swift */; };
@@ -83,6 +84,7 @@
 		8AFC584C612FAD225AAB0487 /* ComposerDictation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A61595A22B8D8873EEEA9 /* ComposerDictation.swift */; };
 		8FE500964FBFECD7EEA61DB6 /* MemorySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C97C3F135EEAFF5858CD5D /* MemorySync.swift */; };
 		932F067087C9AE9B465B5C31 /* RecordingInterruptionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9A8E1CB9DCDAF32438CC86 /* RecordingInterruptionUITests.swift */; };
+		93AE12855F51040EB24C05B0 /* Lucide-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1EB98735F45BAE3A547067BB /* Lucide-LICENSE.txt */; };
 		93B191BE382CDD95F0602F1A /* RecordingConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82134446B9A07E479203081 /* RecordingConnection.swift */; };
 		953786CBFDF701A69F732EE8 /* transcript-events.json in Resources */ = {isa = PBXBuildFile; fileRef = F68208B8B28B93C1AEA78F78 /* transcript-events.json */; };
 		96A1D7506C6172D690F2E072 /* SessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07AC85400C84CD8C0027 /* SessionController.swift */; };
@@ -165,6 +167,7 @@
 		17299C35871EB9F6BF75A7D7 /* ProactiveConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProactiveConnection.swift; sourceTree = "<group>"; };
 		179D3083C0FA6C3B0BE5F141 /* RecordingNotesPhoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingNotesPhoneUITests.swift; sourceTree = "<group>"; };
 		1A0D140F53F36D3A6C7A9F8C /* LiveAskUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAskUITests.swift; sourceTree = "<group>"; };
+		1EB98735F45BAE3A547067BB /* Lucide-LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Lucide-LICENSE.txt"; sourceTree = "<group>"; };
 		220AAC839C8995F4A61DD83B /* SessionController+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionController+App.swift"; sourceTree = "<group>"; };
 		22C97C3F135EEAFF5858CD5D /* MemorySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySync.swift; sourceTree = "<group>"; };
 		33B8059B564CBD204AA70BA6 /* LiveTranscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTranscriber.swift; sourceTree = "<group>"; };
@@ -344,6 +347,7 @@
 				AF68AD805B6E63CBC2628D1C /* ExperienceAccountView.swift */,
 				108FDE335235A814407D563A /* ExperienceStyle.swift */,
 				131DA977EC343A02A8A2BAB1 /* ExperienceSymbol.swift */,
+				1EB98735F45BAE3A547067BB /* Lucide-LICENSE.txt */,
 				8329C8BB764901C562FF590B /* Phone-Info.plist */,
 				D49FE797E23357C5FA4D3D04 /* RecordingNotesView.swift */,
 				D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */,
@@ -543,6 +547,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B6F2E215CA52CD15089676D /* Assets.xcassets in Resources */,
+				4A00966820B6350799653C26 /* Lucide-LICENSE.txt in Resources */,
 				777B22E0271AEF80B05980A4 /* transcript-events.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -552,6 +557,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D382AEFDFEEA645F020722EA /* Assets.xcassets in Resources */,
+				93AE12855F51040EB24C05B0 /* Lucide-LICENSE.txt in Resources */,
 				5E2D19B3C8B069259C1890FD /* Phone-Info.plist in Resources */,
 				953786CBFDF701A69F732EE8 /* transcript-events.json in Resources */,
 			);

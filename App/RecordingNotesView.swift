@@ -18,14 +18,14 @@ struct RecordingNotesView: View {
             if let result, result.state == "ready", let notes = result.notes {
                 if result.incomplete { Text("Notes from an incomplete recording").font(.caption) }
                 VStack(alignment: .leading, spacing: 16) {
-                Text("Overview").font(.system(.title2, design: .serif, weight: .bold))
+                Text("Overview").font(.system(size: 17, weight: .medium))
                 paragraph(notes.overview)
                 ForEach(Array(notes.sections.enumerated()), id: \.offset) { _, section in
-                    Divider().padding(.vertical, 3)
-                    Text(section.heading).font(.headline)
+                    Color.clear.frame(height: 8)
+                    Text(section.heading).font(.system(size: 17, weight: .medium))
                     ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in paragraph(item, bulleted: true) }
                 }
-                }.padding(18).frame(maxWidth: .infinity, alignment: .leading).experienceCard(radius: 15)
+                }.padding(23).frame(maxWidth: .infinity, alignment: .leading).experienceCard(radius: 24)
                 Text("Generated from this transcript. Long-press a paragraph to view its supporting transcript.").font(.caption).foregroundStyle(ExperienceStyle.secondary)
             } else if loading {
                 ExperienceThinkingStatus(label: "Preparing notes…").accessibilityIdentifier("notesLoading")
@@ -75,7 +75,7 @@ struct RecordingNotesView: View {
         HStack(alignment: .firstTextBaseline, spacing: 10) {
             if bulleted { Text("•").foregroundStyle(ExperienceStyle.secondary) }
             Text(item.text)
-                .font(.body.weight(.regular))
+                .font(.system(size: 15, weight: .regular))
                 .lineSpacing(4)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)

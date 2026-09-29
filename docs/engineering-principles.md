@@ -359,3 +359,7 @@ Founder native redesign approval, September 29: the reviewed companion-room prot
 Founder capture-bar refinement, September 29: keep the circle red, with “Listening” directly beside it during active capture. This supersedes the plum capture-indicator choice above; connection, paused and finishing states retain their truthful labels.
 
 Founder Notes navigation refinement, September 29: keep Notes entry on the left and Invite on the right. Notes enters from the left and exits back to the left, with the companion returning from the right.
+
+### September 29 founder revision: prototype fidelity
+
+The approved companion-room prototype is the component-level visual source of truth for the native redesign. Port its palette, type, icon paths, spacing, controls and navigation instead of reinterpreting the screen. Keep the approved prototype stable while comparing native evidence. Preserve real controllers and note swipe/hold actions; disclose platform-specific presentation differences and do not equate a successful install with physical behavioral acceptance.
