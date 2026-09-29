@@ -101,5 +101,6 @@ The feature verifier's mechanical checks pass; full-feature status remains
 are fresh service/control execution with synthetic or historical cached outputs,
 not fresh LLM judgment. Paid calls: zero. No UI/device/capture-quality, distribution
 activation, deployment or broad relevance claims. The wider targeted run emits
-pre-existing SQLite ResourceWarnings from fixture helpers; checks still pass.
+SQLite ResourceWarnings from fixture helpers; checks still pass. Their baseline
+frequency was not separately measured; shared storage code is unchanged.
 Primary review/merge is pending; this packet does not advance dependent phases.
