@@ -91,7 +91,7 @@ def main():
                 db.execute("UPDATE recording_notes SET state='outdated',payload=NULL,error='source_changed'")
             else:
                 text = 'Maya enjoys swimming.' + (' Updated saved fixture.' if args.mode == 'update' else '')
-                payload = dict(title='Maya’s swimming', overview=dict(text=text, passages=['p1']), sections=[])
+                payload = dict(title='Maya’s updated swimming note' if args.mode == 'update' else 'Maya’s swimming', overview=dict(text=text, passages=['p1']), sections=[])
                 db.execute("UPDATE recording_notes SET state='ready',payload=?,error=NULL", (json.dumps(payload),))
 
 if __name__ == '__main__':

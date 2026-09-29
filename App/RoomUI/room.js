@@ -140,6 +140,8 @@
     const sheet=q('.panel');
     if(wasOpen&&page==='note'&&sheet.dataset.noteId===selected&&q('.note-content')&&q('.segment')){
       const template=document.createElement('template');template.innerHTML=html;
+      q('.panel-body > h1').textContent=n.title;
+      q('.panel-body > .subtitle').textContent=n.metadata;
       const content=q('.note-content'),scrollTop=content.scrollTop;
       content.innerHTML=template.content.querySelector('.note-content').innerHTML;
       content.scrollTop=animateContent?0:scrollTop;
@@ -171,7 +173,24 @@
     row.querySelector('[data-act=send-dictation]').disabled=dictationSendPending||d.status!=='listening';
     row.querySelector('.dictation-wave').innerHTML=d.levels.map(v=>`<span style="height:${Math.max(3,Math.min(28,v*28))}px"></span>`).join('');
   }
+  // Keep controls stable from touch-down through WebKit's compatibility click.
+  // Replacing live content during a touch can suppress that click on iOS.
+  let pressedControl=null,pendingRender=null,releaseRenderTimer;
+  function releaseRender(){
+    clearTimeout(releaseRenderTimer);pressedControl=null;
+    const next=pendingRender;pendingRender=null;if(next)render(next);
+  }
+  root.addEventListener('pointerdown',e=>{
+    if(e.isPrimary&&e.pointerType==='touch'&&e.target.closest('button')){
+      clearTimeout(releaseRenderTimer);pressedControl=e.pointerId;
+    }
+  },true);
+  root.addEventListener('pointerup',e=>{if(e.pointerId===pressedControl)releaseRenderTimer=setTimeout(releaseRender,100);},true);
+  root.addEventListener('pointercancel',e=>{if(e.pointerId===pressedControl)releaseRender();},true);
+  root.addEventListener('click',()=>{if(pressedControl!==null)queueMicrotask(releaseRender);},true);
+  window.addEventListener('blur',releaseRender);
   function render(next){
+    if(pressedControl!==null){pendingRender=next;return;}
     state=next;device.style.colorScheme=state.appearance==='system'?'light dark':state.appearance;
     if(next.draftVersion>=draftVersion&&input.value!==next.draft){localDraft=next.draft;input.value=next.draft;draftVersion=next.draftVersion;}
     renderMessages();library();renderDictation();syncDraft();

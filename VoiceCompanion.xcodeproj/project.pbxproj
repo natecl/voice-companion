@@ -29,6 +29,7 @@
 		1AEE96BC35A02CA6C540EA30 /* MicrophoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C425260D9BD59D9B7A18C540 /* MicrophoneUITests.swift */; };
 		1B87433F944E38148F470A3E /* TransportFailureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1722767CA347C5B2A2A522 /* TransportFailureTests.swift */; };
 		1D6EF96453393998382EFCD5 /* LiveAskUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0D140F53F36D3A6C7A9F8C /* LiveAskUITests.swift */; };
+		1E3FE5CB0B5F336CF66ECDB8 /* SharedRoomCacheUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ECB5C148BF51E4A066E065 /* SharedRoomCacheUITests.swift */; };
 		1F63FFF12419AEE5E75751F7 /* ComposerDictation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A61595A22B8D8873EEEA9 /* ComposerDictation.swift */; };
 		2868919084B83CBB122C6893 /* ExperienceStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108FDE335235A814407D563A /* ExperienceStyle.swift */; };
 		2A78082185EA9D9B00BD1443 /* FoundationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */; };
@@ -88,6 +89,7 @@
 		8E8C24BCF370C0D72057E3C1 /* RecordingNotesCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0625808F858C5F6B82140213 /* RecordingNotesCacheTests.swift */; };
 		8FE500964FBFECD7EEA61DB6 /* MemorySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C97C3F135EEAFF5858CD5D /* MemorySync.swift */; };
 		90E32B488D8E56B6C95BA57D /* RoomWebModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0A1FA8D2ADE9B06BEEB6B0 /* RoomWebModel.swift */; };
+		92A12BAAAC169CFE4B238A43 /* SharedRoomCacheUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ECB5C148BF51E4A066E065 /* SharedRoomCacheUITests.swift */; };
 		932F067087C9AE9B465B5C31 /* RecordingInterruptionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9A8E1CB9DCDAF32438CC86 /* RecordingInterruptionUITests.swift */; };
 		93AE12855F51040EB24C05B0 /* Lucide-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1EB98735F45BAE3A547067BB /* Lucide-LICENSE.txt */; };
 		93B191BE382CDD95F0602F1A /* RecordingConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82134446B9A07E479203081 /* RecordingConnection.swift */; };
@@ -194,6 +196,7 @@
 		41B5A0FD68A271624EC0C138 /* CompanionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionController.swift; sourceTree = "<group>"; };
 		43354958B88D6E1A544B8D70 /* PhoneUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PhoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		438941285DA44D2829A4AEBD /* RoomPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPanel.swift; sourceTree = "<group>"; };
+		43ECB5C148BF51E4A066E065 /* SharedRoomCacheUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedRoomCacheUITests.swift; sourceTree = "<group>"; };
 		46DC5370B42C28B61BE40D0D /* MacUITests.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacUITests.entitlements; sourceTree = "<group>"; };
 		4AAB7B641BD6C1CA47F4F9B4 /* ProactiveCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProactiveCoordinatorTests.swift; sourceTree = "<group>"; };
 		4FD7403E3075E4BCA4218CD3 /* RoomUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RoomUI; path = App/RoomUI; sourceTree = SOURCE_ROOT; };
@@ -287,6 +290,7 @@
 				179D3083C0FA6C3B0BE5F141 /* RecordingNotesPhoneUITests.swift */,
 				B44A1E9C64F211D529376CAE /* RecordingNotesUITests.swift */,
 				D820E88D807B0651015E9212 /* SavedRecordingUITests.swift */,
+				43ECB5C148BF51E4A066E065 /* SharedRoomCacheUITests.swift */,
 				82F50B55D6A5FB2D2625D075 /* SharedRoomPhoneUITests.swift */,
 			);
 			path = UITests;
@@ -617,6 +621,7 @@
 				87663E33968A85359DFDF085 /* RecordingNotesPhoneUITests.swift in Sources */,
 				5861205F9494857E6D627FE5 /* RecordingNotesUITests.swift in Sources */,
 				9E0A95F6529756FB8AC11B4B /* SavedRecordingUITests.swift in Sources */,
+				1E3FE5CB0B5F336CF66ECDB8 /* SharedRoomCacheUITests.swift in Sources */,
 				E0AC7EBEFF02ABB854243405 /* SharedRoomPhoneUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -766,6 +771,7 @@
 				7483BDE49DAD86B4E2B0F346 /* RecordingNotesPhoneUITests.swift in Sources */,
 				005D2AFD8F09E15E7C5A3A10 /* RecordingNotesUITests.swift in Sources */,
 				64FCE961C2FFAB5A4828960B /* SavedRecordingUITests.swift in Sources */,
+				92A12BAAAC169CFE4B238A43 /* SharedRoomCacheUITests.swift in Sources */,
 				ED60BE2D03809A8B32C3ECB9 /* SharedRoomPhoneUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

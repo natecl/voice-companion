@@ -1,6 +1,26 @@
 import XCTest
 #if os(iOS)
 @MainActor final class SharedRoomPhoneUITests: XCTestCase {
+    func testLiveTranscriptCloseDuringUpdates() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--shared-room-ui", "--companion-ui-fixture"]
+        app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"])
+        app.launch(); defer { app.terminate() }
+        let web = app.webViews.firstMatch
+        let start = web.buttons["Invite Ellis into the conversation"]
+        XCTAssertTrue(start.waitForExistence(timeout: 10)); start.tap()
+        XCTAssertTrue(web.buttons["View"].waitForExistence(timeout: 8))
+        for _ in 0..<5 {
+            web.buttons["View"].tap()
+            let close = web.buttons["Close panel"]
+            waitUntilSettled(close, timeout: 15, stableFor: 2)
+            // The synthetic source updates every 250ms; keep contact across an update.
+            close.press(forDuration: 0.4)
+            XCTAssertTrue(web.buttons["End recording"].waitForExistence(timeout: 3))
+        }
+        web.buttons["End recording"].tap()
+    }
     func testSharedRoomNativePipeline() throws {
         continueAfterFailure = false
         let app = XCUIApplication()
