@@ -149,13 +149,13 @@ class TransitionTests(unittest.TestCase):
         with self.store.connect() as db:
             db.execute('DROP TABLE memory_correction_link')
             db.execute('DROP TABLE memory_correction')
-            db.execute('DROP TABLE IF EXISTS memory_embedding');db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('PRAGMA user_version=5')
+            db.execute('DROP TABLE IF EXISTS memory_embedding');db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('DROP TABLE account_identity');db.execute('PRAGMA user_version=5')
         self.store=MemoryStore(self.path,clock=lambda:300.)
         self.assertEqual(self.store.owner_for('test-owner'),self.owner)
         self.apply()
         self.assertEqual(self.store.put_source(self.owner,source('deleted'))['status'],'deleted')
         with self.store.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],19)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],20)
             # Later additive migrations must exist without inventing notes or contributions.
             for table in ('recording_note_index', 'proactive_attempt', 'proactive_connection'):
                 self.assertEqual(db.execute('SELECT count(*) FROM '+table).fetchone()[0], 0)

@@ -178,3 +178,8 @@ Founder confirms the approved companion-room prototype as the exact interface so
 ## Release planning clarification — September 29, 2026
 
 Founder requests accounts, paywall and price plans in the TestFlight/release handoff. Freemium plus subscription remains agreed; exact provider, prices, allowances and billing periods remain undecided. A free pilot before commercial billing is a proposal requiring selection, not a delivered capability. See [remaining phases](execution/testflight-release-handoff.md). Preserve the agreed one-liner and current shared UI.
+
+
+## Release authentication selection — September 29, 2026
+
+Founder selects both Google and Apple sign-in for this release, with Google above Apple in the UI. This supersedes the undecided-provider status above and the Apple-first/Google-later proposal. Prices, allowances, billing periods and pilot timing remain open. Selection is not a claim of implemented or verified authentication.

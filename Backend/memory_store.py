@@ -22,7 +22,7 @@ import companion_snapshots
 import memory_retention
 import recording_notes
 
-VERSION = 19
+VERSION = 20
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -86,7 +86,7 @@ class MemoryStore:
         self.embedding_model = embedding_model
         with self.connect() as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, VERSION):
+            if version not in range(VERSION + 1):
                 raise ValueError('Unsupported memory schema; do not reset the database')
             if version == 0:
                 db.executescript('''
@@ -186,6 +186,16 @@ class MemoryStore:
             if version < 19:
                 from proactive_store import migrate as migrate_proactive
                 migrate_proactive(db)
+            if version < 20:
+                db.executescript('''
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE account_identity (
+                        issuer TEXT NOT NULL, subject TEXT NOT NULL,
+                        owner TEXT NOT NULL REFERENCES owner(id),
+                        PRIMARY KEY(issuer, subject));
+                    PRAGMA user_version=20;
+                    COMMIT;
+                ''')
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)
@@ -229,6 +239,38 @@ class MemoryStore:
                 raise Rejected('unknown_owner')
             db.execute('INSERT INTO credential_owner VALUES(?,?)', (credential, existing_owner))
             return existing_owner
+
+    def owner_for_identity(self, credential, *, issuer, subject):
+        """Server-only binding AFTER provider verification; never accepts email/owner.
+
+        A new provider identity creates a new owner. Existing developer credentials
+        cannot be silently adopted. Identity and credential binding commit together.
+        This method does not validate tokens and is not an enrollment endpoint.
+        """
+        identifier(credential)
+        if issuer not in ('https://accounts.google.com', 'https://appleid.apple.com'):
+            raise Rejected('invalid_account_identity')
+        if not isinstance(subject, str) or not 1 <= len(subject) <= 255 or any(
+                ord(c) < 33 or ord(c) > 126 for c in subject):
+            raise Rejected('invalid_account_identity')
+        with self.transaction() as db:
+            identity = db.execute(
+                'SELECT owner FROM account_identity WHERE issuer=? AND subject=?',
+                (issuer, subject)).fetchone()
+            binding = db.execute('SELECT owner FROM credential_owner WHERE credential=?',
+                                 (credential,)).fetchone()
+            if binding:
+                if identity is None or binding['owner'] != identity['owner']:
+                    raise Rejected('owner_conflict')
+                return binding['owner']
+            if identity is None:
+                owner = str(uuid.uuid4())
+                db.execute('INSERT INTO owner VALUES(?)', (owner,))
+                db.execute('INSERT INTO account_identity VALUES(?,?,?)', (issuer, subject, owner))
+            else:
+                owner = identity['owner']
+            db.execute('INSERT INTO credential_owner VALUES(?,?)', (credential, owner))
+            return owner
 
     def _invalidate_source(self, db, owner, session, *, deleting=False):
         recording_notes.invalidate(db,owner,session,deleting=deleting)

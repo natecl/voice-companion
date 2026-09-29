@@ -173,7 +173,7 @@ class IdentityTests(unittest.TestCase):
         with self.store.connect() as db:
             for table in ['memory_correction_link','memory_correction','memory_identity_support','memory_identity_link','memory_mention','memory_entity']:
                 db.execute('DROP TABLE '+table)
-            db.execute('DROP TABLE IF EXISTS memory_embedding');db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('PRAGMA user_version=4')
+            db.execute('DROP TABLE IF EXISTS memory_embedding');db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('DROP TABLE account_identity');db.execute('PRAGMA user_version=4')
         self.store = MemoryStore(self.path)
         old = self.status(a)
         self.assertEqual(old['subject'], a['subject'])
@@ -183,7 +183,7 @@ class IdentityTests(unittest.TestCase):
         self.assertEqual(self.store.owner_for('owner-a'), self.owner)
         self.assertEqual(self.store.put_source(self.owner, source('deleted'))['status'], 'deleted')
         with self.store.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 19)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 20)
             # Later additive migrations must exist without inventing notes or contributions.
             for table in ('recording_note_index', 'proactive_attempt', 'proactive_connection'):
                 self.assertEqual(db.execute('SELECT count(*) FROM '+table).fetchone()[0], 0)
