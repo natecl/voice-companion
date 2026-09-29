@@ -66,3 +66,11 @@ Deployed PR136 `74f7cdb2caa069f986a99964ad10b349a6d37797`, Render `dep-datjaptg1
 New registry contains exactly `two-topic-pilot-cedar` and `two-topic-pilot-harbor`, leaving one live capture. Eight calls remain; no provider call or learning job was triggered during setup. Runtime cap $5.23 preserves all prior charges. Gate expires September 29, 2026 at 23:49 America/New_York. Seeds are hosted test evidence, not locally generated Notes cards or invented personal memories. Existing phone app launched successfully on iPhone 16 Pro with `--enable-companion-ui --proactive-phone-qa`; no new build, UI modification or recording. Founder readiness remains pending.
 
 Operator receipts are in ignored `work/two-topic-phone/`. Deployment checks included seven setup/hosted tests and 44 proactive tests; one initial command named a nonexistent hosted test module, corrected to the real startup/relay modules before passing. Rollback must retain compatibility with the newly provisioned ledger rather than deploying a startup that rejects it. Do not restore old content or erase charges.
+
+## Continuation after accidental Quiet
+
+First physical attempt delivered a Cedar reminder; founder tapped Quiet before the acknowledgment wait. Silence and Harbor stages are therefore unverified. One of eight proactive calls was consumed. Founder approved up to $0.05 for one additional recording and note on September 29 ($0.045 provisioned, $0.005 unallocated).
+
+`resume_two_topic_phone.py` adds only that recording/note allowance, preserves the original gate expiry and eight-call ledger (seven remain), and creates a fresh three-entry registry with the same two seeds plus one new capture. Prior test sources remain excluded from personal learning but the interrupted capture is not retrieved in the resumed test. No old chats/notes/charges are deleted. Startup recognizes the funded policy but never provisions it. One additional run only; no automatic retries.
+
+Local verification: 8 setup/hosted tests and 26 proactive guard/policy/service/socket tests passed. Actual temporary SQLite provisioning/reopen exercised note allowance, retained old model charge, remaining seven-call limit, source isolation, expiry, owner rejection and extra-capture/reprovision rejection. No live provider calls. Hosted activation and separate physical readiness follow.
