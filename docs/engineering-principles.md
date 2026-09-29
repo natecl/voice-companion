@@ -354,3 +354,5 @@ Founder approves the predeclared contribution-first screen: up to $0.10 / five L
 
 
 Founder role-separation revision, September 29: evaluate Jev for deciding whether the current conversation has a useful opening, followed by a focused Luna conversational writer. This supersedes the Luna-only proactive decision for the opt-in candidate, not deployed selection or existing memory-model roles. Keep retrieval unchanged and retain writer abstention when unsupported or already resolved. Tune and evaluate timing separately from wording; do not claim personal learning from routing alone. Implementation is authorized; exhausted paid grants are not replenished.
+
+Founder approves the prepared Jev/writer evaluation, September 29: up to $0.06 and six calls, four Jev and two Luna, no retries. Use isolated fictional cases and preserve runtime quotas and prior exhausted ledgers. Deployment remains conditional on quality acceptance.

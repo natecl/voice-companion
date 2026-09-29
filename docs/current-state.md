@@ -168,3 +168,5 @@ Two-topic phone pilot is activated at `74f7cdb`: two fictional histories seeded,
 
 
 September 29 candidate update: founder approved separating proactive opportunity detection (Jev) from conversational writing (Luna), with unchanged retrieval and phone UI. The opt-in `jev_writer` route passes local contract checks; live timing/voice acceptance and rollout remain pending. This is not a change to deployed model selection or memory roles. See [evaluation status](proactive-conversational-wording.md#separate-jev-gate-and-luna-writer--local-candidate).
+
+The approved Jev/writer six-call screen has now completed: three of four gate decisions matched expectations; venue was missed at novelty .89 versus .90. Both Luna writers still produced a single paragraph. Candidate remains unselected and undeployed; $0.06/six-call allowance exhausted. Exact-output replay passes but does not establish quality acceptance.
