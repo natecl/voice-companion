@@ -70,9 +70,9 @@ struct CompanionRootView: View {
             }
             ZStack {
                 if surface == "Companion" {
-                    chatContent.transition(reduceMotion ? .opacity : .asymmetric(insertion: .move(edge: .leading).combined(with: .opacity), removal: .opacity))
+                    chatContent.transition(reduceMotion ? .opacity : .move(edge: .trailing).combined(with: .opacity))
                 } else {
-                    homeContent.transition(reduceMotion ? .opacity : .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
+                    homeContent.transition(reduceMotion ? .opacity : .move(edge: .leading).combined(with: .opacity))
                 }
             }.clipped().animation(reduceMotion ? nil : .smooth(duration: 0.36), value: surface)
         }
@@ -731,9 +731,9 @@ struct CompanionRootView: View {
         HStack(spacing: 12) {
             Button { composing = false; recordingDetent = .fraction(0.68); selectedID = recording.current?.id; citedSource = nil; recordingTab = "Transcript" } label: {
                 HStack(spacing: 10) {
-                    Circle().fill(ExperienceStyle.accent).frame(width: 12, height: 12)
-                        .padding(5).background(ExperienceStyle.accent.opacity(0.10), in: Circle())
-                    Text(SharedMicrophone.shared.meetingAudioPaused ? "Paused for dictation" : recording.liveStatus ?? "Saved").font(.subheadline.weight(.medium))
+                    Circle().fill(Color.red).frame(width: 12, height: 12)
+                        .padding(5).background(Color.red.opacity(0.10), in: Circle())
+                    Text(SharedMicrophone.shared.meetingAudioPaused ? "Paused for dictation" : (recording.liveStatus == "Recording" ? "Listening" : recording.liveStatus ?? "Saved")).font(.subheadline.weight(.medium))
                     TimelineView(.periodic(from: .now, by: 1)) { _ in
                         let seconds = Int(recording.elapsedRecordingSeconds)
                         Text(String(format: "%d:%02d", seconds / 60, seconds % 60)).monospacedDigit().font(.subheadline)

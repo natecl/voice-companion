@@ -4,9 +4,9 @@ September 29, 2026. Based on verified main `47eadb4`; independent of the pending
 
 ## Founder-approved direction
 
-The reviewed prototype becomes the visual source of truth: lavender canvas, plum controls, companion at the top, two-line Notes entry on the left, Invite on the right. No root tab selector or home search control. Only the capture bar reports listening; preserve the current circular recording indicator, recolored to the palette. The new design may replace navigation behavior, while note swipe/long-press Delete, Share and Copy remain.
+The reviewed prototype becomes the visual source of truth: lavender canvas, plum controls, companion at the top, two-line Notes entry on the left, Invite on the right. No root tab selector or home search control. Only the capture bar reports listening; preserve the current circular recording indicator, red beside “Listening”. The new design may replace navigation behavior, while note swipe/long-press Delete, Share and Copy remain.
 
-Native implementation uses existing shared controllers and one persistent chat. Notes enters horizontally; draft and capture state survive navigation. Existing card gestures and deletion confirmation are retained. Typography, continuous corners, shadows and press feedback follow the new surfaces. Reduce Motion suppresses page and press movement. Invite opens an honest unavailable-state sheet; no invites are sent, no contacts are accessed and no URL is invented.
+Native implementation uses existing shared controllers and one persistent chat. Notes enters from the left and returns to the left; draft and capture state survive navigation. Existing card gestures and deletion confirmation are retained. Typography, continuous corners, shadows and press feedback follow the new surfaces. Reduce Motion suppresses page and press movement. Invite opens an honest unavailable-state sheet; no invites are sent, no contacts are accessed and no URL is invented.
 
 The temporary companion image is extracted from the founder-reviewed prototype. Its debug rendering is for internal design evaluation only. Release displays a monogram. The reference image is still a bundled resource, so it must be replaced/removed before distribution; no final identity or licensing clearance is claimed. Existing missing distribution app-icon work remains open.
 
@@ -38,3 +38,5 @@ Screenshots inspected: [home](home.png), [capture](capture.png), [notes](notes.p
 ## Remaining delivery boundary
 
 This is a light-appearance native candidate. Dark appearance, physical motion/haptic judgment, final companion artwork, invitation delivery and release app icon are not complete. The temporary artwork and Invite state must not be mistaken for finished distribution features. No phone install, deployment or merge is claimed.
+
+Follow-up: red Listening indicator and left-entry Notes navigation verified through `testCompanionRoomHeaderAndInvite` (13.016 s, passed), result bundle `/tmp/CompanionRoomQA/20260929-063859/`. Updated capture screenshot. Prototype capture and Notes/back interactions also exercised. Pause/connection/finishing labels remain unchanged.
