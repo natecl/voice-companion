@@ -207,7 +207,9 @@ async def main():
                 from proactive_socket import ProactiveSocketService
                 proactive=ProactiveSocketService(store,ProactiveService(memory_store,
                     MemoryModels(answer_key,""),phone_qa,embedder=embedder,phone_qa=phone_qa))
-            relay = Relay(key, admission=store, ask=ask, memory=memory,
+            from account_service import configured_accounts
+            accounts = configured_accounts(os.environ, store, memory_store if memory is not None else None)
+            relay = Relay(key, admission=store, ask=ask, memory=memory, accounts=accounts,
                           learning_status=learning_worker.status if learning_worker else None,companion=companion,
                           indexing_status=indexing_worker.status if indexing_worker else None, notes=notes,
                           notes_status=notes_worker.status if notes_worker else None,proactive=proactive)
