@@ -69,7 +69,7 @@ async def main(directory):
                 await asyncio.sleep(.25)
                 state=json.loads(request['input'])
                 return dict(usage={},data=dict(decision='contribute',
-                    text='Earlier, Alex mentioned waking at three each morning. That may be worth bringing up.',
+                    text='Alex mentioned waking at three each morning.\n\nThat may be worth bringing up before the appointment ends.',
                     evidence_ids=[state['sources'][0]['id']]))
         class FreeBudget:
             def reserve(self,*args):pass

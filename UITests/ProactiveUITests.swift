@@ -34,6 +34,10 @@ final class ProactiveUITests: XCTestCase {
         let message = app.staticTexts.matching(identifier: "companionAnswer").firstMatch
         XCTAssertTrue(message.waitForExistence(timeout: 8))
         XCTAssertTrue(message.label.contains("Alex"))
+        let second = app.staticTexts.matching(identifier: "companionAnswer").element(boundBy: 1)
+        XCTAssertTrue(second.exists)
+        XCTAssertGreaterThan(second.frame.minY, message.frame.maxY)
+        XCTAssertLessThan(second.frame.minY - message.frame.maxY, 60)
         XCTAssertFalse(app.staticTexts["Ellis"].exists)
         XCTAssertGreaterThan(message.frame.width, 100)
         XCTAssertGreaterThanOrEqual(message.frame.minX, 16)
@@ -43,7 +47,7 @@ final class ProactiveUITests: XCTestCase {
         app.buttons["quietContributions"].tap()
         XCTAssertFalse(app.buttons["quietContributions"].isEnabled)
         XCTAssertTrue(app.buttons["stopRecording"].isEnabled)
-        XCTAssertEqual(app.staticTexts.matching(identifier: "companionAnswer").count, 1)
+        XCTAssertEqual(app.staticTexts.matching(identifier: "companionAnswer").count, 2)
         let screenshot = XCTAttachment(screenshot: app.screenshot())
         screenshot.name = "Proactive ordinary message — local socket, synthetic capture and model"
         screenshot.lifetime = .keepAlways; add(screenshot)
@@ -54,7 +58,8 @@ final class ProactiveUITests: XCTestCase {
         app.terminate(); app.launch()
         let restored = app.staticTexts.matching(identifier: "companionAnswer").firstMatch
         XCTAssertTrue(restored.waitForExistence(timeout: 8))
-        XCTAssertEqual(restored.label, "Earlier, Alex mentioned waking at three each morning. That may be worth bringing up.")
-        XCTAssertEqual(app.staticTexts.matching(identifier: "companionAnswer").count, 1)
+        XCTAssertEqual(restored.label, "Alex mentioned waking at three each morning.")
+        XCTAssertEqual(app.staticTexts.matching(identifier: "companionAnswer").element(boundBy: 1).label, "That may be worth bringing up before the appointment ends.")
+        XCTAssertEqual(app.staticTexts.matching(identifier: "companionAnswer").count, 2)
     }
 }

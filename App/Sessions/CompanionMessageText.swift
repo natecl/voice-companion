@@ -21,6 +21,17 @@ enum CompanionMessageText {
         return result.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    /// Proactive paragraphs are one delivered turn, displayed as a small group of bubbles.
+    /// Keep normal replies intact and never split on punctuation (names, dates, abbreviations).
+    static func bubbles(_ text: String, proactive: Bool) -> [String] {
+        let visible = presented(text)
+        guard proactive else { return [visible] }
+        return visible.replacingOccurrences(of: "\r\n", with: "\n")
+            .components(separatedBy: "\n\n")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+    }
+
     static func presented(_ text: String, streaming: Bool = false) -> String {
         showsEvidence ? text : display(text, streaming: streaming)
     }
