@@ -24,7 +24,7 @@ Exit: bounded scenario, contracts and worker packets ready. No assumption that s
 
 ## Phase 1 — prototype the presence and rehearse continuity
 
-This is the first creative implementation phase. UI-1 starts with Refero/Mobbin reference-flow research as specified in the experience brief, then builds the concrete prototype. Record access limits honestly; do not claim unseen screens were reviewed. UI and memory exploration can proceed in parallel against the frozen contracts.
+This is the first creative implementation phase. UI-1 starts with free, computer-use research on Refero Styles and accessible Mobbin references as specified in the experience brief, then builds the concrete prototype. Record access limits honestly; do not claim unseen screens were reviewed. UI and memory exploration can proceed in parallel against the frozen contracts.
 
 | Packet | Scope | Output / verifier |
 | --- | --- | --- |
