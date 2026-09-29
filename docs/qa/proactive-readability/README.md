@@ -41,3 +41,19 @@ Next: improve the candidate’s message-boundary instruction and resolve provide
 Message size refers to character amount. Reverted the PR129 native grouping implementation and its fixture/test changes to the verified pre-experiment baseline (`6c5330f`). The earlier screenshot and grouping assessment remain historical evidence, not the desired UI. Runtime v2 remains unchanged; candidate v3 and recorded requests remain archived evidence. No prompt selection, deployment or provider run is part of this correction.
 
 Restoration QA: native PhoneUITests/ProactiveUITests passed on the same iPhone simulator with the restored local socket fixture. Inspected the screenshot: original single reply bubble and normal controls, draft preserved, Quiet does not stop recording, answer retained after relaunch. Initial fixture launch lacked its temporary directory; created it and reran successfully. No provider traffic.
+
+## Character-length refinement: v4
+
+The corrected candidate starts from v2 with an explicit soft 120–240-character drafting guide; this is a hypothesis, not a measured optimum. Necessary qualifiers, quantities and prerequisites take priority. It does not truncate or manufacture extra messages. Native App/, UnitTests/, UITests/ and project.yml are byte-identical to origin/main after the restoration: no phone installation or UI change.
+
+Used only the three previously never-sent reserved cases with v4. An atomic transition from reserved to sending prevents a transport attempt being resumed after a crash. The operator receipt preserves each previous request hash and replacement hash. The failed qualified-plan request was not retried; no funding/cap increase. All three completed: changed preference contributed, unknown subject and resolved commitment stayed silent. All content is fictional.
+
+Exact useful output (135 characters, correcting the initial progress estimate of 131):
+
+> Alex previously changed their preference: 8 a.m. is best, and 11 a.m. no longer works. That may help settle the recurring meeting time.
+
+Manual review: preserves corrected preferred time and rejected time, uses plain language, and does not invent identity or status. No added question or padding to hit a minimum. Two silence decisions are correct. One useful short example does not establish optimal engagement or completeness for longer contributions. Earlier provider error cause remains unknown; later distinct calls succeeded with improved diagnostics.
+
+Selected v4 locally after this bounded screen. Exact request/response replay verifies current selected prompt, retrieval, validation, one saved turn and reopen for the contribution; no turns for silence. Historical v1/v2 replays explicitly pin their archived prompts; their results are not claimed as fresh v4 behavior. `PYTHONPATH=Backend python3 -m unittest discover -s Backend -p 'test_proactive*.py'` passes 42 tests (existing SQLite ResourceWarnings remain). No additional native QA required: phone UI sources unchanged and restored native behavior was already exercised above.
+
+The original Cedar proactive ledger now has five completed calls (one physical pilot, one v3 result, three v4 results), one uncertain failed call and no remaining slots: $0.12 conservative reservations, not actual invoice cost. Hosted v2 and installed phone remain unchanged. Deployment is pending separate authorization.

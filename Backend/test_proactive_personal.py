@@ -45,9 +45,9 @@ class PersonalReplayTests(unittest.IsolatedAsyncioTestCase):
                         model=RecordedModel(row[variant],saved)
                         service=ProactiveService(store,model,Budget())
                         live=recording('capture',case['live'],completed=False)
-                        # Baseline is archived evidence; candidate must use the selected runtime prompt.
+                        # v1/v2 are archived evaluation evidence; v4 has its own exact-request replay.
                         import proactive_models
-                        prompt=row[variant]['instructions'] if variant=='baseline' else proactive_models.PROMPT
+                        prompt=row[variant]['instructions']
                         with patch('proactive_models.PROMPT',prompt):
                             result=await service.evaluate(owner,live,lambda:True)
                         decision=saved['data']['decision']

@@ -4,7 +4,7 @@ from pathlib import Path
 from admission import Rejected
 from memory_models import LUNA, JEV, choice, parse_judgments
 
-PROMPT = (Path(__file__).parent/'prompts/proactive-v2.md').read_text()
+PROMPT = (Path(__file__).parent/'prompts/proactive-v4.md').read_text()
 
 
 def bounded(state):

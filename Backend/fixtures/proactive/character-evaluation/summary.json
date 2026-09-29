@@ -1,0 +1,11 @@
+{
+  "completed_calls": 3,
+  "decisions_passed": 3,
+  "reserved_microusd": 60000,
+  "input_tokens": 3767,
+  "output_tokens": 105,
+  "message_characters": [
+    135
+  ],
+  "limits": "One useful reminder and two silence cases; not proof of optimal length or long-reminder completeness"
+}
