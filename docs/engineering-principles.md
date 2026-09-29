@@ -317,3 +317,5 @@ Founder clarification: short interjection messages must retain decision-critical
 Founder further clarifies: preserve the useful contribution in full and present it in bite-sized chunks. Do not impose new word-count or bubble-count targets that remove information or merge the remainder into a dense block. One natural idea per bubble, with its necessary qualifiers, is the presentation goal. Existing overall backend response bounds remain unchanged.
 
 Founder asks to optimize message size for readability and engagement. Working UI hypothesis: one natural idea, often a sentence or two, roughly 2–4 mobile lines where practical; no truncation, smaller font, fixed line clamp or information loss. Dynamic Type and actual text length govern final height.
+
+Founder approves reallocating the five remaining Cedar Luna calls to proactive readability QA, with no extra budget. Use the existing six-call/$0.12 ledger (one call already consumed), preserving historical reservations; no retries. This authorizes fictional wording/completeness/silence evaluation, not new recording, notes generation or deployment.
