@@ -186,12 +186,12 @@ class RetentionTests(unittest.IsolatedAsyncioTestCase):
         await self.learn(0)
         before=self.store.search(self.owner,historical=True)
         with self.store.transaction() as db:
-            db.execute('DROP TABLE retained_recording');db.execute('PRAGMA user_version=15')
+            db.execute('DROP TABLE retained_recording');db.execute('DROP TABLE account_identity');db.execute('PRAGMA user_version=15')
         migrated=MemoryStore(self.path,retain_recording_memories=True)
         self.assertEqual(before,migrated.search(self.owner,historical=True))
         self.assertIsNotNone(migrated.source(self.owner,self.sources[0]['session_id']))
         with migrated.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],19)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],20)
             self.assertEqual(db.execute('SELECT count(*) FROM retained_recording').fetchone()[0],0)
 
 

@@ -188,13 +188,13 @@ class MemoryTests(unittest.TestCase):
         self.write(source(), [candidate()])
         with self.store.connect() as db:
             db.execute('ALTER TABLE claim DROP COLUMN profile_link')
-            db.execute('DROP TABLE IF EXISTS memory_embedding');db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('PRAGMA user_version=2')
+            db.execute('DROP TABLE IF EXISTS memory_embedding');db.execute('DROP TABLE IF EXISTS memory_passage_index');db.execute('DROP TABLE account_identity');db.execute('PRAGMA user_version=2')
         migrated = MemoryStore(self.path, clock=lambda: self.now[0])
         self.assertEqual(migrated.source(self.owner, 'session-a'), source())
         self.assertEqual(len(migrated.search(self.owner)), 1)
         self.assertEqual(migrated.profile(self.owner), [])
         with migrated.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 19)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 20)
 
     def test_personal_sources_are_held_and_origin_cannot_be_rewritten(self):
         note = dict(source(), origin='personal_text')

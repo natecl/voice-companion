@@ -391,3 +391,10 @@ After reviewing discrepancies in typography, controls and motion, the founder co
 Founder motion revision, September 29: matching the initial prototype timings is insufficient after hands-on feedback that all motion feels too fast and abrupt. Revise the approved prototype and shared presentation together toward slower, smoother transitions, keeping direct manipulation tied to the finger. Chat left-swipe opens Notes; the existing menu and note swipe actions remain. Preserve white backgrounds and original purple action accents while replacing lavender surface washes with neutral gray. Button haptics must be wired to the native device; simulator event success is not evidence of physical tactile quality.
 
 Founder checkpoint revision, September 29: merge the reviewed UI as the internal baseline, then review/integrate the phased-plan changes without altering its presentation. Preserve shared UI assets and interactions; functional integration must be verified behind the existing interface. Remaining physical/release checks stay explicit TestFlight gates.
+
+
+## Release authentication — September 29, 2026
+
+Founder decision: ship both Google and Apple sign-in, with Google above Apple in the sign-in UI. Neither provider is deferred. Preserve the approved shared interface. Implement and verify real enrollment, stable ownership and session lifecycle; preview buttons do not establish authentication. Follow the existing small-checkpoint, real-path QA and founder-dependent blocker rules. This decision grants no new paid-model allowance and does not select prices or a pilot cohort.
+
+Founder TestFlight clarification, September 29: functional frontend wiring for Google/Apple sign-in and necessary account/privacy pages is authorized. This supersedes the blanket UI-code freeze. The established UI design system is the source of truth: preserve existing screens, styling, typography, colors, spacing, motion and visual character. Reuse current components and patterns for additions; do not redesign or restyle existing UI. Verify actual app behavior and visual consistency.

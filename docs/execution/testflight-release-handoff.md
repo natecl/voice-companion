@@ -11,12 +11,12 @@ Updated September 29, 2026. **Start here when continuing in a new agent.** This 
 - Merged phone build was signed, installed in place and launched on the existing iPhone; no reset. Receipts: `/tmp/integration-device-install-retry.json`, `/tmp/integration-device-launch.json`, `/tmp/integration-device-bundle.json`. Temporary local receipts may disappear; preserve sanitized durable evidence before release.
 - Latest phone inspection used the same baseline with temporary DEBUG-only font diagnostics. User/agent computed font family, size (16px) and weight (430) matched; Bold Text was enabled. Founder confirmed they look the same. Diagnostics were reverted from source; no UI fix or data change. Receipt `/tmp/message-font-phone-final.json`; do not mistake this diagnostic binary for an archived release.
 - Last inspected hosted backend: `70f494b50bf7b82f9e350ed220485b2cde7a1f26`, Render deploy `dep-datjp56k1f9s738i5nig`, service `srv-daqtfs7lot8c73dleuug`. Auto-deploy was off. **Merged backend changes have not been deployed in this task.** Recheck before action.
-- App Store Connect login worked. No app record existed. Apple displayed an updated Developer Program License Agreement requiring Account Holder acceptance. Acceptance has not been verified; later “ready” replies do not prove it. Xcode team `7HF6VDCZF7` was available for development signing; archive/distribution signing remains unverified.
+- App Store Connect login worked. No app record existed. The founder accepted the updated Developer Program License Agreement on September 29; a fresh App Store Connect reload verified that its warning cleared. Xcode team `7HF6VDCZF7` was available for development signing; archive/distribution signing remains unverified.
 - No TestFlight build uploaded and no testers invited. Accounts, prices, paywall and real subscriptions remain unfinished.
 
 ## Product decisions versus proposals
 
-Founder asks to include accounts, paywall and price plans in this release plan. Freemium plus subscription is already agreed. Exact prices, allowances, billing periods, authentication provider and paid-pilot timing are **not selected**. Suggested starting point: Sign in with Apple, optional Google later; Free and Pro; a free student pilot before charging while purchases are tested in sandbox. These remain proposals for review, not implementation facts or permission to charge.
+Founder asks to include accounts, paywall and price plans in this release plan. Freemium plus subscription is already agreed. Founder selected both Google and Apple sign-in on September 29, with Google above Apple in the UI. The earlier Apple-first/Google-later proposal is superseded. Exact prices, allowances, billing periods and paid-pilot timing are **not selected**. Free and Pro, and a free student pilot before charging while purchases are tested in sandbox, remain proposals, not implementation facts or permission to charge.
 
 Keep the five-minute internal capture cap until separately changed and validated. Do not promise full lectures. Calendar/email/messages, outside-knowledge expansion, TTS and silent always-on capture remain outside this release slice. Preserve the single persistent chat, ordinary multi-message interjections, Quiet/End bounds, upright paperclip, purple actions and approved shared interface. New account/paywall surfaces should follow that design, not redesign the app.
 
@@ -47,7 +47,7 @@ Run manifest tooling checks after edits: `python3 -m unittest discover -s script
 
 ## Operational handoff and permissions
 
-Continue from latest main in a suitable free worktree. Current working checkout: `/Users/n.chinlue/.codex/worktrees/dictation-qa-budget/voice-companion`; original `/Users/n.chinlue/code/voice-companion` has unrelated local state and must be preserved. Never store keys/tokens in docs or evidence.
+Continue from latest main in a suitable free worktree. Current accounts checkout: `/Users/n.chinlue/.codex/worktrees/account-sign-in/voice-companion`; original `/Users/n.chinlue/code/voice-companion` has unrelated local state and must be preserved. Never store keys/tokens in docs or evidence.
 
 Founder authorized internal deployment and TestFlight setup/release validation. That does not authorize accepting legal agreements, choosing commercial prices, charging, arbitrary tester invitations, resetting production data, changing Render tier, or paid model runs without a bounded allowance. No new provider budget was granted for this handoff. Observe canonical stop-and-wait rules for required founder input. Ask for physical readiness before timed manual QA.
 
@@ -55,8 +55,12 @@ Render SSH previously failed with publickey authentication; investigate existing
 
 ## First action for the next agent
 
-Read this handoff and linked maps, verify current git/runtime state, and prepare the smallest accounts packet plus a concrete auth-provider decision. Recheck whether Apple agreement acceptance is still pending before signing/upload work. Keep pricing/pilot decisions visibly open. Do not restart the completed UI redesign or rerun all paid evaluations just because the agent changed.
+Read this handoff and linked maps, verify current git/runtime state, and prepare the smallest accounts packet for the selected Google and Apple providers. Recheck whether Apple agreement acceptance is still pending before signing/upload work. Keep pricing/pilot decisions visibly open. Do not restart the completed UI redesign or rerun all paid evaluations just because the agent changed.
 
 ## Handoff documentation validation
 
 The 15 verifier self-tests pass, including catalog/manifest schema and context-map links. The stale cache-is-unimplemented self-test was updated to require pricing/subscriptions/distribution (which have no automated suites yet) to reject checks-only verification. Feature discovery lists the new pricing contract. This validates tooling and documentation structure, not account, billing or TestFlight behavior. App source and UI assets are unchanged by this checkpoint.
+
+## Founder constraint: preserve the established design system
+
+September 29 clarification supersedes the earlier blanket UI-code freeze: functional frontend wiring for Google/Apple sign-in and necessary account/privacy pages are authorized. The current UI design system is the source of truth. Reuse existing components, styling, typography, colors, spacing and motion; preserve established screens and interactions. Do not redesign, restyle or reinterpret the app's visual character while preparing TestFlight. Google remains above Apple. Verify functional additions in the actual app against the existing design system.

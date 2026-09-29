@@ -122,9 +122,9 @@ class CompanionChatTests(unittest.TestCase):
     def test_schema12_migration_preserves_sources_and_tombstones(self):
         self.evidence();self.store.delete_source(self.owner,'deleted')
         with self.store.connect() as db:
-            db.executescript('DROP TABLE companion_dependency; DROP TABLE companion_turn; DROP TABLE companion_chat; PRAGMA user_version=12;')
+            db.executescript('DROP TABLE companion_dependency; DROP TABLE companion_turn; DROP TABLE companion_chat; DROP TABLE account_identity; PRAGMA user_version=12;')
         migrated=MemoryStore(self.path)
         self.assertEqual(migrated.source(self.owner,'s')['passages'][0]['text'],'Maya enjoys swimming.')
         self.assertEqual(migrated.put_source(self.owner,source('deleted'))['status'],'deleted')
         self.assertEqual(CompanionChat(migrated).page(self.owner)['turns'],[])
-        with migrated.connect() as db:self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],19)
+        with migrated.connect() as db:self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],20)
