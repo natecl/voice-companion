@@ -1,0 +1,22 @@
+{
+  "data": {
+    "decision": "contribute",
+    "text": "Alex previously changed their preference: 8 a.m. is best, and 11 a.m. no longer works. That may help settle the recurring meeting time.",
+    "evidence_ids": [
+      "m1"
+    ]
+  },
+  "usage": {
+    "input_tokens": 1389,
+    "input_tokens_details": {
+      "cache_write_tokens": 1386,
+      "cached_tokens": 0
+    },
+    "output_tokens": 59,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1448
+  },
+  "seconds": 2.3754029888659716
+}

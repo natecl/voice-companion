@@ -10,13 +10,16 @@ import os
 import sqlite3
 import time
 import urllib.request
+import urllib.error
 from pathlib import Path
 
 
-def run(rows):
+def run(rows, *, resume_unsent=False):
     expected = {'cedar-prerequisite', 'qualified-plan', 'fresh-changed-preference',
                 'fresh-unknown-subject', 'fresh-resolved'}
-    assert len(rows) == 5 and {r['case'] for r in rows} == expected
+    if resume_unsent:
+        expected = {'fresh-changed-preference', 'fresh-unknown-subject', 'fresh-resolved'}
+    assert len(rows) == len(expected) and {r['case'] for r in rows} == expected
     for row in rows:
         request = row['request']
         assert request['model'] == 'gpt-6-luna'
@@ -30,14 +33,35 @@ def run(rows):
     with sqlite3.connect(root/'usage.sqlite') as db:
         db.execute('BEGIN IMMEDIATE')
         count, reserved = db.execute('SELECT count(*),coalesce(sum(reserved),0) FROM attempts').fetchone()
-        assert count == 1 and reserved == 20000, 'Expected precisely five unused calls; never retry batch'
-        for row in rows:
-            request_hash = hashlib.sha256(json.dumps(row['request'],sort_keys=True).encode()).hexdigest()
-            db.execute('INSERT INTO attempts VALUES(?,?,?,?,NULL)',
-                       ('readability:'+row['case'],request_hash,20000,'reserved'))
+        if resume_unsent:
+            assert count == 6 and reserved == 120000, 'Existing allowance only'
+            for row in rows:
+                key = 'readability:'+row['case']
+                prior = db.execute('SELECT state FROM attempts WHERE id=?',(key,)).fetchone()
+                assert prior == ('reserved',), 'Never repeat an attempted call'
+                assert not (output/(row['case']+'.json')).exists()
+        else:
+            assert count == 1 and reserved == 20000, 'Expected precisely five unused calls'
+            for row in rows:
+                request_hash = hashlib.sha256(json.dumps(row['request'],sort_keys=True).encode()).hexdigest()
+                db.execute('INSERT INTO attempts VALUES(?,?,?,?,NULL)',
+                           ('readability:'+row['case'],request_hash,20000,'reserved'))
         db.commit()
     for row in rows:
         key = 'readability:'+row['case']
+        # Claim before transport. A crash or HTTP error cannot leave a sent call resumable.
+        with sqlite3.connect(root/'usage.sqlite') as db:
+            db.execute('BEGIN IMMEDIATE')
+            prior = db.execute('SELECT state,hash FROM attempts WHERE id=?',(key,)).fetchone()
+            assert prior and prior[0] == 'reserved'
+            digest = hashlib.sha256(json.dumps(row['request'],sort_keys=True).encode()).hexdigest()
+            if resume_unsent:
+                audit = output/(row['case']+'-unattempted-reassignment.json')
+                assert not audit.exists()
+                audit.write_text(json.dumps(dict(previous_hash=prior[1],new_hash=digest,
+                    reason='Founder clarified character length; reuse unsent reserved slot only')))
+            db.execute('UPDATE attempts SET state=?,hash=? WHERE id=?',('sending',digest,key))
+            db.commit()
         started = time.monotonic()
         try:
             request = urllib.request.Request('https://api.openai.com/v1/responses',
@@ -56,11 +80,16 @@ def run(rows):
         except Exception as error:
             with sqlite3.connect(root/'usage.sqlite') as db:
                 db.execute('UPDATE attempts SET state=? WHERE id=?',('uncertain',key))
-            # Retain a safe status for diagnosis without logging provider bodies or credentials.
+            # Persist only safe API error identifiers, never body prose or credentials.
+            code = None
+            if isinstance(error, urllib.error.HTTPError):
+                try:
+                    code = json.loads(error.read()).get('error',{}).get('code')
+                except (ValueError, AttributeError): pass
             print(json.dumps(dict(case=row['case'],error=type(error).__name__,
-                                  status=getattr(error,'code',None))),flush=True)
+                                  status=getattr(error,'code',None),provider_code=code)),flush=True)
             break  # Keep remaining reservations; an operator must inspect before any new work.
 
 
 if __name__ == '__main__':
-    run(ROWS)
+    run(ROWS, resume_unsent=RESUME_UNSENT)

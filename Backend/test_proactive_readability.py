@@ -33,3 +33,28 @@ class ReadabilityReplayTests(unittest.IsolatedAsyncioTestCase):
             self.assertIn('before adding features',turns[0]['answer'])
             # This is an observed presentation failure, not proof of grouped output.
             self.assertNotIn('\n\n',turns[0]['answer'])
+
+    async def test_character_candidate_decisions_and_persistence(self):
+        root=Path(__file__).parent/'fixtures/proactive/character-evaluation'
+        cases={c['id']:c for c in json.loads((root/'cases.json').read_text())}
+        for row in json.loads((root/'requests.json').read_text()):
+            with self.subTest(case=row['case']), tempfile.TemporaryDirectory() as folder:
+                path=Path(folder)/'memory.sqlite'
+                store=MemoryStore(path,clock=lambda:300.)
+                owner=store.owner_for('fictional-personal-evaluation')
+                case=cases[row['case']];seed_case(store,owner,case)
+                saved=json.loads((root/(row['case']+'.json')).read_text())
+                model=RecordedModel(row['request'],saved)
+                # No prompt patch: exact request must match selected runtime guidance.
+                result=await ProactiveService(store,model,Budget()).evaluate(
+                    owner,recording('capture',case['live'],completed=False),lambda:True)
+                self.assertEqual(model.calls,1)
+                self.assertEqual(saved['data']['decision'],case['expected'])
+                self.assertEqual(result['type'],'contribution' if case['expected']=='contribute' else 'silence')
+                turns=CompanionChat(MemoryStore(path)).page(owner)['turns']
+                if case['expected']=='contribute':
+                    self.assertEqual(len(turns),1)
+                    self.assertEqual(turns[0]['answer'],saved['data']['text'])
+                    self.assertIn('8 a.m.',turns[0]['answer'])
+                    self.assertIn('11 a.m. no longer works',turns[0]['answer'])
+                else:self.assertEqual(turns,[])
