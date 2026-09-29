@@ -1,6 +1,17 @@
 import XCTest
 
 final class CompanionMessageTextTests: XCTestCase {
+    func testProactiveBubblesPreserveOrderQualifiersAndNormalReplies() {
+        let text = "The team agreed to test with five people first.\n\nThat test was still pending in the earlier note."
+        XCTAssertEqual(CompanionMessageText.bubbles(text, proactive: true), [
+            "The team agreed to test with five people first.",
+            "That test was still pending in the earlier note."
+        ])
+        XCTAssertEqual(CompanionMessageText.bubbles(text, proactive: false), [text])
+        XCTAssertEqual(CompanionMessageText.bubbles("At 3 a.m. Alex woke up.", proactive: true), ["At 3 a.m. Alex woke up."])
+        XCTAssertEqual(CompanionMessageText.bubbles("One\n\nTwo\n\nThree\n\nFour", proactive: true), ["One", "Two", "Three", "Four"])
+    }
+
     func testSavedAndRetainedGroundingTagsAreHidden() {
         XCTAssertEqual(CompanionMessageText.display("Maya swims [[p1]]."), "Maya swims.")
         XCTAssertEqual(CompanionMessageText.display("At the garden [[p2]] [[p3]]. Tomorrow [[m1]]."), "At the garden. Tomorrow.")
