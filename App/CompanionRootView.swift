@@ -250,17 +250,13 @@ struct CompanionRootView: View {
                                     Text(turn.question).padding(.horizontal, 14).padding(.vertical, 12).experienceCard(radius: 18).frame(maxWidth: .infinity, alignment: .trailing)
                                 }
                                 if let answer = turn.answer {
-                                    VStack(alignment: .leading, spacing: 6) {
-                                        ForEach(Array(CompanionMessageText.bubbles(answer, proactive: turn.isProactive).enumerated()), id: \.offset) { _, message in
-                                            Text(message).modifier(ExperienceAgentBubble())
-                                                .contextMenu {
-                                                    Button("Copy", systemImage: "doc.on.doc") { ExperienceClipboard.copy(message) }
-                                                }
-                                                .frame(maxWidth: .infinity, alignment: .leading)
-                                                .accessibilityIdentifier("companionAnswer")
+                                    Text(CompanionMessageText.presented(answer)).modifier(ExperienceAgentBubble())
+                                        .contextMenu {
+                                            Button("Copy", systemImage: "doc.on.doc") { ExperienceClipboard.copy(CompanionMessageText.presented(answer)) }
                                         }
-                                    }
-                                    .padding(.top, 14).padding(.trailing, 32)
+                                        .padding(.top, 14).padding(.trailing, 32)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .accessibilityIdentifier("companionAnswer")
                                 }
                                 if turn.state == .pending || turn.state == .failed { ExperienceNotice(title: "About this answer", message: turnLabel(turn.state)) }
                                 ForEach(CompanionMessageText.showsEvidence ? turn.citations : [], id: \.id) { citation in

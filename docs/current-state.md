@@ -153,3 +153,5 @@ Cedar physical pilot passed its narrow useful-reminder check: founder saw one re
 Local proactive readability checkpoint: explicit paragraphs render as grouped ordinary Agent bubbles with full content and one durable turn. Simulator delivery/draft/quiet/relaunch and core text checks pass. Candidate v3 wording is unselected and awaits separately authorized model QA; hosted v2 and phone installation are unchanged. [Evidence and screenshot](qa/proactive-readability/README.md).
 
 Readability model screen is incomplete: one Luna result retained Cedar details but failed paragraph grouping; the second request returned an undiagnosed HTTPError and the batch stopped without retry. Three planned calls were never sent and remain held in the original ledger. Candidate v3 is not selected; runtime v2 is unchanged. See the proactive-readability QA receipt.
+
+Founder clarified readability means character amount, not a bubble UI change. The PR129 paragraph-grouping renderer is reverted to the prior chat UI. Candidate v3 remains unselected and its grouping direction is superseded. Preserve useful details while simplifying wording; no new model calls or deployment.
