@@ -126,3 +126,23 @@ Acceptance includes actual app launch/open, airplane-mode or injected offline re
 Each worker sends its completion packet to this orchestrator. The orchestrator inspects the exact commit/diff and raw evidence, verifies that the commands/artifacts support every claimed outcome, and reruns targeted checks when needed. Model output is judged against the predeclared rubric, not the worker's pass label. A review does not automatically consume another paid call; reuse valid receipts unless an unresolved question requires fresh evidence and allowance.
 
 Record one disposition: accepted for integration, changes required, or blocked. Only after acceptance does the orchestrator explicitly authorize the next dependent packet. Worker self-declaration, a green suite, or a PR creation is not that authorization. Workers may complete already-authorized independent work and fix their own failures; they may not expand scope or advance dependent work while acceptance is pending. Review and acceptance do not independently authorize deployment.
+
+## Worker granularity and model preference — founder clarification
+
+Use GPT-6 Astra with `low` reasoning for execution workers. Founder prioritizes throughput and quality over minimizing worker token use. This preference concerns coding-agent capacity; it does not replenish bounded application-provider QA allowances. Use as many bounded assignments as useful, subject to actual concurrency, resource ownership and review capacity. Do not leave agents idle on broad domains or launch overlapping writers to increase headcount.
+
+The Phase 2 rows are workstreams, not single-worker mandates. Split them into independently reviewable packets:
+
+| Packet | One bounded outcome | Dependency / ownership boundary |
+| --- | --- | --- |
+| CACHE-1 | Persistent owner/revision-scoped summary cache with immediate/offline rendering and refresh | Agree account invalidation contract; own cache files and assigned note-load integration |
+| NOTES-1 | Note-generation failure/status/retry behavior preserves usable state and avoids duplicate generation | Own generation lifecycle/server tests; hand off native status contract to CACHE-1 before shared view edits |
+| CAPTURE-1 | Reproduce and repair one identified capture interruption/network recovery gap | Own the diagnosed capture path; no capture rewrite |
+| CHAT-1 | Preserve drafts and clarify one verified chat failure/retry path | Own assigned chat controller/error view; no shared composer redesign |
+| LLM-1 | Evaluate and repair current-topic relevance against predeclared positive/negative cases | Own model decision contract and fixtures; named approved provider allowance required for live calls; no caching/UI scope |
+| PROACTIVE-1 | Verify distribution-configured Quiet/cancellation/cooldown/budget controls | Own policy/config wiring; coordinate service-file overlap with LLM-1 |
+| ACCESS-1 | Deliver selected isolated tester enrollment and revocation slice | Own access contract; provide invalidation interface to CACHE-1 |
+| VERIFY-1 | Deliver offline verifier runner and evidence receipts | Own tooling; cannot approve its own product acceptance |
+| RELEASE-1 | Produce verified distribution readiness report and candidate archive | Wait for accepted integrated dependencies; no upload/invitations by default |
+
+Before dispatch, replace any vague packet with exact allowed files, base SHA, acceptance, commands and dependencies. Assign further jobs only after accepted completion or a separate explicit packet; a worker is not indefinitely responsible for “the LLM” or “all notes.” The orchestrator may issue multiple waves of Astra/low workers as capacity becomes available. Serialize shared-file integration and device access rather than broadening worker ownership. The orchestrator remains the acceptance gate.
