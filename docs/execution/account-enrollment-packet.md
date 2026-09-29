@@ -72,6 +72,6 @@ Schema 20 adds `(issuer, subject)` → owner mapping in the existing memory data
 
 [Account identity QA](../qa/account-identity/README.md) records synthetic identity, migration, concurrency and actual local WebSocket isolation evidence. Hosted deployment remains unchanged. Do not roll schema 20 back to schema 19 binaries against the upgraded database; use the predeployment backup if a future deployment needs rollback.
 
-## Founder constraint: UI freeze
+## Founder constraint: preserve the established design system
 
-September 29: do not modify any actual UI code or UI design during TestFlight preparation. Preserve all existing presentation files, shared HTML/CSS/JavaScript, SwiftUI views, layout, styling and interactions. Backend authentication, account services, non-presentation native modules and release configuration may proceed. If connecting authentication requires a UI-code change, stop and present the exact necessary change for founder approval; do not treat the broader TestFlight goal as permission to override this freeze. Google-before-Apple remains the selected order, not authorization to edit the UI.
+September 29 clarification supersedes the earlier blanket UI-code freeze: functional frontend wiring for Google/Apple sign-in and necessary account/privacy pages are authorized. The current UI design system is the source of truth. Reuse existing components, styling, typography, colors, spacing and motion; preserve established screens and interactions. Do not redesign, restyle or reinterpret the app's visual character while preparing TestFlight. Google remains above Apple. Verify functional additions in the actual app against the existing design system.
