@@ -65,3 +65,16 @@ class ProactiveModelsTests(unittest.TestCase):
             req=draft_request(dict(current=case['live'],sources=[dict(id='m1',text=case['past'])],previous=[]))
             self.assertNotIn('rubric',json.loads(req['input']))
             self.assertNotIn('expected',json.loads(req['input']))
+
+    def test_grouped_message_schema_and_lossless_boundaries(self):
+        request=draft_request(self.state,grouped_messages=True)
+        properties=request['text']['format']['schema']['properties']
+        self.assertIn('messages',properties);self.assertNotIn('text',properties)
+        messages=['Alex mentioned waking at three.', 'That may be worth bringing up.']
+        data=dict(decision='contribute',messages=messages,evidence_ids=['m1'])
+        parsed=parse_draft(data,self.state,grouped_messages=True)
+        self.assertEqual(parsed['text'].split('\n\n'),messages)
+        for bad in [[],[''],['  '],['one\n\ntwo'],['x'*601],[1]]:
+            with self.assertRaises(Rejected):parse_draft(dict(data,messages=bad),self.state,grouped_messages=True)
+        self.assertEqual(parse_draft(dict(decision='silence',messages=[],evidence_ids=[]),self.state,grouped_messages=True)['text'],'')
+        with self.assertRaises(Rejected):parse_draft(dict(data,decision='silence'),self.state,grouped_messages=True)

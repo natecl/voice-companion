@@ -17,18 +17,31 @@ def bounded(state):
     return ids
 
 
-def draft_request(state):
+def draft_request(state, *, grouped_messages=False):
     ids = bounded(state)
     fields = dict(decision=dict(type='string',enum=['silence','contribute']),
         text=dict(type='string'), evidence_ids=dict(type='array',items=dict(type='string',enum=ids)))
+    if grouped_messages:
+        del fields['text']
+        fields['messages']=dict(type='array',items=dict(type='string'))
     schema = dict(type='object',properties=fields,required=list(fields),additionalProperties=False)
-    return dict(model=LUNA,reasoning={'effort':'none'},service_tier='default',instructions=PROMPT,
+    prompt=(Path(__file__).parent/'prompts/proactive-v5-candidate.md').read_text() if grouped_messages else PROMPT
+    return dict(model=LUNA,reasoning={'effort':'none'},service_tier='default',instructions=prompt,
         input=json.dumps(state,ensure_ascii=False),max_output_tokens=600,store=False,tools=[],truncation='disabled',
         text={'format':dict(type='json_schema',name='proactive_v1',strict=True,schema=schema)})
 
 
-def parse_draft(data, state):
+def parse_draft(data, state, *, grouped_messages=False):
     ids = bounded(state)
+    if grouped_messages:
+        if (not isinstance(data,dict) or set(data)!={'decision','messages','evidence_ids'}
+                or not isinstance(data['messages'],list)
+                or any(not isinstance(message,str) or not message.strip() or '\n' in message or '\r' in message
+                       for message in data['messages'])):
+            raise Rejected('invalid_proactive_output')
+        # The existing durable text protocol reserves blank lines as message boundaries.
+        # No sentence guessing, truncation, new turn IDs, or extra model calls.
+        data=dict(decision=data['decision'],text='\n\n'.join(data['messages']),evidence_ids=data['evidence_ids'])
     if (not isinstance(data,dict) or set(data) != {'decision','text','evidence_ids'}
             or data['decision'] not in ('silence','contribute') or not isinstance(data['text'],str)
             or not isinstance(data['evidence_ids'],list)

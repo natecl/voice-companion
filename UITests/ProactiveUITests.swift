@@ -38,12 +38,17 @@ final class ProactiveUITests: XCTestCase {
         XCTAssertGreaterThan(message.frame.width, 100)
         XCTAssertGreaterThanOrEqual(message.frame.minX, 16)
         XCTAssertLessThanOrEqual(message.frame.maxX, app.frame.maxX - 80)
+        let second = app.staticTexts.matching(identifier: "companionAnswer").element(boundBy: 1)
+        XCTAssertTrue(second.exists)
+        XCTAssertEqual(second.label, "That may be worth bringing up.")
+        XCTAssertGreaterThan(second.frame.minY, message.frame.maxY)
+        XCTAssertLessThanOrEqual(second.frame.maxX, app.frame.maxX - 80)
         XCTAssertEqual(field.value as? String, "Keep my draft")
         XCTAssertTrue(app.buttons["stopRecording"].isEnabled)
         app.buttons["quietContributions"].tap()
         XCTAssertFalse(app.buttons["quietContributions"].isEnabled)
         XCTAssertTrue(app.buttons["stopRecording"].isEnabled)
-        XCTAssertEqual(app.staticTexts.matching(identifier: "companionAnswer").count, 1)
+        XCTAssertEqual(app.staticTexts.matching(identifier: "companionAnswer").count, 2)
         let screenshot = XCTAttachment(screenshot: app.screenshot())
         screenshot.name = "Proactive ordinary message — local socket, synthetic capture and model"
         screenshot.lifetime = .keepAlways; add(screenshot)
@@ -54,7 +59,8 @@ final class ProactiveUITests: XCTestCase {
         app.terminate(); app.launch()
         let restored = app.staticTexts.matching(identifier: "companionAnswer").firstMatch
         XCTAssertTrue(restored.waitForExistence(timeout: 8))
-        XCTAssertEqual(restored.label, "Earlier, Alex mentioned waking at three each morning. That may be worth bringing up.")
-        XCTAssertEqual(app.staticTexts.matching(identifier: "companionAnswer").count, 1)
+        XCTAssertEqual(restored.label, "Earlier, Alex mentioned waking at three each morning.")
+        XCTAssertTrue(app.staticTexts["That may be worth bringing up."].exists)
+        XCTAssertEqual(app.staticTexts.matching(identifier: "companionAnswer").count, 2)
     }
 }

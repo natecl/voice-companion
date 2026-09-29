@@ -14,11 +14,12 @@ from proactive_store import ProactiveStore
 
 
 class ProactiveService:
-    def __init__(self,store,models,budget,*,route='llm',embedder=None,phone_qa=None):
+    def __init__(self,store,models,budget,*,route='llm',embedder=None,phone_qa=None,grouped_messages=False):
         if route not in ('llm','jev'):raise ValueError('Unknown proactive route')
         self.store,self.models,self.budget=store,models,budget
         self.route,self.embedder=route,embedder
         self.phone_qa=phone_qa
+        self.grouped_messages=grouped_messages
         self.messages=ProactiveStore(store)
 
     async def _call(self,key,request,call):
@@ -66,8 +67,8 @@ class ProactiveService:
                     check()
                     if not allow_draft(judged,req):
                         terminal='silence';reason='judge_silence';return dict(type='silence')
-                result=await self._call(key+':draft',draft_request(state),self.models.extract)
-                check();result=parse_draft(result,state)
+                result=await self._call(key+':draft',draft_request(state,grouped_messages=self.grouped_messages),self.models.extract)
+                check();result=parse_draft(result,state,grouped_messages=self.grouped_messages)
                 if result['decision']=='silence':
                     terminal='silence';reason='model_silence';return dict(type='silence')
                 selected=[s for s in state['sources'] if s['id'] in result['evidence_ids']]
