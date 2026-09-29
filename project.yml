@@ -21,11 +21,16 @@ targets:
       - package: ThinkingOrbsKit
     platform: macOS
     sources:
-      - App
+      - path: App
+        excludes: [RoomUI]
+      - path: App/RoomUI
+        type: folder
+        buildPhase: resources
       - path: Fixtures/transcript-events.json
         buildPhase: resources
     settings:
       base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
         PRODUCT_BUNDLE_IDENTIFIER: ai.voicecompanion.mac
         PRODUCT_NAME: VoiceCompanion
   VoiceCompanionPhone:
@@ -34,7 +39,11 @@ targets:
       - package: ThinkingOrbsKit
     platform: iOS
     sources:
-      - App
+      - path: App
+        excludes: [RoomUI]
+      - path: App/RoomUI
+        type: folder
+        buildPhase: resources
       - path: Fixtures/transcript-events.json
         buildPhase: resources
     info:
@@ -43,6 +52,7 @@ targets:
         UIBackgroundModes: [audio]
     settings:
       base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
         PRODUCT_BUNDLE_IDENTIFIER: ai.voicecompanion.phone
         PRODUCT_NAME: VoiceCompanion
         TARGETED_DEVICE_FAMILY: '1'

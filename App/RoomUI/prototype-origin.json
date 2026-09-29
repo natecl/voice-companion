@@ -1,0 +1,7 @@
+{
+  "source": "companion-room.html",
+  "sha256": "5e279d213a9da6c7a766afba8dc7a49469708c876895b8f4ae756e2efbc954ff",
+  "cssSHA256": "a39c47f8ee6cbcbec761dff94c10a079967567dd7297992eece1b11a1faec0c8",
+  "date": "2026-09-29",
+  "revision": "Use note preview system typeface throughout the shared interface"
+}

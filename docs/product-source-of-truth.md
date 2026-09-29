@@ -170,3 +170,7 @@ Founder selects proactive contributions from past notes as the next implementati
 
 
 Founder presentation clarification: proactive contributions appear as ordinary agent messages in the persistent main chat, with the same styling and follow-up interaction as other replies. Do not add a separate suggestion card, badge/label or per-contribution dismissal workflow. Internal provenance and trigger metadata remain distinct for validation. This supersedes the suggestion-specific presentation proposed in the [implementation plan](proactive-contributions-plan.md).
+
+## Shared prototype interface — September 29, 2026
+
+Founder confirms the approved companion-room prototype as the exact interface source of truth, including its components and motion. Use one shared local UI bundle for the preview and iPhone rather than independently translating its styling into SwiftUI. Real capture, dictation, persistent chat and saved notes remain native-backed; the prototype's simulated behavior is not product functionality. See the engineering revision for migration and verification gates.

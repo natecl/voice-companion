@@ -1,0 +1,13 @@
+<!doctype html><meta charset="utf-8"><title>Dictation composer regression</title><style>body{font:14px system-ui;display:flex;gap:20px}iframe{width:402px;height:778px}pre{white-space:pre-wrap}</style><iframe src="../../App/RoomUI/index.html"></iframe><div><button id="run">Check dictation cancellation</button><pre id="result"></pre></div>
+<script>
+document.querySelector('#run').onclick=()=>{
+ const w=document.querySelector('iframe').contentWindow,d=w.document,input=d.querySelector('textarea'),out=document.querySelector('#result'),results=[];
+ const base={messages:[],notes:[],ready:true,draft:'',draftVersion:100,appearance:'light'};
+ for(const draft of ['', 'A draft already here', 'A longer draft that wraps across multiple lines. '.repeat(8)]){
+  const state={...base,draft,draftVersion:base.draftVersion++};w.room.render(state);const before=input.getBoundingClientRect().height;
+  for(let i=0;i<3;i++){w.room.render({...state,dictation:{status:'listening',time:'0:01',levels:[.2,.4,.6]}});w.room.render({...state,dictation:null});}
+  const after=input.getBoundingClientRect().height;results.push({draft:draft.length,before,after,pass:before===after&&after>=44&&!input.hidden&&input.value===draft});
+ }
+ out.textContent=JSON.stringify(results,null,2);
+};
+</script>
