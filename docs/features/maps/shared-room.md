@@ -22,3 +22,5 @@ Remaining gates: screenshot inspection, gesture and error/recovery checks, physi
 Evidence and installation status: [shared interface checkpoint](../../shared-room-ui.md).
 
 Latest motion slice: `scripts/qa/room-motion.html` provides the isolated browser motion/gesture verifier. Shared calm motion tokens, finger-tracked note actions, and chat left-swipe navigation are implemented; native fixture pipeline passed. Haptic bridge now prepares a retained impact generator, and capture enables optional recording-time haptics. Physical feel and capture/haptic coexistence remain unverified; see checkpoint evidence above before advancing acceptance.
+
+Accessory parity follow-up: search focus/filter regression fixed; note tab indicator persists across content switches; attachment/note entry is slower; Talk about this remains visible with explicit readiness state. See [component audit](../../shared-room-component-audit.md). Preserve later-added behavior when comparing with the original prototype. Current follow-up is simulator-only until separately installed.

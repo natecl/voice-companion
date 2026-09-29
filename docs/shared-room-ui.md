@@ -43,3 +43,7 @@ Verification:
 - Physical mirroring displayed the prior updated build, but automated taps failed with `noWindowsAvailable`; founder confirmed the first swipe revision felt better, then requested this slower revision. Final feel, haptic strength and recording-with-haptics acceptance remain pending. Keep PR 154 draft.
 
 Calmer-motion build installed in place and launched successfully on the enrolled iPhone (`/tmp/room-calm-install.json`, `/tmp/room-calm-launch.json`). No uninstall, reset or account mutation. Installation is not physical haptic acceptance.
+
+## Accessory, search and note-tab parity follow-up
+
+See [component audit](shared-room-component-audit.md) for the original-versus-added feature boundary and surface inventory. Fixed search focus theft; retained the Notes/Transcript segment during updates; eased accessory/note entry to 780 ms; exposed the purple Talk about this action even when a note is not yet attachable. Native pipeline and failure/recovery passed at `/tmp/CompanionRoomParityQA/20260929-150335/`. Simulator bundle bytes match preview resources and approved-source CSS. This follow-up is simulator-verified; it has not yet been installed on the physical phone.

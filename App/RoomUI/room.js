@@ -41,9 +41,10 @@
     q('.library').inert=!device.classList.contains('notes-open');
     if(focusBefore?.isConnected)focusBefore.focus({preventScroll:true});
   }
-  function tab(notes){
+  function tab(notes,focusSearch=false){
     input.blur();device.classList.toggle('notes-open',notes);q('.library').inert=!notes;q('.shell').inert=notes;
-    requestAnimationFrame(()=>q(notes?'[data-act=chat]':'[data-act=notes]').focus({preventScroll:true}));
+    if(focusSearch){q('.library-scroll').scrollTop=0;q('.note-search input').focus({preventScroll:true});}
+    else requestAnimationFrame(()=>q(notes?'[data-act=chat]':'[data-act=notes]').focus({preventScroll:true}));
     if(notes)transport('library');
   }
   function toast(text,persistent=false){
@@ -108,7 +109,7 @@
     let earlier=q('.earlier');if(!earlier){earlier=document.createElement('button');earlier.className='sample earlier';earlier.dataset.act='earlier';earlier.textContent='Earlier messages';chat.prepend(earlier);}earlier.hidden=!state.hasEarlier;
     if(nearEnd)chat.scrollTop=chat.scrollHeight;
   }
-  function renderPanel(){
+  function renderPanel(animateContent=false){
     if(!page)return;
     const n=state.notes.find(n=>n.id===selected);let title='',html='';
     if(page==='attach') {title='Bring a note into the conversation';html=state.notes.length?state.notes.map(n=>card(n,'attach-note')).join(''):'<h3>No notes yet</h3><p>Capture a conversation to create your first note.</p>';}
@@ -118,12 +119,14 @@
     if(page==='note'||page==='transcript'){
       if(!n){close();return;}const detail=state.detail?.id===selected?state.detail:null,live=page==='transcript';
       title=live?'Live transcript':'Your note';
-      html=live?'<p class="subtitle">Transcribing live · speaker labels are estimates</p>':`<h1>${escape(n.title)}</h1><p class="subtitle">${escape(n.metadata)}</p><div class="segment"><button data-act="note-tab" class="${transcript?'':'active'}">Notes</button><button data-act="transcript-tab" class="${transcript?'active':''}">Transcript</button></div>`;
+      html=live?'<p class="subtitle">Transcribing live · speaker labels are estimates</p>':`<h1>${escape(n.title)}</h1><p class="subtitle">${escape(n.metadata)}</p><div class="segment"><button data-act="note-tab" aria-pressed="${!transcript}" class="${transcript?'':'active'}">Notes</button><button data-act="transcript-tab" aria-pressed="${transcript}" class="${transcript?'active':''}">Transcript</button></div>`;
+      html+='<div class="note-content">';
       if(live||transcript||n.personal){if(detail?.passage)html+=`<div class="paper"><small>${escape(detail.passage.label)}</small><p>${escape(detail.passage.text)}</p></div>`;html+='<div class="paper">'+(detail?.transcript?.length?detail.transcript.map(p=>`<p>${n.personal?'':`<small>${escape(p.label)}</small><br>`}${escape(p.text)}</p>`).join(''): '<p>Transcript will appear here as speech is received.</p>')+'</div>';}
       else if(detail?.notes){html+='<div class="paper">'+detail.notes.map(p=>p.heading?`<h3>${escape(p.heading)}</h3>`:`<p class="note-paragraph" data-passages="${escape(JSON.stringify(p.passages||[]))}">${escape(p.text)}</p>`).join('')+'</div>';}
       else{html+=`<p>${escape(detail?.status||'Preparing notes…')}</p><button class="row" data-act="refresh-note">Refresh notes</button>${detail?.retryable?'<button class="row" data-act="retry-note">Retry notes</button>':''}`;}
       if(live)html+=`<button class="primary" data-act="end"${state.capture?.canStop?'':' disabled'}>Stop recording</button>`;
-      else if(n.attachable)html+='<button class="primary" data-act="ask-note">Talk about this</button>';
+      else html+=`<button class="primary" data-act="ask-note"${n.attachable?'':' disabled'}>Talk about this</button>${n.attachable?'':'<p class="subtitle">This note isn’t ready to attach yet.</p>'}`;
+      html+='</div>';
     }
     if(page==='note-actions'&&n){title=n.title;html=actions(n,true);}
     if(page==='delete-confirm'&&n){title='Delete this note?';html=`<p>The note and transcript will be removed. Your conversation and learned memories will stay.</p><button class="primary" data-act="confirm-delete" data-id="${escape(n.id)}">Delete note</button><button class="row" data-act="close">Cancel</button>`;}
@@ -131,8 +134,18 @@
     if(page==='conversation-actions'){title='Conversation';html='<button class="row" data-act="refresh">Refresh conversation</button>';}
     const key=title+html;if(key===lastPanel)return;
     const previousTop=q('.panel').scrollTop,wasOpen=!overlay.hidden&&!overlay.classList.contains('leaving');
-    if(wasOpen){q('.panel-head h2').textContent=title;q('.panel').setAttribute('aria-label',title);q('.panel-body').innerHTML=html;icons();q('.panel').scrollTop=previousTop;}
+    const sheet=q('.panel');
+    if(wasOpen&&page==='note'&&sheet.dataset.noteId===selected&&q('.note-content')&&q('.segment')){
+      const template=document.createElement('template');template.innerHTML=html;
+      q('.note-content').innerHTML=template.content.querySelector('.note-content').innerHTML;
+      const segment=q('.segment');segment.classList.toggle('transcript-selected',transcript);
+      segment.querySelectorAll('button').forEach(button=>{const active=(button.dataset.act==='transcript-tab')===transcript;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));});
+      if(animateContent&&!matchMedia('(prefers-reduced-motion:reduce)').matches)q('.note-content').animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:560,easing:'cubic-bezier(.22,.65,.28,1)'});
+    }
+    else if(wasOpen){q('.panel-head h2').textContent=title;q('.panel').setAttribute('aria-label',title);q('.panel-body').innerHTML=html;icons();q('.panel').scrollTop=previousTop;}
     else panel(title,html);
+    sheet.dataset.page=page;sheet.dataset.noteId=selected||'';
+    q('.segment')?.classList.toggle('transcript-selected',transcript);
     lastPanel=key;
   }
   function open(which,id=null){page=which;selected=id;lastPanel='';renderPanel();}
@@ -171,7 +184,7 @@
     const a=button.dataset.act,id=button.dataset.id;transport('haptic');
     if(a==='close')close();if(a==='dismiss-toast')dismissToast();
     if(a==='notes'||a==='chat'){tab(a==='notes');if(a==='notes')transport('interrupt-dictation');}
-    if(a==='focus-search'){tab(true);q('.note-search input').focus();}
+    if(a==='focus-search')tab(true,true);
     if(a==='invite'){input.blur();transport('start');}
     if(a==='end'){transport('stop');if(page==='transcript')close();}
     if(a==='quiet')transport('quiet');
@@ -190,7 +203,7 @@
     if(a==='refresh'){transport('refresh');close();}
     if(a==='note'){transcript=false;transport('open-note',{id});open('note',id);}
     if(a==='transcript'){selected=state.capture?.id;if(selected){transport('open-note',{id:selected});open('transcript',selected);}}
-    if(a==='note-tab'||a==='transcript-tab'){transcript=a==='transcript-tab';renderPanel();}
+    if(a==='note-tab'||a==='transcript-tab'){if(transcript!==(a==='transcript-tab')){transcript=a==='transcript-tab';renderPanel(true);}}
     if(a==='refresh-note'||a==='retry-note')transport(a,{id:selected});
     if(a==='attach-note'||a==='ask-note'){transport('attach',{id:id||selected});close();tab(false);}
     if(a==='delete-note')open('delete-confirm',id);

@@ -104,3 +104,12 @@
 #companion-room .send svg{animation:room-in var(--motion-control) var(--ease-settle)}
 #companion-room .persona img{transition:transform 700ms var(--ease-settle)}
 @keyframes room-backdrop{from{background:transparent}to{background:#11171838}}
+
+/* Deliberate accessory/detail entry and a persistent Notes/Transcript control. */
+#companion-room .panel[data-page=attach],#companion-room .panel[data-page=note]{animation-duration:780ms;animation-timing-function:cubic-bezier(.28,.55,.3,1)}
+#companion-room .panel[data-page=attach]{min-height:42%}
+#companion-room .panel[data-page=note]{min-height:72%}
+#companion-room .segment{position:relative;isolation:isolate}
+#companion-room .segment:before{content:'';position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:18px;background:var(--card);transition:transform 520ms var(--ease-settle);z-index:-1}
+#companion-room .segment.transcript-selected:before{transform:translateX(100%)}
+#companion-room .segment button.active{background:transparent}

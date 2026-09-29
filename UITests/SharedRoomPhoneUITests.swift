@@ -25,7 +25,7 @@ import XCTest
         web.buttons["View"].tap()
         XCTAssertTrue(web.staticTexts.containing(NSPredicate(format: "label CONTAINS 'Maya'")).firstMatch.waitForExistence(timeout: 8))
         shot(app, "Shared room — live transcript")
-        web.buttons["Close panel"].tap()
+        tapSettled(web.buttons["Close panel"])
         XCTAssertTrue(web.buttons["End recording"].waitForExistence(timeout: 3))
         web.buttons["End recording"].tap()
         XCTAssertTrue(web.buttons["Invite Ellis into the conversation"].waitForExistence(timeout: 8))
@@ -36,6 +36,14 @@ import XCTest
         let note=web.buttons.containing(NSPredicate(format: "label CONTAINS 'Recorded conversation' OR label CONTAINS 'Maya’s swimming'")).firstMatch
         XCTAssertTrue(note.waitForExistence(timeout: 8))
         XCTAssertFalse(web.staticTexts["A small test, then build"].exists, "No prototype seed notes in the real app")
+        web.buttons["Search notes"].tap()
+        let search=web.searchFields["Find a conversation"]
+        XCTAssertTrue(search.waitForExistence(timeout: 3))
+        search.typeText("zzznomatchingnote")
+        XCTAssertTrue(web.staticTexts["No notes match yet. Try another word."].waitForExistence(timeout: 3))
+        search.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 17))
+        if app.keyboards.buttons["Search"].exists { app.keyboards.buttons["Search"].tap() }
+
         shot(app, "Shared room — saved note")
         note.swipeLeft()
         XCTAssertTrue(web.buttons["Delete"].waitForExistence(timeout: 3))
@@ -47,12 +55,22 @@ import XCTest
         XCTAssertTrue(web.buttons["Copy"].exists)
         XCTAssertTrue(web.buttons["Delete"].exists)
         shot(app, "Shared room — note long press")
-        web.buttons["Close panel"].tap()
+        tapSettled(web.buttons["Close panel"])
         tapSettled(note)
         XCTAssertTrue(web.buttons["Talk about this"].waitForExistence(timeout: 12))
+        shot(app,"Shared room — note and purple action")
+        web.switches["Transcript"].tap()
+        XCTAssertTrue(web.staticTexts.containing(NSPredicate(format: "label CONTAINS 'Maya'")).firstMatch.waitForExistence(timeout: 5))
+        shot(app,"Shared room — transcript tab")
+        web.switches["Notes"].tap()
+
         web.buttons["Talk about this"].tap()
         XCTAssertTrue(web.buttons["Remove attachment"].waitForExistence(timeout: 3))
         web.buttons["Remove attachment"].tap()
+        web.buttons["Attach note"].tap()
+        XCTAssertTrue(web.staticTexts["Bring a note into the conversation"].waitForExistence(timeout: 4))
+        shot(app,"Shared room — attachment picker")
+        tapSettled(web.buttons["Close panel"])
         web.buttons["Dictate a message"].tap()
         XCTAssertTrue(web.buttons["Send dictation"].waitForExistence(timeout: 5))
         shot(app, "Shared room — native dictation fixture")
@@ -62,9 +80,36 @@ import XCTest
         web.buttons["Invite"].tap()
         tapSettled(web.buttons["Your profile"])
         shot(app, "Shared room — profile")
+        web.buttons["What Ellis remembers"].tap()
+        XCTAssertTrue(web.staticTexts["You’re in control."].waitForExistence(timeout: 3))
+        shot(app, "Shared room — memory controls")
+        tapSettled(web.buttons["Close panel"])
+        tapSettled(web.buttons["Your profile"])
         tapSettled(web.buttons.containing(NSPredicate(format:"label BEGINSWITH 'Appearance'")).firstMatch)
         XCTAssertTrue(web.buttons["Open notes"].waitForExistence(timeout: 3))
         shot(app, "Shared room — dark")
+    }
+    func testSharedRoomAccessoryPanels() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--shared-room-ui", "--companion-ui-fixture"]
+        app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"])
+        app.launch(); defer { app.terminate() }
+        let web = app.webViews.firstMatch
+        XCTAssertTrue(web.buttons["Invite"].waitForExistence(timeout: 10))
+        web.buttons["Invite"].tap()
+        XCTAssertTrue(web.staticTexts["A little more company."].waitForExistence(timeout: 3))
+        shot(app, "Shared room — invitation")
+        tapSettled(web.buttons["Your profile"])
+        shot(app, "Shared room — settled profile")
+        web.buttons["What Ellis remembers"].tap()
+        XCTAssertTrue(web.staticTexts["You’re in control."].waitForExistence(timeout: 3))
+        shot(app, "Shared room — memory controls")
+        tapSettled(web.buttons["Close panel"])
+        XCTAssertTrue(web.buttons["Attach note"].waitForExistence(timeout: 3))
+        web.buttons["Attach note"].tap()
+        XCTAssertTrue(web.staticTexts["No notes yet"].waitForExistence(timeout: 3))
+        shot(app, "Shared room — empty attachment picker")
     }
     func testSharedRoomProactiveAndRelaunch() throws {
         continueAfterFailure = false
@@ -120,7 +165,7 @@ import XCTest
         web.buttons["Copy"].tap()
         XCTAssertTrue(web.buttons["Open notes"].waitForExistence(timeout: 4))
     }
-    private func tapSettled(_ element: XCUIElement) {
+    private func waitUntilSettled(_ element: XCUIElement, timeout: TimeInterval = 5) {
         var lastFrame = CGRect.zero
         var stableSince = Date()
         let settled = NSPredicate { _, _ in
@@ -129,10 +174,15 @@ import XCTest
             if frame != lastFrame { lastFrame = frame; stableSince = Date(); return false }
             return Date().timeIntervalSince(stableSince) > 0.5
         }
-        XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: settled, object: nil)], timeout: 5), .completed)
+        XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: settled, object: nil)], timeout: timeout), .completed)
+    }
+    private func tapSettled(_ element: XCUIElement) {
+        waitUntilSettled(element)
         element.tap()
     }
     private func shot(_ app: XCUIApplication, _ name: String) {
+        let close = app.webViews.buttons["Close panel"]
+        if close.exists { waitUntilSettled(close, timeout: name.contains("live transcript") ? 15 : 5) }
         let attachment=XCTAttachment(screenshot:app.screenshot());attachment.name=name;attachment.lifetime = .keepAlways;add(attachment)
     }
 }
