@@ -1,13 +1,13 @@
 import Foundation
 
-struct RecordingNotes: Decodable {
-    struct Bullet: Decodable { let text: String; let passages: [String] }
-    struct Section: Decodable { let heading: String; let items: [Bullet] }
+struct RecordingNotes: Codable, Sendable {
+    struct Bullet: Codable, Sendable { let text: String; let passages: [String] }
+    struct Section: Codable, Sendable { let heading: String; let items: [Bullet] }
     let title: String
     let overview: Bullet
     let sections: [Section]
 }
-struct RecordingNotesResult: Decodable {
+struct RecordingNotesResult: Codable, Sendable {
     let revision: Int
     let generation_version: String
     let state: String
@@ -51,7 +51,7 @@ final class RecordingNotesConnection {
             case .data(let data): bytes = data
             @unknown default: throw CompanionFailure.invalidResponse
             }
-            struct Response: Decodable {
+            struct Response: Codable, Sendable {
                 let type: String
                 let session_id: String?
                 let revision: Int?
@@ -61,6 +61,7 @@ final class RecordingNotesConnection {
             guard response.type == "notes", response.session_id == attachment.session_id,
                   response.revision == attachment.revision,
                   response.result == nil || response.result?.state == "outdated" || response.result?.revision == attachment.revision else { throw CompanionFailure.sourceUnavailable }
+            guard response.result == nil || response.result?.generation_version.isEmpty == false else { throw CompanionFailure.invalidResponse }
             return response.result
         } onCancel: { socket.cancel(with: .goingAway, reason: nil) }
     }
