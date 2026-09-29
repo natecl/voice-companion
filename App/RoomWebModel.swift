@@ -25,7 +25,8 @@ final class RoomWebModel {
     private var needsRefresh = false
     private var notes: [String: RecordingNotesResult] = [:]
     private var notesErrors: [String: String] = [:]
-    private var notesTasks: [String: Task<Void, Never>] = [:]
+    private struct NotesTask { let id: UUID; let task: Task<Void, Never> }
+    private var notesTasks: [String: NotesTask] = [:]
     private var libraryTask: Task<Void, Never>?
     struct SharedNote: Identifiable { let id = UUID(); let text: String }
 
@@ -92,10 +93,10 @@ final class RoomWebModel {
         if !foreground { proactive?.suspend() }
         if phase == .background {
             dictation.interrupt(); recording.didEnterBackground(); chat?.didEnterBackground()
-            libraryTask?.cancel(); notesTasks.values.forEach { $0.cancel() }; notesTasks.removeAll()
-        } else if phase == .active { recording.didBecomeActive(); chat?.didBecomeActive(); updateProactive() }
+            libraryTask?.cancel(); notesTasks.values.forEach { $0.task.cancel() }; notesTasks.removeAll()
+        } else if phase == .active { recording.didBecomeActive(); chat?.didBecomeActive(); updateProactive(); refreshSelected() }
     }
-    private func key(_ attachment: CompanionAttachment) -> String { "\(attachment.session_id):\(attachment.revision)" }
+    private func key(_ attachment: CompanionAttachment) -> String { "\(chat?.owner ?? ""):\(attachment.session_id):\(attachment.revision)" }
     private func result(_ session: CaptureSession) -> RecordingNotesResult? {
         guard let a = recording.companionAttachment(for: session) else { return nil }; return notes[key(a)]
     }
@@ -105,36 +106,84 @@ final class RoomWebModel {
     private func export(_ session: CaptureSession) -> String {
         title(session) + "\n\n" + session.transcript.segments.map(\.text).joined(separator: "\n")
     }
+    private func cacheKey(_ session: CaptureSession, _ attachment: CompanionAttachment) -> RecordingNotesCache.Key? {
+        guard let owner = chat?.owner, session.memoryOwnerID == owner else { return nil }
+        return .init(owner: owner, sessionID: attachment.session_id, revision: attachment.revision)
+    }
+    private func hydrateNote(_ session: CaptureSession) {
+        guard let a = recording.companionAttachment(for: session), let identity = cacheKey(session, a) else { return }
+        do {
+            if let saved = try RecordingNotesCache.shared.read(identity) { notes[key(a)] = saved }
+        } catch { notesErrors[key(a)] = "Saved notes couldn’t load. Trying to refresh them." }
+    }
+    private func refreshNote(_ session: CaptureSession, retry: Bool = false) async throws -> RecordingNotesResult? {
+        guard let a = recording.companionAttachment(for: session), let identity = cacheKey(session, a) else { return nil }
+        let k = key(a)
+        func stillCurrent() -> Bool {
+            chat?.owner == identity.owner && (try? Self.config().memoryOwnerID) == identity.owner && sessions.contains {
+                $0.id == session.id && recording.companionAttachment(for: $0)?.revision == identity.revision
+            }
+        }
+        do {
+            let value = try await RecordingNotesCache.shared.refresh(identity, retry: retry) {
+                try await RecordingNotesConnection(configuration: {
+                    let config = try Self.config()
+                    guard config.memoryOwnerID == identity.owner else { throw AskFailure.accessExpired }
+                    return config
+                }).read(a, retry: retry)
+            }
+            try Task.checkCancellation()
+            guard stillCurrent() else { return nil }
+            // A pending or failed regeneration must not blank the last ready summary.
+            if let saved = try RecordingNotesCache.shared.read(identity) { notes[k] = saved }
+            else { notes[k] = value }
+            notesErrors[k] = nil
+            return value
+        } catch {
+            guard !Task.isCancelled, stillCurrent() else { throw CancellationError() }
+            if let source = error as? RecordingNotesSourceFailure {
+                notes[k] = nil
+                notesErrors[k] = source.reason == .unavailable
+                    ? "This recording is no longer available."
+                    : "The transcript changed. These notes are no longer current."
+                if source.cacheRemovalFailed { notesErrors[k, default: ""] += " Saved notes couldn’t be removed from this device." }
+            } else { notesErrors[k] = "Notes couldn’t refresh. Your saved notes and transcript are still available." }
+            throw error
+        }
+    }
     private func loadNote(_ session: CaptureSession, retry: Bool = false) {
+        hydrateNote(session)
         guard let a = recording.companionAttachment(for: session) else { return }
         let k = key(a); guard notesTasks[k] == nil else { return }
-        notesTasks[k] = Task { [weak self] in
-            guard let self else { return }; defer { self.notesTasks[k] = nil }
+        let id = UUID()
+        let task = Task { [weak self] in
+            guard let self else { return }
+            defer { if self.notesTasks[k]?.id == id { self.notesTasks[k] = nil } }
             do {
                 for poll in 0..<10 {
-                    let value = try await RecordingNotesConnection(configuration: Self.config).read(a, retry: retry && poll == 0)
-                    try Task.checkCancellation()
-                    guard self.sessions.contains(where: { $0.id.uuidString == a.session_id }) else { return }
-                    self.notes[k] = value; self.notesErrors[k] = nil
+                    let value = try await self.refreshNote(session, retry: retry && poll == 0)
                     if value?.state != "pending" && value?.state != "generating" { return }
                     try await Task.sleep(for: .seconds(2))
                 }
-            } catch { if !Task.isCancelled { self.notesErrors[k] = "Notes couldn’t load. Your transcript is still available." } }
+            } catch {
+                if !Task.isCancelled, self.selectedID == session.id, self.notes[k]?.state == "ready", let message = self.notesErrors[k] {
+                    self.notify(message)
+                }
+            }
         }
+        notesTasks[k] = NotesTask(id: id, task: task)
     }
     func loadLibrary() {
         libraryTask?.cancel()
+        // Hydrate every title before the first network suspension, including offline launches.
+        sessions.forEach(hydrateNote)
         libraryTask = Task { [weak self] in
             guard let self else { return }
-            // Read-only, sequential metadata hydration. No generation/retry commands.
+            // Read-only, sequential revalidation. No generation/retry commands.
             for session in self.sessions {
                 if Task.isCancelled { return }
-                guard let a = recording.companionAttachment(for: session), notes[key(a)]?.state != "ready" else { continue }
-                do {
-                    let value = try await RecordingNotesConnection(configuration: Self.config).read(a)
-                    try Task.checkCancellation()
-                    if self.sessions.contains(where: { $0.id == session.id }) { self.notes[key(a)] = value }
-                } catch { if Task.isCancelled { return } }
+                do { _ = try await self.refreshNote(session) }
+                catch { if Task.isCancelled { return } }
             }
         }
     }
@@ -188,6 +237,9 @@ final class RoomWebModel {
         case "close-note": selectedID = nil; selectedPassage = nil
         case "delete":
             if let session, recording.deleteFromLibrary(session) {
+                let prefix = "\(chat?.owner ?? ""):\(session.id.uuidString):"
+                for (k, work) in notesTasks where k.hasPrefix(prefix) { work.task.cancel(); notesTasks[k] = nil }
+                notes = notes.filter { !$0.key.hasPrefix(prefix) }; notesErrors = notesErrors.filter { !$0.key.hasPrefix(prefix) }
                 if chat?.attachment?.session_id == session.id.uuidString { chat?.attachment = nil }
                 selectedID = nil; needsRefresh = true; refreshIfReady()
             }

@@ -1,0 +1,30 @@
+{
+  "packet": "P0-BASELINE-REPAIR",
+  "base": "47eadb4c8be3a46593bb6f17250f4c24335ea02c",
+  "acceptance": [
+    "Four mechanical feature suites pass with original invariants preserved",
+    "Historical exact-response localhost socket replay persists and reopens three retained answers; current instructions cannot silently reuse saved answers",
+    "No full-feature, current-model, native, deployment or install acceptance claimed"
+  ],
+  "checks": [
+    {
+      "id": "affected-mechanical-suites",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "evidence": "work/p0-review/mechanical.json"
+    },
+    {
+      "id": "historical-socket-storage",
+      "group": "live_behavior_checks",
+      "kind": "fixture",
+      "evidence": "work/p0-review/behavior.json"
+    },
+    {
+      "id": "coordinator-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/p0-review/inspection.json"
+    }
+  ],
+  "not_applicable": {}
+}

@@ -57,3 +57,30 @@ class ProactivePolicyTests(unittest.TestCase):
         self.assertIsNone(p.observe(live(),1))
         p.finish(lease,2)
         self.assertIsNone(p.observe(live(2),30))
+
+    def test_expired_pending_lease_releases_new_additive_context(self):
+        p = self.policy
+        first = p.observe(live(), 0)
+        # The socket discards an expired result without finishing the policy.
+        self.assertFalse(p.valid(first, 16))
+        self.assertIsNone(p.observe(live(), 20))  # Never retry the same cutoff.
+        next_lease = p.observe(live(2, 'We are discussing sleep. More context.'), 21)
+        self.assertIsNotNone(next_lease)
+        self.assertFalse(p.valid(first, 21))
+        self.assertTrue(p.finish(next_lease, 22, 'new-connection'))
+
+    def test_quiet_and_end_stay_suppressive_after_expiry(self):
+        for control in ('quiet', 'stop'):
+            with self.subTest(control=control):
+                p=ProactivePolicy();p.start('owner','capture')
+                lease=p.observe(live(),0)
+                getattr(p,control)()
+                self.assertFalse(p.valid(lease,30))
+                self.assertFalse(p.finish(lease,30,'late'))
+                if control=='quiet':
+                    self.assertIsNone(p.observe(live(2,'We are discussing sleep. More.'),31))
+                    self.assertEqual(p.capture,'capture')
+                else:
+                    from admission import Rejected
+                    with self.assertRaises(Rejected):p.observe(live(2),31)
+                self.assertFalse(p.enabled)

@@ -12,7 +12,7 @@ The source-scoped recording path retains provenance and supports background lear
 
 ## Gaps and non-goals
 
-Compatible additions remain separately sourced; earlier cross-recording consolidation and semantic boundary calls are not enabled in this route. A completed job may contain zero accepted claims. Current mechanical suite has an unresolved schema-version expectation.
+Compatible additions remain separately sourced; earlier cross-recording consolidation and semantic boundary calls are not enabled in this route. A completed job may contain zero accepted claims. The baseline schema-version expectation was repaired in the bounded P0 checkpoint; current-model verification remains separate.
 
 ## Flow and implementation entry points
 
@@ -35,7 +35,7 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 - Repository state: implemented foundations; fresh feature verification required.
 - [Feature verifier contract](../verification/memory-learning.json): `python3 scripts/verify_feature.py memory-learning`.
-- [Mechanical baseline and unresolved checks](../verification-map.md#initial-mechanical-check-results--september-29-2026). Automated success is not full-feature acceptance.
+- [Mechanical baseline and checkpoint results](../verification-map.md#initial-mechanical-check-results--september-29-2026). Automated success is not full-feature acceptance.
 - Required real-path evidence: Real extraction/verification on bounded source, accepted/rejected claims and resulting durable memory.
 - Merged/deployed/installed are separate states. This map is a repository context audit; it does not freshly inspect hosted flags or the phone. Historical evidence below applies only to its recorded versions and scenarios. Obtain actual version/configuration identities before a runtime claim.
 
@@ -43,11 +43,13 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 The invited companion needs durable personal continuity, not more extracted facts as a success metric. Audit existing linked preferences/goals/relationships and keep source-grounded learning; do not rewrite storage merely to call it a knowledge graph.
 
-Diagnose the recorded schema 17/19 test mismatch without weakening migration checks; then verify changed extraction/verification through worker and durable storage.
+The migration regression now checks schema 19, empty additive note/proactive tables and durable reopen while preserving no-backfill checks. Any changed extraction/verification still requires worker and durable-storage evidence.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.
 
 ## Supporting context and evidence
+
+- [Bounded P0 baseline repair and evidence](../../qa/background-baseline/p0-b.md). Local fixture/storage/socket scope only; no deployment or install.
 
 - [independent-source-verification.md](../../independent-source-verification.md)
 - [verification-rollout.md](../../verification-rollout.md)

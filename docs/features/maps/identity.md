@@ -12,7 +12,7 @@ Personal context covers life circumstances and relationships, not only work. Sou
 
 ## Gaps and non-goals
 
-No voiceprint enrollment or guaranteed speaker identity. Unknown subjects remain unknown. Current migration test expects schema 17 while the database reports 19.
+No voiceprint enrollment or guaranteed speaker identity. Unknown subjects remain unknown. The bounded P0 migration regression now checks schema 19 and preserves legacy identity/no-backfill constraints.
 
 ## Flow and implementation entry points
 
@@ -35,7 +35,7 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 - Repository state: implemented foundations; fresh feature verification required.
 - [Feature verifier contract](../verification/identity.json): `python3 scripts/verify_feature.py identity`.
-- [Mechanical baseline and unresolved checks](../verification-map.md#initial-mechanical-check-results--september-29-2026). Automated success is not full-feature acceptance.
+- [Mechanical baseline and checkpoint results](../verification-map.md#initial-mechanical-check-results--september-29-2026). Automated success is not full-feature acceptance.
 - Required real-path evidence: Named, unknown and third-party subject cases through the active identity path.
 - Merged/deployed/installed are separate states. This map is a repository context audit; it does not freshly inspect hosted flags or the phone. Historical evidence below applies only to its recorded versions and scenarios. Obtain actual version/configuration identities before a runtime claim.
 
@@ -43,11 +43,13 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 The personal knowledge graph starts with existing subject/provenance links. Prove owner versus third-party attribution and correction continuity; no voice identity or new graph database is inferred.
 
-Diagnose migration expectation and exercise unknown speaker, quoted third-party text and same-name subjects; fresh model evidence is required for changed identity judgments.
+Migration/reopen mechanics are repaired; exercise unknown speaker, quoted third-party text and same-name subjects with fresh model evidence before claiming changed identity judgments.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.
 
 ## Supporting context and evidence
+
+- [Bounded P0 baseline repair and evidence](../../qa/background-baseline/p0-b.md). Local fixture/storage/socket scope only; no deployment or install.
 
 - [memory-identity.md](../../memory-identity.md)
 - [memory-identity-transitions.md](../../memory-identity-transitions.md)

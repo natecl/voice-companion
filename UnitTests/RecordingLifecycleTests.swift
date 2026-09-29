@@ -67,6 +67,47 @@ final class RecordingLifecycleTests: XCTestCase {
         XCTAssertFalse(connection.started)
     }
 
+    func testBackgroundDuringPreparationPreservesPreviouslyOpenedRecording() async throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let store = SessionStore(directory: directory)
+        var previous = CaptureSession(id: UUID(), createdAt: Date(), source: "microphone")
+        // Replay saved synthetic provider events through the production reducer before saving.
+        let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+        let events = try JSONDecoder().decode([ReplayEvent].self,
+            from: Data(contentsOf: root.appendingPathComponent("Fixtures/transcript-events.json")))
+        for item in events {
+            if let segment = item.event.segment { previous.transcript.apply(segment) }
+        }
+        previous.completed = true
+        previous.memoryTerminal = true
+        previous.recordingSeconds = 12
+        try store.save(previous)
+        let file = directory.appendingPathComponent(previous.id.uuidString + ".json")
+        let before = try Data(contentsOf: file)
+        let connection = ControlledConnection()
+        var preparing = false
+        let controller = SessionController(store: store, allowsBackgroundRecording: true,
+            makeConnection: { connection }, prepareRecording: {
+                preparing = true
+                try await Task.sleep(for: .seconds(10))
+            })
+        controller.current = try XCTUnwrap(store.load().first)
+        controller.startRecording()
+        await waitUntil { preparing }
+        controller.didEnterBackground()
+        XCTAssertEqual(try Data(contentsOf: file), before, "Interruption must not rewrite an older recording")
+        await waitUntil { !controller.isActive }
+        XCTAssertFalse(connection.started)
+        XCTAssertEqual(try store.load().count, 1)
+        XCTAssertEqual(try Data(contentsOf: file), before)
+        let reopened = SessionController(store: store)
+        let saved = try XCTUnwrap(reopened.sessions.first)
+        XCTAssertTrue(saved.completed)
+        XCTAssertNil(saved.endReason)
+        XCTAssertEqual(saved.transcript.segments.map(\.text), previous.transcript.segments.map(\.text))
+    }
+
     func testBackgroundPersistsBeforeCancellationAndSurvivesReload() async throws {
         try await withController { controller, connection, store in
             controller.startRecording()

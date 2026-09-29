@@ -155,9 +155,14 @@ class TransitionTests(unittest.TestCase):
         self.apply()
         self.assertEqual(self.store.put_source(self.owner,source('deleted'))['status'],'deleted')
         with self.store.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],17)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],19)
+            # Later additive migrations must exist without inventing notes or contributions.
+            for table in ('recording_note_index', 'proactive_attempt', 'proactive_connection'):
+                self.assertEqual(db.execute('SELECT count(*) FROM '+table).fetchone()[0], 0)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0],'ok')
             self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(),[])
+        self.assertEqual(self.store.search(self.owner, historical=True),
+            MemoryStore(self.path, clock=lambda:300.).search(self.owner, historical=True))
 
 
 if __name__=='__main__': unittest.main()

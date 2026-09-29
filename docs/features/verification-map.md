@@ -11,7 +11,7 @@ Source of truth: [machine-readable catalog](catalog.json). These entries describ
 | [Capture and live transcript](maps/capture.md) / `capture` | implemented foundations; fresh feature verification required | [Acceptance + checks](verification/capture.json) | Actual microphone/provider capture, interruption and save/reopen |
 | [Recording library and sync](maps/library.md) / `library` | implemented foundations; fresh feature verification required | [Acceptance + checks](verification/library.json) | Offline save/relaunch, sync recovery and attaching a recording |
 | [Meeting note summaries](maps/meeting-notes.md) / `meeting-notes` | implemented foundations; fresh feature verification required | [Acceptance + checks](verification/meeting-notes.json) | Final note-generation configuration produces a faithful summary through service/storage; Render the actual summary and supporting passage; inspect failures/retry |
-| [On-device note caching](maps/note-cache.md) / `note-cache` | planned; persistent cache not implemented | [Acceptance + checks](verification/note-cache.json) | Implement and exercise disk persistence, invalidation, owner separation and refresh coalescing; Cold launch/offline read, refresh success/failure, deletion and sign-out |
+| [On-device note caching](maps/note-cache.md) / `note-cache` | cache/shared iPhone locally verified; account lifecycle pending | [Acceptance + checks](verification/note-cache.json) | Implement and exercise disk persistence, invalidation, owner separation and refresh coalescing; Cold launch/offline read, refresh success/failure, deletion and sign-out |
 | [Companion chat and follow-ups](maps/chat.md) / `chat` | implemented foundations; fresh feature verification required | [Acceptance + checks](verification/chat.json) | Actual answer/follow-up pipeline with final model configuration; Streaming, draft preservation, attachment, failed delivery and reopen |
 | [Composer dictation](maps/dictation.md) / `dictation` | implemented foundations; fresh feature verification required | [Acceptance + checks](verification/dictation.json) | Actual dictation recognition, discard/send, permission and interruption; backend budget test alone is insufficient |
 | [Notes search](maps/notes-search.md) / `notes-search` | implemented foundations; fresh feature verification required | [Acceptance + checks](verification/notes-search.json) | Search results, empty/error state and opening the correct note |
@@ -35,7 +35,7 @@ Adding/changing a feature: update its catalog entry, manifest, relevant tests an
 
 The first run exercised all 13 configured feature suites at `872388f`. Nine suites passed their mechanical checks: capture, library, meeting-notes, chat, dictation, notes-search, recall, proactive, and access. This is not live-feature acceptance.
 
-Four suites remain incomplete with existing failures (the feature-verifier change does not modify their implementation/tests):
+The initial run found four incomplete suites (the feature-verifier change did not modify their implementation/tests):
 
 - `memory-learning`: `test_schema7_migration_adds_no_automatic_fact_metadata_or_jobs` expects schema 17; actual schema is 19.
 - `identity`: `test_migrate_v4_preserves_legacy_ids_and_does_not_backfill` has the same version mismatch.
@@ -43,3 +43,9 @@ Four suites remain incomplete with existing failures (the feature-verifier chang
 - `deletion`: `test_exact_provider_replay_through_companion_sockets` receives `answer_unavailable` instead of a saved answer. Diagnose the replay/active contract before claiming retained-answer acceptance.
 
 These are baseline findings, not waived requirements. Fix and rerun the affected feature verifier in its bounded implementation packet. No paid model calls or phone interaction were used. The four features without automated suites remain explicit gaps, not passes.
+
+## Bounded baseline repair — September 29, 2026
+
+The [P0 checkpoint](../qa/background-baseline/p0-b.md) explains and repairs the four mechanical failures against base `47eadb4`. Migrations now assert intentional schema 19, preserve no-backfill/integrity/identity checks, inspect empty additive tables and verify a second reopen. Retention replay is labeled historical: only its recorded instructions are pinned, while every other request field remains exact. A negative check rejects a current-prompt request without consuming cached responses.
+
+All four affected mechanical feature suites pass after independent coordinator reproduction. This restores regression checks, not full memory/deletion feature acceptance. No current provider, native app, physical device, deployment or install was exercised; full feature manifests retain their required evidence gates. See the checkpoint report for exact tested commits and receipts.

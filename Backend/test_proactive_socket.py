@@ -67,3 +67,60 @@ class SocketTests(unittest.IsolatedAsyncioTestCase):
         for payload in (dict(operation='open',capture='capture',owner='someone'),
                         dict(operation='observe',live=dict(self.live,completed=True))):
             with self.assertRaises(Exception):request(json.dumps(payload))
+
+    async def test_expired_response_recovers_on_additive_speech(self):
+        entered=asyncio.Event();release=asyncio.Event();returned=asyncio.Event()
+        original=self.models.extract
+        async def delayed(request):
+            entered.set();await release.wait()
+            result=await original(request);returned.set();return result
+        self.models.extract=delayed
+        socket,_=await self.open();await self.observe(socket)
+        await asyncio.wait_for(entered.wait(),1)
+        self.now=16;release.set()
+        await asyncio.wait_for(returned.wait(),1)
+        self.assertEqual(CompanionChat(self.store).page(self.owner)['turns'],[])
+        self.now=21;self.live['revision']=2
+        self.live['passages'][0]['text']+=' More discussion.'
+        await self.observe(socket)
+        event=json.loads(await asyncio.wait_for(socket.recv(),1))
+        self.assertEqual(event['type'],'contribution')
+        self.assertEqual(len(self.models.calls),2)
+        reopened=CompanionChat(MemoryStore(self.store.path)).page(self.owner)['turns']
+        self.assertEqual(len(reopened),1)
+        await socket.close()
+
+    async def test_quiet_cancels_stubborn_response_but_accepts_more_live_text(self):
+        await self.check_pending_control('quiet')
+
+    async def test_end_cancels_stubborn_response(self):
+        await self.check_pending_control('stop')
+
+    async def check_pending_control(self,operation):
+        entered=asyncio.Event()
+        original=self.models.extract
+        async def stubborn(request):
+            entered.set()
+            try:await asyncio.Future()
+            except asyncio.CancelledError:pass
+            return await original(request)
+        self.models.extract=stubborn
+        socket,_=await self.open();await self.observe(socket)
+        await asyncio.wait_for(entered.wait(),1)
+        await socket.send(json.dumps(dict(operation=operation,capture='capture')))
+        self.assertEqual(json.loads(await asyncio.wait_for(socket.recv(),1))['type'],'quiet')
+        self.assertEqual(CompanionChat(MemoryStore(self.store.path)).page(self.owner)['turns'],[])
+        self.assertEqual(len(self.models.calls),1)
+        if operation=='quiet':
+            self.now=30;self.live['revision']=2
+            self.live['passages'][0]['text']+=' Capture continues with new text.'
+            await self.observe(socket)
+            policy=self.handler.policies[(self.owner,'capture')]
+            for _ in range(100):
+                if policy.latest_source['revision']==2:break
+                await asyncio.sleep(.001)
+            self.assertEqual(policy.latest_source['revision'],2)
+            self.assertEqual(policy.capture,'capture')
+            self.assertFalse(policy.enabled)
+            self.assertEqual(len(self.models.calls),1)
+        await socket.close()

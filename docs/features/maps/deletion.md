@@ -12,7 +12,7 @@ Ordinary recording deletion preserves already-sent agent answers and eligible co
 
 ## Gaps and non-goals
 
-This is not complete memory/account erasure or backup erasure. Retention replay currently returns answer_unavailable and blocks fresh acceptance; historical successful rollout does not waive that failure.
+This is not complete memory/account erasure or backup erasure. The historical retained-answer replay is explicitly pinned to its recorded instructions. Current prompt requests still reject unmatched saved responses; replay is not fresh model or native deletion acceptance.
 
 ## Flow and implementation entry points
 
@@ -35,17 +35,19 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 - Repository state: implemented foundations; fresh feature verification required.
 - [Feature verifier contract](../verification/deletion.json): `python3 scripts/verify_feature.py deletion`.
-- [Mechanical baseline and unresolved checks](../verification-map.md#initial-mechanical-check-results--september-29-2026). Automated success is not full-feature acceptance.
+- [Mechanical baseline and checkpoint results](../verification-map.md#initial-mechanical-check-results--september-29-2026). Automated success is not full-feature acceptance.
 - Required real-path evidence: Swipe/long-press deletion, source unavailable, preserved replies and reopen.
 - Merged/deployed/installed are separate states. This map is a repository context audit; it does not freshly inspect hosted flags or the phone. Historical evidence below applies only to its recorded versions and scenarios. Obtain actual version/configuration identities before a runtime claim.
 
 ## Next bounded work
 
-Diagnose retention replay against the current answer contract, then verify swipe/hold deletion, preserved replies and reopen. Coordinate cache invalidation.
+The P0 replay failure was instruction fingerprint drift (historical v1 versus current v3), not a demonstrated storage failure. Historical socket/persistence replay remains strict for input/model/options. Fresh current-model and swipe/hold deletion/reopen acceptance remain separate. Coordinate cache invalidation.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.
 
 ## Supporting context and evidence
+
+- [Bounded P0 baseline repair and evidence](../../qa/background-baseline/p0-b.md). Local fixture/storage/socket scope only; no deployment or install.
 
 - [retained-recording-memory.md](../../retained-recording-memory.md)
 - [retained-memory-rollout.md](../../retained-memory-rollout.md)

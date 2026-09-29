@@ -55,10 +55,12 @@
   "note-cache": {
     "name": "On-device note caching",
     "outcome": "Instant persistent/offline summaries with owner/revision-safe refresh",
-    "status": "planned; persistent cache not implemented",
+    "status": "cache and shared iPhone integration verified locally; account lifecycle pending",
     "implementation": [
       "App/RecordingNotesView.swift",
-      "App/Sessions/RecordingNotes.swift"
+      "App/Sessions/RecordingNotes.swift",
+      "App/Sessions/RecordingNotesCache.swift",
+      "App/RoomWebModel.swift"
     ],
     "test_modules": [],
     "manifest": "docs/features/verification/note-cache.json",

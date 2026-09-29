@@ -96,6 +96,11 @@ class AtomicTests(unittest.TestCase):
         with reopened.connect() as db:
             self.assertEqual(db.execute('SELECT count(*) FROM memory_fact_evidence').fetchone()[0],0)
             self.assertEqual(db.execute('SELECT count(*) FROM claim').fetchone()[0],1)
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],17)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],19)
+            # Later additive migrations must exist without inventing notes or contributions.
+            for table in ('recording_note_index', 'proactive_attempt', 'proactive_connection'):
+                self.assertEqual(db.execute('SELECT count(*) FROM '+table).fetchone()[0], 0)
             self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0],'ok')
         self.assertIsNone(reopened.claim_job(self.owner))
+        self.assertEqual(reopened.search(self.owner, historical=True),
+            MemoryStore(self.path).search(self.owner, historical=True))

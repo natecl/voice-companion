@@ -49,11 +49,13 @@ final class SessionController {
     private let prepareRecording: () async throws -> Void
     var errorMessage: String?
     private var task: Task<Void, Never>?
+    private let invalidateNotes: (String, String) throws -> Void
     private let store: SessionStore
     private let memorySync: MemorySync?
     private let logger = Logger(subsystem: "ai.voicecompanion.app", category: "session")
 
     init(store: SessionStore? = nil,
+         invalidateNotes: @escaping (String, String) throws -> Void = { try RecordingNotesCache.shared.invalidate(owner: $0, sessionID: $1) },
          memorySync: MemorySync? = nil,
          allowsBackgroundRecording: Bool = SessionController.platformSupportsBackgroundRecording,
          makeAnswerConnection: @escaping () -> any AnswerConnection = { LunaAnswerConnection() },
@@ -66,6 +68,7 @@ final class SessionController {
              }
              _ = try RelayConfiguration.load()
          }) {
+        self.invalidateNotes = invalidateNotes
         self.memorySync = memorySync
         self.makeAnswerConnection = makeAnswerConnection
         self.allowsBackgroundRecording = allowsBackgroundRecording
@@ -273,6 +276,13 @@ final class SessionController {
 
     func interrupt(reason: String) {
         guard liveStatus != nil else { if isReplaying { stop() }; return }
+        // Preparation has not created a recording yet; current may still be a saved session.
+        // Cancel startup without changing or persisting that unrelated recording.
+        guard live != nil else {
+            liveStatus = "Stopping…"
+            task?.cancel()
+            return
+        }
         freezeRecordingTime()
         current?.completed = false
         current?.endReason = reason
@@ -308,6 +318,10 @@ final class SessionController {
                 try memorySync.outbox.delete(session.id)
             }
             try store.delete(session.id)
+            if let owner = session.memoryOwnerID {
+                do { try invalidateNotes(owner, session.id.uuidString) }
+                catch { errorMessage = "Recording deleted. Saved notes couldn’t be removed from this device: \(error.localizedDescription)" }
+            }
             if current?.id == session.id { current = nil }
             reload()
             memorySync?.kick()
@@ -324,6 +338,10 @@ final class SessionController {
                 try memorySync.outbox.delete(current.id)
             }
             try store.delete(current.id)
+            if let owner = current.memoryOwnerID {
+                do { try invalidateNotes(owner, current.id.uuidString) }
+                catch { errorMessage = "Recording deleted. Saved notes couldn’t be removed from this device: \(error.localizedDescription)" }
+            }
             self.current = nil
             reload()
             memorySync?.kick()

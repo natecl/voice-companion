@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 from admission import Rejected
 from memory_store import MemoryStore
 from memory_evidence_writer import EvidenceWriter
@@ -195,12 +196,38 @@ class RetentionTests(unittest.IsolatedAsyncioTestCase):
 
 
 class RecordedRetentionAcceptance(unittest.IsolatedAsyncioTestCase):
-    async def test_exact_provider_replay_through_companion_sockets(self):
+    async def test_historical_provider_replay_through_companion_sockets(self):
         from evaluate_retention import run
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'replay'
-            await run(path,replay=ROOT/'retained-memory/calls.json')
+            # This saved provider screen predates the current companion prompt.
+            # Pin only its historical instructions; transport still requires an
+            # exact request, including input/model/options. This is socket/storage
+            # regression evidence, not evidence of current model quality.
+            calls=json.loads((ROOT/'retained-memory/calls.json').read_text())
+            def historical_instructions(data):
+                payload=json.dumps(data,ensure_ascii=False)
+                matches={c['request']['instructions'] for c in calls
+                    if c['request'].get('input')==payload and 'instructions' in c['request']}
+                self.assertEqual(len(matches),1,'Expected unique historical instructions for exact input')
+                return matches.pop()
+            with patch('evaluate_retention.instructions',side_effect=historical_instructions):
+                await run(path,replay=ROOT/'retained-memory/calls.json')
             summary=json.loads((path/'summary.json').read_text())
             self.assertEqual(summary['new_paid_calls'],0)
             self.assertTrue(summary['reopened'])
             self.assertEqual(summary['answers'],json.loads((ROOT/'retained-memory/summary.json').read_text())['answers'])
+
+    async def test_current_prompt_cannot_silently_reuse_historical_response(self):
+        from ask import instructions
+        from evaluate_retention import Transport
+        calls=json.loads((ROOT/'retained-memory/calls.json').read_text())
+        recorded=next(c['request'] for c in calls if 'instructions' in c['request'])
+        current=copy.deepcopy(recorded)
+        current['instructions']=instructions(json.loads(current['input']))
+        self.assertNotEqual(current['instructions'],recorded['instructions'])
+        with tempfile.TemporaryDirectory() as folder:
+            transport=Transport(Path(folder),replay=ROOT/'retained-memory/calls.json')
+            with self.assertRaisesRegex(AssertionError,'Missing exact response; external calls forbidden'):
+                await transport.call(current)
+            self.assertEqual(transport.calls,[])
