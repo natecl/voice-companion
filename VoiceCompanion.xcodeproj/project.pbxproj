@@ -11,6 +11,7 @@
 		005D2AFD8F09E15E7C5A3A10 /* RecordingNotesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44A1E9C64F211D529376CAE /* RecordingNotesUITests.swift */; };
 		014DA8AD8ABFB0A3B026AFAC /* LiveTranscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B8059B564CBD204AA70BA6 /* LiveTranscriber.swift */; };
 		01DBC0625A174ACABD2F3B53 /* RelayConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFB90B5CA243BB3A58F4071 /* RelayConfigurationTests.swift */; };
+		035388769212A5B58A9BA106 /* AccountRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43B929AF9B9795972DD99F9 /* AccountRootView.swift */; };
 		03FA4ADC9F69442A9E86ACB3 /* Transcript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103C8B997E39422BEEFF5D9B /* Transcript.swift */; };
 		03FBD8055C7542F1C44E9E3E /* LiveAskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AC2A636ABED7261B92DF00 /* LiveAskTests.swift */; };
 		0470ED1A1534D608DC5EE888 /* CompanionConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DC5EAF399C9BA0167DE08F /* CompanionConnection.swift */; };
@@ -89,6 +90,7 @@
 		80C8FD2119A42FB8F5D4D98C /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FC567691D4C18C5E45FD1B /* SessionStore.swift */; };
 		8149CEC136411CE6C74C3F36 /* RelayCredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78DF2FA0976B69003E482D9 /* RelayCredentialStore.swift */; };
 		822939BAFB8BA3E279430B34 /* ConversationAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D8082C6B31F2C2E959995 /* ConversationAnswer.swift */; };
+		85F6A547F11EC86BA0C572E0 /* AccountEnrollmentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A3C2B7CFAD362CD4D19CE9 /* AccountEnrollmentUITests.swift */; };
 		87663E33968A85359DFDF085 /* RecordingNotesPhoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179D3083C0FA6C3B0BE5F141 /* RecordingNotesPhoneUITests.swift */; };
 		87DE99911791527E482049DE /* AccountSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FC749D5FA026FF28B68480 /* AccountSessionManager.swift */; };
 		88017917CA8A32CF752B8142 /* AccountCredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D3042667256FE4BEF7A1CF /* AccountCredentialStore.swift */; };
@@ -96,6 +98,7 @@
 		8984457B635643C510A1A579 /* MicrophoneCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BE8C55AFCE2A84D18222B0 /* MicrophoneCapture.swift */; };
 		8A79EA39AFB90F2CEB27264A /* RecordingInterruptionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9A8E1CB9DCDAF32438CC86 /* RecordingInterruptionUITests.swift */; };
 		8AFC584C612FAD225AAB0487 /* ComposerDictation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A61595A22B8D8873EEEA9 /* ComposerDictation.swift */; };
+		8BBEAD97D59A7F72976A0C43 /* AccountRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43B929AF9B9795972DD99F9 /* AccountRootView.swift */; };
 		8E8C24BCF370C0D72057E3C1 /* RecordingNotesCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0625808F858C5F6B82140213 /* RecordingNotesCacheTests.swift */; };
 		8FE500964FBFECD7EEA61DB6 /* MemorySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C97C3F135EEAFF5858CD5D /* MemorySync.swift */; };
 		90E32B488D8E56B6C95BA57D /* RoomWebModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0A1FA8D2ADE9B06BEEB6B0 /* RoomWebModel.swift */; };
@@ -121,6 +124,7 @@
 		A5D2DD411F19A5CB880E5296 /* AudioCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB02BC305BA1F675947256B /* AudioCapture.swift */; };
 		A7746E9756D73D619C384FE7 /* CompanionPhoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DFC1DF2388662FC8CE4B36 /* CompanionPhoneUITests.swift */; };
 		AA863954E4E818D4E149270B /* LiveTranscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B8059B564CBD204AA70BA6 /* LiveTranscriber.swift */; };
+		ABFC5F0FF481E0531A1FCD40 /* AccountEnrollmentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A3C2B7CFAD362CD4D19CE9 /* AccountEnrollmentUITests.swift */; };
 		B1D6281691172A15C874DC38 /* MemorySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C97C3F135EEAFF5858CD5D /* MemorySync.swift */; };
 		B29B1046EFE1E4F9AD77F80A /* RoomWebModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0A1FA8D2ADE9B06BEEB6B0 /* RoomWebModel.swift */; };
 		B54FED4EC807E73BC6E8B91B /* SessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07AC85400C84CD8C0027 /* SessionController.swift */; };
@@ -249,6 +253,7 @@
 		AF68AD805B6E63CBC2628D1C /* ExperienceAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceAccountView.swift; sourceTree = "<group>"; };
 		AFA5CE42FD7EABBBFFD1CEE1 /* RecordingNotesCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingNotesCache.swift; sourceTree = "<group>"; };
 		B2CDFE903F387C5D9A9995AB /* ConversationAnswerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationAnswerTests.swift; sourceTree = "<group>"; };
+		B43B929AF9B9795972DD99F9 /* AccountRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRootView.swift; sourceTree = "<group>"; };
 		B44A1E9C64F211D529376CAE /* RecordingNotesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingNotesUITests.swift; sourceTree = "<group>"; };
 		B67E07AC85400C84CD8C0027 /* SessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionController.swift; sourceTree = "<group>"; };
 		B82134446B9A07E479203081 /* RecordingConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingConnection.swift; sourceTree = "<group>"; };
@@ -270,6 +275,7 @@
 		D6172DF9BAB6444CEE3A4A1B /* DictationRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictationRecognizer.swift; sourceTree = "<group>"; };
 		D820E88D807B0651015E9212 /* SavedRecordingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedRecordingUITests.swift; sourceTree = "<group>"; };
 		DE1722767CA347C5B2A2A522 /* TransportFailureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportFailureTests.swift; sourceTree = "<group>"; };
+		E4A3C2B7CFAD362CD4D19CE9 /* AccountEnrollmentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEnrollmentUITests.swift; sourceTree = "<group>"; };
 		E78DF2FA0976B69003E482D9 /* RelayCredentialStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelayCredentialStore.swift; sourceTree = "<group>"; };
 		E84C0859642B21DF9D960467 /* RecordingFinalizationTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingFinalizationTask.swift; sourceTree = "<group>"; };
 		EB9EC7C7D2F4D7A26C239554 /* RecordingLifecycleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingLifecycleTests.swift; sourceTree = "<group>"; };
@@ -307,6 +313,7 @@
 		230BF478748988B20CF4FF95 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
+				E4A3C2B7CFAD362CD4D19CE9 /* AccountEnrollmentUITests.swift */,
 				CA776C591198A3D1403607CE /* AskUITests.swift */,
 				38DFC1DF2388662FC8CE4B36 /* CompanionPhoneUITests.swift */,
 				958D6A5180E458B927E39E26 /* CompanionUITests.swift */,
@@ -416,6 +423,7 @@
 			isa = PBXGroup;
 			children = (
 				F407B5075A1CF5552D40949C /* AccountConfiguration.swift */,
+				B43B929AF9B9795972DD99F9 /* AccountRootView.swift */,
 				CA00A14DB084536CC1A18BB6 /* AppleAccountProvider.swift */,
 				A2BD39CC584AE1ABB9BEDDAC /* GoogleAccountProvider.swift */,
 				BC7CF481EFCB5F5BE1D00D2D /* Mac.entitlements */,
@@ -669,6 +677,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABFC5F0FF481E0531A1FCD40 /* AccountEnrollmentUITests.swift in Sources */,
 				C9F627FE87BE3C93F4B9B15B /* AskUITests.swift in Sources */,
 				714B4D535B445B4526D07732 /* CompanionPhoneUITests.swift in Sources */,
 				534B2FEA798FBEBD45B8AE78 /* CompanionUITests.swift in Sources */,
@@ -693,6 +702,7 @@
 			files = (
 				E25E7EBB0E5004E2DE273540 /* AccountConfiguration.swift in Sources */,
 				9C75A865268DB1C2C490CACD /* AccountCredentialStore.swift in Sources */,
+				035388769212A5B58A9BA106 /* AccountRootView.swift in Sources */,
 				72612960E66A69C19A58520C /* AccountSessionManager.swift in Sources */,
 				04F2C5449254D925FD700876 /* AccountTransport.swift in Sources */,
 				579D77930AEC08E13C853C2F /* AppleAccountProvider.swift in Sources */,
@@ -790,6 +800,7 @@
 			files = (
 				C8AEE72DBFA02DE7419A954E /* AccountConfiguration.swift in Sources */,
 				88017917CA8A32CF752B8142 /* AccountCredentialStore.swift in Sources */,
+				8BBEAD97D59A7F72976A0C43 /* AccountRootView.swift in Sources */,
 				87DE99911791527E482049DE /* AccountSessionManager.swift in Sources */,
 				E96F9023082A9BA296AE20CD /* AccountTransport.swift in Sources */,
 				155BDA0E296D132C90408838 /* AppleAccountProvider.swift in Sources */,
@@ -835,6 +846,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85F6A547F11EC86BA0C572E0 /* AccountEnrollmentUITests.swift in Sources */,
 				0FE1FE4B1759D6075871A2F4 /* AskUITests.swift in Sources */,
 				A7746E9756D73D619C384FE7 /* CompanionPhoneUITests.swift in Sources */,
 				F4DDD59F3F6BD74BA6EA92D3 /* CompanionUITests.swift in Sources */,

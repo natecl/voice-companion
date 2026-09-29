@@ -31,6 +31,7 @@ struct CompanionRootView: View {
     @FocusState private var searchingNotes: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.accountSignOut) private var signOut
 
     private static func config() throws -> RelayConfiguration {
         #if DEBUG
@@ -165,6 +166,10 @@ struct CompanionRootView: View {
             }
         }
         .onDisappear { dictation.interrupt(); proactive?.suspend() }
+        .onReceive(NotificationCenter.default.publisher(for: .accountWillChange)) { _ in
+            recording.endAccountSession(); dictation.interrupt(); proactive?.suspend()
+            chat?.cancel(); chat?.draft = ""; sourceTask?.cancel(); toastTask?.cancel()
+        }
 
     }
 
@@ -593,6 +598,9 @@ struct CompanionRootView: View {
                     }.accessibilityIdentifier("roomAppearance")
                     Button { profilePage = "What Ellis remembers" } label: {
                         HStack { Text("What Ellis remembers"); Spacer(); RoomIcon(name: "chevron-right") }.modifier(RoomRow())
+                    }
+                    if let signOut {
+                        Button(action: signOut) { HStack { Text("Sign out"); Spacer() }.modifier(RoomRow()) }
                     }
                 }.padding(23).background(ExperienceStyle.card, in: RoundedRectangle(cornerRadius: 24))
 

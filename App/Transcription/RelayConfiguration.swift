@@ -8,6 +8,14 @@ struct RelayConfiguration: Codable {
     var memoryOwnerID: String? = nil
 
     static func load() throws -> Self {
+        if !ProcessInfo.processInfo.arguments.contains("--ui-testing"), try AccountCredentialStore.hasEnrollmentState() {
+            guard let account = try AccountCredentialStore.load() else { throw CaptureFailure.noRelay }
+            try account.session.validate()
+            var parts = URLComponents(url: account.endpoint, resolvingAgainstBaseURL: false)!
+            parts.path = "/stt"
+            guard let url = parts.url else { throw CaptureFailure.noRelay }
+            return Self(url: url, token: account.session.token, rootCertificate: nil, memoryOwnerID: account.session.owner)
+        }
         #if DEBUG
         let arguments = ProcessInfo.processInfo.arguments
         let file: URL

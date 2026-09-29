@@ -24,16 +24,20 @@ struct VoiceCompanionApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            if companionEnabled {
-                #if os(iOS)
-                if sharedRoomEnabled {
-                    SharedRoomRootView()
-                } else { CompanionRootView() }
-                #else
-                CompanionRootView()
-                #endif
-            } else { SessionsView() }
+            if ProcessInfo.processInfo.arguments.contains("--ui-testing") {
+                appContent(authenticated: false)
+            } else { AccountRootView { appContent(authenticated: $0) } }
         }
+    }
+    @ViewBuilder private func appContent(authenticated: Bool) -> some View {
+        if companionEnabled || authenticated {
+            #if os(iOS)
+            if sharedRoomEnabled || authenticated { SharedRoomRootView() }
+            else { CompanionRootView() }
+            #else
+            CompanionRootView()
+            #endif
+        } else { SessionsView() }
     }
 }
 

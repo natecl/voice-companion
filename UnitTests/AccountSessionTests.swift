@@ -64,6 +64,24 @@ final class AccountSessionTests: XCTestCase {
         XCTAssertEqual(actual.session.owner, next.session.owner)
     }
 
+    func testAccountStoreRejectsOtherOwnerAndUnownedLegacyRecording() throws {
+        let base = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: base) }
+        let owner = UUID().uuidString
+        let store = SessionStore(directory: base, expectedOwner: owner)
+        var recording = CaptureSession(id: UUID(), createdAt: .now)
+        XCTAssertThrowsError(try store.save(recording))
+        recording.memoryOwnerID = UUID().uuidString
+        XCTAssertThrowsError(try store.save(recording))
+        recording.memoryOwnerID = owner
+        try store.save(recording)
+        XCTAssertEqual(try store.load().count, 1)
+        var foreign = CaptureSession(id: UUID(), createdAt: .now)
+        foreign.memoryOwnerID = UUID().uuidString
+        try SessionStore(directory: base).save(foreign)
+        XCTAssertThrowsError(try store.load())
+    }
+
     func testTransportRejectsUnencryptedOrCredentialBearingEndpoints() {
         for value in ["ws://example.com/account", "wss://example.com/stt", "wss://user:secret@example.com/account",
                       "wss://example.com/account?token=x", "wss://example.com/account#x"] {

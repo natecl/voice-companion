@@ -184,6 +184,7 @@ final class MemorySync {
     let outbox: MemoryOutbox
     private let transport: any MemoryTransport
     private var task: Task<Void, Never>?
+    private var stopped = false
     @ObservationIgnored private var monitor: NWPathMonitor?
     private(set) var acknowledgmentCount = 0
     private(set) var lastError: String?
@@ -226,8 +227,14 @@ final class MemorySync {
     }
     deinit { monitor?.cancel() }
 
+    func shutdown() {
+        stopped = true
+        monitor?.cancel(); monitor = nil
+        task?.cancel()
+    }
+
     func kick() {
-        guard task == nil else { return }
+        guard !stopped, task == nil else { return }
         task = Task {
             defer { task = nil }
             do {

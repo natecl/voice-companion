@@ -259,6 +259,12 @@ final class SessionController {
         }
     }
 
+    func endAccountSession() {
+        memorySync?.shutdown()
+        cancelAnswer()
+        interrupt(reason: "Recording stopped because you signed out. Received text is saved.")
+    }
+
     func stop() {
         if liveStatus != nil {
             liveStatus = "Finishing…"

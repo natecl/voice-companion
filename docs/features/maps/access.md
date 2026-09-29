@@ -41,11 +41,11 @@ Release feature remains incomplete. [Verifier](../verification/access.json): `py
 
 The [backend account protocol and QA](../../qa/account-backend/README.md) distinguish signed synthetic-token socket evidence from unverified live providers. No deployment has enabled this endpoint.
 
-Native transport, device-local account Keychain storage, refresh serialization and Google/Apple adapters are implemented as unconnected candidates. [Native account QA](../../qa/native-accounts/README.md) records build and fixture limits. Existing account UI is not wired yet.
+Native transport, device-local account Keychain storage, refresh serialization and Google/Apple adapters are connected to the existing signup view in the draft candidate. [Native account QA](../../qa/native-accounts/README.md) records build and fixture limits. Fresh simulator entry has been inspected; real provider success, signed-device lifecycle and full two-user acceptance remain open.
 
 ## Next bounded work
 
-Connect native provider adapters and Keychain lifecycle to the account endpoint, complete provider-side revocation and prove fresh Release enrollment plus two-user isolation. Use a stable server-owned account identity independent of expiring session credentials. Never automatically merge accounts by matching email; preserve existing founder data through an explicitly verified migration. See the [first account packet](../../execution/account-enrollment-packet.md).
+Complete provider-side redemption/revocation, verify deployed account endpoint configuration, and prove fresh Release enrollment plus two-user isolation through the connected native flow. Use a stable server-owned account identity independent of expiring session credentials. Never automatically merge accounts by matching email; preserve existing founder data through an explicitly verified migration. See the [first account packet](../../execution/account-enrollment-packet.md).
 
 ## Supporting context and evidence
 
