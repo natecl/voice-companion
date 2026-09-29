@@ -47,7 +47,9 @@ final class RecordingNotesCacheUITests: XCTestCase {
         XCTAssertTrue(app.buttons["savedSession"].firstMatch.waitForExistence(timeout: 5))
         app.buttons["savedSession"].firstMatch.tap()
         XCTAssertTrue(app.staticTexts["notesText"].firstMatch.waitForExistence(timeout: 3))
+        XCTAssertEqual(app.staticTexts["notesText"].firstMatch.label, "Maya enjoys swimming.")
         capture(app, "cache-before-refresh")
+        try Data().write(to: URL(fileURLWithPath: "/tmp/voice-note-cache-qa/release-update"))
         let updated = app.staticTexts.matching(NSPredicate(format: "identifier == %@ AND label == %@", "notesText", "Maya enjoys swimming. Updated saved fixture.")).firstMatch
         XCTAssertTrue(updated.waitForExistence(timeout: 10))
         capture(app, "cache-after-background-update")
@@ -61,9 +63,22 @@ final class RecordingNotesCacheUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["notesStatus"].waitForExistence(timeout: 10))
         XCTAssertEqual(app.staticTexts["notesStatus"].label, "The transcript changed. These notes are no longer current.")
         XCTAssertFalse(app.staticTexts["notesText"].firstMatch.exists)
+        XCTAssertEqual(app.staticTexts["notesTitle"].label, "Recorded conversation")
         capture(app, "cache-outdated-source-hidden")
     }
 
+    func testRemoteDeletedSource() throws {
+        continueAfterFailure = false
+        let app = try app(); app.launch(); defer { app.terminate() }
+        app.buttons["notesNavigation"].tap()
+        XCTAssertTrue(app.buttons["savedSession"].firstMatch.waitForExistence(timeout: 5))
+        app.buttons["savedSession"].firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["notesStatus"].waitForExistence(timeout: 10))
+        XCTAssertEqual(app.staticTexts["notesStatus"].label, "This recording is no longer available.")
+        XCTAssertFalse(app.staticTexts["notesText"].firstMatch.exists)
+        XCTAssertEqual(app.staticTexts["notesTitle"].label, "Recorded conversation")
+        capture(app, "cache-authoritative-deletion")
+    }
     func testOwnerIsolation() throws {
         continueAfterFailure = false
         let app = try app()

@@ -12,7 +12,7 @@
       "group": "mechanical_checks",
       "kind": "fixture",
       "evidence": "work/feature-evidence/note-cache/mechanical.json",
-      "claim": "Eight focused CoreTests exercise actual cache disk and state contracts; runner integration remains separate."
+      "claim": "Eleven focused CoreTests exercise actual cache disk and state contracts; runner integration remains separate."
     },
     {
       "id": "note-cache-behavior-1",

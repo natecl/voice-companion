@@ -8,7 +8,7 @@ Instant persistent/offline summaries with owner/revision-safe refresh. Product d
 
 ## Current implementation
 
-CACHE-1 candidate implements persistent ready-summary storage, immediate local note/title reads, coalesced open/reactivation refresh, and source deletion invalidation. Server-returned generation version is stored with owner/session/revision identity; local schema version remains separate. The backend remains canonical. See [bounded QA and screenshots](../../qa/note-cache/README.md). Not merged/deployed/physically installed by this worker.
+CACHE-1 candidate implements persistent ready-summary storage, immediate local note/title reads, coalesced open/reactivation refresh, and source deletion invalidation. Typed `source_unavailable`/`stale_notes` service errors clear cached content/title; transport failures preserve valid content. Revision markers survive invalidation and deletion tombstones prevent later resurrection. Both deletion methods finish selection/library/outbox updates even if cache removal fails, with an explicit cleanup warning. Server-returned generation version is stored with owner/session/revision identity; local schema version remains separate. The backend remains canonical. See [bounded QA and screenshots](../../qa/note-cache/README.md). Not merged/deployed/physically installed by this worker.
 
 ## Gaps and non-goals
 
@@ -36,7 +36,7 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Verification and delivery state
 
-- Repository state: CACHE-1 candidate; eight dedicated CoreTests and bounded simulator scenarios. Full feature remains incomplete pending account lifecycle integration.
+- Repository state: CACHE-1 candidate; eleven dedicated CoreTests and bounded simulator scenarios. Full feature remains incomplete pending account lifecycle integration.
 - [Feature verifier contract](../verification/note-cache.json): `python3 scripts/verify_feature.py note-cache`.
 - [Mechanical baseline and unresolved checks](../verification-map.md#initial-mechanical-check-results--september-29-2026). Automated success is not full-feature acceptance.
 - Required real-path evidence: Implement and exercise disk persistence, invalidation, owner separation and refresh coalescing; Cold launch/offline read, refresh success/failure, deletion and sign-out.

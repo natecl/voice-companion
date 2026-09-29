@@ -11,6 +11,7 @@ struct RecordingNotesView: View {
     @State private var unavailable = false
     @State private var refresh = 0
     @State private var retry = false
+    @State private var sourceFailure: RecordingNotesSourceFailure?
     @State private var displayedKey: RecordingNotesCache.Key?
     @Environment(\.scenePhase) private var scenePhase
 
@@ -47,6 +48,7 @@ struct RecordingNotesView: View {
             guard scenePhase == .active else { return }
             let shouldRetry = retry; retry = false
             unavailable = false
+            sourceFailure = nil
             defer { loading = false }
             do {
                 let config = try configuration()
@@ -78,6 +80,11 @@ struct RecordingNotesView: View {
                     if value?.state != "pending" && value?.state != "generating" { unavailable = saved != nil; return }
                     if poll < 9 { try await Task.sleep(for: .seconds(2)) }
                 }
+            } catch let failure as RecordingNotesSourceFailure {
+                if !Task.isCancelled {
+                    result = nil; sourceFailure = failure; unavailable = false
+                    onTitle("Recorded conversation")
+                }
             } catch {
                 if !Task.isCancelled {
                     if (try? configuration().memoryOwnerID) != displayedKey?.owner { result = nil }
@@ -87,6 +94,10 @@ struct RecordingNotesView: View {
         }
     }
     private var status: String {
+        if let failure = sourceFailure {
+            let message = failure.reason == .stale ? "The transcript changed. These notes are no longer current." : "This recording is no longer available."
+            return message + (failure.cacheRemovalFailed ? " Saved notes couldn’t be removed from this device." : "")
+        }
         if unavailable { return "Notes couldn’t be loaded. Your transcript is still available." }
         switch result?.state {
         case "pending", "generating": return "Notes are still being prepared. You can return later."
@@ -151,7 +162,9 @@ struct RecordingLibraryTitle: View {
                     guard try configuration().memoryOwnerID == owner else { title = nil; return }
                     title = (try RecordingNotesCache.shared.read(key))?.notes?.title
                     if result?.state == "ready" { title = result?.notes?.title }
-                } catch { /* The generic title remains available offline. */ }
+                } catch is RecordingNotesSourceFailure {
+                    title = nil
+                } catch { /* Preserve a valid saved title on transport failure. */ }
             }
     }
 }

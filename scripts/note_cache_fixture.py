@@ -35,8 +35,19 @@ async def read_server():
     companion = CompanionService(ledger, store, Provider())
     async def handle(socket):
         if socket.request.path == '/notes':
-            await asyncio.sleep(2)  # Expose immediate cache before refreshed data.
-            await notes.handle(socket)
+            while (BASE / 'hold-update').exists() and not (BASE / 'release-update').exists():
+                await asyncio.sleep(.05)
+            await asyncio.sleep(.2)
+            class ObservedSocket:
+                request = socket.request
+                async def recv(self): return await socket.recv()
+                async def close(self): await socket.close()
+                async def send(self, raw):
+                    response = json.loads(raw)
+                    with (BASE / 'notes-responses.jsonl').open('a') as log:
+                        log.write(json.dumps({key: response[key] for key in ('type', 'message', 'revision') if key in response}) + '\n')
+                    await socket.send(raw)
+            await notes.handle(ObservedSocket())
         elif socket.request.path == '/memory':
             await memory.handle(socket)
         else:
@@ -47,7 +58,7 @@ async def read_server():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('mode', choices=['populate', 'read', 'update', 'outdated', 'ready', 'stage'])
+    parser.add_argument('mode', choices=['populate', 'read', 'update', 'outdated', 'ready', 'stage', 'source-revision', 'source-delete'])
     parser.add_argument('--stage', help='Exact UI test method name; only that staged test runs')
     args = parser.parse_args()
     BASE.mkdir(exist_ok=True)
@@ -59,7 +70,21 @@ def main():
         subprocess.run([sys.executable, str(ROOT / 'Backend/companion_fixture.py'), str(BASE), '--ui', '--notes'], check=True)
     elif args.mode == 'read':
         asyncio.run(read_server())
+    elif args.mode in ('source-revision', 'source-delete'):
+        from memory_store import MemoryStore
+        store = MemoryStore(BASE / 'memory.sqlite')
+        with store.connect() as db:
+            sources = [(row['owner'], json.loads(row['payload'])) for row in db.execute('SELECT owner,payload FROM source WHERE deleted=0')]
+        for owner, source in sources:
+            if args.mode == 'source-delete':
+                store.delete_source(owner, source['session_id'])
+            else:
+                source['revision'] += 1
+                store.put_source(owner, source, generate_notes=False, learn=False)
     elif args.mode in ('update', 'outdated', 'ready'):
+        if args.mode == 'update':
+            (BASE / 'release-update').unlink(missing_ok=True)
+            (BASE / 'hold-update').touch()
         # Fixed path belongs only to this fictional fixture; no configurable database path.
         with sqlite3.connect(BASE / 'memory.sqlite') as db:
             if args.mode == 'outdated':

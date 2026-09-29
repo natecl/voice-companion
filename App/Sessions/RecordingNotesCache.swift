@@ -21,6 +21,8 @@ final class RecordingNotesCache {
     private let directory: URL
     private var flights: [Key: Flight] = [:]
     private var values: [Key: RecordingNotesResult] = [:]
+    private var invalidated: Set<Key> = []
+    private var deletedSources: Set<URL> = []
 
     init(directory: URL) { self.directory = directory }
 
@@ -34,6 +36,7 @@ final class RecordingNotesCache {
     /// Persist the highest known transcript revision, so an old view/late request cannot revive it.
     private func acceptRevision(_ key: Key) throws -> Bool {
         let folder = sourceDirectory(key)
+        if deletedSources.contains(folder) || FileManager.default.fileExists(atPath: folder.appendingPathComponent("deleted").path) { return false }
         let marker = folder.appendingPathComponent("revision")
         let known = (try? String(contentsOf: marker, encoding: .utf8)).flatMap(Int.init)
         if let known, key.revision < known { return false }
@@ -53,7 +56,7 @@ final class RecordingNotesCache {
 
     /// Synchronous local read lets presentation render before starting its refresh.
     func read(_ key: Key) throws -> RecordingNotesResult? {
-        guard try acceptRevision(key) else { return nil }
+        guard !invalidated.contains(key), !FileManager.default.fileExists(atPath: sourceDirectory(key).appendingPathComponent("invalid-\(key.revision)").path), try acceptRevision(key) else { return nil }
         if let result = values[key] { return result }
         let url = file(key)
         guard FileManager.default.fileExists(atPath: url.path) else { return nil }
@@ -80,13 +83,19 @@ final class RecordingNotesCache {
         #else
         try data.write(to: file(key), options: .atomic)
         #endif
+        let invalidMarker = folder.appendingPathComponent("invalid-\(key.revision)")
+        if FileManager.default.fileExists(atPath: invalidMarker.path) { try FileManager.default.removeItem(at: invalidMarker) }
+        invalidated.remove(key)
         values[key] = result
     }
 
     /// All callers share one read. Cancelling a view doesn't cancel other readers.
     /// Invalidation cancels the flight and its identity prevents late writes.
     func refresh(_ key: Key, retry: Bool = false, load: @escaping @MainActor () async throws -> RecordingNotesResult?) async throws -> RecordingNotesResult? {
-        guard try acceptRevision(key) else { throw CompanionFailure.sourceUnavailable }
+        guard try acceptRevision(key) else {
+            let deleted = deletedSources.contains(sourceDirectory(key)) || FileManager.default.fileExists(atPath: sourceDirectory(key).appendingPathComponent("deleted").path)
+            throw RecordingNotesSourceFailure(reason: deleted ? .unavailable : .stale)
+        }
         if let flight = flights[key] {
             let result = try await flight.task.value
             if !retry || result?.state == "ready" { return result }
@@ -96,12 +105,31 @@ final class RecordingNotesCache {
         }
         let id = UUID()
         let task = Task { @MainActor in
-            let result = try await load()
+            let result: RecordingNotesResult?
+            do { result = try await load() }
+            catch var failure as RecordingNotesSourceFailure {
+                try Task.checkCancellation()
+                guard self.flights[key]?.id == id else { throw CancellationError() }
+                self.invalidated.insert(key)
+                do {
+                    if failure.reason == .unavailable {
+                        try self.invalidate(owner: key.owner, sessionID: key.sessionID)
+                    } else {
+                        try Data().write(to: self.sourceDirectory(key).appendingPathComponent("invalid-\(key.revision)"), options: .atomic)
+                        try self.removeSource(key)
+                    }
+                }
+                catch { failure.cacheRemovalFailed = true }
+                throw failure
+            }
             try Task.checkCancellation()
             guard self.flights[key]?.id == id else { throw CancellationError() }
             if let result, self.valid(result, for: key) {
                 try self.store(result, for: key)
             } else if result == nil || result?.state == "outdated" || result?.revision != key.revision {
+                if let revision = result?.revision, revision > key.revision {
+                    _ = try self.acceptRevision(Key(owner: key.owner, sessionID: key.sessionID, revision: revision))
+                }
                 try self.removeSource(key)
             }
             return result
@@ -114,25 +142,37 @@ final class RecordingNotesCache {
     private func removeSource(_ key: Key) throws {
         values = values.filter { $0.key.owner != key.owner || $0.key.sessionID != key.sessionID }
         let url = sourceDirectory(key)
-        if FileManager.default.fileExists(atPath: url.path) { try FileManager.default.removeItem(at: url) }
+        if FileManager.default.fileExists(atPath: url.path) {
+            for file in try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) where file.pathExtension == "json" {
+                try FileManager.default.removeItem(at: file)
+            }
+        }
     }
 
     func invalidate(owner: String, sessionID: String) throws {
         for (key, flight) in flights where key.owner == owner && key.sessionID == sessionID {
             flight.task.cancel(); flights[key] = nil
         }
-        try removeSource(Key(owner: owner, sessionID: sessionID, revision: 0))
+        let key = Key(owner: owner, sessionID: sessionID, revision: 0)
+        let folder = sourceDirectory(key)
+        deletedSources.insert(folder)
+        values = values.filter { $0.key.owner != owner || $0.key.sessionID != sessionID }
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        try Data().write(to: folder.appendingPathComponent("deleted"), options: .atomic)
+        try removeSource(key)
     }
 
     func clear(owner: String) throws {
         for (key, flight) in flights where key.owner == owner { flight.task.cancel(); flights[key] = nil }
         values = values.filter { $0.key.owner != owner }
+        invalidated = invalidated.filter { $0.owner != owner }
+        deletedSources = deletedSources.filter { $0.deletingLastPathComponent() != ownerDirectory(owner) }
         let url = ownerDirectory(owner)
         if FileManager.default.fileExists(atPath: url.path) { try FileManager.default.removeItem(at: url) }
     }
 
     func clearAll() throws {
-        flights.values.forEach { $0.task.cancel() }; flights.removeAll(); values.removeAll()
+        flights.values.forEach { $0.task.cancel() }; flights.removeAll(); values.removeAll(); deletedSources.removeAll(); invalidated.removeAll()
         if FileManager.default.fileExists(atPath: directory.path) { try FileManager.default.removeItem(at: directory) }
     }
 }
