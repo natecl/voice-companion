@@ -1,0 +1,15 @@
+{
+  "baseline": "proactive-v4",
+  "calls": 6,
+  "reserved_microusd": 120000,
+  "retries": 0,
+  "expected_decisions": 5,
+  "total": 6,
+  "false_interruption": "club-topic-only",
+  "rollout": false,
+  "limitations": [
+    "Small fictional single-window screen, not real-time timing or user acceptance.",
+    "No physical device/audio path tested.",
+    "Writing polish and separate-message acceptance remain unresolved."
+  ]
+}

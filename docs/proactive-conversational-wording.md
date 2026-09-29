@@ -149,3 +149,25 @@ Both standalone writers returned one message rather than separate conversational
 Both provider responses parse through the actual SDK/parser, and both validate against the unchanged response contract. Exact-request replay through real retrieval/service/storage delivers Cedar once and suppresses the three other gate cases without a writer call. Save/reopen preserves the received message boundaries; it does not split the single paragraph into invented model messages. Three added tests preserve these observed quality failures, with 43 targeted checks total. Earlier acknowledgment context remains teacher-forced.
 
 The role separation makes timing and delivery independently observable but did not itself fix either quality issue. Do not lower thresholds to fit the venue example or assert that retrieval caused the writing failure: the exact relevant source facts reached both writers. No rollout, model selection or additional paid iteration follows automatically. Next work should use a broader labeled timing set to evaluate the gate, and investigate a simpler explicit conversational-beat output contract for the writer; those are hypotheses, not validated fixes. Evidence: `Backend/fixtures/proactive/gate-writer-evaluation/`, `Backend/test_proactive_gate_writer_screen.py`.
+
+
+## Autonomous baseline usefulness screen — six fictional cases
+
+Founder approved up to $0.12 / six Luna calls with no retries. The existing v4 baseline was evaluated without audio or phone participation, using fresh fictional histories and live discussion text passed through real local retrieval. Expected decisions and human review rubrics were fixed before calls. The isolated `proactive-usefulness-20260929-120` ledger consumed six attempts with $0.12 reserved capacity (not invoiced cost); the grant is exhausted. No runtime quotas, deployed prompts or personal data changed.
+
+| Case | Expected | Observed | Assessment |
+| --- | --- | --- | --- |
+| Study session planned at obsolete time | Contribute | Contribute | Corrected 3 PM to 5 PM and preserved room-availability reason. |
+| Study time already resolved | Silence | Silence | No redundant reminder. |
+| Pickup without required original ticket | Contribute | Contribute | Preserved no-photo rule and asked about getting the original. |
+| Current conversation explicitly updates ticket rule | Silence | Silence | Respected the current correction. |
+| Proposed club order exceeds budget | Contribute | Contribute | Correctly calculated $65 + $25 = $90 versus $80 cap. Wording “already exceeded” could more clearly describe a proposed purchase. |
+| Same club, discussion now about constellations | Silence | Contribute | False interruption about snack budget during an unrelated discussion. |
+
+Five of six expected decisions matched, with three useful contributions, two correct silences and one irrelevant interruption. This is a small screening result, not a population accuracy estimate or validated real-time timing. Response latency was 1.12–1.63 seconds. Correct responses were grounded and useful, though the old formal/single-bubble delivery remains; this screen did not test or resolve separate-message acceptance.
+
+The failure's actual text: “The club’s snack order is $65, but delivery would bring it to $90—$10 over the $80 limit. Is there a way to avoid the delivery fee?” The current discussion asked how to find Orion. Retrieval supplied a fact matching the event, but the model should have rejected it as irrelevant to the current discussion. This isolates a relevance problem without claiming the memory or retrieved fact is false.
+
+All six raw provider responses parse through the actual SDK/parser and replay with exact requests through real retrieval, validation, durable save/reopen and duplicate suppression. Twenty-one targeted tests pass. The replay deliberately preserves the false interruption rather than grading it as accepted. No physical UI, microphone or conversational timing claim; no deployment. Evidence: `Backend/fixtures/proactive/usefulness-evaluation/` and `Backend/test_proactive_usefulness_screen.py`.
+
+Recommended next engineering question: can the opportunity decision distinguish “same project/person” from “helps the current question or decision”? Use paired relevant/irrelevant contexts, including this failure, with separate held-out cases. Do not tune only to this example, weaken silence expectations, or assume Jev already solves it. No additional paid calls are authorized by this result.
