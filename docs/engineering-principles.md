@@ -347,3 +347,5 @@ Founder approves an isolated allowance of up to $0.20 / ten Luna calls for conve
 Founder approves implementing a structured single-call proactive response, September 29: separate selected remembered facts from conversational delivery, preserving separate normal bubbles and existing UI. This is implementation authorization, not a replenishment of the exhausted ten-call grant. Verify the contract locally before requesting a bounded live screen; do not select or deploy based on synthetic wording alone.
 
 Founder approves an isolated $0.06 / three-call structured-delivery screen, September 29, no retries. Use the prepared Cedar, scheduling and acknowledgment cases; preserve all existing runtime quotas and exhausted ledgers.
+
+Founder clarifies the proactive voice, September 29: behave as the third smart person participating in the live conversation, not a bookkeeper reciting stored facts. Lead with a useful contribution to the current decision; use remembered details as support. Preserve useful content, uncertainty, separate messages and the accepted phone UI. The approved implementation work does not replenish exhausted paid evaluation grants.

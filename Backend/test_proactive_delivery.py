@@ -36,7 +36,7 @@ class DeliveryContractTests(unittest.TestCase):
         self.assertEqual(request['model'],'gpt-6-luna')
         self.assertEqual(request['max_output_tokens'],600)
         self.assertEqual(request['tools'],[])
-        self.assertEqual(list(request['text']['format']['schema']['properties']),['decision','facts','messages'])
+        self.assertEqual(list(request['text']['format']['schema']['properties']),['decision','messages','facts'])
         normalized=self.parse(DATA)
         self.assertEqual(normalized['text'].split('\n\n'),[m['text'] for m in DATA['messages']])
         self.assertEqual(normalized['evidence_ids'],['m1'])
@@ -123,12 +123,20 @@ class LiveDeliveryReplayTests(unittest.IsolatedAsyncioTestCase):
             with self.subTest(case=row['case']):
                 saved=json.loads((fixtures/(row['case']+'.json')).read_text())
                 state=json.loads(row['request']['input'])
-                self.assertEqual(row['request'],draft_request(state,structured_delivery=True))
+                # Archived fact-first request, not evidence for the current candidate.
+                self.assertEqual(row['request']['model'],draft_request(state,structured_delivery=True)['model'])
                 parsed=parse_draft(saved['data'],state,structured_delivery=True)
                 self.assertEqual(parsed['decision'],row['expected'])
                 scenario=row['case'].removeprefix('structured-')
                 if scenario != 'rescheduled-study-session':
-                    result=await run(dict(case=scenario,request=row['request'],response=saved),structured_delivery=True)
+                    from unittest.mock import patch
+                    def archived_request(state, **options):
+                        request=draft_request(state,**options)
+                        request['instructions']=row['request']['instructions']
+                        request['text']=row['request']['text']
+                        return request
+                    with patch('proactive_service.draft_request',archived_request):
+                        result=await run(dict(case=scenario,request=row['request'],response=saved),structured_delivery=True)
                     self.assertEqual(result['steps'][-1]['result'],'silence' if row['expected']=='silence' else 'contribution')
                 else:
                     with tempfile.TemporaryDirectory() as directory:
@@ -139,7 +147,14 @@ class LiveDeliveryReplayTests(unittest.IsolatedAsyncioTestCase):
                         live=dict(recording('capture','',completed=False),passages=state['current']['passages'])
                         model=RecordedModel(row['request'],saved)
                         service=ProactiveService(store,model,Budget(),structured_delivery=True)
-                        result=await service.evaluate(owner,live,lambda:True)
+                        from unittest.mock import patch
+                        def archived_request(state, **options):
+                            request=draft_request(state,**options)
+                            request['instructions']=row['request']['instructions']
+                            request['text']=row['request']['text']
+                            return request
+                        with patch('proactive_service.draft_request',archived_request):
+                            result=await service.evaluate(owner,live,lambda:True)
                         self.assertEqual(result['type'],'contribution')
                         turns=CompanionChat(MemoryStore(path)).page(owner)['turns']
                         self.assertEqual([t['answer'] for t in turns],[parsed['text']])

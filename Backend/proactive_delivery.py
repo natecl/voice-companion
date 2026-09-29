@@ -5,14 +5,16 @@ from admission import Rejected
 def schema(evidence_ids):
     def object_schema(properties):
         return dict(type='object', properties=properties, required=list(properties), additionalProperties=False)
+    # Structured generation follows schema key order: speak to the current
+    # decision before enumerating evidence, rather than paraphrasing a fact list.
     return object_schema(dict(
         decision=dict(type='string', enum=['silence', 'contribute']),
-        facts=dict(type='array', description='Distinct decision-relevant source excerpts, including conditions and status.',
-            items=object_schema(dict(evidence_id=dict(type='string', enum=evidence_ids), quote=dict(type='string')))),
-        messages=dict(type='array', description='Ordered separate texts. Express each fact once in its own message.',
+        messages=dict(type='array', description='Lead with a useful contribution to the live decision, then supporting context; separate texts.',
             items=object_schema(dict(
-                fact_index=dict(type=['integer', 'null'], description='Zero-based facts index, or null for one optional suggestion/question.'),
-                text=dict(type='string', description='One conversational beat, not a recap.'))))))
+                text=dict(type='string', description='One conversational beat directed at what is happening now.'),
+                fact_index=dict(type=['integer', 'null'], description='Zero-based facts index, or null for one grounded opening question/suggestion.')))),
+        facts=dict(type='array', description='Exact supporting excerpts preserving agreements, conditions, reasons and uncertainty.',
+            items=object_schema(dict(evidence_id=dict(type='string', enum=evidence_ids), quote=dict(type='string'))))))
 
 
 def normalize(data, state):
