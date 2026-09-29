@@ -176,3 +176,6 @@ Autonomous v4 usefulness screen: five of six fresh fictional decisions matched e
 Current-focus candidate screen: original constellation/budget false interruption persists despite explicit current-topic instructions. Reject candidate for rollout. Six calls completed without retries; $0.12 reservation allowance exhausted. Five of six paired cases matched expectations; no claim of general improvement or fixed relevance.
 
 Current founder priority: [demo → failure recovery → bounded proactive experience → invited TestFlight pilot](demo-to-testflight-plan.md), with students as the first focused cohort. Capture is an existing verified foundation within its recorded limits, not a rebuild target. Debug-only proactive enrollment, preview account flows and the five-minute cap remain distribution considerations. Wording experiments are deprioritized.
+
+
+Founder-approved planned change: persistent on-device meeting-summary cache with immediate/offline reads and foreground/open revalidation. Current implementation still fetches server-stored summaries into view state; the persistent cache is not implemented yet. Worker evidence must be reviewed and accepted by the orchestrator before dependent work advances.

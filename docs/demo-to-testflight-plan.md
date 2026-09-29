@@ -14,7 +14,9 @@ First checkpoint: inspect and run the existing saved-event/service/native paths,
 
 Acceptance: one continuous app flow, correct past source, relevant contribution, grounded follow-up, preserved recording/chat after reopen, and visible user control. Preserve accepted UI; wording polish is not this slice's acceptance gate.
 
-## 2. Failure handling and diagnostics
+## 2. On-device notes, failure handling and diagnostics
+
+Persist meeting summaries on the phone so they open immediately and remain readable offline. Revalidate on app activation/note open without blanking cached content; coalesce refreshes and respect owner, revision and deletion boundaries. See the phased plan for acceptance.
 
 Exercise denied permission, lost network/provider failure, interrupted capture, failed note generation and failed chat. For each: saved content and draft survive where supported; the displayed message states what happened and what can be done; retry is explicit and cannot create duplicate records or unexpected inference calls. Avoid content-heavy logs. Inspect actual UI recovery with saved events before requesting physical checks. Audit existing tests first; add coverage only for gaps/regressions.
 

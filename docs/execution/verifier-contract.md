@@ -56,3 +56,10 @@ Each packet manifest must distinguish `mechanical_checks`, `live_behavior_checks
 For model changes, attach the exact prompt/schema/model/configuration fingerprint, isolated scenario identity, fresh provider receipt, inspected response and resulting application turn/delivery evidence. Track the tested request separately from the code commit so a later prompt change makes the semantic evidence stale. Never include secrets. Note whether entry was provider-only, service-level or the active app pipeline; only claim the layer actually exercised. Capture latency and budget usage without silently retaining real-user content.
 
 The report must flag these as incomplete: fresh model verification missing after a prompt change; only synthetic output for an LLM claim; UI claim without actual rendered inspection; device claim without that device path; required live check skipped for lack of budget. Reviewers compare observed results against criteria fixed before the run. The original implementer performs verification; orchestrator review checks evidence and targeted integration rather than automatically duplicating every paid call.
+
+
+## Orchestrator review receipt
+
+Extend `review` with reviewer identity, reviewed commit, inspected artifacts/checks, semantic/visual judgments where applicable, disposition (`accepted_for_integration`, `changes_required`, `blocked`) and the explicitly released next packet IDs. The runner may collect evidence and flag missing requirements; it cannot self-approve the review. A changed implementation/configuration requires review of its affected evidence before continuation.
+
+Add persistent note-summary caching to the feature map: account/revision cache keys, disk persistence, immediate cached render, foreground/open refresh, request coalescing, offline/error behavior, known-revision invalidation, deletion/sign-out/reset clearing and actual UI evidence. Distinguish a server read from paid regeneration.

@@ -47,3 +47,16 @@ For UI behavior, launch the app, perform the interaction, inspect the rendered r
 Run the smallest sufficient fresh live check after local checks pass. Keep failed outputs and report them; do not fit assertions to failures, substitute rehearsed responses, repeatedly retry paid calls, or ship a partial pipeline as complete. A live response that parses successfully still fails acceptance if it interrupts irrelevantly or omits a required fact.
 
 Default verification environment is isolated QA with the real integrations, not production user data. Live means real execution, not automatic permission to deploy. Required physical participation waits for readiness; missing paid allowance/access stops that dependent check. Prepare the concrete cases and spending request first.
+
+
+## Universal five-step verification responsibility
+
+1. Define observable acceptance and failure cases before changing code.
+2. Implement and run targeted local checks; diagnose failures at the affected layer.
+3. Exercise the actual path claimed, using the appropriate environment and approved access/budget.
+4. Inspect the outputs, persisted state, user feedback and relevant recovery behavior against acceptance.
+5. Submit reproducible evidence to the orchestrator and wait for its explicit acceptance/next-packet instruction before dependent work advances.
+
+Specialize step 3: fresh provider outputs for changed model behavior; running app/screenshots for UI; real microphone/device for microphone/device claims; real authenticated service requests with isolated users for access controls; actual disk write/relaunch/offline/update tests for caching; migration/reopen/rollback checks for storage changes; archive/configuration/install checks for distribution. Fixtures are appropriate to isolate unchanged upstream dependencies, but never replace the very integration being claimed.
+
+The orchestrator reviews correctness, not just report completeness. Include exact source/configuration identity, raw evidence paths and failures/limitations so the review can be independently reproduced. A worker may repair and reverify failures within the packet without repeated permission, but only the orchestrator accepts the checkpoint and releases dependent work.

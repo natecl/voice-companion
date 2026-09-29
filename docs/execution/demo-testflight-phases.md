@@ -42,7 +42,7 @@ Depends on Phase 1 contracts; independent scoped checkpoints may merge as they p
 
 | Packet | Ownership boundary | Work | Acceptance |
 | --- | --- | --- | --- |
-| P2-A: recovery | Assigned native controller/view files and UI tests | Permission, interruption, network failure, failed notes/chat; preserve saved text/drafts; clear recovery feedback | Actual injected-failure UI evidence plus focused data-retention tests; no duplicate retry |
+| P2-A: recovery and local notes | Assigned native controller/view/cache files and UI tests | Persistent on-device summary cache, then permission, interruption, network failure and failed notes/chat recovery | Cached summaries render immediately/offline and survive reopen; refresh never blanks valid content; failure UI preserves data and drafts; no duplicate retry |
 | P2-B: proactive limits | Assigned backend policy/service/config files and tests | Quiet, cooldown, stale-result rejection, per-session/account limits and distribution-compatible activation | Cancellation/expiry/quota tests plus actual local socket execution; failed candidates remain unselected |
 | P2-C: beta access | Assigned enrollment/config/account files and tests | Implement the selected minimal per-tester access, isolation and revocation flow; remove misleading preview paths from pilot navigation | Two isolated test users, fresh install/enrollment, revoked access, no provider secret in bundle |
 
@@ -109,3 +109,20 @@ Workers have autonomy to implement, diagnose routine failures, run authorized ch
 LLM workers require an explicit bounded provider allocation and fresh final-configuration output inspection, followed by application-pipeline verification. The active-path check must prove provider → parsing/validation → persistence → client delivery when the checkpoint claims that entire flow; provider-only evaluations remain narrower evidence. Do not require every worker to repeat unchanged physical capture tests or every paid evaluation: match checks to the claim and reuse valid receipts.
 
 Founder is willing to approve further spending, but this clarification does not specify a new dollar/call cap. Prepare and batch concrete budget requests by checkpoint, centrally reserve named allocations and stop at either cap. Within that approved scope, no per-call reconfirmation is needed. No automatic paid retries or using another worker's allocation. See the updated worker packet and verifier contract.
+
+
+## On-device meeting-note summaries — founder requirement
+
+Add to P2-A as its first independently reviewable slice. Persist successfully fetched/generated summaries on the phone, scoped to the authenticated owner, recording ID, transcript revision and summary-generation version. Keep the backend as the canonical source; opening a note reads the local copy immediately, without requiring network or another LLM generation. Do not add a second note-generation path.
+
+Revalidate when the note opens and when the app becomes active. Proposed implementation policy: coalesce duplicate requests, refresh the visible note first, and avoid a full-library fetch on every foreground transition. Refresh cached library entries only where needed for the displayed list or when sync signals changed revisions. This is an implementation hypothesis to validate, not an arbitrary periodic timer requirement.
+
+A network failure preserves the usable cached summary and offers clear retry/status feedback. Do not replace content with a spinner during background refresh. Match source revision before displaying a summary as current; a known changed/deleted source must not silently present old content as current. A successful refresh atomically replaces the cache. Never overwrite a valid summary with a transient pending/error response. Clear the appropriate entries on note deletion, owner switch/sign-out and explicit data reset; never display another user's cached content. Use platform-protected app storage and keep private contents out of diagnostic logs.
+
+Acceptance includes actual app launch/open, airplane-mode or injected offline read, relaunch persistence, successful background update, failed refresh preserving content, changed/deleted revision behavior, and owner isolation. Reuse saved summary/server fixtures for these cache mechanics; paid note generation is unnecessary unless the generation integration changes. Submit UI screenshots and reproducible state/persistence checks. The worker's packet must identify affected files and avoid overlapping P2-C account ownership changes; agree the cache-clearing contract first.
+
+## Orchestrator acceptance and continuation gate
+
+Each worker sends its completion packet to this orchestrator. The orchestrator inspects the exact commit/diff and raw evidence, verifies that the commands/artifacts support every claimed outcome, and reruns targeted checks when needed. Model output is judged against the predeclared rubric, not the worker's pass label. A review does not automatically consume another paid call; reuse valid receipts unless an unresolved question requires fresh evidence and allowance.
+
+Record one disposition: accepted for integration, changes required, or blocked. Only after acceptance does the orchestrator explicitly authorize the next dependent packet. Worker self-declaration, a green suite, or a PR creation is not that authorization. Workers may complete already-authorized independent work and fix their own failures; they may not expand scope or advance dependent work while acceptance is pending. Review and acceptance do not independently authorize deployment.
