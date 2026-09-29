@@ -165,3 +165,17 @@ V4 wording is internally deployed at `839d2c9`; health and 28-database/134-table
 [Two-topic physical test](two-topic-phone-test.md) has two locally prepared fictional sources and a spoken script that explicitly waits past cooldown. Zero provider calls/learning jobs. Hosted seeding, a new allowance and activation are pending approval; existing exhausted grants are not reused.
 
 Two-topic phone pilot is activated at `74f7cdb`: two fictional histories seeded, one capture/one generated note/eight Luna checks funded within $0.21, 24-hour gate expiring September 29 at 23:49 Eastern. Data/health checks passed and unchanged installed phone app launched with test flags. No capture or provider call started. Await founder readiness; see [script and receipt](two-topic-phone-test.md).
+
+
+September 29 candidate update: founder approved separating proactive opportunity detection (Jev) from conversational writing (Luna), with unchanged retrieval and phone UI. The opt-in `jev_writer` route passes local contract checks; live timing/voice acceptance and rollout remain pending. This is not a change to deployed model selection or memory roles. See [evaluation status](proactive-conversational-wording.md#separate-jev-gate-and-luna-writer--local-candidate).
+
+The approved Jev/writer six-call screen has now completed: three of four gate decisions matched expectations; venue was missed at novelty .89 versus .90. Both Luna writers still produced a single paragraph. Candidate remains unselected and undeployed; $0.06/six-call allowance exhausted. Exact-output replay passes but does not establish quality acceptance.
+
+Autonomous v4 usefulness screen: five of six fresh fictional decisions matched expectations; an unrelated constellation discussion incorrectly triggered a snack-budget reminder. Current relevance is the next concrete failure to address. Six approved calls completed; $0.12 reserved allowance exhausted. Exact replay passes, but this is not physical timing or release acceptance. See the latest section of proactive-conversational-wording.md.
+
+Current-focus candidate screen: original constellation/budget false interruption persists despite explicit current-topic instructions. Reject candidate for rollout. Six calls completed without retries; $0.12 reservation allowance exhausted. Five of six paired cases matched expectations; no claim of general improvement or fixed relevance.
+
+Current founder priority: [demo → failure recovery → bounded proactive experience → invited TestFlight pilot](demo-to-testflight-plan.md), with students as the first focused cohort. Capture is an existing verified foundation within its recorded limits, not a rebuild target. Debug-only proactive enrollment, preview account flows and the five-minute cap remain distribution considerations. Wording experiments are deprioritized.
+
+
+Founder-approved planned change: persistent on-device meeting-summary cache with immediate/offline reads and foreground/open revalidation. Current implementation still fetches server-stored summaries into view state; the persistent cache is not implemented yet. Worker evidence must be reviewed and accepted by the orchestrator before dependent work advances.

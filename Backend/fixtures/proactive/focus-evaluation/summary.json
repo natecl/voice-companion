@@ -1,0 +1,14 @@
+{
+  "selected": false,
+  "calls": 6,
+  "reserved_microusd": 120000,
+  "retries": 0,
+  "correct_decisions": 5,
+  "total": 6,
+  "original_bug_fixed": false,
+  "failed_case": "club-topic-only",
+  "limitations": [
+    "New hiking/choir cases have no matched live baseline; cannot claim improvement.",
+    "Single fictional windows, not timing or phone acceptance."
+  ]
+}

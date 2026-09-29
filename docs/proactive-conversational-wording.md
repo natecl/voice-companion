@@ -64,3 +64,123 @@ The second message remains dense (128 characters), and “first” weakens the e
 Exact requests, responses, usage and message lengths: `Backend/fixtures/proactive/conversational-iteration-evaluation/`. `scripts/evaluations/proactive_conversational_v7_provider.py` bounds batches against the isolated ledger, rejects duplicate requests, counts every reservation and refuses continuation after an uncertain/incomplete attempt. The allowance is exhausted.
 
 Verification: 23 targeted backend tests pass. All ten actual outputs replay with exact prompt/request matching through real retrieval/validation/persistence/reopen (earlier multi-step context is teacher-forced, not closed-loop). Separate message boundaries survive storage; duplicate calls remain suppressed. These tests establish mechanics and preserve the observed style failure, not tone acceptance. No Swift or bubble UI change; the previously verified simulator rendering remains applicable to the unchanged code. Hosted v4 and the installed margin-only phone build remain unchanged. No physical-phone or new microphone claim.
+
+## Structured delivery candidate — local mechanics only
+
+Founder approved changing the response contract after the ten-call screen. `structured_delivery=True` now selects a single Luna response containing `decision`, `facts` (source ID plus exact excerpt), then `messages` (one fact index and conversational text per item; a null index permits one optional suggestion/question). The opt-in is mutually exclusive with the archived grouped candidate. Hosted selection and the default v4 request remain unchanged.
+
+`proactive_delivery.normalize` checks that excerpts occur literally in their selected source, indexes are valid and unique, every selected excerpt maps to one message, silence has no facts/messages, and message boundaries contain no embedded line breaks. It normalizes only user-facing text to the existing blank-line message protocol and existing 600-character aggregate bound. Evidence IDs remain internal; no fact planning leaks into the chat. The default Luna route still uses one model call, one persisted contribution and one deduplication/cooldown identity. Invalid output is rejected with no truncation, repair or retry.
+
+This is structural coverage, **not** proof that the model selected every relevant fact, extracted a complete/atomic fact, or paraphrased it faithfully. Exact quotes can themselves be incomplete. Tone, meaning preservation, useful silence, token-limit fit and real API/schema acceptance need a bounded live screen. The prompt explicitly preserves identity, historical status, before/after scope and uncertainty. No sentence-splitting heuristics, hard per-message character limits, additional inference passes or UI changes were introduced.
+
+The schema uses required fields and closed objects per [official Structured Outputs documentation](https://developers.openai.com/api/docs/guides/structured-outputs); schema compliance does not establish semantic quality.
+
+Local verification: 28 targeted tests pass, including a handwritten Cedar output through the real service, evidence validation, SQLite save/reopen, three intact message boundaries, source-deletion retention and duplicate suppression. Malformed quotes, missing/duplicate mappings, invalid indices (including booleans), nonempty silence, embedded breaks and oversized delivery are rejected. A test explicitly demonstrates that structurally valid but semantically wrong wording cannot be proven correct by this validator. Historical exact-response replays remain passing. No paid calls or native UI changes; previous simulator rendering evidence applies to the unchanged output protocol, not to new model quality.
+
+Export with `python3 scripts/evaluations/prepare_structured_proactive.py work/proactive-structured/requests.json`. Prepared live screen: three fictional requests (Cedar agreement/status, the biology time-change reason, and acknowledged Cedar silence), under `work/proactive-structured/requests.json`. Request up to $0.06 / three calls, no retries, using a fresh isolated ledger if approved. This is not funded yet. Stop after inspecting actual outputs; do not silently select an unsuccessful result. No new recording, notes generation, runtime allowance or personal-data mutation.
+
+## Structured live screen — delivery passes, quality not accepted
+
+Founder approved the prepared isolated $0.06 / three-call screen. All three requests completed without retries in `structured-delivery-20260929-060`; ledger has three completed reservations totaling $0.06 capacity (not verified invoice cost). Prior grants, personal data and runtime quotas are unchanged. The allowance is exhausted.
+
+Real Luna accepted the new schema and fit within the unchanged 600-output-token cap: Cedar used 150 output tokens, scheduling 134, silence 23. All responses passed quote/index validation. Cedar returned three distinct messages of 89, 48 and 52 characters:
+
+1. “The team agreed to test the basic recording flow with five people before adding features.”
+2. “Those tests hadn't happened when this was noted.”
+3. “So calendar integration should wait until afterward.”
+
+The agreement, quantity, broader prerequisite and historical status survive; actual model-selected separate delivery works. The wording still reads like a source recap, so conversational tone is not accepted. Scheduling also selected the time change, agreement and location but omitted the room-availability reason from facts and messages. This demonstrates the validator's known limit: it can enforce coverage of selected facts, not detect every omitted relevant fact. Acknowledged Cedar correctly returned silence.
+
+Exact requests/responses are in `Backend/fixtures/proactive/structured-delivery-evaluation/`. Thirty targeted tests pass, including actual outputs through real retrieval, validation and save/reopen with exact request matching. Multi-step preceding context remains synthetic/teacher-forced. No new native UI, audio or physical-phone claim. The candidate remains opt-in, PR stays draft, and no rollout occurred. Do not add more prompt rules or purchase another near-identical run without a distinct testable hypothesis; the structural issue is resolved in these cases, while tone and evidence selection remain open.
+
+## Contribution-first candidate — awaiting live evaluation
+
+Founder rejects the bookkeeper voice and approves addressing it. Hypothesis: enumerating excerpts before generating messages encourages the model to paraphrase a fact list. The candidate reverses generation order to `decision`, `messages`, `facts`, and puts message text before its fact index. The response contract's fields/types and existing normalization remain compatible. This uses schema key ordering documented by OpenAI; whether it improves the voice is unproven.
+
+The rewritten instructions prioritize a useful opening question, suggestion or correction tied to the live decision, followed by remembered support. Contrasting examples distinguish participation from accurate recap; the candidate must preserve prerequisites, reasons, quantities, identities and historical uncertainty. No forced chattiness, mandatory question, hard message-length cutoff, UI change, extra call or automatic repair.
+
+Thirty local tests pass. Historical fact-first model outputs replay with their archived requests, not with the new candidate falsely substituted; the parser, storage and separate-message protocol are unchanged. These are mechanical regression checks, not live voice evidence. PR 144 remains draft and hosted selection is unchanged.
+
+The prepared screen (`python3 scripts/evaluations/prepare_contribution_first.py work/contribution-first/requests.json`) contains five fictional cases: the matched Cedar decision, time-change reason and acknowledged silence; a current update that the tests are complete (must not nag); and a fresh venue/budget choice (must help decide). Each has an explicit human-review rubric excluded from the model input. Compare the matched cases to already-paid archived outputs; do not rerun the old prompt. Judge the new opening's usefulness and naturalness along with complete supporting detail and silence. No assumption that a quote/index validator can grade those qualities.
+
+Proposed next allowance: up to $0.10 / five calls, no retries, to run this predeclared screen. Not funded yet; all previous grants remain exhausted. No new recording, notes generation, personal data change or phone installation. Do not deploy before actual output satisfies the combined criteria.
+
+## Contribution-first screen — rejected
+
+Founder approved the five-case $0.10 screen. All five calls completed without retries in the isolated `contribution-first-20260929-100` ledger ($0.10 reserved capacity, not invoice cost). The allowance is exhausted. Hosted configuration, phone build, personal data and runtime quotas were not changed.
+
+Observed outcomes against the predeclared rubric:
+
+- Cedar: a more direct suggestion, but only one message. The model put the entire multi-fact source into one excerpt, omitted the explicit broader before-features agreement from its delivery, and did not preserve historical completion uncertainty in the text. FAIL.
+- Study schedule: the provider emitted commentary text containing JSON plus stray text, then a final JSON block. The real SDK `output_text` aggregates both, so the existing `MemoryModels.extract` rejects it as `invalid_extraction`. Do not salvage a final block and call this a transport pass. FAIL.
+- Acknowledged Cedar: silence. PASS.
+- Tests completed in current conversation: unnecessary contribution (“The five-person test gate is cleared, so calendar integration can move ahead.”) instead of silence. FAIL.
+- Venue: direct recommendation, but several facts compressed into one message, with no explicit availability. FAIL on separate conversational beats/completeness.
+
+Generation ordering did not solve conversational participation and regressed separation/silence on this screen. The facts/index format admits a whole-paragraph excerpt, so mapping coverage cannot establish atomicity. No candidate is selected; PR 144 stays draft. Do not spend another near-identical grant or present this as a production improvement.
+
+Evidence: `Backend/fixtures/proactive/contribution-first-evaluation/` contains exact requests, responses and the malformed raw response. Thirty-two targeted tests pass: actual successful payloads replay through retrieval/validation/save/reopen; the malformed response runs through the real SDK response object and `MemoryModels.extract` using a no-network client, yielding unavailable, no chat write and no retry. The tests preserve the unwanted completion contribution rather than weakening its expected product rubric. Earlier context for multi-step cases is teacher-forced. No new microphone or physical UI claim.
+
+
+## Separate Jev gate and Luna writer — local candidate
+
+Founder approves separating opportunity detection from conversational delivery. The opt-in `jev_writer` service route reuses the existing Jev connection/novelty questions and frozen thresholds. Only an accepted opportunity calls a focused Luna writer returning ordered `messages` and source IDs. Luna no longer enumerates excerpt/index mappings or produces a timing classification; empty messages remain a final safeguard. Retrieval, ownership, source checks, budgets, deduplication, durable chat delivery and phone UI remain unchanged. Hosted startup still selects the prior route.
+
+Current [Jev API](https://docs.typesafe.ai/api) and [model documentation](https://docs.typesafe.ai/models) were checked September 29: the pinned `jev-1.13.0`, state/questions shape and probability/confidence output remain supported. This establishes API compatibility, not timing quality or personalized learning. The earlier positive miss at novelty .85 versus the frozen .90 threshold remains an unresolved risk; no threshold was lowered to fit that example.
+
+Forty targeted local tests pass, including synthetic gate allow/deny, uncertain threshold, failure without retry, Quiet/source deletion between calls, writer abstention, invalid evidence, separate messages saved/reopened and no duplicate calls. These verify implementation contracts, not live conversational quality. The malformed historical provider response remains rejected rather than silently repaired.
+
+Prepared evaluation: `python3 scripts/evaluations/prepare_gate_writer.py work/jev-writer/requests.json`. Four independent gate cases cover Cedar's unresolved prerequisite, acknowledgment, newly completed tests and a venue choice. Two writer-only cases cover Cedar and venue with the same evidence. Judge timing errors separately from useful participation, natural short message beats and preservation of decision-critical details. Rubrics are excluded from provider requests. Writer-only evaluation assumes nomination explicitly; it is not evidence that Jev nominated the case. Reuse matching cached gate/writer outputs for integration replay without further paid calls. A missed gate is a failure to investigate, not permission to lower thresholds mid-screen.
+
+Proposed allowance, not yet approved: up to $0.06 and six calls (four Jev reservations of $0.005 and two Luna reservations of $0.02), no retries. All prior grants remain exhausted. No production quota increase, personal-data change, deployment or phone install. PR 144 remains draft until live behavior meets acceptance.
+
+
+## Jev/writer six-call screen — not accepted for rollout
+
+Founder approved the prepared $0.06 / six-call screen. Four Jev and two Luna calls completed with no retries. The isolated `jev-writer-20260929-060` ledger has six completed attempts and $0.06 reserved capacity; this is not the invoice cost. The allowance is exhausted. No runtime quota, personal data, phone UI or hosted selection changed.
+
+Jev permitted Cedar's unresolved prerequisite, suppressed acknowledgment, and suppressed the newly completed tests. It missed the useful venue opening because novelty probability .89 fell below the frozen .90 threshold (connection .95). This is three of four expected routing decisions, not evidence of calibrated reliability. Latencies were .13–.23 seconds. The completed-tests case was blocked by relevance/confidence despite novelty being classified new; this distinction matters when evaluating the criteria independently.
+
+Both standalone writers returned one message rather than separate conversational beats:
+
+- Cedar (188 characters): “I'd hold off for now: the team agreed to test the basic recording flow with five people first, and those tests hadn't happened as of the note. Revisit calendar integration after the tests.” It preserves historical status, but still sounds like a recap and omits the explicit broader before-adding-features condition.
+- Venue (178 characters): “The group agreed on a $300 venue budget, and only 20 people are attending. Since the 30-seat room is available for $240, could you book that instead of the 80-seat hall for $450?” Useful facts and a practical suggestion survive, but several conversational beats remain combined. This writer was tested independently; the actual gate would suppress it.
+
+Both provider responses parse through the actual SDK/parser, and both validate against the unchanged response contract. Exact-request replay through real retrieval/service/storage delivers Cedar once and suppresses the three other gate cases without a writer call. Save/reopen preserves the received message boundaries; it does not split the single paragraph into invented model messages. Three added tests preserve these observed quality failures, with 43 targeted checks total. Earlier acknowledgment context remains teacher-forced.
+
+The role separation makes timing and delivery independently observable but did not itself fix either quality issue. Do not lower thresholds to fit the venue example or assert that retrieval caused the writing failure: the exact relevant source facts reached both writers. No rollout, model selection or additional paid iteration follows automatically. Next work should use a broader labeled timing set to evaluate the gate, and investigate a simpler explicit conversational-beat output contract for the writer; those are hypotheses, not validated fixes. Evidence: `Backend/fixtures/proactive/gate-writer-evaluation/`, `Backend/test_proactive_gate_writer_screen.py`.
+
+
+## Autonomous baseline usefulness screen — six fictional cases
+
+Founder approved up to $0.12 / six Luna calls with no retries. The existing v4 baseline was evaluated without audio or phone participation, using fresh fictional histories and live discussion text passed through real local retrieval. Expected decisions and human review rubrics were fixed before calls. The isolated `proactive-usefulness-20260929-120` ledger consumed six attempts with $0.12 reserved capacity (not invoiced cost); the grant is exhausted. No runtime quotas, deployed prompts or personal data changed.
+
+| Case | Expected | Observed | Assessment |
+| --- | --- | --- | --- |
+| Study session planned at obsolete time | Contribute | Contribute | Corrected 3 PM to 5 PM and preserved room-availability reason. |
+| Study time already resolved | Silence | Silence | No redundant reminder. |
+| Pickup without required original ticket | Contribute | Contribute | Preserved no-photo rule and asked about getting the original. |
+| Current conversation explicitly updates ticket rule | Silence | Silence | Respected the current correction. |
+| Proposed club order exceeds budget | Contribute | Contribute | Correctly calculated $65 + $25 = $90 versus $80 cap. Wording “already exceeded” could more clearly describe a proposed purchase. |
+| Same club, discussion now about constellations | Silence | Contribute | False interruption about snack budget during an unrelated discussion. |
+
+Five of six expected decisions matched, with three useful contributions, two correct silences and one irrelevant interruption. This is a small screening result, not a population accuracy estimate or validated real-time timing. Response latency was 1.12–1.63 seconds. Correct responses were grounded and useful, though the old formal/single-bubble delivery remains; this screen did not test or resolve separate-message acceptance.
+
+The failure's actual text: “The club’s snack order is $65, but delivery would bring it to $90—$10 over the $80 limit. Is there a way to avoid the delivery fee?” The current discussion asked how to find Orion. Retrieval supplied a fact matching the event, but the model should have rejected it as irrelevant to the current discussion. This isolates a relevance problem without claiming the memory or retrieved fact is false.
+
+All six raw provider responses parse through the actual SDK/parser and replay with exact requests through real retrieval, validation, durable save/reopen and duplicate suppression. Twenty-one targeted tests pass. The replay deliberately preserves the false interruption rather than grading it as accepted. No physical UI, microphone or conversational timing claim; no deployment. Evidence: `Backend/fixtures/proactive/usefulness-evaluation/` and `Backend/test_proactive_usefulness_screen.py`.
+
+Recommended next engineering question: can the opportunity decision distinguish “same project/person” from “helps the current question or decision”? Use paired relevant/irrelevant contexts, including this failure, with separate held-out cases. Do not tune only to this example, weaken silence expectations, or assume Jev already solves it. No additional paid calls are authorized by this result.
+
+
+## Current-focus candidate — original bug not fixed
+
+Founder approved $0.12 / six Luna calls, no retries. The isolated `proactive-focus-20260929-120` screen completed six calls, exhausting $0.12 reserved capacity (not invoice cost). The candidate replaces one relevance paragraph in v4: identify the latest discussion first, reject shared-entity matches and do not invent a new agenda for old facts. No retrieval, schema, generation settings or phone UI change.
+
+Three positive cases contributed: club budget, trail closure and changed choir venue. Two fresh negative cases stayed silent: leaf identification did not trigger a trail reminder, and breathing technique did not trigger a venue reminder. The original constellation negative still incorrectly raised the snack budget. Five of six decisions matched, but the actual bug remains. There is no live baseline for the four fresh cases, so their success is not evidence of improvement over v4.
+
+Inspection confirms the sent current passage explicitly asks how to find Orion; the candidate instructions are present and the unrelated budget source is supplied as evidence. The actual response is: “The club’s snack budget is at most $80, but the $65 grocery order plus $25 delivery comes to $90. Is delivery optional before placing the order?” This is a model relevance failure, not a missing current passage or wrong prompt selection. The screen cannot establish the model's internal reason.
+
+Twenty targeted tests pass, replaying all six outputs through the actual SDK parser and real retrieval/service/save-reopen. Exact requests are checked and the original false interruption remains asserted as an observed failure, not a passing product outcome. The candidate is rejected for rollout; deployed behavior remains unchanged. Receipts: `Backend/fixtures/proactive/focus-evaluation/`. Test: `Backend/test_proactive_focus_screen.py`.
+
+Do not keep adding equivalent relevance sentences or silently lower acceptance. Next candidate should evaluate the existing separate opportunity gate on this actual failure and independent matched pairs before any writer call; its prior 3/4 screen does not show that it solves this case. This is an unfunded next hypothesis, not an implemented fix or automatic authorization for more calls.

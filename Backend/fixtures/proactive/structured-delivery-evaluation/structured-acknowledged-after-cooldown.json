@@ -1,0 +1,20 @@
+{
+  "data": {
+    "decision": "silence",
+    "facts": [],
+    "messages": []
+  },
+  "usage": {
+    "input_tokens": 1385,
+    "input_tokens_details": {
+      "cache_write_tokens": 1382,
+      "cached_tokens": 0
+    },
+    "output_tokens": 23,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1408
+  },
+  "seconds": 1.6558649465441704
+}

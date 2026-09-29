@@ -1,0 +1,30 @@
+{
+  "selected": false,
+  "paid_calls": 6,
+  "reserved_microusd": 60000,
+  "retries": 0,
+  "gate": {
+    "correct": 3,
+    "total": 4,
+    "miss": "venue-choice",
+    "threshold_unchanged": true
+  },
+  "writer": {
+    "cases": 2,
+    "message_counts": [
+      1,
+      1
+    ],
+    "characters": [
+      188,
+      178
+    ],
+    "accepted": false
+  },
+  "limitations": [
+    "Four fictional timing cases are not a calibrated timing benchmark.",
+    "Writer-only venue evaluation was not nominated by the actual gate.",
+    "Acknowledgment previous context is teacher-forced.",
+    "No new microphone, phone UI or deployment evidence."
+  ]
+}

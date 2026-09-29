@@ -1,0 +1,46 @@
+{
+  "data": {
+    "decision": "contribute",
+    "facts": [
+      {
+        "evidence_id": "m1",
+        "quote": "For the Cedar pilot, the team agreed to test the basic recording flow with five people before adding features."
+      },
+      {
+        "evidence_id": "m1",
+        "quote": "Those tests had not happened as of this note."
+      },
+      {
+        "evidence_id": "m1",
+        "quote": "Calendar integration should wait until afterward."
+      }
+    ],
+    "messages": [
+      {
+        "fact_index": 0,
+        "text": "The team agreed to test the basic recording flow with five people before adding features."
+      },
+      {
+        "fact_index": 1,
+        "text": "Those tests hadn't happened when this was noted."
+      },
+      {
+        "fact_index": 2,
+        "text": "So calendar integration should wait until afterward."
+      }
+    ]
+  },
+  "usage": {
+    "input_tokens": 1096,
+    "input_tokens_details": {
+      "cache_write_tokens": 1093,
+      "cached_tokens": 0
+    },
+    "output_tokens": 150,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1246
+  },
+  "seconds": 2.495404032059014
+}

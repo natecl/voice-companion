@@ -1,0 +1,30 @@
+{
+  "data": {
+    "decision": "contribute",
+    "messages": [
+      {
+        "text": "I\u2019d hold off on calendar integration until the five-person test of the basic recording flow is done.",
+        "fact_index": 0
+      }
+    ],
+    "facts": [
+      {
+        "evidence_id": "m1",
+        "quote": "the team agreed to test the basic recording flow with five people before adding features. Those tests had not happened as of this note. Calendar integration should wait until afterward."
+      }
+    ]
+  },
+  "usage": {
+    "input_tokens": 1174,
+    "input_tokens_details": {
+      "cache_write_tokens": 1171,
+      "cached_tokens": 0
+    },
+    "output_tokens": 95,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1269
+  },
+  "seconds": 2.404225100763142
+}
