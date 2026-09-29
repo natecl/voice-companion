@@ -358,6 +358,19 @@ Founder interface refinement: explore a non-traditional, personable social-compa
 
 Founder authorizes background execution while the founder and primary chat personally redesign the UI. Baseline is origin/main `47eadb4c8be3a46593bb6f17250f4c24335ea02c`. The subsequent coordination revision narrows this background coordinator to P0 verifier diagnosis/repair and canonical execution-split documentation, with one GPT-6 Astra/low worker and independent evidence review. Primary chat `01a0d1ef-b102-75e0-9198-a184db8cfb85` directly coordinates separate audit, cache, recovery, proactive and distribution lanes. The original optional cache/recovery continuation under this coordinator is superseded; no additional worker or dependent slice starts here.
 
+The five directly coordinated lanes are:
+
+| Lane | Owner / file boundary |
+| --- | --- |
+| Baseline/verifier | This coordinator and one bounded Astra/low worker: affected backend regression tests, evidence and canonical split documentation |
+| Offline note cache | Chat `01a0ec46-429c-72e1-97b6-ca4a111e6fd6`: `RecordingNotes.swift`, `RecordingNotesView.swift` functional behavior, cache and dedicated tests |
+| Proactive controls | Chat `01a0ec46-44a2-7782-9687-ec3c4c3ce1c1`: `proactive_service.py`, `proactive_policy.py` and dedicated tests |
+| Capture recovery | Chat `01a0ec46-4681-7f92-a6ab-d9dde5da6e1b`: native lifecycle/recovery only after its exact ownership report |
+| Distribution/access audit | Primary-assigned read-only audit using the existing isolated `distribution-access-audit` checkout; no implementation or upload |
+
+Primary coordinates shared-file/contract ownership before edits and accepts each lane's exact source, raw evidence and behavioral claims before dependencies advance. A lane's green tests or self-declared completion do not release another lane. This coordinator remains the only writer of canonical execution-split guidance. Primary owns the visual redesign; functional lanes preserve it and report interface conflicts before proceeding. All lane PRs remain for primary review/merge.
+
+
 Primary owns companion character/identity, colors, typography, layout, navigation, visual styling, icons and decorative motion. Background changes must preserve these; minimal functional recovery/cache integration requires a clear existing contract and stops for primary review if it conflicts. No shared design-component edits. No simulator/device lease is assumed. Founder-dependent manual QA waits for explicit readiness.
 
 This wave has zero paid-provider allowance and permits no deployment, upload, tester invitation, production reset or secrets in evidence. Preserve both the original project checkout and dictation-qa-budget reference checkout without branch/file changes. Use isolated managed worktrees. The coordinator inspects and reproduces worker evidence, maintains truthful feature maps, opens a focused PR and leaves it for primary review/merge. This wave does not authorize workers to advance dependencies or merge independently.
