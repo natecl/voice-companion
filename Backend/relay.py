@@ -23,8 +23,9 @@ MAX_SESSIONS = 1
 SESSION_TIMEOUT = 330  # Connection setup + capture + bounded finalization.
 
 class Relay:
-    def __init__(self, key, token=None, *, admission=None, ask=None, memory=None, learning_status=None, companion=None, indexing_status=None, notes=None, notes_status=None, proactive=None):
+    def __init__(self, key, token=None, *, admission=None, ask=None, memory=None, learning_status=None, companion=None, indexing_status=None, notes=None, notes_status=None, proactive=None, accounts=None):
         self.key, self.token = key, token
+        self.accounts = accounts
         self.admission = admission
         self.ask = ask
         self.memory = memory
@@ -39,6 +40,10 @@ class Relay:
         self.sessions = 0
 
     def authorize(self, connection, request):
+        if request.path == '/account' and self.accounts is not None:
+            if not self.accounts.admit(request):
+                return connection.respond(http.HTTPStatus.TOO_MANY_REQUESTS, 'Account endpoint unavailable\n')
+            return
         if request.path == '/health/notes':
             status=self.notes_status() if self.notes_status else {'state':'disabled'}
             return connection.respond(http.HTTPStatus.OK,json.dumps(status)+'\n')
@@ -70,6 +75,8 @@ class Relay:
             return connection.respond(http.HTTPStatus.TOO_MANY_REQUESTS, 'Development limit reached\n')
 
     async def handle(self, client):
+        if client.request.path == "/account" and self.accounts is not None:
+            return await self.accounts.handle(client)
         if client.request.path == "/notes" and self.notes is not None:
             return await self.notes.handle(client)
         if client.request.path == "/proactive" and self.proactive is not None:

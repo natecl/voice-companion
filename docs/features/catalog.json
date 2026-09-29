@@ -230,13 +230,19 @@
       "Backend/admission.py",
       "Backend/admin.py",
       "App/ExperienceAccountView.swift",
-      "Backend/memory_store.py"
+      "Backend/memory_store.py",
+      "Backend/account_tokens.py",
+      "Backend/account_sessions.py",
+      "Backend/account_service.py"
     ],
     "test_modules": [
       "Backend.test_admission",
       "Backend.test_admin",
       "Backend.test_hosted_startup",
-      "Backend.test_account_identity"
+      "Backend.test_account_identity",
+      "Backend.test_account_tokens",
+      "Backend.test_account_sessions",
+      "Backend.test_account_service"
     ],
     "manifest": "docs/features/verification/access.json",
     "verification_scope": "Fresh Release enrollment, authenticated session refresh and revoked-session handling without developer credential import; Two-user server isolation and owner-switch/sign-out clearing of local notes, chat and memory state; Account deletion and existing-owner migration preserve the selected lifecycle contract without leaking or losing unrelated data",
