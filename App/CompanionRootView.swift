@@ -241,7 +241,7 @@ struct CompanionRootView: View {
                                 .contextMenu {
                                     Button("Copy", systemImage: "square.on.square") { ExperienceClipboard.copy(Self.welcomeMessage) }
                                 }
-                                .padding(.trailing, 32).frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.trailing, 64).frame(maxWidth: .infinity, alignment: .leading)
                                 .accessibilityIdentifier("agentWelcome")
                         }
                         ForEach(chat.turns) { turn in
@@ -254,7 +254,7 @@ struct CompanionRootView: View {
                                         .contextMenu {
                                             Button("Copy", systemImage: "doc.on.doc") { ExperienceClipboard.copy(CompanionMessageText.presented(answer)) }
                                         }
-                                        .padding(.top, 14).padding(.trailing, 32)
+                                        .padding(.top, 14).padding(.trailing, 64)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .accessibilityIdentifier("companionAnswer")
                                 }
@@ -277,7 +277,7 @@ struct CompanionRootView: View {
                                 .contextMenu {
                                     Button("Copy", systemImage: "doc.on.doc") { ExperienceClipboard.copy(CompanionMessageText.presented(response.text, streaming: response.state == .streaming)) }
                                 }
-                                .padding(.trailing, 32).frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.trailing, 64).frame(maxWidth: .infinity, alignment: .leading)
                                 .accessibilityIdentifier("companionPartial")
                             if response.state == .streaming { ExperienceThinkingStatus(label: "Answering…", active: surface == "Companion" && selectedID == nil) }
                             else if response.state != .saved { ExperienceNotice(title: "Answer interrupted", message: "We couldn’t confirm this answer was saved. Recover the question below to check or continue it.") }
