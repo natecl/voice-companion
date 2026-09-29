@@ -123,6 +123,33 @@ import XCTest
         XCTAssertTrue(web.buttons["Send message"].waitForExistence(timeout: 3))
         XCTAssertEqual(input.frame.height, height, accuracy: 1)
     }
+    func testSharedRoomSheetDragDismissal() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--shared-room-ui", "--companion-ui-fixture"]
+        app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"])
+        app.launch(); defer { app.terminate() }
+        let web=app.webViews.firstMatch
+        XCTAssertTrue(web.buttons["Attach note"].waitForExistence(timeout: 10))
+        web.buttons["Attach note"].tap()
+        let handle=web.buttons["Dismiss sheet"]
+        XCTAssertTrue(handle.waitForExistence(timeout: 4))
+        waitUntilSettled(handle)
+        let original=handle.frame.minY
+        var start=handle.coordinate(withNormalizedOffset: CGVector(dx: 0.5,dy: 0.5))
+        start.press(forDuration: 0.05,thenDragTo: start.withOffset(CGVector(dx:0,dy:25)))
+        waitUntilSettled(handle)
+        XCTAssertEqual(handle.frame.minY,original,accuracy:1)
+        start=handle.coordinate(withNormalizedOffset: CGVector(dx:0.5,dy:0.5))
+        start.press(forDuration:0.05,thenDragTo:start.withOffset(CGVector(dx:0,dy:160)))
+        XCTAssertTrue(handle.waitForNonExistence(timeout:4))
+        XCTAssertTrue(web.buttons["Attach note"].isHittable)
+        web.buttons["Attach note"].tap()
+        XCTAssertTrue(handle.waitForExistence(timeout:4))
+        waitUntilSettled(handle)
+        shot(app,"Shared room — sheet reopened after drag")
+        XCTAssertEqual(handle.frame.minY,original,accuracy:1)
+    }
     func testSharedRoomAccessoryPanels() throws {
         continueAfterFailure = false
         let app = XCUIApplication()

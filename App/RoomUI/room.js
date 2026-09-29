@@ -16,6 +16,7 @@
     else preview(command);
   };
   function panel(title,html){
+    if(overlay.hidden)q('.panel').style.removeProperty('animation');
     overlay.classList.remove('leaving');
     if(overlay.hidden) focusBefore=document.activeElement;
     q('.panel-head h2').textContent=title;q('.panel').setAttribute('aria-label',title);
@@ -23,8 +24,9 @@
     q('.shell').inert=true;q('.library').inert=true;icons();
     q('[data-act=close]').focus({preventScroll:true});
   }
-  function close(){
+  function close(dragOffset=0){
     if(overlay.hidden)return;
+    const sheet=q('.panel');sheet.style.setProperty('--sheet-drag-start',`${dragOffset}px`);sheet.style.removeProperty('transform');sheet.style.removeProperty('animation');
     page=null;lastPanel='';transport('close-note');overlay.classList.add('leaving');device.classList.remove('covered');
     if(matchMedia('(prefers-reduced-motion:reduce)').matches)finishClose();
     else {
@@ -217,6 +219,34 @@
   });
   // Track the finger; settle only after release. Vertical scroll never becomes a swipe.
   let gesture=null,holdTimer;
+  // The visible grip has a larger touch area; content scrolling stays independent.
+  const grip=q('.grip'),sheet=q('.panel');let sheetDrag=null,ignoreGripClick=false;
+  grip.setAttribute('role','button');grip.setAttribute('tabindex','0');grip.setAttribute('aria-label','Dismiss sheet');
+  grip.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();close();}});
+  grip.addEventListener('pointerdown',e=>{
+    if(!e.isPrimary||e.button!==0||overlay.classList.contains('leaving'))return;
+    e.preventDefault();ignoreGripClick=false;transport('prepare-haptic');sheet.getAnimations().forEach(a=>a.cancel());
+    sheetDrag={pointer:e.pointerId,y:e.clientY,offset:0};grip.setPointerCapture(e.pointerId);
+    sheet.style.animation='none';
+  });
+  grip.addEventListener('pointermove',e=>{
+    if(sheetDrag?.pointer!==e.pointerId)return;
+    sheetDrag.offset=Math.max(0,e.clientY-sheetDrag.y);
+    sheet.style.transform=`translateY(${sheetDrag.offset}px)`;
+  });
+  function releaseSheet(e,cancel=false){
+    if(sheetDrag?.pointer!==e.pointerId)return;
+    const offset=sheetDrag.offset;sheetDrag=null;ignoreGripClick=cancel||offset>4;if(ignoreGripClick)suppressedClickUntil=Date.now()+600;
+    if(grip.hasPointerCapture(e.pointerId))grip.releasePointerCapture(e.pointerId);
+    if(!cancel&&offset>=Math.min(100,sheet.clientHeight*.22)){transport('haptic');close(offset);return;}
+    const animation=sheet.animate([{transform:`translateY(${offset}px)`},{transform:'translateY(0)'}],{duration:matchMedia('(prefers-reduced-motion:reduce)').matches?0:340,easing:'cubic-bezier(.2,.7,.25,1)'});
+    sheet.style.removeProperty('transform');
+    animation.finished.catch(()=>{});
+  }
+  grip.addEventListener('click',e=>{if(e.detail===0&&!ignoreGripClick)close();});
+  grip.addEventListener('pointerup',e=>releaseSheet(e));
+  grip.addEventListener('pointercancel',e=>releaseSheet(e,true));
+  grip.addEventListener('lostpointercapture',e=>releaseSheet(e,true));
   const revealWidth=180;
   function positionNote(wrap,offset){
     const progress=Math.max(0,Math.min(1,-offset/revealWidth));
@@ -284,7 +314,7 @@
   }
   root.addEventListener('pointerup',endGesture);root.addEventListener('pointercancel',endGesture);
   root.addEventListener('contextmenu',e=>{if(e.target.closest('.note-card,.bubble,.persona'))e.preventDefault();});
-  overlay.addEventListener('click',e=>{if(e.target===overlay)close();});
+  overlay.addEventListener('click',e=>{if(e.target===overlay&&Date.now()>=suppressedClickUntil)close();});
   root.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!overlay.hidden)close();else tab(false);}
     if(e.key==='Tab'&&!overlay.hidden){const els=[...overlay.querySelectorAll('button:not(:disabled),[tabindex="0"]')];if(e.shiftKey&&document.activeElement===els[0]){e.preventDefault();els.at(-1)?.focus();}else if(!e.shiftKey&&document.activeElement===els.at(-1)){e.preventDefault();els[0]?.focus();}}
   });

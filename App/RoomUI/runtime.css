@@ -38,3 +38,9 @@ body{overflow:hidden}button,input,textarea{font-family:inherit}button{cursor:poi
 #companion-room .note-actions button{transition-property:transform,opacity,scale;transition-duration:480ms,340ms,220ms}
 
 #companion-room .chat{touch-action:pan-y}
+
+/* Keep the original visible line, with a comfortable drag target around it. */
+#companion-room .grip{position:relative;touch-action:none;cursor:grab}
+#companion-room .grip:before{content:'';position:absolute;inset:-10px -30px -14px}
+#companion-room .grip:active{cursor:grabbing}
+@keyframes room-sheet-out{from{transform:translateY(var(--sheet-drag-start,0px))}to{transform:translateY(100%);opacity:.7}}
