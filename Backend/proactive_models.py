@@ -17,7 +17,8 @@ def bounded(state):
     return ids
 
 
-def draft_request(state, *, grouped_messages=False):
+def draft_request(state, *, grouped_messages=False, structured_delivery=False):
+    if grouped_messages and structured_delivery: raise ValueError("Choose one proactive format")
     ids = bounded(state)
     fields = dict(decision=dict(type='string',enum=['silence','contribute']),
         text=dict(type='string'), evidence_ids=dict(type='array',items=dict(type='string',enum=ids)))
@@ -26,13 +27,21 @@ def draft_request(state, *, grouped_messages=False):
         fields['messages']=dict(type='array',items=dict(type='string'))
     schema = dict(type='object',properties=fields,required=list(fields),additionalProperties=False)
     prompt=(Path(__file__).parent/'prompts/proactive-v5-candidate.md').read_text() if grouped_messages else PROMPT
+    if structured_delivery:
+        from proactive_delivery import schema as delivery_schema
+        schema=delivery_schema(ids)
+        prompt=(Path(__file__).parent/'prompts/proactive-structured-candidate.md').read_text()
     return dict(model=LUNA,reasoning={'effort':'none'},service_tier='default',instructions=prompt,
         input=json.dumps(state,ensure_ascii=False),max_output_tokens=600,store=False,tools=[],truncation='disabled',
-        text={'format':dict(type='json_schema',name='proactive_v1',strict=True,schema=schema)})
+        text={'format':dict(type='json_schema',name='proactive_delivery_v1' if structured_delivery else 'proactive_v1',strict=True,schema=schema)})
 
 
-def parse_draft(data, state, *, grouped_messages=False):
+def parse_draft(data, state, *, grouped_messages=False, structured_delivery=False):
+    if grouped_messages and structured_delivery: raise ValueError("Choose one proactive format")
     ids = bounded(state)
+    if structured_delivery:
+        from proactive_delivery import normalize
+        data=normalize(data,state)
     if grouped_messages:
         if (not isinstance(data,dict) or set(data)!={'decision','messages','evidence_ids'}
                 or not isinstance(data['messages'],list)

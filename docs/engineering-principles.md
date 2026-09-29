@@ -343,3 +343,5 @@ Founder authorizes reallocation of the three remaining two-topic proactive calls
 Founder approves an isolated $0.06 / three-call conversational v6 screen, September 29, with no retries. Preserve all prior ledgers and runtime limits. Deployment remains conditional on verified behavior and accepted wording.
 
 Founder approves an isolated allowance of up to $0.20 / ten Luna calls for conversational proactive refinement, September 29, with no automatic retries. Start with three purposeful wording/transfer/silence cases; inspect actual outputs before further calls. Preserve exhausted ledgers, runtime quotas, personal data and accepted bubble styling. Select or deploy only after factual, conversational and separate-message acceptance.
+
+Founder approves implementing a structured single-call proactive response, September 29: separate selected remembered facts from conversational delivery, preserving separate normal bubbles and existing UI. This is implementation authorization, not a replenishment of the exhausted ten-call grant. Verify the contract locally before requesting a bounded live screen; do not select or deploy based on synthetic wording alone.
