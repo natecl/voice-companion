@@ -1,0 +1,25 @@
+{
+  "data": {
+    "decision": "contribute",
+    "evidence_ids": [
+      "m1"
+    ],
+    "messages": [
+      "I'd hold off on calendar integration until after the five-person test of the basic recording flow.",
+      "Those tests hadn't happened when that was recorded."
+    ]
+  },
+  "usage": {
+    "input_tokens": 1404,
+    "input_tokens_details": {
+      "cache_write_tokens": 1401,
+      "cached_tokens": 0
+    },
+    "output_tokens": 55,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1459
+  },
+  "seconds": 1.8757333997637033
+}

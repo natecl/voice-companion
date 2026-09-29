@@ -1,0 +1,25 @@
+{
+  "data": {
+    "decision": "contribute",
+    "evidence_ids": [
+      "m1"
+    ],
+    "messages": [
+      "The group\u2019s meeting time changed to 5 PM, not 3.",
+      "Everyone agreed to the new time, and it\u2019s still at the library."
+    ]
+  },
+  "usage": {
+    "input_tokens": 1355,
+    "input_tokens_details": {
+      "cache_write_tokens": 247,
+      "cached_tokens": 1105
+    },
+    "output_tokens": 58,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1413
+  },
+  "seconds": 1.7640534518286586
+}
