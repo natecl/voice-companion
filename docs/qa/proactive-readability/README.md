@@ -57,3 +57,9 @@ Manual review: preserves corrected preferred time and rejected time, uses plain 
 Selected v4 locally after this bounded screen. Exact request/response replay verifies current selected prompt, retrieval, validation, one saved turn and reopen for the contribution; no turns for silence. Historical v1/v2 replays explicitly pin their archived prompts; their results are not claimed as fresh v4 behavior. `PYTHONPATH=Backend python3 -m unittest discover -s Backend -p 'test_proactive*.py'` passes 42 tests (existing SQLite ResourceWarnings remain). No additional native QA required: phone UI sources unchanged and restored native behavior was already exercised above.
 
 The original Cedar proactive ledger now has five completed calls (one physical pilot, one v3 result, three v4 results), one uncertain failed call and no remaining slots: $0.12 conservative reservations, not actual invoice cost. Hosted v2 and installed phone remain unchanged. Deployment is pending separate authorization.
+
+## Authorized v4 internal deployment
+
+Founder approved deploying the wording update and building conversation-level checks. Render deployment `dep-datih6093c1s73aob6ag` is live at merged PR132 `839d2c9ec274da2ee4ab986853dc56ae86e4eb73`. Backed up 28 SQLite databases with no active requests. Post-startup integrity and row comparisons across 134 tables found no changes; runtime reservations and all historical ledgers are preserved. Verified v4 prompt selection and healthy general/notes/learning endpoints. No provider calls, phone installation, UI changes or new budget. Operator receipts: ignored `work/proactive-v4-rollout/`. Rollback target is prior hosted `ce2dfec`; preserve databases and charges rather than restoring deleted data.
+
+The exhausted test allowance is not replenished by this deployment. Wording is deployed, but additional proactive model or physical capture tests need separate bounded funding and physical readiness as applicable.
