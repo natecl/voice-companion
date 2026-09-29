@@ -35,7 +35,7 @@ STEPS = [
 
 
 class ScriptedModel:
-    def __init__(self): self.step=None; self.requests=[]
+    def __init__(self, recorded=None): self.step=None; self.requests=[]; self.recorded=recorded
     async def extract(self, request):
         step=self.step;state=json.loads(request['input'])
         expected_previous=[] if step['at']==0 else [CEDAR] if step['at']<180 else [CEDAR,HARBOR]
@@ -50,6 +50,9 @@ class ScriptedModel:
         self.requests.append(dict(case=step['id'],request=request,
             expected_model_decision='silence' if step['id']=='duplicate-output-defense' else data['decision'],
             synthetic_response=data))
+        if self.recorded and step['id']==self.recorded['case']:
+            assert request==self.recorded['request'], 'Exact request changed; no live fallback'
+            return self.recorded['response']
         return dict(data=data,usage={})
 
 
@@ -60,15 +63,15 @@ class SyntheticBudget:
     def finish(self,key,usage=None):pass
 
 
-async def run():
+async def run(recorded=None):
     with tempfile.TemporaryDirectory() as folder:
         path=Path(folder)/'memory.sqlite';store=MemoryStore(path,clock=lambda:300.)
         owner=store.owner_for('fictional-conversation-replay')
         for name,text in SOURCES.items():store.put_source(owner,recording(name,text))
         policy=ProactivePolicy();policy.start(owner,'capture')
-        model=ScriptedModel();budget=SyntheticBudget()
+        model=ScriptedModel(recorded);budget=SyntheticBudget()
         service=ProactiveService(store,model,budget)
-        passages=[];results=[]
+        passages=[];results=[];delivered=[]
         for index,step in enumerate(STEPS,1):
             if step.get('quiet'):policy.quiet()
             passages.append(dict(id='p'+str(index),start=float(step['at']),duration=1.,text=step['text'],speakers=[]))
@@ -80,10 +83,13 @@ async def run():
                 result=await service.evaluate(owner,live,lambda:policy.valid(lease,step['at']+1))
                 policy.finish(lease,step['at']+1,result.get('turn_id'))
             assert result['type']==step['expected'],(step['id'],result)
+            if result['type']=='contribution':delivered.append(result['text'])
             results.append(dict(case=step['id'],at=step['at'],result=result['type']))
+            if recorded and step['id']==recorded['case']:break
         turns=CompanionChat(MemoryStore(path)).page(owner)['turns']
-        assert [t['answer'] for t in turns]==[CEDAR,HARBOR]
-        assert policy.capture=='capture' and not policy.enabled
+        assert [t['answer'] for t in turns]==delivered
+        assert policy.capture=='capture'
+        if not recorded:assert not policy.enabled and delivered==[CEDAR,HARBOR]
         return dict(provenance='Synthetic model decisions; real scheduling, retrieval and durable storage; no audio',
             steps=results,saved_messages=len(turns),model_requests=len(model.requests),paid_calls=0,
             requests=model.requests)
