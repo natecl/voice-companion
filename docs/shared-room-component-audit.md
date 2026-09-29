@@ -37,3 +37,5 @@ Initial screenshot capture could occur during sheet entry. The screenshot helper
 Simulator checks use local provider responses and synthetic recording/dictation, with no paid calls. Physical haptic feel, real microphone behavior and complete physical acceptance are not established by these checks. PR 154 stays draft until those acceptance gates are complete.
 
 Final expanded native pipeline passed in 76.127 seconds: `/tmp/CompanionRoomFinalQA/20260929-153823/SharedRoomPhoneUITests-testSharedRoomNativePipeline.xcresult`. It includes settled note/attachment screenshots and memory controls; exports are `/tmp/room-final-evidence/`. [Selected simulator panels](qa/shared-room-parity/simulator-panels.jpg).
+
+2026-09-29 refinement: saved note sheets now adapt from 64% to 94% of viewport according to content, retaining the pinned footer. Multiline title leading is explicit. Dictation send has synchronous pending feedback while native finalization continues. Ten focused browser assertions and the native pipeline passed; see shared-room-ui.md for evidence.

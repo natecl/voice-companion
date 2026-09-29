@@ -1,7 +1,7 @@
 {
   "source": "companion-room.html",
-  "sha256": "4ce6d8f3ef8c0167c9afe1556433dfb7aa82bdc73a40c3f92364ce2bca2f6d95",
-  "cssSHA256": "4ebfdd45d9b8bdcd2239b060bcd5496b58c31e842671b192309a7eddb96c06cf",
+  "sha256": "55b96b8a4be02bac511e3ab34590565920dedc288022b539902e00db89fb388e",
+  "cssSHA256": "0fdaa30aa4a123eb4f870a14b96440b159df14e5e174a569b6c2cebda6d31f49",
   "date": "2026-09-29",
-  "revision": "Compact note sheet with pinned action and bounded attachment scrolling"
+  "revision": "Content-sized note sheets and readable multiline titles"
 }

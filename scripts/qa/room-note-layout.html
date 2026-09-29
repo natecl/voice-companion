@@ -8,17 +8,34 @@ document.querySelector('#run').onclick=async()=>{
  const check=(name,ok,detail)=>{results.push({name,pass:!!ok,detail});out.textContent=JSON.stringify(results,null,2);if(!ok)throw Error(name)};
  const notes=Array.from({length:20},(_,i)=>({id:'layout-'+i,title:'Conversation '+i,metadata:'Today · 12 min',preview:'Layout fixture',day:'Today',attachable:true}));
  try{
- w.room.render({messages:[],notes,ready:true,draft:'',draftVersion:0,appearance:'light'});
+ const state={messages:[],notes,ready:true,draft:'',draftVersion:0,appearance:'light',detail:{id:'layout-0',notes:[{text:'A short note.'}]}};
+ w.room.render(structuredClone(state));
  q('[data-act=attach]').click();await wait();
  const list=q('.panel-body');list.scrollTop=list.scrollHeight;
  const last=list.lastElementChild;
  check('Attachment list scrolls to its last card',list.scrollTop>0&&Math.abs(last.getBoundingClientRect().bottom-list.getBoundingClientRect().bottom)<2,{scrollTop:list.scrollTop,gap:last.getBoundingClientRect().bottom-list.getBoundingClientRect().bottom});
  check('Picker is bounded and content scrolls',q('.panel').getBoundingClientRect().height<=w.innerHeight*.64+1);
- q('[data-act=close]').click();await wait();q('[data-act=notes]').click();await wait();q('[data-act=note]').click();await wait();
+ q('[data-act=close]').click();await wait();q('[data-act=notes]').click();await wait();q('[data-act=note]').click();w.room.render(structuredClone(state));await wait();
  const content=q('.note-content'),button=q('[data-act=ask-note]'),bottom=button.getBoundingClientRect().bottom;content.scrollTop=content.scrollHeight;
- check('Note scrolls independently of pinned action',content.scrollTop>0&&button.getBoundingClientRect().bottom===bottom,{scrollTop:content.scrollTop,bottom});
+ check('Short note keeps its action pinned',button.getBoundingClientRect().bottom===bottom,{bottom});
  check('Action has bottom inset without extra space',Math.abs(w.innerHeight-bottom-20)<2);
- check('Note sheet is compact',Math.abs(q('.panel').getBoundingClientRect().height-w.innerHeight*.64)<2);
+ check('Short note sheet is compact',Math.abs(q('.panel').getBoundingClientRect().height-w.innerHeight*.64)<2);
+ q('[data-act=close]').click();await wait();
+ state.notes[0].title='A longer conversation about thoughtful product design and learning together';
+ state.detail.notes=Array.from({length:20},()=>({text:'A useful paragraph with enough detail to require scrolling through this conversation.'}));
+ w.room.render(structuredClone(state));q('[data-act=note]').click();w.room.render(structuredClone(state));await wait();
+ const heading=q('.panel h1'),style=w.getComputedStyle(heading),longContent=q('.note-content');
+ check('Multiline title has readable leading',parseFloat(style.lineHeight)>parseFloat(style.fontSize)&&heading.getBoundingClientRect().height>parseFloat(style.lineHeight),{font:style.fontSize,lineHeight:style.lineHeight});
+ check('Long note expands nearly full screen',Math.abs(q('.panel').getBoundingClientRect().height-w.innerHeight*.94)<2);
+ longContent.scrollTop=longContent.scrollHeight;
+ check('Long content scrolls with action fixed at bottom',longContent.scrollTop>0&&Math.abs(w.innerHeight-q('[data-act=ask-note]').getBoundingClientRect().bottom-20)<2);
+ q('[data-act=close]').click();await wait();
+ state.dictation={status:'listening',time:'0:03',levels:[.2,.6,.3]};w.room.render(structuredClone(state));
+ q('[data-act=send-dictation]').click();
+ check('Dictation send acknowledges immediately',q('[data-act=send-dictation]').disabled&&q('.dictation-time').textContent==='Sending…');
+ state.dictation=null;w.room.render(structuredClone(state));
+ state.dictation={status:'listening',time:'0:00',levels:[.1]};w.room.render(structuredClone(state));
+ check('New dictation can send again',!q('[data-act=send-dictation]').disabled);
  }catch(e){out.textContent+='\n'+e.message}
 };
 </script>

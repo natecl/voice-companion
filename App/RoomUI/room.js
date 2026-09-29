@@ -8,7 +8,7 @@
   const icon = name => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${window.roomIcons[name] || ''}</svg>`;
   function icons(scope=root){scope.querySelectorAll('[data-lucide]').forEach(e=>e.outerHTML=icon(e.dataset.lucide));}
   let state={messages:[],notes:[],busy:false,ready:false,draft:'',draftVersion:0,appearance:'system',capture:null,dictation:null};
-  let page=null,selected=null,transcript=false,focusBefore=null,toastTimer;
+  let page=null,selected=null,transcript=false,focusBefore=null,toastTimer,dictationSendPending=false;
   let draftVersion=0,localDraft='',lastLibrary='',lastPanel='',lastToast='',suppressedClickUntil=0;
   const transport = (action, value={}) => {
     const command={version:1,action,...value};
@@ -152,6 +152,12 @@
     else panel(title,html);
     sheet.dataset.page=page;sheet.dataset.noteId=selected||'';
     q('.segment')?.classList.toggle('transcript-selected',transcript);
+    if(page==='note'){
+      sheet.style.height='64%';
+      const content=q('.note-content');
+      const overflow=Math.max(0,content.scrollHeight-content.clientHeight);
+      sheet.style.height=Math.min(overlay.clientHeight*.94,sheet.offsetHeight+overflow)+'px';
+    }else sheet.style.removeProperty('height');
     lastPanel=key;
   }
   function open(which,id=null){page=which;selected=id;lastPanel='';renderPanel();}
@@ -159,10 +165,10 @@
     const d=state.dictation, composer=q('.composer');let row=q('.dictation-row');
     if(!row){row=document.createElement('div');row.className='dictation-row';composer.append(row);}
     [q('.clip'),input,q('.send')].forEach(e=>e.hidden=!!d);row.hidden=!d;
-    if(!d)return;
+    if(!d){dictationSendPending=false;return;}
     if(!row.firstChild)row.innerHTML=`<button data-act="discard-dictation" aria-label="Discard dictation">${icon('trash')}</button><span class="dictation-time"></span><div class="dictation-wave" aria-hidden="true"></div><button data-act="send-dictation" class="send has-text" aria-label="Send dictation">${icon('arrow-up')}</button>`;
-    row.querySelector('.dictation-time').textContent=d.status==='listening'?d.time:d.status==='starting'?'Starting…':'Finishing…';
-    row.querySelector('[data-act=send-dictation]').disabled=d.status!=='listening';
+    row.querySelector('.dictation-time').textContent=dictationSendPending?'Sending…':d.status==='listening'?d.time:d.status==='starting'?'Starting…':'Finishing…';
+    row.querySelector('[data-act=send-dictation]').disabled=dictationSendPending||d.status!=='listening';
     row.querySelector('.dictation-wave').innerHTML=d.levels.map(v=>`<span style="height:${Math.max(3,Math.min(28,v*28))}px"></span>`).join('');
   }
   function render(next){
@@ -204,7 +210,7 @@
       if(input.value.trim()){transport('send',{text:input.value,revision:draftVersion});input.blur();}
       else {input.blur();transport('dictate');}
     }
-    if(a==='send-dictation')transport('send-dictation');if(a==='discard-dictation')transport('discard-dictation');
+    if(a==='send-dictation'&&!dictationSendPending){dictationSendPending=true;renderDictation();transport('send-dictation');}if(a==='discard-dictation')transport('discard-dictation');
     if(a==='recover')transport('recover');if(a==='earlier')transport('earlier');
     if(a==='refresh'){transport('refresh');close();}
     if(a==='note'){transcript=false;transport('open-note',{id});open('note',id);}

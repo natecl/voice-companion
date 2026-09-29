@@ -110,7 +110,7 @@
 #companion-room .panel[data-page=attach]{max-height:64%;overflow:hidden;display:flex;flex-direction:column;padding-bottom:20px}
 #companion-room .panel[data-page=attach] .panel-body{min-height:0;overflow-y:auto;overscroll-behavior:contain}
 #companion-room .panel[data-page=attach] .note-card:last-child{margin-bottom:0}
-#companion-room .panel[data-page=note]{height:64%;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding-bottom:20px}
+#companion-room .panel[data-page=note]{height:64%;max-height:94%;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding-bottom:20px}
 #companion-room .panel[data-page=note] .panel-body{display:flex;flex-direction:column;flex:1;min-height:0}
 #companion-room .panel[data-page=note] .panel-body>h1,#companion-room .panel[data-page=note] .panel-body>.subtitle,#companion-room .panel[data-page=note] .segment{flex-shrink:0}
 #companion-room .panel[data-page=note] .note-content{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;margin-top:18px}
@@ -123,3 +123,6 @@
 #companion-room .segment:before{content:'';position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:18px;background:var(--card);transition:transform 520ms var(--ease-settle);z-index:-1}
 #companion-room .segment.transcript-selected:before{transform:translateX(100%)}
 #companion-room .segment button.active{background:transparent}
+
+#companion-room .panel h1{line-height:1.2;overflow-wrap:anywhere}
+#companion-room .note-card strong{line-height:1.35;overflow-wrap:anywhere}
