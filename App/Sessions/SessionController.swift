@@ -273,6 +273,13 @@ final class SessionController {
 
     func interrupt(reason: String) {
         guard liveStatus != nil else { if isReplaying { stop() }; return }
+        // Preparation has not created a recording yet; current may still be a saved session.
+        // Cancel startup without changing or persisting that unrelated recording.
+        guard live != nil else {
+            liveStatus = "Stopping…"
+            task?.cancel()
+            return
+        }
         freezeRecordingTime()
         current?.completed = false
         current?.endReason = reason
@@ -308,6 +315,7 @@ final class SessionController {
                 try memorySync.outbox.delete(session.id)
             }
             try store.delete(session.id)
+            if let owner = session.memoryOwnerID { try RecordingNotesCache.shared.invalidate(owner: owner, sessionID: session.id.uuidString) }
             if current?.id == session.id { current = nil }
             reload()
             memorySync?.kick()
@@ -324,6 +332,7 @@ final class SessionController {
                 try memorySync.outbox.delete(current.id)
             }
             try store.delete(current.id)
+            if let owner = current.memoryOwnerID { try RecordingNotesCache.shared.invalidate(owner: owner, sessionID: current.id.uuidString) }
             self.current = nil
             reload()
             memorySync?.kick()

@@ -8,6 +8,13 @@
   ],
   "checks": [
     {
+      "id": "note-cache-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "evidence": "work/feature-evidence/note-cache/mechanical.json",
+      "claim": "Eight focused CoreTests exercise actual cache disk and state contracts; runner integration remains separate."
+    },
+    {
       "id": "note-cache-behavior-1",
       "group": "live_behavior_checks",
       "kind": "fixture",
@@ -29,7 +36,5 @@
       "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
     }
   ],
-  "not_applicable": {
-    "mechanical_checks": "No dedicated implemented automated suite yet; external evidence does not hide this gap."
-  }
+  "not_applicable": {}
 }

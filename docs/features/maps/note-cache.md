@@ -8,18 +8,21 @@ Instant persistent/offline summaries with owner/revision-safe refresh. Product d
 
 ## Current implementation
 
-Server-side notes persist, but the current native view fetches on open/reactivation. This map describes an approved next implementation, not a delivered local cache.
+CACHE-1 candidate implements persistent ready-summary storage, immediate local note/title reads, coalesced open/reactivation refresh, and source deletion invalidation. Server-returned generation version is stored with owner/session/revision identity; local schema version remains separate. The backend remains canonical. See [bounded QA and screenshots](../../qa/note-cache/README.md). Not merged/deployed/physically installed by this worker.
 
 ## Gaps and non-goals
 
-Disk persistence, stale-content display, owner isolation, refresh coalescing, and deletion/sign-out/reset invalidation need implementation and dedicated automated tests.
+Actual logout, credential-owner transition clearing and explicit reset are not wired because those app entry points do not exist. Dedicated cache clear APIs and late-response cancellation are tested; this is not full account-lifecycle acceptance. No physical locked-storage or live generation claim.
 
 ## Flow and implementation entry points
 
-Planned: authenticated note read → account/source/revision keyed disk cache → immediate local render → coalesced refresh → atomic cache update.
+Candidate: authenticated note read → account/source/revision keyed disk cache → immediate local render → coalesced refresh → atomic cache update.
 
 - [App/RecordingNotesView.swift](../../../App/RecordingNotesView.swift)
 - [App/Sessions/RecordingNotes.swift](../../../App/Sessions/RecordingNotes.swift)
+- [Cache module](../../../App/Sessions/RecordingNotesCache.swift)
+- [Dedicated tests](../../../UnitTests/RecordingNotesCacheTests.swift)
+- [Staged simulator tests](../../../UITests/RecordingNotesCacheUITests.swift)
 
 ## Contracts and dependencies
 
@@ -33,7 +36,7 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Verification and delivery state
 
-- Repository state: planned; persistent cache not implemented.
+- Repository state: CACHE-1 candidate; eight dedicated CoreTests and bounded simulator scenarios. Full feature remains incomplete pending account lifecycle integration.
 - [Feature verifier contract](../verification/note-cache.json): `python3 scripts/verify_feature.py note-cache`.
 - [Mechanical baseline and unresolved checks](../verification-map.md#initial-mechanical-check-results--september-29-2026). Automated success is not full-feature acceptance.
 - Required real-path evidence: Implement and exercise disk persistence, invalidation, owner separation and refresh coalescing; Cold launch/offline read, refresh success/failure, deletion and sign-out.
@@ -41,9 +44,7 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Next bounded work
 
-Cached notes support returning continuity and the secondary history surface in the proposed social-presence UI. Keep this functional slice independent of visual exploration, coordinating only its load/invalidation interfaces.
-
-Deliver one bounded persistence/read/refresh slice with disk/relaunch/offline tests and actual app inspection; agree cache ownership and invalidation interfaces before parallel edits.
+Primary review of CACHE-1, then integrate `clear(owner:)` / `clearAll()` into a serialized account transition/reset workflow. Call sites must cancel old-owner work and clear old-owner state before exposing the next account; token renewal is not an owner change. Existing `deleteFromLibrary(_:)` and `deleteCurrent()` invoke source-scoped invalidation after successful local deletion. Keep visuals independent.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.
 

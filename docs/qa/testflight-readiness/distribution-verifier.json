@@ -1,0 +1,51 @@
+{
+  "packet": "FEATURE-distribution",
+  "commit": "47eadb4c8be3a46593bb6f17250f4c24335ea02c",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "manifest": {
+    "path": "docs/features/verification/distribution.json",
+    "sha256": "c57e9c4e5426558eeb0230e3d2f2e94cf57108148b1665fa33559735e4b1acc7"
+  },
+  "environment": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "acceptance": [
+    "Correct signed release configuration and independently usable beta",
+    "Signed release install/update and independent tester access; intended native/backend version pairing"
+  ],
+  "not_applicable": {
+    "mechanical_checks": "No dedicated implemented automated suite yet; external evidence does not hide this gap."
+  },
+  "checks": [
+    {
+      "id": "distribution-behavior-1",
+      "group": "live_behavior_checks",
+      "evidence_kind": "physical_device",
+      "result": "not_run",
+      "artifacts": [],
+      "reason": "Missing, invalid, or stale evidence; inspect the declared receipt"
+    },
+    {
+      "id": "distribution-inspection",
+      "group": "inspection",
+      "evidence_kind": "review",
+      "result": "not_run",
+      "artifacts": [],
+      "reason": "Missing, invalid, or stale evidence; inspect the declared receipt"
+    }
+  ],
+  "paid_calls": 0,
+  "reserved_microusd": 0,
+  "unresolved": [
+    "distribution-behavior-1",
+    "distribution-inspection"
+  ],
+  "review": {
+    "status": "pending",
+    "reviewed_commit": null,
+    "released_packets": []
+  },
+  "status": "incomplete",
+  "feature": "distribution",
+  "feature_status": "internal foundation; independent beta readiness unverified",
+  "verification_scope": "full_feature",
+  "feature_verified": false
+}

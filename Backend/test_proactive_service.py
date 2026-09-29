@@ -138,3 +138,38 @@ class ProactiveServiceTests(unittest.IsolatedAsyncioTestCase):
         messages=ProactiveStore(self.store)
         self.assertIsNone(messages.claim(self.owner,'capture','cutoff'))
         self.assertEqual(ProactiveStore(MemoryStore(self.path)).claim(self.owner,'capture','cutoff')['state'],'pending')
+
+    async def test_budget_rejection_never_calls_provider_or_retries_cutoff(self):
+        from admission import Rejected
+        class ExhaustedBudget:
+            def reserve(inner,key,model):raise Rejected('proactive_budget_limit')
+            def finish(inner,key,usage=None):raise AssertionError('No reservation was made')
+        self.service.budget=ExhaustedBudget()
+        self.assertEqual((await self.evaluate())['type'],'unavailable')
+        self.assertEqual((await self.evaluate())['type'],'existing')
+        self.assertEqual(self.models.calls,[])
+        self.assertEqual(CompanionChat(MemoryStore(self.path)).page(self.owner)['turns'],[])
+
+    async def test_multi_message_text_has_one_delivery_and_cooldown(self):
+        from proactive_policy import ProactivePolicy
+        messages=['Alex mentioned waking at three.', 'That may be worth bringing up.']
+        original=self.models.extract
+        async def paragraphs(request):
+            result=await original(request)
+            result['data']['text']='\n\n'.join(messages)
+            return result
+        self.models.extract=paragraphs
+        policy=ProactivePolicy();policy.start(self.owner,'capture')
+        lease=policy.observe(self.live,0)
+        result=await self.service.evaluate(self.owner,self.live,lambda:policy.valid(lease,1))
+        self.assertEqual(result['type'],'contribution')
+        self.assertTrue(policy.finish(lease,1,result['turn_id']))
+        self.assertEqual(len(policy.delivered),1)
+        newer=dict(self.live,revision=2)
+        self.assertIsNone(policy.observe(newer,60))
+        self.assertIsNotNone(policy.observe(newer,61))
+        turns=CompanionChat(MemoryStore(self.path)).page(self.owner)['turns']
+        self.assertEqual(len(turns),1)
+        self.assertEqual(turns[0]['answer'].split('\n\n'),messages)
+        self.assertEqual(len(self.models.calls),1)
+        self.assertNotIn('messages',self.models.calls[0]['text']['format']['schema']['properties'])

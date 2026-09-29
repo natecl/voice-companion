@@ -11,6 +11,7 @@ struct RecordingNotesView: View {
     @State private var unavailable = false
     @State private var refresh = 0
     @State private var retry = false
+    @State private var displayedKey: RecordingNotesCache.Key?
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
@@ -27,6 +28,10 @@ struct RecordingNotesView: View {
                 }
                 }.padding(18).frame(maxWidth: .infinity, alignment: .leading).experienceCard(radius: 15)
                 Text("Generated from this transcript. Long-press a paragraph to view its supporting transcript.").font(.caption).foregroundStyle(ExperienceStyle.secondary)
+                if unavailable {
+                    Text("Showing saved notes. Refresh couldn’t finish.").font(.caption).accessibilityIdentifier("notesRefreshStatus")
+                    Button("Refresh notes") { refresh += 1 }.accessibilityIdentifier("refreshNotes")
+                }
             } else if loading {
                 ExperienceThinkingStatus(label: "Preparing notes…").accessibilityIdentifier("notesLoading")
             } else {
@@ -40,20 +45,45 @@ struct RecordingNotesView: View {
         .font(.callout)
         .task(id: "\(attachment.session_id):\(attachment.revision):\(refresh):\(scenePhase)") {
             guard scenePhase == .active else { return }
-            result = nil; unavailable = false; loading = true
             let shouldRetry = retry; retry = false
+            unavailable = false
             defer { loading = false }
             do {
-                let connection = RecordingNotesConnection(configuration: configuration)
+                let config = try configuration()
+                guard let owner = config.memoryOwnerID else { throw CompanionFailure.sourceUnavailable }
+                let key = RecordingNotesCache.Key(owner: owner, sessionID: attachment.session_id, revision: attachment.revision)
+                if displayedKey != key { result = nil; displayedKey = key }
+                if let saved = try? RecordingNotesCache.shared.read(key) { result = saved; if let title = saved.notes?.title { onTitle(title) } }
+                loading = result == nil
+                let connection = RecordingNotesConnection(configuration: {
+                    let current = try configuration()
+                    guard current.memoryOwnerID == owner else { throw CompanionFailure.sourceUnavailable }
+                    return current
+                })
                 for poll in 0..<10 {
-                    let value = try await connection.read(attachment, retry: shouldRetry && poll == 0)
+                    let value = try await RecordingNotesCache.shared.refresh(key, retry: shouldRetry && poll == 0) {
+                        try await connection.read(attachment, retry: shouldRetry && poll == 0)
+                    }
                     try Task.checkCancellation()
-                    result = value
-                    if value?.state == "ready" { if let title = value?.notes?.title { onTitle(title) }; return }
-                    if value?.state != "pending" && value?.state != "generating" { return }
+                    guard try configuration().memoryOwnerID == owner else { result = nil; throw CompanionFailure.sourceUnavailable }
+                    if value?.state == "ready" {
+                        result = value
+                        if let title = value?.notes?.title { onTitle(title) }
+                        return
+                    }
+                    // Pending/failed refreshes do not replace a usable saved summary.
+                    let saved = try RecordingNotesCache.shared.read(key)
+                    result = saved ?? value
+                    if saved == nil { onTitle("Recorded conversation") }
+                    if value?.state != "pending" && value?.state != "generating" { unavailable = saved != nil; return }
                     if poll < 9 { try await Task.sleep(for: .seconds(2)) }
                 }
-            } catch { if !Task.isCancelled { result = nil; unavailable = true } }
+            } catch {
+                if !Task.isCancelled {
+                    if (try? configuration().memoryOwnerID) != displayedKey?.owner { result = nil }
+                    unavailable = true
+                }
+            }
         }
     }
     private var status: String {
@@ -106,8 +136,20 @@ struct RecordingLibraryTitle: View {
                 title = nil
                 guard !personal, let attachment else { return }
                 do {
-                    let result = try await RecordingNotesConnection(configuration: configuration).read(attachment)
+                    let config = try configuration()
+                    guard let owner = config.memoryOwnerID else { return }
+                    let key = RecordingNotesCache.Key(owner: owner, sessionID: attachment.session_id, revision: attachment.revision)
+                    if let saved = try? RecordingNotesCache.shared.read(key) { title = saved.notes?.title }
+                    let result = try await RecordingNotesCache.shared.refresh(key) {
+                        try await RecordingNotesConnection(configuration: {
+                            let current = try configuration()
+                            guard current.memoryOwnerID == owner else { throw CompanionFailure.sourceUnavailable }
+                            return current
+                        }).read(attachment)
+                    }
                     try Task.checkCancellation()
+                    guard try configuration().memoryOwnerID == owner else { title = nil; return }
+                    title = (try RecordingNotesCache.shared.read(key))?.notes?.title
                     if result?.state == "ready" { title = result?.notes?.title }
                 } catch { /* The generic title remains available offline. */ }
             }

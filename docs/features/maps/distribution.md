@@ -1,6 +1,6 @@
 # TestFlight install and update
 
-Feature ID: `distribution` · Context reviewed September 29, 2026 against main `3a30e25`.
+Feature ID: `distribution` · Context reviewed September 29, 2026 against main `47eadb4`.
 
 ## Purpose and user outcome
 
@@ -8,7 +8,7 @@ Correct signed release configuration and independently usable beta. Product dire
 
 ## Current implementation
 
-Native build/check tooling and historical internal phone installs exist. These are prerequisites, not evidence that an independent TestFlight tester can use the product.
+Native build/check tooling and historical internal phone installs exist. The [P0-C offline audit](../../qa/testflight-readiness/README.md) confirms resolved Release settings and local development-signing availability; it does not establish a signed archive or independent TestFlight use. Release reads existing Keychain credentials only; fresh enrollment/import and proactive activation currently depend on Debug paths.
 
 ## Gaps and non-goals
 
@@ -42,7 +42,7 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Next bounded work
 
-Perform a read-only readiness audit and prepare exact native/backend version evidence; release only after demo and access gates are accepted.
+Review the [completed offline audit and prioritized slices](../../qa/testflight-readiness/README.md#prioritized-next-acceptance-slices). First deliver selected Release tester enrollment/sign-out and owner-state invalidation; then accepted distribution configuration and exact native/backend pairing, followed by authorized signing/archive and independent install/update QA. The feature verifier remains incomplete; the fresh local access tests do not satisfy device or release gates.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.
 

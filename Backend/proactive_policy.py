@@ -104,6 +104,11 @@ class ProactivePolicy:
         digest = cutoff(source)
         if source['session_id'] != self.capture:
             raise Rejected('proactive_capture_changed')
+        # A late service result can be discarded without finish(). Release its
+        # lease so additive speech can schedule again; attempted cutoffs remain
+        # consumed, and the expired result can never become current again.
+        if self.pending and now-self.pending.started > self.deadline:
+            self.invalidate()
         if digest != self.latest:
             additive = extends(self.latest_source, source)
             self.latest = digest
