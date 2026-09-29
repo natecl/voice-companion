@@ -273,6 +273,13 @@ final class SessionController {
 
     func interrupt(reason: String) {
         guard liveStatus != nil else { if isReplaying { stop() }; return }
+        // Preparation has not created a recording yet; current may still be a saved session.
+        // Cancel startup without changing or persisting that unrelated recording.
+        guard live != nil else {
+            liveStatus = "Stopping…"
+            task?.cancel()
+            return
+        }
         freezeRecordingTime()
         current?.completed = false
         current?.endReason = reason
