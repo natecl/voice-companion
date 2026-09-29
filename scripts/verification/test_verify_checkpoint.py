@@ -35,6 +35,7 @@ class VerifierTests(unittest.TestCase):
         self.assertEqual(r['status'],'needs_review');self.assertEqual(r['review']['status'],'pending')
         r=v.review(self.root,r,'orchestrator','accepted_for_integration','Inspected child execution and receipt',['next'])
         self.assertEqual(r['review']['released_packets'],['next'])
+        self.assertEqual(r['status'],'accepted_for_integration')
     def test_actual_child_failure_blocks_acceptance(self):
         r=self.run_child('raise SystemExit(7)')
         self.assertEqual(r['checks'][0]['exit_code'],7)

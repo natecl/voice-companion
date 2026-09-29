@@ -149,6 +149,7 @@ def review(root, receipt, reviewer, decision, notes, released):
         raise ValueError('Required checks have not passed')
     if released and decision != 'accepted_for_integration':
         raise ValueError('Only accepted evidence can release dependent packets')
+    receipt['status'] = decision
     receipt['review'] = dict(status=decision, reviewer=reviewer, notes=notes,
                              reviewed_commit=receipt['commit'], released_packets=released)
     return receipt
