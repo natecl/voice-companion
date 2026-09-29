@@ -138,6 +138,8 @@ def run(root, manifest_path):
 
 
 def review(root, receipt, reviewer, decision, notes, released):
+    if receipt.get('verification_scope') == 'mechanical_only' and released:
+        raise ValueError('Mechanical checks cannot release dependents; collect full feature evidence')
     if identity(root) != receipt['commit']:
         raise ValueError('Receipt is stale for this checkout')
     for item in [receipt['manifest']] + [a for c in receipt['checks'] for a in c['artifacts']]:
@@ -150,6 +152,8 @@ def review(root, receipt, reviewer, decision, notes, released):
     if released and decision != 'accepted_for_integration':
         raise ValueError('Only accepted evidence can release dependent packets')
     receipt['status'] = decision
+    if receipt.get('verification_scope') == 'full_feature':
+        receipt['feature_verified'] = decision == 'accepted_for_integration'
     receipt['review'] = dict(status=decision, reviewer=reviewer, notes=notes,
                              reviewed_commit=receipt['commit'], released_packets=released)
     return receipt

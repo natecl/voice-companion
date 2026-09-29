@@ -1,0 +1,31 @@
+{
+  "packet": "FEATURE-capture",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "acceptance": [
+    "Microphone \u2192 transcript \u2192 stop \u2192 saved text",
+    "Actual microphone/provider capture, interruption and save/reopen"
+  ],
+  "checks": [
+    {
+      "id": "capture-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "runner": "feature:capture"
+    },
+    {
+      "id": "capture-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "physical_device",
+      "evidence": "work/feature-evidence/capture/behavior-1.json",
+      "claim": "Actual microphone/provider capture, interruption and save/reopen"
+    },
+    {
+      "id": "capture-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/capture/inspection.json",
+      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+    }
+  ],
+  "not_applicable": {}
+}

@@ -1,0 +1,39 @@
+{
+  "packet": "FEATURE-meeting-notes",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "acceptance": [
+    "Generate grounded summaries once; read/retry safely",
+    "Final note-generation configuration produces a faithful summary through service/storage",
+    "Render the actual summary and supporting passage; inspect failures/retry"
+  ],
+  "checks": [
+    {
+      "id": "meeting-notes-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "runner": "feature:meeting-notes"
+    },
+    {
+      "id": "meeting-notes-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "live_provider",
+      "evidence": "work/feature-evidence/meeting-notes/behavior-1.json",
+      "claim": "Final note-generation configuration produces a faithful summary through service/storage"
+    },
+    {
+      "id": "meeting-notes-behavior-2",
+      "group": "live_behavior_checks",
+      "kind": "simulator",
+      "evidence": "work/feature-evidence/meeting-notes/behavior-2.json",
+      "claim": "Render the actual summary and supporting passage; inspect failures/retry"
+    },
+    {
+      "id": "meeting-notes-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/meeting-notes/inspection.json",
+      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+    }
+  ],
+  "not_applicable": {}
+}

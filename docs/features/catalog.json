@@ -1,0 +1,263 @@
+{
+  "capture": {
+    "name": "Capture and live transcript",
+    "outcome": "Microphone \u2192 transcript \u2192 stop \u2192 saved text",
+    "status": "implemented foundations; fresh feature verification required",
+    "implementation": [
+      "Backend/relay.py",
+      "UnitTests/RecordingLifecycleTests.swift",
+      "UITests/MicrophoneUITests.swift"
+    ],
+    "test_modules": [
+      "Backend.test_relay",
+      "Backend.test_hosted_relay"
+    ],
+    "manifest": "docs/features/verification/capture.json",
+    "verification_scope": "Actual microphone/provider capture, interruption and save/reopen"
+  },
+  "library": {
+    "name": "Recording library and sync",
+    "outcome": "Save, reopen, attach, and sync recordings without loss",
+    "status": "implemented foundations; fresh feature verification required",
+    "implementation": [
+      "App/Sessions/SessionStore.swift",
+      "App/Sessions/MemorySync.swift",
+      "UITests/SavedRecordingUITests.swift"
+    ],
+    "test_modules": [
+      "Backend.test_memory"
+    ],
+    "manifest": "docs/features/verification/library.json",
+    "verification_scope": "Offline save/relaunch, sync recovery and attaching a recording"
+  },
+  "meeting-notes": {
+    "name": "Meeting note summaries",
+    "outcome": "Generate grounded summaries once; read/retry safely",
+    "status": "implemented foundations; fresh feature verification required",
+    "implementation": [
+      "Backend/recording_notes.py",
+      "Backend/notes_generation.py",
+      "App/RecordingNotesView.swift",
+      "UITests/RecordingNotesUITests.swift"
+    ],
+    "test_modules": [
+      "Backend.test_recording_notes",
+      "Backend.test_notes_generation",
+      "Backend.test_notes_service",
+      "Backend.test_notes_budget"
+    ],
+    "manifest": "docs/features/verification/meeting-notes.json",
+    "verification_scope": "Final note-generation configuration produces a faithful summary through service/storage; Render the actual summary and supporting passage; inspect failures/retry"
+  },
+  "note-cache": {
+    "name": "On-device note caching",
+    "outcome": "Instant persistent/offline summaries with owner/revision-safe refresh",
+    "status": "planned; persistent cache not implemented",
+    "implementation": [
+      "App/RecordingNotesView.swift",
+      "App/Sessions/RecordingNotes.swift"
+    ],
+    "test_modules": [],
+    "manifest": "docs/features/verification/note-cache.json",
+    "verification_scope": "Implement and exercise disk persistence, invalidation, owner separation and refresh coalescing; Cold launch/offline read, refresh success/failure, deletion and sign-out"
+  },
+  "chat": {
+    "name": "Companion chat and follow-ups",
+    "outcome": "Persistent chat, attachments, streaming and durable recovery",
+    "status": "implemented foundations; fresh feature verification required",
+    "implementation": [
+      "Backend/companion_service.py",
+      "App/Sessions/CompanionController.swift",
+      "UITests/CompanionUITests.swift"
+    ],
+    "test_modules": [
+      "Backend.test_companion_chat",
+      "Backend.test_companion_context",
+      "Backend.test_companion_service",
+      "Backend.test_companion_snapshots"
+    ],
+    "manifest": "docs/features/verification/chat.json",
+    "verification_scope": "Actual answer/follow-up pipeline with final model configuration; Streaming, draft preservation, attachment, failed delivery and reopen"
+  },
+  "dictation": {
+    "name": "Composer dictation",
+    "outcome": "On-device speech draft, discard, append and explicit Send",
+    "status": "implemented foundations; fresh feature verification required",
+    "implementation": [
+      "App/Sessions/ComposerDictation.swift",
+      "UnitTests/ComposerDictationTests.swift",
+      "UnitTests/DictationCallbackTests.swift"
+    ],
+    "test_modules": [
+      "Backend.test_dictation_budget"
+    ],
+    "manifest": "docs/features/verification/dictation.json",
+    "verification_scope": "Actual dictation recognition, discard/send, permission and interruption; backend budget test alone is insufficient"
+  },
+  "notes-search": {
+    "name": "Notes search",
+    "outcome": "Relevant notes found with correct source and navigation",
+    "status": "implemented foundations; fresh feature verification required",
+    "implementation": [
+      "Backend/notes_search.py",
+      "App/CompanionRootView.swift"
+    ],
+    "test_modules": [
+      "Backend.test_notes_search"
+    ],
+    "manifest": "docs/features/verification/notes-search.json",
+    "verification_scope": "Search results, empty/error state and opening the correct note"
+  },
+  "memory-learning": {
+    "name": "Automatic memory learning",
+    "outcome": "Source-scoped extraction/verification with atomic storage",
+    "status": "implemented foundations; fresh feature verification required",
+    "implementation": [
+      "Backend/memory_evidence_writer.py",
+      "Backend/memory_store.py"
+    ],
+    "test_modules": [
+      "Backend.test_source_scoped_learning",
+      "Backend.test_source_verification",
+      "Backend.test_memory_worker",
+      "Backend.test_memory_atomic"
+    ],
+    "manifest": "docs/features/verification/memory-learning.json",
+    "verification_scope": "Real extraction/verification on bounded source, accepted/rejected claims and resulting durable memory"
+  },
+  "recall": {
+    "name": "Past-context retrieval",
+    "outcome": "Select relevant original evidence and preserve corrections",
+    "status": "implemented foundations; fresh feature verification required",
+    "implementation": [
+      "Backend/notes_recall.py",
+      "Backend/companion_context.py"
+    ],
+    "test_modules": [
+      "Backend.test_notes_recall",
+      "Backend.test_unified_recall",
+      "Backend.test_memory_context"
+    ],
+    "manifest": "docs/features/verification/recall.json",
+    "verification_scope": "Actual ranked context \u2192 answer pipeline, irrelevant and conflicting evidence cases"
+  },
+  "identity": {
+    "name": "Personal context and identity",
+    "outcome": "Keep user/third-party facts separate with provenance",
+    "status": "implemented foundations; fresh feature verification required",
+    "implementation": [
+      "Backend/profile_identity.py",
+      "Backend/memory_store.py"
+    ],
+    "test_modules": [
+      "Backend.test_profile",
+      "Backend.test_memory_identity",
+      "Backend.test_memory_recording_identity"
+    ],
+    "manifest": "docs/features/verification/identity.json",
+    "verification_scope": "Named, unknown and third-party subject cases through the active identity path"
+  },
+  "memory-lifecycle": {
+    "name": "Memory corrections and time",
+    "outcome": "Corrections, uncertainty and expiry preserve history",
+    "status": "implemented foundations; fresh feature verification required",
+    "implementation": [
+      "Backend/memory_store.py",
+      "Backend/memory_related.py"
+    ],
+    "test_modules": [
+      "Backend.test_memory_transitions",
+      "Backend.test_memory_expiry",
+      "Backend.test_memory_temporal_reads",
+      "Backend.test_uncertain_memory_time"
+    ],
+    "manifest": "docs/features/verification/memory-lifecycle.json",
+    "verification_scope": "Changed temporal/relationship judgments on real model output; never infer event completion"
+  },
+  "deletion": {
+    "name": "Note deletion and retained answers",
+    "outcome": "Delete transcript without erasing already sent replies",
+    "status": "implemented foundations; fresh feature verification required",
+    "implementation": [
+      "Backend/memory_retention.py",
+      "App/Sessions/SessionController.swift"
+    ],
+    "test_modules": [
+      "Backend.test_memory_retention",
+      "Backend.test_companion_chat"
+    ],
+    "manifest": "docs/features/verification/deletion.json",
+    "verification_scope": "Swipe/long-press deletion, source unavailable, preserved replies and reopen"
+  },
+  "proactive": {
+    "name": "Proactive contributions",
+    "outcome": "Useful unsolicited context with Quiet, budgets and stale-result rejection",
+    "status": "implemented foundations; fresh feature verification required",
+    "implementation": [
+      "Backend/proactive_service.py",
+      "Backend/proactive_policy.py",
+      "UITests/ProactiveUITests.swift"
+    ],
+    "test_modules": [
+      "Backend.test_proactive_policy",
+      "Backend.test_proactive_service",
+      "Backend.test_proactive_socket",
+      "Backend.test_proactive_models"
+    ],
+    "manifest": "docs/features/verification/proactive.json",
+    "verification_scope": "Active decision \u2192 output \u2192 storage/delivery; relevant, resolved and same-topic-irrelevant cases; Actual bubbles, Quiet/stop, no stale/duplicate deliveries in intended configuration"
+  },
+  "access": {
+    "name": "Tester access and account controls",
+    "outcome": "Independent per-tester enrollment, isolation and revocation",
+    "status": "internal foundation; independent beta readiness unverified",
+    "implementation": [
+      "Backend/admission.py",
+      "Backend/admin.py",
+      "App/ExperienceAccountView.swift"
+    ],
+    "test_modules": [
+      "Backend.test_admission",
+      "Backend.test_admin",
+      "Backend.test_hosted_startup"
+    ],
+    "manifest": "docs/features/verification/access.json",
+    "verification_scope": "Actual authenticated service paths with two isolated users and revocation; Fresh enrollment, sign-out/data clearing and actionable failure UI"
+  },
+  "distribution": {
+    "name": "TestFlight install and update",
+    "outcome": "Correct signed release configuration and independently usable beta",
+    "status": "internal foundation; independent beta readiness unverified",
+    "implementation": [
+      "project.yml",
+      "scripts/check.sh",
+      "App/Transcription/RelayConfiguration.swift"
+    ],
+    "test_modules": [],
+    "manifest": "docs/features/verification/distribution.json",
+    "verification_scope": "Signed release install/update and independent tester access; intended native/backend version pairing"
+  },
+  "subscriptions": {
+    "name": "Sign-up and pricing previews",
+    "outcome": "Current preview surfaces; real purchase/subscription implementation is deferred",
+    "status": "preview/deferred; not delivered as a working integration",
+    "implementation": [
+      "App/ExperienceStyle.swift",
+      "App/ExperienceAccountView.swift"
+    ],
+    "test_modules": [],
+    "manifest": "docs/features/verification/subscriptions.json",
+    "verification_scope": "Verify pilot navigation accurately marks or excludes unavailable sign-up/pricing flows"
+  },
+  "connected-sources": {
+    "name": "Calendar, email and messages",
+    "outcome": "Future product scope; no implemented connectors",
+    "status": "preview/deferred; not delivered as a working integration",
+    "implementation": [
+      "docs/product-source-of-truth.md"
+    ],
+    "test_modules": [],
+    "manifest": "docs/features/verification/connected-sources.json",
+    "verification_scope": "No implemented verifier: requires scoped connector design, consent, ownership and disconnect contract before implementation"
+  }
+}

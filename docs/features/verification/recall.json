@@ -1,0 +1,31 @@
+{
+  "packet": "FEATURE-recall",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "acceptance": [
+    "Select relevant original evidence and preserve corrections",
+    "Actual ranked context \u2192 answer pipeline, irrelevant and conflicting evidence cases"
+  ],
+  "checks": [
+    {
+      "id": "recall-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "runner": "feature:recall"
+    },
+    {
+      "id": "recall-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "live_provider",
+      "evidence": "work/feature-evidence/recall/behavior-1.json",
+      "claim": "Actual ranked context \u2192 answer pipeline, irrelevant and conflicting evidence cases"
+    },
+    {
+      "id": "recall-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/recall/inspection.json",
+      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+    }
+  ],
+  "not_applicable": {}
+}

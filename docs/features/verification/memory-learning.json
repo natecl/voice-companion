@@ -1,0 +1,31 @@
+{
+  "packet": "FEATURE-memory-learning",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "acceptance": [
+    "Source-scoped extraction/verification with atomic storage",
+    "Real extraction/verification on bounded source, accepted/rejected claims and resulting durable memory"
+  ],
+  "checks": [
+    {
+      "id": "memory-learning-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "runner": "feature:memory-learning"
+    },
+    {
+      "id": "memory-learning-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "live_provider",
+      "evidence": "work/feature-evidence/memory-learning/behavior-1.json",
+      "claim": "Real extraction/verification on bounded source, accepted/rejected claims and resulting durable memory"
+    },
+    {
+      "id": "memory-learning-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/memory-learning/inspection.json",
+      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+    }
+  ],
+  "not_applicable": {}
+}

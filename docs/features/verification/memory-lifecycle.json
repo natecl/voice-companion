@@ -1,0 +1,31 @@
+{
+  "packet": "FEATURE-memory-lifecycle",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "acceptance": [
+    "Corrections, uncertainty and expiry preserve history",
+    "Changed temporal/relationship judgments on real model output; never infer event completion"
+  ],
+  "checks": [
+    {
+      "id": "memory-lifecycle-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "runner": "feature:memory-lifecycle"
+    },
+    {
+      "id": "memory-lifecycle-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "live_provider",
+      "evidence": "work/feature-evidence/memory-lifecycle/behavior-1.json",
+      "claim": "Changed temporal/relationship judgments on real model output; never infer event completion"
+    },
+    {
+      "id": "memory-lifecycle-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/memory-lifecycle/inspection.json",
+      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+    }
+  ],
+  "not_applicable": {}
+}

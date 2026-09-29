@@ -1,0 +1,27 @@
+{
+  "packet": "FEATURE-distribution",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "acceptance": [
+    "Correct signed release configuration and independently usable beta",
+    "Signed release install/update and independent tester access; intended native/backend version pairing"
+  ],
+  "checks": [
+    {
+      "id": "distribution-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "physical_device",
+      "evidence": "work/feature-evidence/distribution/behavior-1.json",
+      "claim": "Signed release install/update and independent tester access; intended native/backend version pairing"
+    },
+    {
+      "id": "distribution-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/distribution/inspection.json",
+      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+    }
+  ],
+  "not_applicable": {
+    "mechanical_checks": "No dedicated implemented automated suite yet; external evidence does not hide this gap."
+  }
+}

@@ -1,5 +1,7 @@
 # Feature and context map
 
+See the [feature verification map](verification-map.md) for each feature’s executable verifier, required real-path evidence, and implementation gaps.
+
 Reconciled against main `660e4c7` on September 28, 2026 and recorded rollout evidence. This documentation audit did not re-inspect the live service. Read [current state](../current-state.md) and the [product vision gap audit](../product-vision-audit-2026-09-28.md) for the implementation/vision boundary.
 
 > AI notes that proactively contribute to discussions

@@ -1,0 +1,27 @@
+{
+  "packet": "FEATURE-connected-sources",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "acceptance": [
+    "Future product scope; no implemented connectors",
+    "No implemented verifier: requires scoped connector design, consent, ownership and disconnect contract before implementation"
+  ],
+  "checks": [
+    {
+      "id": "connected-sources-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "fixture",
+      "evidence": "work/feature-evidence/connected-sources/behavior-1.json",
+      "claim": "No implemented verifier: requires scoped connector design, consent, ownership and disconnect contract before implementation"
+    },
+    {
+      "id": "connected-sources-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/connected-sources/inspection.json",
+      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+    }
+  ],
+  "not_applicable": {
+    "mechanical_checks": "No dedicated implemented automated suite yet; external evidence does not hide this gap."
+  }
+}

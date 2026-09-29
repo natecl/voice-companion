@@ -1,0 +1,31 @@
+{
+  "packet": "FEATURE-notes-search",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "acceptance": [
+    "Relevant notes found with correct source and navigation",
+    "Search results, empty/error state and opening the correct note"
+  ],
+  "checks": [
+    {
+      "id": "notes-search-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "runner": "feature:notes-search"
+    },
+    {
+      "id": "notes-search-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "simulator",
+      "evidence": "work/feature-evidence/notes-search/behavior-1.json",
+      "claim": "Search results, empty/error state and opening the correct note"
+    },
+    {
+      "id": "notes-search-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/notes-search/inspection.json",
+      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+    }
+  ],
+  "not_applicable": {}
+}

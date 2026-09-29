@@ -1,5 +1,7 @@
 # Feature details
 
+See the [feature verification map](verification-map.md) for each feature’s executable verifier, required real-path evidence, and implementation gaps.
+
 Use the [index and authority rules](README.md) first. Paths below are repository-relative. “Verified” always means the bounded cases in the linked evidence, not universal accuracy. Test paths are entry points for targeted QA, not instructions to rerun every suite or consume paid allowances.
 
 ## Capture and live transcript
