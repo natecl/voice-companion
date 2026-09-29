@@ -1,5 +1,7 @@
 # Current product, implementation and research knowledge
 
+September 29 direction: [invited social presence](social-presence-experience.md) supersedes note-taking-led positioning; see the [revised execution phases](execution/demo-testflight-phases.md). Earlier implementation and rollout claims below remain dated evidence, not fresh runtime inspection.
+
 Updated September 28, 2026 against main `660e4c7` for the proactive AI note-taking vision. Last recorded backend rollout: `4dd5b70` (PR104); latest installed native fix: `3954284` (PR106). This audit did not query the live service or rerun physical/provider QA. See [UI rollout evidence](native-experience-ui.md#approved-internal-rollout--september-28-2026).
 
 The [product source of truth](product-source-of-truth.md) and [engineering principles](engineering-principles.md) are canonical. This brief consolidates their current application; it is not a replacement specification. Earlier plans and failed experiments remain evidence, not current requirements.

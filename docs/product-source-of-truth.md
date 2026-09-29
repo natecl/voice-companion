@@ -1,8 +1,8 @@
 # Product source of truth
 
-Status: Current positioning revised with the founder on September 28, 2026. Earlier dated decisions below remain history; this opening definition supersedes their one-liner and reactive-only product framing.
+Status: Current positioning revised with the founder on September 29, 2026 toward an invited AI social presence. The September 29 revision below supersedes note-taking-led positioning. Earlier dated definitions retain their historical meaning.
 
-Current interpretation: the opening September 28 vision governs positioning; dated refinements govern their implementation contracts unless explicitly superseded. See [current implementation and decision brief](current-state.md) for deployed versus candidate status. In particular, notes are implemented; release chat hides visible sources; TTS/voice identity remain deferred; the experimental retrieval gate is disabled.
+Current interpretation: the September 29 social-presence revision governs positioning; dated refinements govern their implementation contracts unless explicitly superseded. See [current implementation and decision brief](current-state.md) for deployed versus candidate status. In particular, notes are implemented; release chat hides visible sources; TTS/voice identity remain deferred; the experimental retrieval gate is disabled.
 
 ## One-liner
 
@@ -10,7 +10,21 @@ Current interpretation: the opening September 28 vision governs positioning; dat
 
 This agreed wording is 51 characters. For YC’s 50-character field, the audit records a shorter proposed variant; no application wording has been changed.
 
+## Invited social presence — September 29, 2026
+
+Founder decision: the defining experience is inviting a third intelligent person to the table—an AI presence that knows relevant personal history, follows the conversation and contributes proactively. The intended feeling is a familiar, thoughtful friend who remembers; it remains transparently AI. This supersedes the September 28 instruction to position the product as an AI/voice note-taker. Capture and notes remain foundations, not the consumer category or primary reward. Solo brainstorming is supported but is not the selected defining experience.
+
+The product builds linked personal knowledge from deliberately shared experiences and conversations, preserves uncertainty and changing context, and uses that knowledge to contribute a useful connection, perspective or question. “Reads the room” is a capability to test through relevance, timing, silence, correction and follow-up; it is not a claim of mind reading or perfect social understanding. It does not literally know or remember everything.
+
+The founder also requests a non-traditional, personable interface centered on inviting the companion and being together in a conversation, rather than the existing note-taker/dictation-led shell. Prototype and review this visual direction before native replacement; preserve essential controls, accessibility and reliable data behavior.
+
+Keep Granola as Proven and preserve iPhone-first development with Mac support. New is the invited social presence with personal continuity and participation judgment. Text-first delivery in the existing main chat remains; no voice replies, silent continuous capture, public sharing or connected-source access is authorized by this revision. Existing memory contracts remain the starting point for the personal knowledge graph; no new graph database is prescribed.
+
+The exact one-liner above is retained as previously agreed wording until a replacement is explicitly selected. “Bring someone who remembers” is proposed consumer copy. See the [experience brief](social-presence-experience.md) and [revised phase plan](execution/demo-testflight-phases.md) for concrete implementation and validation proposals.
+
 ## Full product vision — September 28, 2026
+
+Historical positioning; source scope and factual contracts remain applicable unless revised above.
 
 > We’re building an AI note-taking app that acts like a third smart person in your conversations. It captures lectures, meetings, appointments, and voice notes, then connects what’s being discussed with relevant context from your past notes, calendar, email, and messages. During a conversation, it proactively surfaces useful reminders, questions, and ideas through text—for example, reminding you during an appointment that you mentioned trouble sleeping last week. You can also ask questions across everything you’ve captured.
 
@@ -22,7 +36,7 @@ Example: “You mentioned a concern about sleeping last week. It might be worth 
 
 Contribution includes both relevant past context and new ideas/outside knowledge. It adapts to the discussion (study, work, appointments, therapy, financial conversations) and can remain silent. Exact trigger, timing, frequency, display controls and domain behavior need design and validation. Text-first proactive participation is agreed; spoken interruption is not required. Existing deliberate capture, one main chat and Notes library remain the implementation baseline, not a mandate to redesign navigation in this documentation pass.
 
-Position this as an AI/voice note-taking product. Connected calendar, email and messages enrich conversation understanding; they do not make this an iMessage assistant or authorize external actions. Existing general chat can remain, but it is not the defining product promise. The [gap audit](product-vision-audit-2026-09-28.md) and [knowledge map](features/knowledge.md) distinguish implemented foundations, gaps and proposed delivery.
+Historical September 28 positioning, superseded by the September 29 social-presence revision: position this as an AI/voice note-taking product. Connected calendar, email and messages enrich conversation understanding; they do not make this an iMessage assistant or authorize external actions. Existing general chat can remain, but it is not the defining product promise. The [gap audit](product-vision-audit-2026-09-28.md) and [knowledge map](features/knowledge.md) distinguish implemented foundations, gaps and proposed delivery.
 
 The previous one-liner, “Granola with an AI that listens alongside you and can join the conversation,” is retired from current positioning. Historical references to an unchanged one-liner below describe their dates, not an instruction to restore it.
 
@@ -32,7 +46,7 @@ Use the breakdown discussed by Mark Pincus and Garry Tan in the first source vid
 
 - **Proven:** Granola.
 - **Better:** Faster responses, lower latency, lower price—the improvements existing users would clearly recognize.
-- **New:** An iPhone-first AI note-taking app that proactively contributes relevant personal context, questions and ideas through text during conversations, adapting to the conversation. Usefulness and repeat invitation are hypotheses to test.
+- **New:** An iPhone-first invited AI social presence that knows relevant personal history and contributes useful context, perspectives and questions through text, with judgment about when to remain silent. Usefulness and repeat invitation are hypotheses to test.
 
 This is the product source of truth. Everyday capture scenarios are applications of this vision, and Jev is a potential way to implement it.
 

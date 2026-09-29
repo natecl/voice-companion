@@ -41,6 +41,8 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Next bounded work
 
+For the invited companion demo, retrieve a preference relevant to the actual tradeoff and reject same-word/different-intent distractors. Selected evidence must support a contribution, not require one.
+
 Inspect candidates → ranked selection → hydrated packet → response to locate misses; do not rerun audio capture to debug retrieval.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.

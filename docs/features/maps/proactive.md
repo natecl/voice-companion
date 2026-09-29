@@ -42,6 +42,8 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Next bounded work
 
+The [social-presence revision](../../social-presence-experience.md) changes acceptance from a correct reminder alone to useful participation, silence, corrections and conversational follow-through. Follow LLM-1/PROACTIVE-1 in the revised phases; model experiments remain unselected until verified.
+
 Prioritize bounded controls and one truthful demo over endless wording loops. Inspect selected prompt/runtime flags and test relevant, resolved and irrelevant cases with explicit paid allowance.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.

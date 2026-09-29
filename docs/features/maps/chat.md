@@ -42,6 +42,8 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Next bounded work
 
+The founder now requests a personable social-presence shell. UI-1 prototypes it before UI-2 replaces native layout; preserve one persistent chat, composer/draft contracts and durable messages. This supersedes blanket preservation of the old navigation shell.
+
 Verify follow-up, failed delivery/draft preservation, streaming and reopen through the active socket path; inspect actual model output only when model/context behavior changes.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.

@@ -41,6 +41,8 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Next bounded work
 
+Add a temporary schedule exception versus lasting preference case to the MEMORY-1 packet. Receiving a correction should change relevant context without blindly erasing a prior enduring preference.
+
 Resolve migration-test drift and test correction chains, ambiguous time and deletion ordering before changing model judgments.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.

@@ -4,7 +4,10 @@
   "acceptance": [
     "Useful unsolicited context with Quiet, budgets and stale-result rejection",
     "Active decision \u2192 output \u2192 storage/delivery; relevant, resolved and same-topic-irrelevant cases",
-    "Actual bubbles, Quiet/stop, no stale/duplicate deliveries in intended configuration"
+    "Actual bubbles, Quiet/stop, no stale/duplicate deliveries in intended configuration",
+    "Grounded participation adds a relevant tradeoff, connection or question, not only a recap",
+    "Correction/temporary exception, resolved issue, same-topic irrelevant and topic-shift cases have predeclared contribution/silence expectations",
+    "Multiple ordinary messages retain useful content with one durable contribution and cooldown"
   ],
   "checks": [
     {

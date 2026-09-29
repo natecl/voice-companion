@@ -2,7 +2,9 @@
 
 > AI notes that proactively contribute to discussions
 
-An iPhone-first AI note-taking app intended to act like a third smart person in conversations, with Mac support. Proactive text contributions and calendar/email/message context are the agreed product vision, not delivered features. Working name: Voice Companion. The installed internal V1 build records microphone audio through the hosted service, supports locked-screen capture, saves transcripts locally, and answers typed questions during or after a conversation with fixed source references. Recording remains capped at five minutes; speaker labels are best-effort. See the [V1 runbook](docs/v1-runbook.md) for use, setup, quotas and known limits, and [final acceptance](docs/v1-acceptance.md) for evidence. The [V0 runbook](docs/v0-runbook.md) retains local Mac relay instructions and historical scope. This private repository is not a public release.
+An iPhone-first AI companion you deliberately invite into conversations: a third intelligent participant that builds personal context and contributes when it has something useful to add. Mac remains supported. Capture and notes supply continuity; they are no longer the defining consumer positioning. See the [September 29 direction](docs/product-source-of-truth.md#invited-social-presence--september-29-2026), [experience brief](docs/social-presence-experience.md) and [delivery phases](docs/execution/demo-testflight-phases.md).
+
+This is a private internal foundation, not a public release. The exact prior one-liner above is retained pending a selected replacement. Capture remains deliberately started and internally capped at five minutes; speaker labels are best-effort. Historical capture evidence is in the [V1 runbook](docs/v1-runbook.md) and [acceptance](docs/v1-acceptance.md). Proactive judgment and repeated invitation remain product hypotheses; this plan does not establish current deployed/installed versions or connector availability.
 
 ## Current knowledge and delivery status
 

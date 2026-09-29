@@ -1,86 +1,86 @@
-# Orchestrated demo → TestFlight delivery
+# Orchestrated social-presence demo → TestFlight
 
-Status: proposed execution plan, September 29, 2026. No workers dispatched by this document. Founder authorizes preparing parallel execution around a chief-of-staff/orchestrator role, with GPT-6 Astra workers using `low` reasoning (the available setting corresponding to “light”). The deliverable remains **AI notes that proactively contribute to discussions**. [Product](../product-source-of-truth.md), [engineering principles](../engineering-principles.md), and [delivery scope](../demo-to-testflight-plan.md) govern every packet.
+Revised September 29, 2026. Founder direction: an invited third intelligent participant with personal continuity and judgment; a non-traditional, personable interface supports that presence. Notes and capture remain foundations. Read the [canonical revision](../product-source-of-truth.md#invited-social-presence--september-29-2026) and [experience/UI brief](../social-presence-experience.md). The existing one-liner is retained pending explicit replacement. This is an implementation plan, not a claim of finished behavior or authority to launch workers, spend, deploy or invite testers.
 
-## Outcomes and operating rules
+## Outcomes and constraints
 
-Deliver a truthful, continuous student demo; recover gracefully from common failures; bound proactive behavior; distribute an independently usable invited beta; learn from students. Existing capture is a foundation, not a rewrite target. Calendar/email/message integrations, subscriptions, redesign and open-ended personality work are outside this critical path.
+Deliver a convincing short conversation in which the companion adds something useful from shared history, accepts a correction, stays quiet when appropriate, and is worth inviting again. Reliability, local notes, private-pilot access and TestFlight remain necessary. Granola remains Proven; build on its already implemented foundations. No graph-database rewrite, voice replies, always-on capture, connector integrations or subscriptions in this critical path.
 
-The orchestrator owns scope, dependencies, assignment, shared contracts, budgets, reviews, integration and release evidence. Workers own complete bounded changes and the verification of their claims. A reviewer must inspect actual behavior/evidence, not merely approve passing unit tests. Human judgment remains necessary for subjective usefulness and device scenarios that cannot be independently exercised.
+Use GPT-6 Astra/low workers with bounded ownership. Maximum three active workers plus orchestrator, fewer when shared UI/device resources are occupied. Workers receive their [feature maps](../features/context-map.md), linked verifiers, exact files/base SHA, failure cases and budget. The orchestrator reviews actual evidence and releases dependent packets. No feature is done because a script is green.
 
-Use separate worktrees/branches for implementation. Default maximum: three active workers plus orchestrator, with fewer when native build/device resources are occupied. Separate app threads require explicit user authorization to create them; the founder's future execution preference is not a command to launch them now. Once dispatched, coordination messages may be sent within that explicitly authorized workflow. Do not independently create extra workers or expand scope from a packet.
+## Phase 0 — baseline and shared experience contracts
 
-## Phase 0 — orchestrator builds verification tooling, then establishes baseline
+The per-feature maps and verifiers are implemented prerequisites. Reconcile their current evidence before assigning implementation. Identify selected code/configuration, deployed backend and installed native build independently; quarantine failed experiments. Prior paid allowances are exhausted.
 
-Prerequisite: the orchestrator implements, tests and reviews the verifier before dispatching any execution worker. Workers receive a working command and sample packet, not a tooling specification. Then establish the baseline below. No paid provider calls or user-device interaction required.
-
-| Packet | Owner | Work | Result |
+| Packet | Owner | Bounded output | Gate |
 | --- | --- | --- | --- |
-| P0-A | Orchestrator | Resolve latest verified main, current native build, deployed backend, flags and exhausted budgets; separate experimental branch from release baseline | Release/baseline manifest with commit/build IDs and evidence dates |
-| P0-B | Worker 1 | Inventory existing capture, notes, chat, proactive and recovery checks; identify actual gaps | Updated feature evidence map and exact reusable commands |
-| P0-C | Worker 2 | Read-only TestFlight readiness audit: signing, release configuration, tester enrollment and preview flows; consult current official requirements | Concrete blocker list, proposed smallest private-pilot access path, no upload |
+| P0-A | Orchestrator | Version/flag baseline; approved fictional demo sequence; ownership and shared interfaces | No historical rollout assumed current |
+| P0-B | Astra/low | Resolve feature-map evidence gaps and diagnose four known mechanical failures | Three schema-version mismatches and retention replay explained; affected acceptance remains red until repaired |
+| P0-C | Astra/low | Read-only TestFlight/access audit | Concrete signing/enrollment/configuration blockers, no uploads |
 
-Exit: baseline manifest reviewed, first demo specified, file ownership assigned, shared interfaces frozen for the first wave. Dated documentation is not live-service evidence. P0-C reports missing account access instead of changing credentials or enrolling testers.
+Freeze the invitation/listening/Quiet/End contract, draft retention, private screen visibility and contribution identity before UI/model workers diverge. “Invitation” deliberately starts the existing recording experience and enabled proactive behavior; Quiet suppresses contributions while recording continues; End ends capture and cancels pending unsolicited output. Model output remains ordinary messages in the one main chat.
 
-## Phase 1 — verification foundation and deterministic demo rehearsal
+Exit: bounded scenario, contracts and worker packets ready. No assumption that speaker labels establish who else is present.
 
-Depends on Phase 0. Parallel with non-mutating release preparation.
+## Phase 1 — prototype the presence and rehearse continuity
 
-| Packet | Owner | Work | Acceptance |
-| --- | --- | --- | --- |
-| P1-A | Worker 1 | Reuse saved events to rehearse capture completion → notes → related discussion → proactive message → follow-up → reopen in the app | Runnable rehearsal, screenshot/result evidence, fixtures explicitly labeled; no fake live-model claim |
-| P1-B | Orchestrator | Configure the already verified runner for the demo acceptance packet | Exact commands/evidence requirements supplied before demo worker execution |
-| P1-C | Worker 3 | Plan independent tester access and release configuration against actual code | Contract and isolated implementation packet ready; unresolved product/access choices surfaced, no speculative auth rewrite |
+This is the first creative implementation phase. UI-1 starts with Refero/Mobbin reference-flow research as specified in the experience brief, then builds the concrete prototype. Record access limits honestly; do not claim unseen screens were reviewed. UI and memory exploration can proceed in parallel against the frozen contracts.
 
-The orchestrator edits the shared feature map and owns any shared fixture contract. Workers submit entries rather than all editing the same map. P1-A supplies the stable demo fixture contract before P1-B integrates it; the existing runner can verify a minimal fixture first.
+| Packet | Scope | Output / verifier |
+| --- | --- | --- |
+| UI-1 | Isolated prototype, no production shell edits | Arrival → invite → listening → contribution → reply → Quiet/End → history; interruption, first use, accessibility. Founder visual review plus rendered interaction evidence; use `social-presence` contract |
+| MEMORY-1 | Existing identity/provenance/temporal reads and isolated fixtures | Audit linked preferences/people/goals without new graph infrastructure. Reproduce supported preference, third-party fact, correction and temporary exception; use identity/lifecycle/recall contracts |
+| DEMO-1 | Saved-event/service rehearsal | Actual app/service flow with simulated inputs and clearly labeled cached outputs; contribution persists/reopens. Does not claim real model judgment |
 
-Exit: a reproducible local app rehearsal and targeted verifier command. This is not the real-provider demo milestone.
+No blanket “best friend” prompt replaces memory correctness. Locate gaps at source → identity → time → retrieval → participation → wording → delivery. Keep UI-1 isolated from DEMO-1's native build, or serialize access to shared simulator/resources.
 
-## Phase 2 — harden the three release workstreams
+Exit: concrete visual direction reviewed, memory/context contract established, mechanical rehearsal working. Founder visual approval is for the prepared prototype, not an abstract request before doing the work.
 
-Depends on Phase 1 contracts; independent scoped checkpoints may merge as they pass.
+## Phase 2 — build the selected experience in bounded parallel slices
 
-| Packet | Ownership boundary | Work | Acceptance |
-| --- | --- | --- | --- |
-| P2-A: recovery and local notes | Assigned native controller/view/cache files and UI tests | Persistent on-device summary cache, then permission, interruption, network failure and failed notes/chat recovery | Cached summaries render immediately/offline and survive reopen; refresh never blanks valid content; failure UI preserves data and drafts; no duplicate retry |
-| P2-B: proactive limits | Assigned backend policy/service/config files and tests | Quiet, cooldown, stale-result rejection, per-session/account limits and distribution-compatible activation | Cancellation/expiry/quota tests plus actual local socket execution; failed candidates remain unselected |
-| P2-C: beta access | Assigned enrollment/config/account files and tests | Implement the selected minimal per-tester access, isolation and revocation flow; remove misleading preview paths from pilot navigation | Two isolated test users, fresh install/enrollment, revoked access, no provider secret in bundle |
+| Packet | One result | Dependencies and acceptance |
+| --- | --- | --- |
+| UI-2 | Implement reviewed native arrival/live shell | After UI-1 review; real state wiring, accessible controls, drafts/history preserved; screenshot and interaction loop. Serialize shared controller edits |
+| LLM-1 | Contribution judgment and conversational output | After context contract; fresh approved provider evaluation across useful connection, same-topic irrelevant, resolved issue, correction, topic shift and cold start. Inspect usefulness, not just schema validity |
+| PROACTIVE-1 | Distribution-configured bounded participation | Quiet/End/cooldown/cancellation/budgets with no stale/duplicate output; coordinate service ownership with LLM-1 |
+| CACHE-1 | Persistent readable notes offline | Owner/revision/generation keys, atomic refresh and invalidation; remains a continuity requirement |
+| ACCESS-1 | Independent tester access | Two isolated users, enrollment/revocation/sign-out; supplies cache invalidation contract |
+| RECOVERY-1 | One diagnosed failure path at a time | Preserve captured text/drafts, clear state and explicit safe retry; separate capture, chat and notes packets |
 
-P2-A and P2-C must not simultaneously edit a shared controller/view: split exact files or serialize the overlapping commit. Backend identity/enrollment changes touching P2-B's admission contract require an orchestrator-approved interface before either worker implements them. Schema migrations are serialized and have one owner.
+These are waves, not six simultaneous workers. Initially use UI-2, one memory/LLM packet and one cache/access packet only where files/contracts do not overlap. Fix known baseline failures before relying on their feature acceptance. Cache and access must agree ownership clearing before parallel writes. One schema owner. No automatic model/provider switch or extra paid retries.
 
-Handle the known unrelated-interjection bug as a named acceptance risk with a bounded evaluation, not an unlimited prompt loop. Paid work needs a separately approved ledger allocation. Relevance acceptance is distinct from deterministic timing/control acceptance. Wording polish is deferred. Do not automatically ship Jev because the architecture is available.
+Exit: each slice's full affected verifier evidence accepted. Repeat native inspection after integration; a prototype screenshot does not verify runtime wiring.
 
-Exit: reviewed recovery, control and access checkpoints; remaining relevance/duration risks explicitly recorded. A red acceptance criterion cannot be renamed a limitation to pass this gate.
+## Phase 3 — one real “third person” demo
 
-## Phase 3 — integrate and verify the real demo
+Use the [earlier preference → current tradeoff → correction → unrelated topic](../social-presence-experience.md#first-experience-slice) scenario. Founder history is not seeded with fiction by default: use an isolated QA owner. Real-provider budget is requested as a prepared named-case allocation; phone participation waits for readiness.
 
-Depends on all demo-relevant Phase 2 checkpoints. Orchestrator serializes integration; workers resolve failures in their own areas.
+1. Capture/save earlier context or label seeded context explicitly. Verify subject, relevant time and selected memory.
+2. Deliberately invite the companion into a later discussion on the intended native/backend configuration.
+3. Receive an unsolicited, grounded contribution that changes the question/tradeoff under discussion. A correct recap alone does not pass this criterion.
+4. Respond/correct and inspect follow-up plus durable context qualification. Check that it does not repeat the same point.
+5. Exercise irrelevant/resolved-topic silence and pending-result cancellation; test Quiet and End separately.
+6. Reopen messages and notes; inspect offline cached notes where implemented.
 
-1. Integrate reviewed commits onto latest verified main; rerun changed contracts and one app rehearsal.
-2. Build the intended distribution configuration and inspect actual UI; verify proactive activation does not depend on Debug-only arguments.
-3. Prepare one short real-provider demo with an approved spend cap. Capture earlier context → finish/save → related conversation → useful contribution → follow-up → reopen. No prerecorded answer represented as live reasoning.
-4. Verify Quiet/stop do not deliver a late message and failure recovery remains reachable. Physical participation waits for founder readiness; do all independent checks first.
-5. Produce a release-candidate receipt: exact native/backend versions, scenario, outcome, logs/screenshots, spend, unresolved limits and rollback.
+Record exact input provenance, request/model/configuration identities, messages, decision/latency, persisted/delivered state and screenshots. Evaluate grounding, contribution value, timing, novelty, correction handling, tone/chunking and UI control separately. Required scenario failures block that gate; no aggregate score hides a wrong-person memory or failed cancellation. Reuse unchanged microphone evidence only within its scope; no cached response masquerades as live reasoning.
 
-Exit: an honest end-to-end demo on the candidate build. Reuse historical microphone evidence only for unchanged paths; do not claim a new physical flow from fixtures. A prompt/provider change invalidates semantic evidence for that changed path, not every unrelated UI check.
+Exit: honest continuous demo and reviewed failure cases. The five-minute cap stays explicit; no full-lecture claim.
 
-## Phase 4 — TestFlight release candidate
+## Phase 4 — invited TestFlight
 
-Readiness research and metadata drafts can run earlier; archive/upload follow the integrated release gate.
+After integrated demo/access acceptance: verify archive/signing, release configuration, native/backend pairing, independent install/update, account isolation, sign-out, limits and feedback path. Show real listening/quiet/error states without Debug-only activation. Hide or clearly mark unavailable preview purchase/account paths. One release operator; upload/invitations require the applicable authorization. No full subscriptions to unblock a private pilot.
 
-- Orchestrator owns final archive, version pairing, backend enablement and rollback. One release operator; no concurrent deployments.
-- Verify fresh install/update, per-tester access, data separation, feedback path, privacy/data explanations and known limits against the actual candidate.
-- Keep the five-minute cap explicit until a separate longer-session checkpoint is approved and verified. A short-session beta must not be described as full-lecture capture.
-- Confirm current Apple requirements and available distribution access. Prepare review/build information before requesting any missing access or approval.
-- Obtain required release action authorization for upload/enabling users; send no tester invitations without explicit permission. Never share production credentials among testers.
+Exit: a fresh invited tester can use the approved short-session experience without a developer-connected phone. Notes/capture reliability remains required even though the pitch has changed.
 
-Exit: usable invited TestFlight build, matching verified backend, clear short-session instructions and a feedback channel. Public App Store release is outside this plan.
+## Phase 5 — learn whether people invite it back
 
-## Phase 5 — student pilot and YC evidence
+Friends/family expose access and usability failures; students remain the first focused cohort. Proposed session: a recurring discussion with a trusted friend/study partner. Ask whether the companion helped the discussion, remembered appropriately, interrupted unnecessarily, missed an opportunity, and was invited again voluntarily. No minimum message count or recording-volume target defines usefulness.
 
-Friends/family first reveal installation/usability problems; students are the focused product cohort. Capture consented feedback on useful reminders, irrelevant interruptions, missing context, failed recordings and voluntary return use. Define collection/retention before adding telemetry; no silent transcript collection. Separate observed behavior from enthusiasm.
+Obtain explicit consent for any content collection; prefer lightweight feedback without transcript telemetry. Preserve criticism and failed sessions. Use observed repeat invitations, useful moments and limitations to shape the YC application with the founder, not unsupported claims of friendship, retention or knowing everything.
 
-Deliver: reproducible issues, prioritized fixes, actual usage/feedback evidence, updated demo and an honest YC product answer written with the founder. Do not manufacture traction or extrapolate model pass rates into user value.
+## First dispatch after explicit execution start
+
+Orchestrator P0-A; Astra/low workers P0-B and P0-C. Then UI-1 and MEMORY-1 with a bounded DEMO-1 rehearsal as resources permit. Build and verify UI-1 before asking for the founder's design decision. Do not start app-shell replacement or paid model evaluation until their dependencies are satisfied. This planning checkpoint dispatches no workers.
 
 ## Integration and throughput policy
 
@@ -98,10 +98,6 @@ All prior provider grants are exhausted. Default packets have zero paid-call all
 
 Escalate only a concrete decision: what action, why needed, cost/scope, prepared artifact and consequence of waiting. The orchestrator must not make the founder relay logs or perform checks agents can run.
 
-## First dispatch wave
-
-After the orchestrator has accepted the verifier foundation and execution is explicitly started: orchestrator P0-A; Astra/low workers P0-B and P0-C. No app changes, device use or paid calls in that first wave. Use their findings to assign Phase 1 implementation packets with exact file ownership. This avoids launching three overlapping feature rewrites from stale documentation.
-
 ## Founder clarification: autonomy with real verification
 
 Workers have autonomy to implement, diagnose routine failures, run authorized checks and iterate within their packet. Their responsibility includes real behavior, not merely code and automated tests. They cannot advance dependent work past an unverified required behavior. The orchestrator enforces the same gate before integration and release.
@@ -113,13 +109,13 @@ Founder is willing to approve further spending, but this clarification does not 
 
 ## On-device meeting-note summaries — founder requirement
 
-Add to P2-A as its first independently reviewable slice. Persist successfully fetched/generated summaries on the phone, scoped to the authenticated owner, recording ID, transcript revision and summary-generation version. Keep the backend as the canonical source; opening a note reads the local copy immediately, without requiring network or another LLM generation. Do not add a second note-generation path.
+Deliver as CACHE-1 in Phase 2. Persist successfully fetched/generated summaries on the phone, scoped to the authenticated owner, recording ID, transcript revision and summary-generation version. Keep the backend as the canonical source; opening a note reads the local copy immediately, without requiring network or another LLM generation. Do not add a second note-generation path.
 
 Revalidate when the note opens and when the app becomes active. Proposed implementation policy: coalesce duplicate requests, refresh the visible note first, and avoid a full-library fetch on every foreground transition. Refresh cached library entries only where needed for the displayed list or when sync signals changed revisions. This is an implementation hypothesis to validate, not an arbitrary periodic timer requirement.
 
 A network failure preserves the usable cached summary and offers clear retry/status feedback. Do not replace content with a spinner during background refresh. Match source revision before displaying a summary as current; a known changed/deleted source must not silently present old content as current. A successful refresh atomically replaces the cache. Never overwrite a valid summary with a transient pending/error response. Clear the appropriate entries on note deletion, owner switch/sign-out and explicit data reset; never display another user's cached content. Use platform-protected app storage and keep private contents out of diagnostic logs.
 
-Acceptance includes actual app launch/open, airplane-mode or injected offline read, relaunch persistence, successful background update, failed refresh preserving content, changed/deleted revision behavior, and owner isolation. Reuse saved summary/server fixtures for these cache mechanics; paid note generation is unnecessary unless the generation integration changes. Submit UI screenshots and reproducible state/persistence checks. The worker's packet must identify affected files and avoid overlapping P2-C account ownership changes; agree the cache-clearing contract first.
+Acceptance includes actual app launch/open, airplane-mode or injected offline read, relaunch persistence, successful background update, failed refresh preserving content, changed/deleted revision behavior, and owner isolation. Reuse saved summary/server fixtures for these cache mechanics; paid note generation is unnecessary unless the generation integration changes. Submit UI screenshots and reproducible state/persistence checks. The worker's packet must identify affected files and avoid overlapping ACCESS-1 account ownership changes; agree the cache-clearing contract first.
 
 ## Orchestrator acceptance and continuation gate
 
@@ -139,7 +135,7 @@ The Phase 2 rows are workstreams, not single-worker mandates. Split them into in
 | NOTES-1 | Note-generation failure/status/retry behavior preserves usable state and avoids duplicate generation | Own generation lifecycle/server tests; hand off native status contract to CACHE-1 before shared view edits |
 | CAPTURE-1 | Reproduce and repair one identified capture interruption/network recovery gap | Own the diagnosed capture path; no capture rewrite |
 | CHAT-1 | Preserve drafts and clarify one verified chat failure/retry path | Own assigned chat controller/error view; no shared composer redesign |
-| LLM-1 | Evaluate and repair current-topic relevance against predeclared positive/negative cases | Own model decision contract and fixtures; named approved provider allowance required for live calls; no caching/UI scope |
+| LLM-1 | Evaluate useful participation, silence, corrections and follow-up against predeclared cases | Own model decision contract and fixtures; named approved provider allowance required for live calls; no caching/UI scope |
 | PROACTIVE-1 | Verify distribution-configured Quiet/cancellation/cooldown/budget controls | Own policy/config wiring; coordinate service-file overlap with LLM-1 |
 | ACCESS-1 | Deliver selected isolated tester enrollment and revocation slice | Own access contract; provide invalidation interface to CACHE-1 |
 | VERIFY-0 | Orchestrator delivers offline verifier runner and evidence receipts before workers start | Foundation must be inspected and accepted before first dispatch |

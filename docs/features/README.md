@@ -1,5 +1,7 @@
 # Feature and context map
 
+September 29 direction: [invited social presence](../social-presence-experience.md) supersedes note-taking-led positioning; see the [revised execution phases](../execution/demo-testflight-phases.md). Earlier implementation and rollout claims below remain dated evidence, not fresh runtime inspection.
+
 Start with the [dedicated context map for your feature](context-map.md): current behavior, gaps, dependencies, evidence and next bounded work.
 
 See the [feature verification map](verification-map.md) for each feature’s executable verifier, required real-path evidence, and implementation gaps.
