@@ -35,3 +35,9 @@ Manual review: key content and prerequisite preserved, but **grouping failed**â€
 The exact successful request/response replays through retrieval, validation, durable main-chat storage and reopen with `PYTHONPATH=Backend python3 -m unittest Backend.test_proactive_readability -v` (one test passed). That test explicitly records the single-paragraph output, not a presentation success. Existing UI grouping remains locally verified by PR129. Runtime v2 and the physical phone are unchanged.
 
 Next: improve the candidateâ€™s message-boundary instruction and resolve provider error observability before any further provider execution. Retain this failed candidate and predeclared cases; never present this partial screen as a passed wording checkpoint. Request shape was checked against [official Structured Outputs documentation](https://developers.openai.com/api/docs/guides/structured-outputs); schema validity alone does not establish content or presentation quality.
+
+## Founder correction: preserve bubble UI
+
+Message size refers to character amount. Reverted the PR129 native grouping implementation and its fixture/test changes to the verified pre-experiment baseline (`6c5330f`). The earlier screenshot and grouping assessment remain historical evidence, not the desired UI. Runtime v2 remains unchanged; candidate v3 and recorded requests remain archived evidence. No prompt selection, deployment or provider run is part of this correction.
+
+Restoration QA: native PhoneUITests/ProactiveUITests passed on the same iPhone simulator with the restored local socket fixture. Inspected the screenshot: original single reply bubble and normal controls, draft preserved, Quiet does not stop recording, answer retained after relaunch. Initial fixture launch lacked its temporary directory; created it and reran successfully. No provider traffic.
