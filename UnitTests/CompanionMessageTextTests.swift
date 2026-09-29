@@ -26,4 +26,11 @@ final class CompanionMessageTextTests: XCTestCase {
         XCTAssertEqual(CompanionMessageText.display("A [", streaming: false), "A [")
         XCTAssertEqual(CompanionMessageText.display("No diagnosis was established."), "No diagnosis was established.")
     }
+    func testSeparateProactiveMessagesKeepContentsAndOrdinaryRepliesIntact() {
+        let text = "Test with five people before adding features.\n\nCalendar integration comes afterward."
+        XCTAssertEqual(CompanionMessageText.bubbles(text, proactive: true),
+                       ["Test with five people before adding features.", "Calendar integration comes afterward."])
+        XCTAssertEqual(CompanionMessageText.bubbles(text, proactive: false), [text])
+        XCTAssertEqual(CompanionMessageText.bubbles("At 8 a.m. Dr. Lee arrives.", proactive: true), ["At 8 a.m. Dr. Lee arrives."])
+    }
 }

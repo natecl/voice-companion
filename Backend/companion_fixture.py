@@ -69,12 +69,12 @@ async def main(directory):
                 await asyncio.sleep(.25)
                 state=json.loads(request['input'])
                 return dict(usage={},data=dict(decision='contribute',
-                    text='Earlier, Alex mentioned waking at three each morning. That may be worth bringing up.',
+                    messages=['Earlier, Alex mentioned waking at three each morning.', 'That may be worth bringing up.'],
                     evidence_ids=[state['sources'][0]['id']]))
         class FreeBudget:
             def reserve(self,*args):pass
             def finish(self,*args):pass
-        proactive=ProactiveSocketService(ledger,ProactiveService(store,ProactiveModel(),FreeBudget()))
+        proactive=ProactiveSocketService(ledger,ProactiveService(store,ProactiveModel(),FreeBudget(),grouped_messages=True))
     async def handle(socket):
         if socket.request.path=='/proactive' and proactive:
             await proactive.handle(socket);return

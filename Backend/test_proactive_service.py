@@ -63,6 +63,23 @@ class ProactiveServiceTests(unittest.IsolatedAsyncioTestCase):
         turn=CompanionChat(self.store).page(self.owner)['turns'][0]
         self.assertEqual(turn['answer'],result['text']);self.assertEqual(turn['state'],'outdated')
 
+    async def test_grouped_messages_roundtrip_as_one_durable_contribution(self):
+        messages=['Alex mentioned waking at three each morning.', 'That may be worth bringing up.']
+        class GroupedModel:
+            async def extract(inner,request):
+                self.assertIn('messages',request['text']['format']['schema']['properties'])
+                return dict(usage={},data=dict(decision='contribute',messages=messages,evidence_ids=['m1']))
+        self.service=ProactiveService(self.store,GroupedModel(),self.budget,grouped_messages=True)
+        result=await self.evaluate()
+        self.assertEqual(result['type'],'contribution')
+        turns=CompanionChat(MemoryStore(self.path)).page(self.owner)['turns']
+        self.assertEqual(len(turns),1)
+        self.assertEqual(turns[0]['answer'].split('\n\n'),messages)
+        self.assertEqual((await self.evaluate())['type'],'existing')
+        self.assertEqual(len(self.budget.attempts),1)
+        self.store.delete_source(self.owner,'prior')
+        self.assertEqual(CompanionChat(self.store).page(self.owner)['turns'][0]['answer'],result['text'])
+
     async def test_empty_other_owner_and_silence_do_not_write_messages(self):
         other=self.store.owner_for('other')
         self.assertEqual((await self.service.evaluate(other,self.live,lambda:True))['type'],'silence')
