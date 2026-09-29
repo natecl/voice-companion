@@ -101,3 +101,11 @@ Escalate only a concrete decision: what action, why needed, cost/scope, prepared
 ## First dispatch wave
 
 After execution is explicitly started: orchestrator P0-A; Astra/low workers P0-B and P0-C. No app changes, device use or paid calls in that first wave. Use their findings to assign Phase 1 implementation packets with exact file ownership. This avoids launching three overlapping feature rewrites from stale documentation.
+
+## Founder clarification: autonomy with real verification
+
+Workers have autonomy to implement, diagnose routine failures, run authorized checks and iterate within their packet. Their responsibility includes real behavior, not merely code and automated tests. They cannot advance dependent work past an unverified required behavior. The orchestrator enforces the same gate before integration and release.
+
+LLM workers require an explicit bounded provider allocation and fresh final-configuration output inspection, followed by application-pipeline verification. The active-path check must prove provider → parsing/validation → persistence → client delivery when the checkpoint claims that entire flow; provider-only evaluations remain narrower evidence. Do not require every worker to repeat unchanged physical capture tests or every paid evaluation: match checks to the claim and reuse valid receipts.
+
+Founder is willing to approve further spending, but this clarification does not specify a new dollar/call cap. Prepare and batch concrete budget requests by checkpoint, centrally reserve named allocations and stop at either cap. Within that approved scope, no per-call reconfirmation is needed. No automatic paid retries or using another worker's allocation. See the updated worker packet and verifier contract.

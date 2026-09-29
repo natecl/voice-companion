@@ -48,3 +48,11 @@ Orchestrator applies map updates at each verified checkpoint. Workers submit del
 ## Release readiness report
 
 A small report joins required packet receipts at exact commits. Show ready, failed, missing and expired/stale evidence explicitly. It does not merge, deploy, purchase inference, upload TestFlight builds or invite testers. The orchestrator reviews the report, addresses failures and performs authorized release steps separately.
+
+## Real-path acceptance requirements
+
+Each packet manifest must distinguish `mechanical_checks`, `live_behavior_checks`, and `inspection`. Its completion gate requires every applicable category; explicit not-applicable decisions need a reason. A successful command cannot override an unmet semantic or visual criterion.
+
+For model changes, attach the exact prompt/schema/model/configuration fingerprint, isolated scenario identity, fresh provider receipt, inspected response and resulting application turn/delivery evidence. Track the tested request separately from the code commit so a later prompt change makes the semantic evidence stale. Never include secrets. Note whether entry was provider-only, service-level or the active app pipeline; only claim the layer actually exercised. Capture latency and budget usage without silently retaining real-user content.
+
+The report must flag these as incomplete: fresh model verification missing after a prompt change; only synthetic output for an LLM claim; UI claim without actual rendered inspection; device claim without that device path; required live check skipped for lack of budget. Reviewers compare observed results against criteria fixed before the run. The original implementer performs verification; orchestrator review checks evidence and targeted integration rather than automatically duplicating every paid call.
