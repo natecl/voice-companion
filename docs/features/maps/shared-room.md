@@ -20,3 +20,5 @@ Browser preview: `python3 -m http.server 61715 --bind 127.0.0.1 --directory App/
 Remaining gates: screenshot inspection, gesture and error/recovery checks, physical iPhone keyboard/viewport/motion and native capture/dictation acceptance. Do not merge or declare physical acceptance while these are unverified. The preceding native room remains available as a rollback. Temporary companion artwork and unavailable invitations remain internal-preview limitations. iOS/system share sheets and permission prompts remain system UI.
 
 Evidence and installation status: [shared interface checkpoint](../../shared-room-ui.md).
+
+Latest motion slice: `scripts/qa/room-motion.html` provides the isolated browser motion/gesture verifier. Shared calm motion tokens, finger-tracked note actions, and chat left-swipe navigation are implemented; native fixture pipeline passed. Haptic bridge now prepares a retained impact generator, and capture enables optional recording-time haptics. Physical feel and capture/haptic coexistence remain unverified; see checkpoint evidence above before advancing acceptance.

@@ -13,14 +13,14 @@ body{overflow:hidden}button,input,textarea{font-family:inherit}button{cursor:poi
 #companion-room .toast{white-space:normal;width:max-content;max-width:calc(100% - 48px);display:flex;align-items:center;gap:8px}
 #companion-room .toast button{min-height:28px;min-width:28px;display:grid;place-items:center}
 #companion-room .toast svg{width:16px!important;height:16px!important}
-#companion-room .toast.leaving{opacity:0;transition:opacity .22s,translate .22s;translate:0 8px}
+#companion-room .toast.leaving{opacity:0;transition:opacity var(--motion-control),translate var(--motion-control) var(--ease-settle);translate:0 8px}
 #companion-room .paper p{overflow-wrap:anywhere;white-space:pre-wrap}
 #companion-room .note-card p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 #companion-room .note-wrap{position:relative;overflow:hidden;border-radius:26px;margin-bottom:10px;touch-action:pan-y}
-#companion-room .note-wrap .note-card{position:relative;margin:0;z-index:1;transition:transform .35s cubic-bezier(.22,1,.36,1);touch-action:pan-y}
-#companion-room .note-wrap.revealed .note-card{transform:translateX(-180px)}
+#companion-room .note-wrap .note-card{position:relative;margin:0;z-index:1;transform:translateX(var(--note-offset,0px));transition:transform 520ms var(--ease-settle);touch-action:pan-y}
+#companion-room .note-wrap.dragging .note-card,#companion-room .note-wrap.dragging .note-actions button{transition:none}
 #companion-room .note-actions{position:absolute;inset:0 0 0 auto;display:flex;align-items:center;gap:7px;padding-left:8px}
-#companion-room .note-actions button{width:50px;height:50px;min-height:50px;border-radius:50%;display:grid;place-items:center;color:white;background:#85808e}
+#companion-room .note-actions button{width:50px;height:50px;min-height:50px;border-radius:50%;display:grid;place-items:center;color:white;background:#7a8183}
 #companion-room [data-act=delete-note]{color:#ff3b30}#companion-room .note-actions [data-act=delete-note]{background:#ff3b30;color:white}
 #companion-room .note-actions [data-act=share-note]{background:#3478f6}
 #companion-room .dictation-row{display:flex;align-items:center;width:100%;gap:8px;height:44px}
@@ -32,3 +32,9 @@ body{overflow:hidden}button,input,textarea{font-family:inherit}button{cursor:poi
 @media(min-width:600px){#companion-room{max-width:402px;height:min(810px,100%);margin:auto}body{display:grid;place-items:center}}
 
 #companion-room .note-card{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+
+#companion-room .note-actions button{opacity:0;transform:translateX(18px) scale(.82);transition:transform 480ms var(--ease-settle),opacity 340ms}
+#companion-room .note-actions button:active{scale:.9}
+#companion-room .note-actions button{transition-property:transform,opacity,scale;transition-duration:480ms,340ms,220ms}
+
+#companion-room .chat{touch-action:pan-y}

@@ -8,7 +8,7 @@
   const icon = name => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${window.roomIcons[name] || ''}</svg>`;
   function icons(scope=root){scope.querySelectorAll('[data-lucide]').forEach(e=>e.outerHTML=icon(e.dataset.lucide));}
   let state={messages:[],notes:[],busy:false,ready:false,draft:'',draftVersion:0,appearance:'system',capture:null,dictation:null};
-  let page=null,selected=null,transcript=false,focusBefore=null,closeTimer,toastTimer,toastClosing;
+  let page=null,selected=null,transcript=false,focusBefore=null,toastTimer;
   let draftVersion=0,localDraft='',lastLibrary='',lastPanel='',lastToast='',suppressedClickUntil=0;
   const transport = (action, value={}) => {
     const command={version:1,action,...value};
@@ -16,7 +16,7 @@
     else preview(command);
   };
   function panel(title,html){
-    clearTimeout(closeTimer); overlay.classList.remove('leaving');
+    overlay.classList.remove('leaving');
     if(overlay.hidden) focusBefore=document.activeElement;
     q('.panel-head h2').textContent=title;q('.panel').setAttribute('aria-label',title);
     q('.panel-body').innerHTML=html; overlay.hidden=false;device.classList.add('covered');
@@ -26,11 +26,20 @@
   function close(){
     if(overlay.hidden)return;
     page=null;lastPanel='';transport('close-note');overlay.classList.add('leaving');device.classList.remove('covered');
-    clearTimeout(closeTimer);closeTimer=setTimeout(()=>{
-      overlay.hidden=true;overlay.classList.remove('leaving');q('.shell').inert=device.classList.contains('notes-open');
-      q('.library').inert=!device.classList.contains('notes-open');
-      if(focusBefore?.isConnected)focusBefore.focus({preventScroll:true});
-    },matchMedia('(prefers-reduced-motion:reduce)').matches?0:220);
+    if(matchMedia('(prefers-reduced-motion:reduce)').matches)finishClose();
+    else {
+      // The compositor may start after this click. Do not cut its exit short with a 220ms wall-clock timer.
+      const animations=q('.panel').getAnimations();
+      if(animations.length)Promise.all(animations.map(a=>a.finished)).then(()=>{
+        if(overlay.classList.contains('leaving'))finishClose();
+      }).catch(()=>{}); // Reopening cancels the old exit intentionally.
+      else finishClose();
+    }
+  }
+  function finishClose(){
+    overlay.hidden=true;overlay.classList.remove('leaving');q('.shell').inert=device.classList.contains('notes-open');
+    q('.library').inert=!device.classList.contains('notes-open');
+    if(focusBefore?.isConnected)focusBefore.focus({preventScroll:true});
   }
   function tab(notes){
     input.blur();device.classList.toggle('notes-open',notes);q('.library').inert=!notes;q('.shell').inert=notes;
@@ -38,11 +47,14 @@
     if(notes)transport('library');
   }
   function toast(text,persistent=false){
-    clearTimeout(toastTimer);clearTimeout(toastClosing);const el=q('.toast');el.classList.remove('leaving');
+    clearTimeout(toastTimer);const el=q('.toast');el.classList.remove('leaving');
     el.innerHTML=`<span>${escape(text)}</span><button data-act="dismiss-toast" aria-label="Dismiss message">${icon('x')}</button>`;
     el.hidden=false;if(!persistent)toastTimer=setTimeout(dismissToast,2300);
   }
-  function dismissToast(){clearTimeout(toastTimer);q('.toast').classList.add('leaving');toastClosing=setTimeout(()=>q('.toast').hidden=true,220);}
+  function dismissToast(){
+    clearTimeout(toastTimer);const el=q('.toast');el.classList.add('leaving');
+    Promise.all(el.getAnimations().map(a=>a.finished)).then(()=>{if(el.classList.contains('leaving'))el.hidden=true;}).catch(()=>{});
+  }
   function syncDraft(){
     input.style.height='44px';input.style.height=Math.min(116,input.scrollHeight)+'px';
     const has=!!input.value.trim(), button=q('.send'), glyph=state.busy?'square':has?'arrow-up':'mic';
@@ -80,13 +92,14 @@
     const messages=[...(state.showWelcome===false?[]:[{id:'welcome',text:'Hey, good to see you.'},{id:'welcome-2',text:'What’s on your mind?'}]),...state.messages];
     const ids=new Set(messages.map(m=>m.id));
     chat.querySelectorAll('[data-message]').forEach(e=>{if(!ids.has(e.dataset.message))e.remove();});
-    let anchor=q('.hint');
+    let anchor=q('.day');
     messages.forEach((m,index)=>{
       let el=[...chat.querySelectorAll('[data-message]')].find(e=>e.dataset.message===m.id);
       if(!el){el=document.createElement('div');el.dataset.message=m.id;el.className='bubble context-copy'+(m.user?' user':'');}
       if(el.textContent!==m.text)el.textContent=m.text;
-      if(index<2&&m.id.startsWith('welcome')){q('.hint').before(el);}else if(anchor.nextElementSibling!==el){anchor.after(el);}anchor=el.id?.startsWith('welcome')?q('.hint'):el;
-      if(m.id==='welcome-2')anchor=q('.hint');
+      if(!(index<2&&m.id.startsWith('welcome'))&&anchor===q('.day'))anchor=q('.hint');
+      if(anchor.nextElementSibling!==el)anchor.after(el);
+      anchor=m.id==='welcome-2'?q('.hint'):el;
     });
     q('.hint').hidden=state.showWelcome===false;q('.day').hidden=state.showWelcome===false;
     let thinking=q('.thinking');if(!thinking){thinking=document.createElement('div');thinking.className='thinking';thinking.setAttribute('role','status');chat.append(thinking);}
@@ -182,18 +195,39 @@
     if(a==='attach-note'||a==='ask-note'){transport('attach',{id:id||selected});close();tab(false);}
     if(a==='delete-note')open('delete-confirm',id);
     if(a==='confirm-delete'){transport('delete',{id});close();}
-    if(a==='share-note'||a==='copy-note'){transport(a,{id});if(page)close();q(`.note-wrap[data-id="${CSS.escape(id)}"]`)?.classList.remove('revealed');}
+    if(a==='share-note'||a==='copy-note'){transport(a,{id});if(page)close();const wrap=q(`.note-wrap[data-id="${CSS.escape(id)}"]`);if(wrap)settleNote(wrap,false);}
     if(a==='copy-message'){transport('copy-message',{id});close();}
   });
-  // Horizontal movement reveals actions; it cannot accidentally navigate. Vertical movement remains native scrolling.
+  // Track the finger; settle only after release. Vertical scroll never becomes a swipe.
   let gesture=null,holdTimer;
+  const revealWidth=180;
+  function positionNote(wrap,offset){
+    const progress=Math.max(0,Math.min(1,-offset/revealWidth));
+    wrap.style.setProperty('--note-offset',`${offset}px`);
+    wrap.querySelectorAll('.note-actions button').forEach((button,index)=>{
+      const part=Math.max(0,Math.min(1,(progress-index*.10)/.8));
+      button.style.opacity=String(part);
+      button.style.transform=`translateX(${(1-part)*18}px) scale(${.82+part*.18})`;
+    });
+  }
+  function settleNote(wrap,open){
+    wrap.classList.remove('dragging');wrap.classList.toggle('revealed',open);
+    wrap.querySelector('.note-actions').inert=!open;
+    positionNote(wrap,open?-revealWidth:0);
+  }
   root.addEventListener('pointerdown',e=>{
-    suppressedClickUntil=0; // A fresh touch is intentional, even immediately after a swipe.
-    const target=e.target.closest('.note-card,.bubble,.persona,.note-paragraph');if(!target)return;
-    gesture={target,x:e.clientX,y:e.clientY,pointer:e.pointerId,moved:false};
+    if(!e.isPrimary||e.button!==0)return;
+    suppressedClickUntil=0;
+    if(e.target.closest('button,[role=button]'))transport('prepare-haptic');
+    const navigate=overlay.hidden&&!device.classList.contains('notes-open')&&!!e.target.closest('.chat')&&!e.target.closest('button,a,input,textarea');
+    const target=e.target.closest('.note-card,.bubble,.persona,.note-paragraph')||(navigate?chat:null);if(!target)return;
+    if(navigate)transport('prepare-haptic');
+    const wrap=target.closest('.note-wrap');
+    root.querySelectorAll('.note-wrap.revealed').forEach(other=>{if(other!==wrap)settleNote(other,false);});
+    const start=wrap?new DOMMatrixReadOnly(getComputedStyle(target).transform).m41:0;
+    gesture={target,wrap,navigate,x:e.clientX,y:e.clientY,pointer:e.pointerId,moved:false,axis:null,start,offset:start,lastX:e.clientX,lastTime:e.timeStamp,velocity:0,wasOpen:!!wrap?.classList.contains('revealed')};
     holdTimer=setTimeout(()=>{
-      if(!gesture||gesture.moved)return;suppressedClickUntil=Date.now()+600;transport('haptic');
-      const wrap=target.closest('.note-wrap');
+      if(!gesture||gesture.moved||target===chat)return;suppressedClickUntil=Date.now()+600;transport('haptic');
       if(wrap)open('note-actions',wrap.dataset.id);
       else if(target.matches('.bubble'))open('message-actions',target.dataset.message);
       else if(target.matches('.persona'))open('conversation-actions');
@@ -202,11 +236,35 @@
     },550);
   });
   root.addEventListener('pointermove',e=>{
-    if(!gesture)return;const dx=e.clientX-gesture.x,dy=e.clientY-gesture.y;
-    if(Math.abs(dx)>8||Math.abs(dy)>8){gesture.moved=true;clearTimeout(holdTimer);}
-    if(Math.abs(dx)>25&&Math.abs(dx)>Math.abs(dy)*1.4){const wrap=gesture.target.closest('.note-wrap');if(wrap){wrap.classList.toggle('revealed',dx<0);wrap.querySelector('.note-actions').inert=dx>=0;suppressedClickUntil=Date.now()+600;}}
+    if(!gesture||e.pointerId!==gesture.pointer)return;
+    const g=gesture,dx=e.clientX-g.x,dy=e.clientY-g.y;
+    if(Math.abs(dx)>8||Math.abs(dy)>8){g.moved=true;clearTimeout(holdTimer);}
+    if(!g.axis&&g.moved)g.axis=Math.abs(dx)>Math.abs(dy)*1.4?'x':'y';
+    if(g.axis==='x'&&g.navigate){suppressedClickUntil=Date.now()+600;return;}
+    if(g.axis!=='x'||!g.wrap)return;
+    if(!g.wrap.classList.contains('dragging')){
+      g.wrap.classList.add('dragging');g.wrap.querySelector('.note-actions').inert=true;
+      g.target.setPointerCapture?.(e.pointerId);
+    }
+    const delta=e.timeStamp-g.lastTime;
+    if(delta>0)g.velocity=(e.clientX-g.lastX)/delta;
+    g.lastX=e.clientX;g.lastTime=e.timeStamp;
+    g.offset=Math.max(-revealWidth,Math.min(0,g.start+dx));
+    positionNote(g.wrap,g.offset);suppressedClickUntil=Date.now()+600;
   });
-  function endGesture(){clearTimeout(holdTimer);if(gesture?.moved)suppressedClickUntil=Date.now()+400;gesture=null;}
+  function endGesture(e){
+    clearTimeout(holdTimer);const g=gesture;if(!g||e.pointerId!==g.pointer)return;
+    if(g.navigate&&g.axis==='x'&&e.type==='pointerup'&&e.clientX-g.x<-64){
+      tab(true);transport('interrupt-dictation');transport('haptic');
+    }
+    if(g.axis==='x'&&g.wrap){
+      const velocity=e.timeStamp-g.lastTime<100?g.velocity:0;
+      const open=e.type==='pointercancel'?g.wasOpen:Math.abs(velocity)>.45?velocity<0:g.offset<-revealWidth*.45;
+      settleNote(g.wrap,open);
+      if(open!==g.wasOpen&&e.type!=='pointercancel')transport('haptic');
+    }
+    if(g.moved)suppressedClickUntil=Date.now()+400;gesture=null;
+  }
   root.addEventListener('pointerup',endGesture);root.addEventListener('pointercancel',endGesture);
   root.addEventListener('contextmenu',e=>{if(e.target.closest('.note-card,.bubble,.persona'))e.preventDefault();});
   overlay.addEventListener('click',e=>{if(e.target===overlay)close();});

@@ -21,6 +21,7 @@ final class RoomWebModel {
     func refreshSelected() { if let session = sessions.first(where: { $0.id == selectedID }) { loadNote(session) } }
     var draftVersion = 0
     var foreground = true
+    private let tapFeedback = UIImpactFeedbackGenerator(style: .light)
     private var needsRefresh = false
     private var notes: [String: RecordingNotesResult] = [:]
     private var notesErrors: [String: String] = [:]
@@ -142,7 +143,9 @@ final class RoomWebModel {
         let id = (command["id"] as? String).flatMap(UUID.init(uuidString:))
         let session = sessions.first { $0.id == id }
         switch action {
-        case "haptic": UISelectionFeedbackGenerator().selectionChanged()
+        case "prepare-haptic": if foreground { tapFeedback.prepare() }
+        case "haptic":
+            if foreground { tapFeedback.impactOccurred(intensity: 0.8); tapFeedback.prepare() }
         case "draft":
             guard let text = command["text"] as? String, text.utf8.count <= 32000,
                   let revision = command["revision"] as? Int, revision >= draftVersion, !dictation.isActive else { return }
@@ -271,7 +274,7 @@ struct SharedRoomRootView: View {
             RoomWebView(state: model.snapshot, onAction: model.action, onFailure: { interfaceFailure = $0 })
                 .id(interfaceVersion)
         }.background(Color(UIColor { traits in
-            traits.userInterfaceStyle == .dark ? UIColor(red: 20/255, green: 19/255, blue: 23/255, alpha: 1) : .white
+            traits.userInterfaceStyle == .dark ? UIColor(red: 21/255, green: 24/255, blue: 25/255, alpha: 1) : .white
         }))
             .preferredColorScheme(model.appearance == "system" ? nil : model.appearance == "dark" ? .dark : .light)
             .task { model.start() }

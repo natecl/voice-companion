@@ -29,7 +29,10 @@ import XCTest
         XCTAssertTrue(web.buttons["End recording"].waitForExistence(timeout: 3))
         web.buttons["End recording"].tap()
         XCTAssertTrue(web.buttons["Invite Ellis into the conversation"].waitForExistence(timeout: 8))
-        web.buttons["Open notes"].tap()
+        // A left swipe on the conversation is the alternative to tapping the menu.
+        let from = web.coordinate(withNormalizedOffset: CGVector(dx: 0.8, dy: 0.45))
+        let to = web.coordinate(withNormalizedOffset: CGVector(dx: 0.2, dy: 0.45))
+        from.press(forDuration: 0.05, thenDragTo: to)
         let note=web.buttons.containing(NSPredicate(format: "label CONTAINS 'Recorded conversation' OR label CONTAINS 'Maya’s swimming'")).firstMatch
         XCTAssertTrue(note.waitForExistence(timeout: 8))
         XCTAssertFalse(web.staticTexts["A small test, then build"].exists, "No prototype seed notes in the real app")

@@ -46,6 +46,7 @@ struct RoomWebView: UIViewRepresentable {
         var ready = false
         private var lastData: Data?
         private var delivering = false
+        private var capturedEnvironment = false
         let onAction: ([String: Any]) -> Void
         let onFailure: (String) -> Void
         init(onAction: @escaping ([String: Any]) -> Void, onFailure: @escaping (String) -> Void) {
@@ -67,10 +68,47 @@ struct RoomWebView: UIViewRepresentable {
             web.callAsyncJavaScript("window.room.render(state);", arguments: ["state": state], in: nil, in: .page) { [weak self] result in
                 guard let self else { return }; self.delivering = false
                 switch result {
-                case .success: self.sendState()
+                case .success: self.captureEnvironmentIfRequested(); self.sendState()
                 case .failure: self.ready = false; self.onFailure("The interface stopped responding. Please reopen the app. Your saved conversations are safe.")
                 }
             }
+        }
+        // Opt-in, content-free evidence for physical rendering differences. Never runs in release.
+        private func captureEnvironmentIfRequested() {
+            #if DEBUG
+            guard !capturedEnvironment, ProcessInfo.processInfo.arguments.contains("--room-environment-check"), let web else { return }
+            capturedEnvironment = true
+            let script = """
+            const selectors = ['.library','.shell','.panel','.bubble','.composer .send'];
+            const styles = Object.fromEntries(selectors.map(selector => {
+              const el = document.querySelector(selector);
+              if (!el) return [selector, null];
+              const s = getComputedStyle(el);
+              return [selector, {transitionDuration:s.transitionDuration,transitionTimingFunction:s.transitionTimingFunction,animationDuration:s.animationDuration,animationTimingFunction:s.animationTimingFunction,fontFamily:s.fontFamily,fontWeight:s.fontWeight,fontSize:s.fontSize}];
+            }));
+            const frames = [];
+            await new Promise(resolve => {
+              let previous;
+              function frame(now) {
+                if (previous !== undefined) frames.push(now - previous);
+                previous = now;
+                if (frames.length < 30) requestAnimationFrame(frame); else resolve();
+              }
+              requestAnimationFrame(frame);
+            });
+            frames.sort((a,b)=>a-b);
+            return {reduceMotion:matchMedia('(prefers-reduced-motion:reduce)').matches,styles,medianFrameMilliseconds:frames[15]};
+            """
+            web.callAsyncJavaScript(script, arguments: [:], in: nil, in: .page) { result in
+                guard case .success(let value) = result, var report = value as? [String: Any] else { return }
+                report["nativeReduceMotion"] = UIAccessibility.isReduceMotionEnabled
+                report["nativeBoldText"] = UIAccessibility.isBoldTextEnabled
+                report["lowPowerMode"] = ProcessInfo.processInfo.isLowPowerModeEnabled
+                guard let data = try? JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]),
+                      let directory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else { return }
+                try? data.write(to: directory.appendingPathComponent("RoomUIEnvironment.json"), options: .atomic)
+            }
+            #endif
         }
         func webView(_ webView: WKWebView, decidePolicyFor action: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
             decisionHandler(action.targetFrame?.isMainFrame == true && action.request.url?.standardizedFileURL == entry?.standardizedFileURL ? .allow : .cancel)

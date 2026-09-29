@@ -1,7 +1,7 @@
 {
   "source": "companion-room.html",
-  "sha256": "b16c2f172c0c78cad115d7400adc03b2ad7b960d57f99853f2f1400d8fbcfdb8",
-  "cssSHA256": "525ccb22ec79d126d4d4cc49db22b3a502dcc15e4a0ac9d10903dc1db6282e97",
+  "sha256": "ecbfc9deedda32ff6dff1f83a92ac31f8e97fb955aed7e8fad1f140178c35eef",
+  "cssSHA256": "7b31bca7d0e34422cca525a5339b23d74a6fdb4b6ee7811b4c25bd0cfcd1e557",
   "date": "2026-09-29",
-  "revision": "Founder requested white light-mode background and outlined message bubbles"
+  "revision": "White and neutral surfaces, original purple accents, outlined bubbles, founder-approved calmer motion"
 }
