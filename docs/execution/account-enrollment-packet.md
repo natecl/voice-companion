@@ -71,3 +71,7 @@ After the founder accepted the updated agreement, a fresh App Store Connect relo
 Schema 20 adds `(issuer, subject)` → owner mapping in the existing memory database. The server-only `owner_for_identity` operation atomically binds a fresh credential to the returning identity's owner, or creates an isolated owner for a new identity. Existing founder credentials cannot be adopted or reassigned. No email linking, enrollment endpoint, token verification, refresh service or native login is delivered by this storage checkpoint.
 
 [Account identity QA](../qa/account-identity/README.md) records synthetic identity, migration, concurrency and actual local WebSocket isolation evidence. Hosted deployment remains unchanged. Do not roll schema 20 back to schema 19 binaries against the upgraded database; use the predeployment backup if a future deployment needs rollback.
+
+## Founder constraint: UI freeze
+
+September 29: do not modify any actual UI code or UI design during TestFlight preparation. Preserve all existing presentation files, shared HTML/CSS/JavaScript, SwiftUI views, layout, styling and interactions. Backend authentication, account services, non-presentation native modules and release configuration may proceed. If connecting authentication requires a UI-code change, stop and present the exact necessary change for founder approval; do not treat the broader TestFlight goal as permission to override this freeze. Google-before-Apple remains the selected order, not authorization to edit the UI.

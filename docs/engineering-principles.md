@@ -396,3 +396,5 @@ Founder checkpoint revision, September 29: merge the reviewed UI as the internal
 ## Release authentication — September 29, 2026
 
 Founder decision: ship both Google and Apple sign-in, with Google above Apple in the sign-in UI. Neither provider is deferred. Preserve the approved shared interface. Implement and verify real enrollment, stable ownership and session lifecycle; preview buttons do not establish authentication. Follow the existing small-checkpoint, real-path QA and founder-dependent blocker rules. This decision grants no new paid-model allowance and does not select prices or a pilot cohort.
+
+Founder TestFlight constraint, September 29: all actual UI code and UI design are frozen. Implement backend, non-presentation authentication/account modules and release setup without editing UI files. Any required UI integration change must be described concretely and approved separately before editing; the TestFlight goal does not override this constraint.
