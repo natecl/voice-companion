@@ -34,7 +34,7 @@ Native controller pipeline and failure/recovery passed in `/tmp/CompanionRoomPar
 
 Initial screenshot capture could occur during sheet entry. The screenshot helper now waits for the close control to settle. A follow-up exposed the live synthetic transcript's growing height; that surface has a longer bounded settling window. This is not a relaxation of functional assertions. The separate accessory-panel check passed in 23.447 seconds at `/tmp/CompanionRoomPanelQA/20260929-153704/`, including invitation, profile, memory controls and an empty attachment picker. Both built and installed simulator resource bytes were checked.
 
-Simulator checks use local provider responses and synthetic recording/dictation, with no paid calls. Physical haptic feel, real microphone behavior and complete physical acceptance are not established by these checks. PR 154 stays draft until those acceptance gates are complete.
+Simulator checks use local provider responses and synthetic recording/dictation, with no paid calls. Physical haptic feel, real microphone behavior and complete physical acceptance are not established by these checks. Founder explicitly requested merging PR 154 as the internal UI baseline after hands-on iteration. Remaining physical checks are release gates; this merge does not establish TestFlight readiness.
 
 Final expanded native pipeline passed in 76.127 seconds: `/tmp/CompanionRoomFinalQA/20260929-153823/SharedRoomPhoneUITests-testSharedRoomNativePipeline.xcresult`. It includes settled note/attachment screenshots and memory controls; exports are `/tmp/room-final-evidence/`. [Selected simulator panels](qa/shared-room-parity/simulator-panels.jpg).
 
