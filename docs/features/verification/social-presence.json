@@ -1,0 +1,34 @@
+{
+  "packet": "FEATURE-social-presence",
+  "base": "cdd17dcd1da040e509ea06d734fb46040ad5b69a",
+  "acceptance": [
+    "Invitation is deliberate and listening/Quiet/End states are honest and distinguishable",
+    "Arrival/live/reply/history flow feels personable and is usable at phone size",
+    "Drafts, saved conversation and accessible controls survive navigation/interruption",
+    "Prototype visual review precedes native shell replacement; prototype alone cannot establish native acceptance"
+  ],
+  "checks": [
+    {
+      "id": "social-presence-prototype",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/social-presence/prototype.json",
+      "claim": "Founder visual direction review plus rendered interaction/accessibility inspection"
+    },
+    {
+      "id": "social-presence-native",
+      "group": "live_behavior_checks",
+      "kind": "simulator",
+      "evidence": "work/feature-evidence/social-presence/native.json",
+      "claim": "Actual integrated arrival/listening/reply/Quiet/End/history; keyboard, large text, reduced motion, offline/interruption and persistence"
+    },
+    {
+      "id": "social-presence-state-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "evidence": "work/feature-evidence/social-presence/state-contracts.json",
+      "claim": "Implemented state and persistence tests; add reviewed executable suite when UI slice is built"
+    }
+  ],
+  "not_applicable": {}
+}

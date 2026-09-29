@@ -41,6 +41,8 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Next bounded work
 
+Cached notes support returning continuity and the secondary history surface in the proposed social-presence UI. Keep this functional slice independent of visual exploration, coordinating only its load/invalidation interfaces.
+
 Deliver one bounded persistence/read/refresh slice with disk/relaunch/offline tests and actual app inspection; agree cache ownership and invalidation interfaces before parallel edits.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.

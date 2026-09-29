@@ -276,5 +276,19 @@
     "manifest": "docs/features/verification/connected-sources.json",
     "verification_scope": "No implemented verifier: requires scoped connector design, consent, ownership and disconnect contract before implementation",
     "context_map": "docs/features/maps/connected-sources.md"
+  },
+  "social-presence": {
+    "name": "Invited social presence and interface",
+    "outcome": "Deliberately invite a familiar AI participant; read useful contributions and remain in control",
+    "status": "planned interface and experience revision; existing capture/chat foundations only",
+    "implementation": [
+      "App/CompanionRootView.swift",
+      "App/ExperienceStyle.swift",
+      "docs/social-presence-experience.md"
+    ],
+    "test_modules": [],
+    "manifest": "docs/features/verification/social-presence.json",
+    "verification_scope": "Reviewed prototype, actual native state transitions, accessible controls, drafts and history; changed model judgment verified through proactive contract",
+    "context_map": "docs/features/maps/social-presence.md"
   }
 }

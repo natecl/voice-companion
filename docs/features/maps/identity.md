@@ -41,6 +41,8 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Next bounded work
 
+The personal knowledge graph starts with existing subject/provenance links. Prove owner versus third-party attribution and correction continuity; no voice identity or new graph database is inferred.
+
 Diagnose migration expectation and exercise unknown speaker, quoted third-party text and same-name subjects; fresh model evidence is required for changed identity judgments.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.

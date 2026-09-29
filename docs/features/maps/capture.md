@@ -42,6 +42,8 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Next bounded work
 
+Invitation is proposed experience language for deliberately starting capture/participation. It must not obscure microphone state or change permission, Quiet versus End, or private dictation pause/resume semantics.
+
 Exercise permission, interruption and stop/save recovery with saved events first; use real microphone/provider evidence only for the changed capture boundary.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.

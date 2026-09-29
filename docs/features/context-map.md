@@ -2,6 +2,8 @@
 
 Each feature has its own working brief. Read it before the verifier or implementation. The map separates existing behavior, gaps, contracts, dependencies, evidence and the next bounded job. These are repository context snapshots, not fresh deployment attestations.
 
+The [social-presence experience](../social-presence-experience.md) is the latest founder direction.
+
 | Feature | Context map | Verifier |
 | --- | --- | --- |
 | Capture and live transcript | [capture](maps/capture.md) | [Contract](verification/capture.json) |
@@ -21,5 +23,6 @@ Each feature has its own working brief. Read it before the verifier or implement
 | TestFlight install and update | [distribution](maps/distribution.md) | [Contract](verification/distribution.json) |
 | Sign-up and pricing previews | [subscriptions](maps/subscriptions.md) | [Contract](verification/subscriptions.json) |
 | Calendar, email and messages | [connected-sources](maps/connected-sources.md) | [Contract](verification/connected-sources.json) |
+| Invited social presence and interface | [social-presence](maps/social-presence.md) | [Contract](verification/social-presence.json) |
 
 The orchestrator maintains these maps at accepted checkpoints. Workers submit map deltas with evidence; they do not independently rewrite shared product direction. See [worker packet](../execution/worker-packet-template.md) and [verification map](verification-map.md). Older aggregate [feature details](features.md) and [knowledge history](knowledge.md) provide supporting background; consult dates and exact code before treating historical rollout text as current.

@@ -41,6 +41,8 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Next bounded work
 
+The invited companion needs durable personal continuity, not more extracted facts as a success metric. Audit existing linked preferences/goals/relationships and keep source-grounded learning; do not rewrite storage merely to call it a knowledge graph.
+
 Diagnose the recorded schema 17/19 test mismatch without weakening migration checks; then verify changed extraction/verification through worker and durable storage.
 
 Before editing, read this map and linked code, identify affected contracts, and define observable success/failure cases in the packet. Submit changed behavior, exact commit/configuration, reproducible evidence, remaining gaps and proposed map updates to the orchestrator. Dependent work waits for explicit review acceptance.

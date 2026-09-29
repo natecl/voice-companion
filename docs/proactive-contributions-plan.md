@@ -1,5 +1,7 @@
 # Proactive contributions from past notes: MVP implementation plan
 
+September 29 direction: [invited social presence](social-presence-experience.md) supersedes note-taking-led positioning; see the [revised execution phases](execution/demo-testflight-phases.md). Earlier implementation and rollout claims below remain dated evidence, not fresh runtime inspection.
+
 September 28, 2026. Planning base: main `d45e7a6`. No feature code or provider calls are delivered by this plan.
 
 ## Agreed outcome and boundaries
