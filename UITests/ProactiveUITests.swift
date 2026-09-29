@@ -37,7 +37,7 @@ final class ProactiveUITests: XCTestCase {
         XCTAssertFalse(app.staticTexts["Ellis"].exists)
         XCTAssertGreaterThan(message.frame.width, 100)
         XCTAssertGreaterThanOrEqual(message.frame.minX, 16)
-        XCTAssertLessThanOrEqual(message.frame.maxX, app.frame.maxX - 16)
+        XCTAssertLessThanOrEqual(message.frame.maxX, app.frame.maxX - 80)
         XCTAssertEqual(field.value as? String, "Keep my draft")
         XCTAssertTrue(app.buttons["stopRecording"].isEnabled)
         app.buttons["quietContributions"].tap()

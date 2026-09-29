@@ -329,3 +329,5 @@ Founder approves internal deployment of verified v4 wording and implementing con
 Founder approves an isolated $0.10 / five Luna-call conversation-level screen, no retries. Use the five predeclared exported fictional contexts; preserve prior exhausted ledgers, runtime quotas and personal data. This does not fund physical recording or authorize enabling a new phone pilot.
 
 Founder approves two-topic phone setup up to $0.21: one recording, one generated note, eight Luna proactive checks, no retries. Provision $0.045 runtime plus $0.16 isolated proactive capacity ($0.205), leave $0.005 unallocated. Preserve old charges; use two fictional seeds plus one live capture, account-scoped 24-hour gate and no personal learning. Supporting compatibility deployment/seed activation are authorized; wait for separate physical readiness before recording. No phone UI change.
+
+Founder bubble-margin refinement, September 29: agent messages extend too far to the right. Increase the trailing breathing room consistently for welcome, saved and streaming replies while preserving bubble styling, body typography and message content.
