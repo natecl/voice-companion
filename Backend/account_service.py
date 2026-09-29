@@ -49,7 +49,7 @@ class AccountService:
                             raise Rejected('invalid_account_request')
                         nonce = self.sessions.nonce(data['challenge'], provider)
                         identity = await asyncio.to_thread(self.verifier.verify, provider,
-                                                          data['identity_token'], apple_nonce=nonce)
+                                                          data['identity_token'], expected_nonce=nonce)
                         result = self.sessions.exchange(data['challenge'], provider, identity, data['identity_token'])
                     elif op == 'refresh' and fields == {'refresh_token'}:
                         result = self.sessions.refresh(data['refresh_token'])

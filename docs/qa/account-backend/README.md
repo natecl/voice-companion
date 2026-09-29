@@ -7,7 +7,7 @@ September 29, 2026. Based on merged ownership checkpoint `74a8a9e` (PR157). Cand
 `/account` is a native WebSocket endpoint, one JSON request per connection. Every request has integer `version: 1` and `operation`. Exact allowed payload fields:
 
 - `challenge`: `provider` (`google` or `apple`). Returns challenge, nonce and five-minute expiry. Pass the returned nonce verbatim to Apple's authorization request.
-- `exchange`: `provider`, `challenge`, `identity_token`. Verifies RS256 signature against fixed provider JWKS URLs, configured issuer/audience, expiry/issued-at, bounded subject, Google authorized presenter when supplied, and Apple server nonce. Returns owner, one-hour access token, refresh token and expiries. Each challenge and ID token can be exchanged once.
+- `exchange`: `provider`, `challenge`, `identity_token`. Verifies RS256 signature against fixed provider JWKS URLs, configured issuer/audience, expiry/issued-at, bounded subject, Google authorized presenter when supplied, and the server nonce for both native providers. Returns owner, one-hour access token, refresh token and expiries. Each challenge and ID token can be exchanged once.
 - `refresh`: `refresh_token`. Rotates once and revokes old access; preserves owner and the original 30-day refresh-family deadline. Replaying an old refresh token revokes that whole login family, including its latest access token. Native code must serialize refresh and reauthenticate after an uncertain/lost response rather than retry rotation automatically.
 - `sign_out`: `refresh_token`. Idempotently revokes that login family, including when given a consumed refresh token. Other login families remain valid.
 

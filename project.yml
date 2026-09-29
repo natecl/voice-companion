@@ -12,6 +12,9 @@ settings:
     INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: "Turn your speech into an editable companion message when you tap Dictate."
     INFOPLIST_KEY_NSMicrophoneUsageDescription: "Capture speech when you record a conversation or dictate a message."
 packages:
+  GoogleSignIn:
+    url: https://github.com/google/GoogleSignIn-iOS.git
+    exactVersion: 9.2.0
   ThinkingOrbsKit:
     path: Vendor/ThinkingOrbsKit
 targets:
@@ -19,7 +22,22 @@ targets:
     type: application
     dependencies:
       - package: ThinkingOrbsKit
+      - package: GoogleSignIn
+        product: GoogleSignIn
     platform: macOS
+    info:
+      path: App/Mac-Info.plist
+      properties:
+        GIDClientID: 774278865935-2142r4ndqoruu9jcug5s8uk44q2aj7bq.apps.googleusercontent.com
+        GIDServerClientID: 774278865935-gjppp5pd2i4hpatuf8nctteb9m0adf9c.apps.googleusercontent.com
+        EllisAccountEndpoint: wss://voice-companion-sdbr.onrender.com/account
+        CFBundleURLTypes:
+          - CFBundleURLSchemes: [com.googleusercontent.apps.774278865935-2142r4ndqoruu9jcug5s8uk44q2aj7bq]
+    entitlements:
+      path: App/Accounts/Mac.entitlements
+      properties:
+        com.apple.developer.applesignin: [Default]
+        keychain-access-groups: ["$(AppIdentifierPrefix)$(CFBundleIdentifier)"]
     sources:
       - path: App
         excludes: [RoomUI]
@@ -37,6 +55,8 @@ targets:
     type: application
     dependencies:
       - package: ThinkingOrbsKit
+      - package: GoogleSignIn
+        product: GoogleSignIn
     platform: iOS
     sources:
       - path: App
@@ -50,6 +70,15 @@ targets:
       path: App/Phone-Info.plist
       properties:
         UIBackgroundModes: [audio]
+        GIDClientID: 774278865935-knco8v1bf8u8qudkj3fn7bab73am87d6.apps.googleusercontent.com
+        GIDServerClientID: 774278865935-gjppp5pd2i4hpatuf8nctteb9m0adf9c.apps.googleusercontent.com
+        EllisAccountEndpoint: wss://voice-companion-sdbr.onrender.com/account
+        CFBundleURLTypes:
+          - CFBundleURLSchemes: [com.googleusercontent.apps.774278865935-knco8v1bf8u8qudkj3fn7bab73am87d6]
+    entitlements:
+      path: App/Accounts/Phone.entitlements
+      properties:
+        com.apple.developer.applesignin: [Default]
     settings:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: ""
