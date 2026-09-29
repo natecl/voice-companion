@@ -142,3 +142,11 @@ The Phase 2 rows are workstreams, not single-worker mandates. Split them into in
 | RELEASE-1 | Produce verified distribution readiness report and candidate archive | Wait for accepted integrated dependencies; no upload/invitations by default |
 
 Before dispatch, replace any vague packet with exact allowed files, base SHA, acceptance, commands and dependencies. Assign further jobs only after accepted completion or a separate explicit packet; a worker is not indefinitely responsible for “the LLM” or “all notes.” The orchestrator may issue multiple waves of Astra/low workers as capacity becomes available. Serialize shared-file integration and device access rather than broadening worker ownership. The orchestrator remains the acceptance gate.
+
+## Bounded background execution split — September 29, 2026
+
+Founder authorizes this first background wave while the founder and primary chat personally redesign the UI. Baseline is origin/main `47eadb4c8be3a46593bb6f17250f4c24335ea02c`. The background coordinator owns P0 verifier diagnosis/repair and a read-only distribution/access audit, with at most two GPT-6 Astra/low workers and independent evidence review. After reporting baseline findings to primary chat `01a0d1ef-b102-75e0-9198-a184db8cfb85`, one independent, evidence-backed offline note-cache or recovery checkpoint may proceed if prerequisites pass. Further phases await primary acceptance.
+
+Primary owns companion character/identity, colors, typography, layout, navigation, visual styling, icons and decorative motion. Background changes must preserve these; minimal functional recovery/cache integration requires a clear existing contract and stops for primary review if it conflicts. No shared design-component edits. No simulator/device lease is assumed. Founder-dependent manual QA waits for explicit readiness.
+
+This wave has zero paid-provider allowance and permits no deployment, upload, tester invitation, production reset or secrets in evidence. Preserve both the original project checkout and dictation-qa-budget reference checkout without branch/file changes. Use isolated managed worktrees. The coordinator inspects and reproduces worker evidence, maintains truthful feature maps, opens a focused PR and leaves it for primary review/merge. This wave does not authorize workers to advance dependencies or merge independently.
