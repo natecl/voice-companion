@@ -4,6 +4,7 @@ import sqlite3
 import time
 from pathlib import Path
 from admission import Rejected
+from service_policy import TWO_TOPIC_RESUME_APPROVAL
 from memory_budget import database
 
 APPROVAL = 'proactive-phone-20260928-090'
@@ -14,13 +15,14 @@ class PhoneQA:
     def __init__(self, directory, *, clock=time.time):
         self.root=Path(directory);self.clock=clock
         self.config=json.loads((self.root/'proactive-phone-qa.json').read_text())
-        if self.config['approval'] not in (APPROVAL,CEDAR_APPROVAL,TWO_TOPIC_APPROVAL):raise ValueError('Unknown phone QA approval')
+        if self.config['approval'] not in (APPROVAL,CEDAR_APPROVAL,TWO_TOPIC_APPROVAL,TWO_TOPIC_RESUME_APPROVAL):raise ValueError('Unknown phone QA approval')
         cedar=self.config['approval']==CEDAR_APPROVAL
-        two_topic=self.config['approval']==TWO_TOPIC_APPROVAL
+        resume=self.config['approval']==TWO_TOPIC_RESUME_APPROVAL
+        two_topic=self.config['approval'] in (TWO_TOPIC_APPROVAL,TWO_TOPIC_RESUME_APPROVAL)
         self.max_captures=3 if two_topic else 2
         self.max_calls,self.cap=(8,160000) if two_topic else (6,120000) if cedar else (12,250000)
         if not 0<self.config['expires']-self.config['starts']<=86400:raise ValueError('Invalid QA window')
-        self.path=self.root/('two-topic-phone-qa.sqlite' if two_topic else 'cedar-phone-qa.sqlite' if cedar else 'proactive-phone-qa.sqlite')
+        self.path=self.root/('two-topic-resume-qa.sqlite' if resume else 'two-topic-phone-qa.sqlite' if two_topic else 'cedar-phone-qa.sqlite' if cedar else 'proactive-phone-qa.sqlite')
         if not self.path.exists():raise ValueError('Provision phone QA first')
         self.usage=self.root/(TWO_TOPIC_APPROVAL if two_topic else CEDAR_APPROVAL if cedar else 'proactive-20260928-025')/'usage.sqlite'
         if not self.usage.exists():raise ValueError('Existing feature ledger required')
@@ -40,7 +42,7 @@ class PhoneQA:
     def contains(self,owner,capture):
         # Keep test recordings out of personal learning even after expiry.
         if owner!=self.config['owner']:return False
-        paths={self.path,self.root/'proactive-phone-qa.sqlite',self.root/'cedar-phone-qa.sqlite'}
+        paths={self.path,self.root/'proactive-phone-qa.sqlite',self.root/'cedar-phone-qa.sqlite',self.root/'two-topic-phone-qa.sqlite'}
         for path in paths:
             if path.exists():
                 with database(path) as db:
