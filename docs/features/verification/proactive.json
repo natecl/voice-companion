@@ -1,0 +1,39 @@
+{
+  "packet": "FEATURE-proactive",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "acceptance": [
+    "Useful unsolicited context with Quiet, budgets and stale-result rejection",
+    "Active decision \u2192 output \u2192 storage/delivery; relevant, resolved and same-topic-irrelevant cases",
+    "Actual bubbles, Quiet/stop, no stale/duplicate deliveries in intended configuration"
+  ],
+  "checks": [
+    {
+      "id": "proactive-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "runner": "feature:proactive"
+    },
+    {
+      "id": "proactive-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "live_provider",
+      "evidence": "work/feature-evidence/proactive/behavior-1.json",
+      "claim": "Active decision \u2192 output \u2192 storage/delivery; relevant, resolved and same-topic-irrelevant cases"
+    },
+    {
+      "id": "proactive-behavior-2",
+      "group": "live_behavior_checks",
+      "kind": "simulator",
+      "evidence": "work/feature-evidence/proactive/behavior-2.json",
+      "claim": "Actual bubbles, Quiet/stop, no stale/duplicate deliveries in intended configuration"
+    },
+    {
+      "id": "proactive-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/proactive/inspection.json",
+      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+    }
+  ],
+  "not_applicable": {}
+}

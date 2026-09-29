@@ -86,3 +86,11 @@ python3 scripts/verify_checkpoint.py --review-receipt work/verification/<receipt
 ```
 
 This writes a new reviewed receipt. The CLI records the review; it cannot authenticate a reviewer or prevent a worker from falsifying metadata. Workflow enforcement belongs to this orchestrator and repository review protections. It never merges or deploys. Native build/backend IDs and semantic/visual judgments belong in external evidence and review notes; automated comparison of every environment field is not implemented. A cross-packet release dashboard is deferred until actual packets need it.
+
+## Feature-linked entry points
+
+Start with [the product feature verification map](../features/verification-map.md). Its catalog links each feature to implementation paths, reviewed test modules and a dedicated acceptance manifest. Run `python3 scripts/verify_feature.py <feature-id>`; use `--list` to discover features. The full verifier requires feature-specific real-path evidence and inspection, not merely unit tests.
+
+`--checks-only` explicitly collects mechanical evidence only and cannot release dependent packets. Planned features with no automated suite report blocked rather than fake success. Full runs remain incomplete until their declared external evidence exists for the exact commit. The normal orchestrator review command can accept a full-feature receipt after inspection. No feature is marked verified at collection time.
+
+Before assigning any worker, select its feature IDs and update their manifests to the bounded acceptance criteria of the job. Preserve required failure cases and actual pipeline/UI/device checks. The map is a verification contract, not a claim that all listed features work or have been deployed. Deferred connectors and subscription previews retain explicit limitations.

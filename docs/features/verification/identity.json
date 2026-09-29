@@ -1,0 +1,31 @@
+{
+  "packet": "FEATURE-identity",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "acceptance": [
+    "Keep user/third-party facts separate with provenance",
+    "Named, unknown and third-party subject cases through the active identity path"
+  ],
+  "checks": [
+    {
+      "id": "identity-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "runner": "feature:identity"
+    },
+    {
+      "id": "identity-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "live_provider",
+      "evidence": "work/feature-evidence/identity/behavior-1.json",
+      "claim": "Named, unknown and third-party subject cases through the active identity path"
+    },
+    {
+      "id": "identity-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/identity/inspection.json",
+      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+    }
+  ],
+  "not_applicable": {}
+}

@@ -1,0 +1,35 @@
+{
+  "packet": "FEATURE-note-cache",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "acceptance": [
+    "Instant persistent/offline summaries with owner/revision-safe refresh",
+    "Implement and exercise disk persistence, invalidation, owner separation and refresh coalescing",
+    "Cold launch/offline read, refresh success/failure, deletion and sign-out"
+  ],
+  "checks": [
+    {
+      "id": "note-cache-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "fixture",
+      "evidence": "work/feature-evidence/note-cache/behavior-1.json",
+      "claim": "Implement and exercise disk persistence, invalidation, owner separation and refresh coalescing"
+    },
+    {
+      "id": "note-cache-behavior-2",
+      "group": "live_behavior_checks",
+      "kind": "simulator",
+      "evidence": "work/feature-evidence/note-cache/behavior-2.json",
+      "claim": "Cold launch/offline read, refresh success/failure, deletion and sign-out"
+    },
+    {
+      "id": "note-cache-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/note-cache/inspection.json",
+      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+    }
+  ],
+  "not_applicable": {
+    "mechanical_checks": "No dedicated implemented automated suite yet; external evidence does not hide this gap."
+  }
+}

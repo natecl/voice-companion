@@ -1,0 +1,31 @@
+{
+  "packet": "FEATURE-deletion",
+  "base": "5917af645a15605c38f17acfcf72b1e321f776e6",
+  "acceptance": [
+    "Delete transcript without erasing already sent replies",
+    "Swipe/long-press deletion, source unavailable, preserved replies and reopen"
+  ],
+  "checks": [
+    {
+      "id": "deletion-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "runner": "feature:deletion"
+    },
+    {
+      "id": "deletion-behavior-1",
+      "group": "live_behavior_checks",
+      "kind": "simulator",
+      "evidence": "work/feature-evidence/deletion/behavior-1.json",
+      "claim": "Swipe/long-press deletion, source unavailable, preserved replies and reopen"
+    },
+    {
+      "id": "deletion-inspection",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/deletion/inspection.json",
+      "claim": "Inspect actual artifacts against the feature criteria, including negative cases; orchestrator acceptance is separate"
+    }
+  ],
+  "not_applicable": {}
+}
