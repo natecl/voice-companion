@@ -57,7 +57,8 @@
     Promise.all(el.getAnimations().map(a=>a.finished)).then(()=>{if(el.classList.contains('leaving'))el.hidden=true;}).catch(()=>{});
   }
   function syncDraft(){
-    input.style.height='44px';input.style.height=Math.min(116,input.scrollHeight)+'px';
+    // Hidden textareas report zero scrollHeight during dictation. Measure only after restoring them.
+    if(!input.hidden){input.style.height='44px';input.style.height=Math.max(44,Math.min(116,input.scrollHeight))+'px';if(!input.value)input.scrollTop=0;}
     const has=!!input.value.trim(), button=q('.send'), glyph=state.busy?'square':has?'arrow-up':'mic';
     button.classList.toggle('has-text',has&&!state.busy);
     if(button.dataset.glyph!==glyph){button.innerHTML=icon(glyph);button.dataset.glyph=glyph;}
@@ -165,7 +166,7 @@
   function render(next){
     state=next;device.style.colorScheme=state.appearance==='system'?'light dark':state.appearance;
     if(next.draftVersion>=draftVersion&&input.value!==next.draft){localDraft=next.draft;input.value=next.draft;draftVersion=next.draftVersion;}
-    renderMessages();library();syncDraft();renderDictation();
+    renderMessages();library();renderDictation();syncDraft();
     const c=state.capture;device.classList.toggle('listening',!!c);device.classList.toggle('quiet',!!c?.quiet);
     q('.capture').hidden=!c;q('.plus').hidden=!!c;q('.plus').disabled=!state.ready||state.deleting||!!state.dictation;
     if(c){q('.capture-word').textContent=c.label;q('.capture time').textContent=c.time;q('[data-act=end]').disabled=!c.canStop;

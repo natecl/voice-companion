@@ -100,6 +100,29 @@ import XCTest
         XCTAssertTrue(web.buttons["Open notes"].waitForExistence(timeout: 3))
         shot(app, "Shared room — dark")
     }
+    func testSharedRoomDictationCancellationLayout() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--enable-companion-ui", "--shared-room-ui", "--companion-ui-fixture", "--dictation-ui-fixture"]
+        app.launchEnvironment["VOICE_MEMORY_UI_CONFIG"] = try XCTUnwrap(ProcessInfo.processInfo.environment["VOICE_MEMORY_UI_CONFIG"])
+        app.launch(); defer { app.terminate() }
+        let web = app.webViews.firstMatch
+        let input = web.textViews["Message Ellis"]
+        XCTAssertTrue(input.waitForExistence(timeout: 10))
+        let height = input.frame.height
+        for _ in 0..<3 {
+            web.buttons["Dictate a message"].tap()
+            XCTAssertTrue(web.buttons["Discard dictation"].waitForExistence(timeout: 5))
+            web.buttons["Discard dictation"].tap()
+            XCTAssertTrue(input.waitForExistence(timeout: 5))
+            XCTAssertEqual(input.frame.height, height, accuracy: 1)
+            XCTAssertTrue(web.buttons["Dictate a message"].exists)
+        }
+        shot(app, "Shared room — canceled dictation restored composer")
+        input.tap(); input.typeText("Composer still works")
+        XCTAssertTrue(web.buttons["Send message"].waitForExistence(timeout: 3))
+        XCTAssertEqual(input.frame.height, height, accuracy: 1)
+    }
     func testSharedRoomAccessoryPanels() throws {
         continueAfterFailure = false
         let app = XCUIApplication()
