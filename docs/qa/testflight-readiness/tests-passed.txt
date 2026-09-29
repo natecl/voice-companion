@@ -1,0 +1,39 @@
+test_ask_reservation_can_coexist_with_recording (Backend.test_admission.AdmissionTests.test_ask_reservation_can_coexist_with_recording) ... ok
+test_categories_share_total_cap (Backend.test_admission.AdmissionTests.test_categories_share_total_cap) ... ok
+test_concurrent_connections_cannot_double_reserve (Backend.test_admission.AdmissionTests.test_concurrent_connections_cannot_double_reserve) ... ok
+test_credentials_are_hashed_expire_and_revoke_without_charging (Backend.test_admission.AdmissionTests.test_credentials_are_hashed_expire_and_revoke_without_charging) ... ok
+test_repeat_sessions_and_restart_keep_charges (Backend.test_admission.AdmissionTests.test_repeat_sessions_and_restart_keep_charges) ... ok
+test_unknown_category_and_configuration_changes_fail_closed (Backend.test_admission.AdmissionTests.test_unknown_category_and_configuration_changes_fail_closed) ... ok
+test_ask_grant_survives_restart_is_single_expires_and_preserves_caps (Backend.test_admission.RecordingAllowanceTests.test_ask_grant_survives_restart_is_single_expires_and_preserves_caps) ... ok
+test_existing_allowance_migrates_without_adding_an_attempt (Backend.test_admission.RecordingAllowanceTests.test_existing_allowance_migrates_without_adding_an_attempt) ... ok
+test_named_grant_is_idempotent_expires_and_keeps_budget (Backend.test_admission.RecordingAllowanceTests.test_named_grant_is_idempotent_expires_and_keeps_budget) ... ok
+test_one_extra_attempt_survives_restart_expires_and_keeps_budget (Backend.test_admission.RecordingAllowanceTests.test_one_extra_attempt_survives_restart_expires_and_keeps_budget) ... ok
+test_replacement_is_single_consumed_only_and_preserves_history (Backend.test_admission.RecordingAllowanceTests.test_replacement_is_single_consumed_only_and_preserves_history) ... ok
+test_export_is_private_no_overwrite_and_revocable (Backend.test_admin.AdminTests.test_export_is_private_no_overwrite_and_revocable) ... ok
+test_memory_export_and_renewal_keep_same_owner (Backend.test_admin.AdminTests.test_memory_export_and_renewal_keep_same_owner) ... ok
+test_exclusive_lock_and_crash_recovery_preserve_usage (Backend.test_hosted_startup.HostedStartupTests.test_exclusive_lock_and_crash_recovery_preserve_usage) ... ok
+test_active_revocation_closes_upstream_and_prevents_new_connection (Backend.test_hosted_relay.HostedRelayTests.test_active_revocation_closes_upstream_and_prevents_new_connection) ... <frozen abc>:123: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10a3dc310>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+{"status": "Rejected", "audio_seconds": 0.0, "elapsed_seconds": 1.009, "estimated_audio_cost_usd": 0.0, "billing_verified": false, "request_id": "7e1d08ce-550d-42bf-8e3a-41fec073d624"}
+ok
+test_cancelling_concurrent_ask_keeps_audio_stream_alive (Backend.test_hosted_relay.HostedRelayTests.test_cancelling_concurrent_ask_keeps_audio_stream_alive) ... {"category": "ask", "request_id": "d05e7d02-ef05-40f7-982d-ef5538c31813", "completed": false, "first_text_seconds": 0.0014649169752374291, "elapsed_seconds": 0.004221957991831005}
+{"status": "completed", "audio_seconds": 0.3, "elapsed_seconds": 0.012, "estimated_audio_cost_usd": 1.6666666666666667e-05, "billing_verified": false, "request_id": "9bf14443-5b0f-471a-bf5a-62b89ac6b1b4"}
+ok
+test_client_disconnect_closes_upstream (Backend.test_hosted_relay.HostedRelayTests.test_client_disconnect_closes_upstream) ... {"status": "ConnectionError", "audio_seconds": 0.0, "elapsed_seconds": 0.005, "estimated_audio_cost_usd": 0.0, "billing_verified": false, "request_id": "fb3d4950-424d-49b1-9e68-b27021a6a149"}
+ok
+test_repeated_sessions_then_budget_rejection_before_upstream (Backend.test_hosted_relay.HostedRelayTests.test_repeated_sessions_then_budget_rejection_before_upstream) ... {"status": "completed", "audio_seconds": 0.1, "elapsed_seconds": 0.006, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "9146b117-0c6e-4218-957d-fbac43709726"}
+{"status": "completed", "audio_seconds": 0.1, "elapsed_seconds": 0.005, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "2c7fa909-936a-4da8-8c06-889731abe4fd"}
+ok
+test_revocation_during_finalization_closes_upstream (Backend.test_hosted_relay.HostedRelayTests.test_revocation_during_finalization_closes_upstream) ... {"status": "Rejected", "audio_seconds": 0.0, "elapsed_seconds": 1.006, "estimated_audio_cost_usd": 0.0, "billing_verified": false, "request_id": "40e94c24-7056-4d6e-bc7d-d478b215d492"}
+ok
+test_real_socket_auth_persistence_delete_and_no_provider_usage (Backend.test_memory.MemorySocketTests.test_real_socket_auth_persistence_delete_and_no_provider_usage) ... ok
+test_empty_chat_invalid_input_and_owner_isolation (Backend.test_companion_service.CompanionServiceTests.test_empty_chat_invalid_input_and_owner_isolation) ... {"category": "companion", "request_id": "74fd3114-bde7-48f8-b156-a9f046aeb7cc", "completed": true, "first_text_seconds": 0.004866792005486786, "elapsed_seconds": 0.006926083005964756, "input_tokens": null, "output_tokens": null}
+ok
+test_deletion_and_revocation_interrupt_stalled_answer (Backend.test_companion_service.CompanionServiceTests.test_deletion_and_revocation_interrupt_stalled_answer) ... {"category": "companion", "request_id": "a290485b-6afe-4c36-ac61-06d680630e3e", "completed": false, "first_text_seconds": 0.005854207964148372, "elapsed_seconds": 0.2573434159858152}
+{"category": "companion", "request_id": "e9122f75-e6d6-4bb5-8bfc-94220cf9273a", "completed": false, "first_text_seconds": 0.005680207978002727, "elapsed_seconds": 0.25819837499875575}
+ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 3.095s
+
+OK

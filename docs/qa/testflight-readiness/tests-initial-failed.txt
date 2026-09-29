@@ -1,0 +1,96 @@
+test_admission (unittest.loader._FailedTest.test_admission) ... ERROR
+test_admin (unittest.loader._FailedTest.test_admin) ... ERROR
+test_hosted_startup (unittest.loader._FailedTest.test_hosted_startup) ... ERROR
+test_hosted_relay (unittest.loader._FailedTest.test_hosted_relay) ... ERROR
+test_memory (unittest.loader._FailedTest.test_memory) ... ERROR
+test_companion_service (unittest.loader._FailedTest.test_companion_service) ... ERROR
+test_companion_service (unittest.loader._FailedTest.test_companion_service) ... ERROR
+
+======================================================================
+ERROR: test_admission (unittest.loader._FailedTest.test_admission)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_admission
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/n.chinlue/.codex/worktrees/distribution-access-audit/voice-companion/Backend/test_admission.py", line 7, in <module>
+    from admission import Admission, Rejected
+ModuleNotFoundError: No module named 'admission'
+
+
+======================================================================
+ERROR: test_admin (unittest.loader._FailedTest.test_admin)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_admin
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/n.chinlue/.codex/worktrees/distribution-access-audit/voice-companion/Backend/test_admin.py", line 5, in <module>
+    from admission import Admission, Rejected
+ModuleNotFoundError: No module named 'admission'
+
+
+======================================================================
+ERROR: test_hosted_startup (unittest.loader._FailedTest.test_hosted_startup)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_hosted_startup
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/n.chinlue/.codex/worktrees/distribution-access-audit/voice-companion/Backend/test_hosted_startup.py", line 11, in <module>
+    from admission import Admission
+ModuleNotFoundError: No module named 'admission'
+
+
+======================================================================
+ERROR: test_hosted_relay (unittest.loader._FailedTest.test_hosted_relay)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_hosted_relay
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/n.chinlue/.codex/worktrees/distribution-access-audit/voice-companion/Backend/test_hosted_relay.py", line 11, in <module>
+    from admission import Admission
+ModuleNotFoundError: No module named 'admission'
+
+
+======================================================================
+ERROR: test_memory (unittest.loader._FailedTest.test_memory)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_memory
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/n.chinlue/.codex/worktrees/distribution-access-audit/voice-companion/Backend/test_memory.py", line 9, in <module>
+    from admission import Admission, Rejected
+ModuleNotFoundError: No module named 'admission'
+
+
+======================================================================
+ERROR: test_companion_service (unittest.loader._FailedTest.test_companion_service)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_companion_service
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/n.chinlue/.codex/worktrees/distribution-access-audit/voice-companion/Backend/test_companion_service.py", line 9, in <module>
+    from admission import Admission
+ModuleNotFoundError: No module named 'admission'
+
+
+======================================================================
+ERROR: test_companion_service (unittest.loader._FailedTest.test_companion_service)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_companion_service
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/n.chinlue/.codex/worktrees/distribution-access-audit/voice-companion/Backend/test_companion_service.py", line 9, in <module>
+    from admission import Admission
+ModuleNotFoundError: No module named 'admission'
+
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.000s
+
+FAILED (errors=7)
