@@ -1,0 +1,27 @@
+{
+  "packet": "VERIFY-0",
+  "base": "2a6338eeb2898ce60970f8a9d3e7596ec7ad57de",
+  "acceptance": [
+    "Offline runner executes reviewed commands and preserves failures",
+    "Missing/stale evidence blocks acceptance",
+    "Review stays pending until orchestrator records inspection"
+  ],
+  "checks": [
+    {
+      "id": "runner-contract",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "runner": "verifier-self-tests"
+    },
+    {
+      "id": "existing-controls",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "runner": "proactive-controls"
+    }
+  ],
+  "not_applicable": {
+    "live_behavior_checks": "This tooling slice executes real local child processes in self-tests; no model/audio integration changes or fresh provider claims.",
+    "inspection": "Orchestrator inspects code and generated receipts separately; no visual UI change."
+  }
+}
