@@ -27,3 +27,16 @@ Source of truth: [machine-readable catalog](catalog.json). These entries describ
 Each manifest names the expected evidence paths, acceptance and checks. The catalog lists implementation/test files for worker navigation. The orchestrator supplies the final feature packet before work, checks imported receipts and explicitly accepts the result. The generic runner alone cannot determine if a generated note is faithful or a rendered page is correct.
 
 Adding/changing a feature: update its catalog entry, manifest, relevant tests and evidence scope together. Do not grant a feature pass by weakening a requirement or substituting replay for fresh model behavior. Use `--list` to discover feature IDs. No command triggers a paid API, microphone, device interaction or release automatically.
+
+## Initial mechanical check results — September 29, 2026
+
+The first run exercised all 13 configured feature suites at `872388f`. Nine suites passed their mechanical checks: capture, library, meeting-notes, chat, dictation, notes-search, recall, proactive, and access. This is not live-feature acceptance.
+
+Four suites remain incomplete with existing failures (the feature-verifier change does not modify their implementation/tests):
+
+- `memory-learning`: `test_schema7_migration_adds_no_automatic_fact_metadata_or_jobs` expects schema 17; actual schema is 19.
+- `identity`: `test_migrate_v4_preserves_legacy_ids_and_does_not_backfill` has the same version mismatch.
+- `memory-lifecycle`: `test_migration_v5_preserves_identity_links_and_tombstones` has the same version mismatch.
+- `deletion`: `test_exact_provider_replay_through_companion_sockets` receives `answer_unavailable` instead of a saved answer. Diagnose the replay/active contract before claiming retained-answer acceptance.
+
+These are baseline findings, not waived requirements. Fix and rerun the affected feature verifier in its bounded implementation packet. No paid model calls or phone interaction were used. The four features without automated suites remain explicit gaps, not passes.
