@@ -74,6 +74,26 @@ class AccountSessionTests(unittest.TestCase):
         self.assertEqual(self.admission.active_credentials(), [])
         self.assertEqual(self.admission.db.execute('SELECT count(*) FROM account_exchange').fetchone()[0], 0)
 
+    def test_simultaneous_refresh_has_one_winner_then_revokes_on_reuse(self):
+        import concurrent.futures
+        import threading
+        first = self.enroll()
+        barrier = threading.Barrier(2)
+        def rotate():
+            ledger = Admission(Path(self.directory.name)/'admission.sqlite', total_microusd=100,
+                               limits={'stt': (100, 20, 3)}, clock=lambda: self.now)
+            try:
+                sessions = AccountSessions(ledger, self.memory)
+                barrier.wait(timeout=5)
+                try: return sessions.refresh(first['refresh_token'])
+                except Rejected as error: return str(error)
+            finally: ledger.close()
+        with concurrent.futures.ThreadPoolExecutor(2) as pool:
+            results = list(pool.map(lambda _: rotate(), range(2)))
+        self.assertEqual(results.count('refresh_replayed'), 1)
+        winner = next(value for value in results if isinstance(value, dict))
+        with self.assertRaises(Rejected): self.admission.authorized(winner['token'])
+
     def test_restart_keeps_sessions_and_stores_no_raw_tokens(self):
         session = self.enroll()
         self.sessions = AccountSessions(self.admission, MemoryStore(self.memory.path))

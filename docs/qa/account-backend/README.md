@@ -31,14 +31,16 @@ cd Backend
 python -m unittest test_relay test_admission test_hosted_startup test_memory
 ```
 
-22 account tests and 31 impacted regression tests pass. The account socket suite uses actual RSA signatures with fictional Google/Apple claims and injected test public keys. It starts the real Relay/AccountService on localhost and observes successful exchange for both providers, distinct owners, refresh continuity, challenge replay failure, refresh replay family revocation, sign-out denial, strict input rejection, Origin rejection and rate limiting. It also verifies disabled-endpoint HTTP 404. No live provider or paid model calls occur; admission usage remains empty.
+24 account tests and 31 impacted regression tests pass. The account socket suite uses actual RSA signatures with fictional Google/Apple claims and injected test public keys. It starts the real Relay/AccountService on localhost and observes successful exchange for both providers, distinct owners, refresh continuity, challenge replay failure, refresh replay family revocation, sign-out denial, strict input rejection, Origin rejection and rate limiting. It also verifies disabled-endpoint HTTP 404. No live provider or paid model calls occur; admission usage remains empty.
 
 Other tests cover invalid signature/issuer/audience/subject/time/algorithm, missing Apple nonce, unavailable key provider, stored-token secrecy, original refresh-family expiry, idempotent sign-out, stable owner mapping and memory-write failure rolling back credential issuance. Existing admission regression emits an unclosed SQLite ResourceWarning. Relay regression cost estimates describe synthetic local upstream traffic, not paid calls.
 
 ## Remaining release gates
 
-Live provider tokens, JWKS rotation/network integration, native UI wiring, secure Keychain lifecycle and refresh serialization, owner-switch cancellation/cache isolation, Apple authorization-code redemption and provider refresh/revocation, external revocation handling, account deletion, founder migration and physical Release tests remain incomplete. ID-token verification alone does not implement the whole Apple account lifecycle. Check current official provider requirements during that integration.
+Live provider tokens, native UI wiring, secure Keychain lifecycle and refresh serialization, owner-switch cancellation/cache isolation, Apple authorization-code redemption and provider refresh/revocation, external revocation handling, account deletion, founder migration and physical Release tests remain incomplete. ID-token verification alone does not implement the whole Apple account lifecycle. Check current official provider requirements during that integration.
 
 Admission and memory use separate databases. A failed/crashed exchange may leave an unreachable memory credential mapping, but no committed access token; identity mapping remains stable. Do not reset stores to recover. Preserve backup/rollback plans and all spending history before deployment.
 
 Sources checked: [Google backend authentication](https://developers.google.com/identity/sign-in/ios/backend-auth), [Apple user verification](https://developer.apple.com/documentation/signinwithapple/verifying-a-user), [PyJWT API](https://pyjwt.readthedocs.io/en/stable/api.html).
+
+Additional review evidence: the actual PyJWT JWKS client fetched keys from a local HTTP fixture, reused its cache, refreshed for a rotated key ID and rejected a retired unknown key. Two simultaneous refreshes through separate SQLite connections yielded exactly one rotation, then committed replay revocation of the family. These are local protocol checks, not live provider acceptance.

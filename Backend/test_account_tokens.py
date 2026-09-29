@@ -81,4 +81,47 @@ class AccountTokenTests(unittest.TestCase):
             AccountTokenVerifier(google_audience='', google_presenters=['phone'], apple_audiences=['phone'])
 
 
+class JWKSIntegrationTests(unittest.TestCase):
+    def test_real_jwks_fetch_cache_rotation_and_unknown_key(self):
+        import json
+        import threading
+        from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+        first = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        second = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        state = {'keys': [], 'requests': 0}
+        def jwk(key, kid):
+            value = json.loads(jwt.algorithms.RSAAlgorithm.to_jwk(key.public_key()))
+            return dict(value, kid=kid, alg='RS256', use='sig')
+        state['keys'] = [jwk(first, 'first')]
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                state['requests'] += 1
+                body = json.dumps({'keys': state['keys']}).encode()
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Content-Length', str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            def log_message(self, *_): pass
+        server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            verifier = AccountTokenVerifier(google_audience='backend', google_presenters=['phone'], apple_audiences=['phone'])
+            verifier.keys['google'] = jwt.PyJWKClient(f'http://127.0.0.1:{server.server_port}/keys', timeout=1)
+            now = int(time.time())
+            claims = dict(iss=GOOGLE, aud='backend', sub='synthetic', iat=now, exp=now+300)
+            token = jwt.encode(claims, first, algorithm='RS256', headers={'kid':'first'})
+            for _ in range(2): self.assertEqual(verifier.verify('google', token).subject, 'synthetic')
+            self.assertEqual(state['requests'], 1)
+            state['keys'] = [jwk(second, 'second')]
+            rotated = jwt.encode(claims, second, algorithm='RS256', headers={'kid':'second'})
+            self.assertEqual(verifier.verify('google', rotated).subject, 'synthetic')
+            self.assertEqual(state['requests'], 2)
+            with self.assertRaisesRegex(Rejected, '^invalid_identity_token$'):
+                verifier.verify('google', token)
+        finally:
+            server.shutdown(); server.server_close(); thread.join()
+
+
 if __name__ == '__main__': unittest.main()
