@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-30",
+  "native_source": "1da7e188401ff5a8d31aa4a633d94a44a342319c",
+  "native_binary_sha256": "c7a7e6fc3d1579d3d874b5ae1fc6e4236dcc6191a9a8a12d8d7b30800c816261",
+  "backend_source": "482394e23dd081cc4a9a1e67ef79f7f4aa3b676e",
+  "device": "physical iPhone 16 Pro",
+  "recording_seconds": 11.830546542,
+  "completed": false,
+  "end_reason": "Recording stopped because you signed out. Received text is saved.",
+  "same_owner_as_four_existing_google_recordings": true,
+  "original_files_preserved": 24,
+  "saved_recording_stable_across_two_signed_out_snapshots": true,
+  "server_google_unrevoked_sessions": 0,
+  "server_active_requests": 0,
+  "stt_attempts": 1,
+  "stt_reservation_microusd": 20000,
+  "stt_terminal_state": "failed",
+  "expected_test_phrase": "Testing account isolation. Blue lantern, silver river.",
+  "observed_transcript": "Testing account isolation, blue blue lantern, silver ring.",
+  "limitations": "Physical capture/sign-out and durable original-owner storage independently inspected. Apple Notes isolation, Google return and post-relaunch sign-in/transcript availability are founder-reported. Interrupted request remains charged; recognition errors retained. This does not establish provider-rejection/network-failure recovery or full Phase 1 acceptance.",
+  "apple_notes_founder_observation": {
+    "reported_text": "there is nothing in the notes section",
+    "context": "Founder was asked to sign into Apple and inspect Notes after Google capture/sign-out.",
+    "verification_kind": "founder_report",
+    "result": "New Google recording not visible; Notes empty."
+  },
+  "google_return_founder_observation": {
+    "reported_text": "yes it is there",
+    "verification_kind": "founder_report",
+    "context": "Asked to return to Google and confirm older recordings and new test transcript."
+  },
+  "google_relaunch_founder_observation": {
+    "reported_text": "done",
+    "verification_kind": "founder_report",
+    "context": "Asked to fully close/reopen app, confirm persistent Google sign-in and open saved transcript."
+  }
+}

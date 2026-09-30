@@ -17,7 +17,7 @@ REGISTRY = {
     'proactive-controls': [sys.executable, '-m', 'unittest', 'Backend.test_proactive_policy', 'Backend.test_proactive_stream', 'Backend.test_proactive_socket', 'Backend.test_admission'],
 }
 GROUPS = {'mechanical_checks', 'live_behavior_checks', 'inspection'}
-KINDS = {'fixture', 'live_provider', 'simulator', 'physical_device', 'review'}
+KINDS = {'fixture', 'live_provider', 'live_identity_provider', 'simulator', 'physical_device', 'review'}
 
 
 def digest(path):
@@ -47,9 +47,13 @@ def artifact(root, name):
 
 
 def validate(manifest):
+    if not isinstance(manifest, dict):
+        raise ValueError('Manifest must be an object')
     if not all(manifest.get(key) for key in ('packet', 'base', 'acceptance')):
         raise ValueError('Packet, base and acceptance criteria are required')
     checks = manifest.get('checks', [])
+    if not isinstance(checks, list) or any(not isinstance(check, dict) for check in checks):
+        raise ValueError('Checks must be objects')
     ids = [check.get('id') for check in checks]
     if not checks or any(not x for x in ids) or len(set(ids)) != len(ids):
         raise ValueError('Checks need unique IDs')
@@ -57,6 +61,9 @@ def validate(manifest):
     for check in checks:
         if check.get('group') not in GROUPS or check.get('kind') not in KINDS:
             raise ValueError('Invalid evidence category')
+        if check['kind'] == 'live_identity_provider' and (
+                check['group'] != 'live_behavior_checks' or check.get('provider') not in ('google', 'apple')):
+            raise ValueError('Identity-provider evidence requires its actual provider and live category')
         covered.add(check['group'])
         if ('runner' in check) == ('evidence' in check):
             raise ValueError('Each check needs one runner or external evidence receipt')
@@ -109,12 +116,28 @@ def run(root, manifest_path):
                 evidence_path = local_path(root, check['evidence'])
                 result['artifacts'].append(artifact(root, check['evidence']))
                 evidence = json.loads(evidence_path.read_text())
+                if not isinstance(evidence, dict):
+                    raise ValueError('External evidence must be an object')
                 if evidence.get('commit') != commit or evidence.get('kind') != check['kind']:
                     raise ValueError('Evidence commit or provenance does not match')
                 if evidence.get('result') not in ('pass', 'fail') or not evidence.get('artifacts'):
                     raise ValueError('External evidence needs a result and underlying artifacts')
+                if not isinstance(evidence.get('artifacts'), list) or any(not isinstance(name, str) for name in evidence['artifacts']):
+                    raise ValueError('Evidence artifacts must be file paths')
                 if not evidence.get('procedure') or not evidence.get('observed'):
                     raise ValueError('External evidence needs reproduction and observed results')
+                if check['kind'] == 'live_identity_provider':
+                    if evidence.get('provider') != check['provider']:
+                        raise ValueError('Identity-provider evidence does not match the required provider')
+                    if not all(isinstance(evidence.get(key), str) and evidence[key].strip()
+                               for key in ('configuration', 'pipeline_layer')):
+                        raise ValueError('Identity-provider evidence needs final configuration and pipeline identity')
+                    if type(evidence.get('provider_calls')) is not int or evidence['provider_calls'] <= 0:
+                        raise ValueError('Identity-provider evidence needs actual provider-call accounting')
+                    # OAuth proof has no model identity; never invent one or
+                    # count a synthetic token fixture as provider authorization.
+                    result['provider'] = evidence['provider']
+                    result['provider_calls'] = evidence['provider_calls']
                 if check['kind'] == 'live_provider':
                     if not all(evidence.get(k) for k in ('request_sha256', 'model', 'ledger', 'pipeline_layer')):
                         raise ValueError('Live evidence needs request/model/ledger/pipeline identity')

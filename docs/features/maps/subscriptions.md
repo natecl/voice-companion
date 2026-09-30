@@ -1,12 +1,12 @@
 # Subscriptions and paywall
 
-> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+> September 30 delivery context: [release handoff](../../execution/testflight-release-handoff.md). This map distinguishes source implementation from recorded deployment, installation and bounded verification; historical receipts do not attest current runtime state.
 
 Feature ID: `subscriptions` · Context reviewed September 29, 2026 against main `3a30e25`.
 
 ## Purpose and user outcome
 
-Current preview surfaces; real purchase/subscription implementation is deferred. Product direction: **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
+Current preview surfaces; Phase 3 purchase/subscription implementation has not started and remains required release scope. Product direction is an invited AI social presence with personal continuity; the retained agreed one-liner is **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
 
 ## Current implementation
 
@@ -39,7 +39,7 @@ Release feature remains incomplete. [Verifier](../verification/subscriptions.jso
 
 ## Next bounded work
 
-After account/plan contracts are accepted, implement the first sandbox purchase-to-entitlement slice with failure and restore evidence.
+Only after Phase 1 accounts and Phase 2 plans are accepted, implement the first sandbox purchase-to-entitlement slice with failure and restore evidence.
 
 ## Supporting context and evidence
 
