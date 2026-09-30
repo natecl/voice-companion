@@ -39,6 +39,7 @@
 		27A7D3D95880CDDA39D4941E /* AccountDeletionKeychainFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEF2A9848F83EF8AA0A4F9B /* AccountDeletionKeychainFixture.swift */; };
 		2868919084B83CBB122C6893 /* ExperienceStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108FDE335235A814407D563A /* ExperienceStyle.swift */; };
 		2A78082185EA9D9B00BD1443 /* FoundationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */; };
+		2BC8B27BCFEA8DA044335D16 /* LiveAccountUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD4B673C2749930ADC2B29B /* LiveAccountUITests.swift */; };
 		2BDAB947A00EFDBEE4E0A486 /* MicrophoneAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1EED3788D18E4EE3FBB3EC /* MicrophoneAccess.swift */; };
 		2C2E3A5C5EE0583DC3EFA2C5 /* MicrophoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C425260D9BD59D9B7A18C540 /* MicrophoneUITests.swift */; };
 		2D11526700685172DB12E075 /* ProactiveCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978E911668A526A7756C0787 /* ProactiveCoordinator.swift */; };
@@ -153,6 +154,7 @@
 		C01ABC259006BCA33A3A7450 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = B55E032C5AF8243187E682FA /* GoogleSignIn */; };
 		C0900437C9093529042C47AD /* RecordingNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49FE797E23357C5FA4D3D04 /* RecordingNotesView.swift */; };
 		C10893291412E8A3EA454659 /* DictationRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6172DF9BAB6444CEE3A4A1B /* DictationRecognizer.swift */; };
+		C1607069B72D7C1EF607530E /* LiveAccountUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD4B673C2749930ADC2B29B /* LiveAccountUITests.swift */; };
 		C38F01B489DB5E5D34571C7A /* RoomUI in Resources */ = {isa = PBXBuildFile; fileRef = 4FD7403E3075E4BCA4218CD3 /* RoomUI */; };
 		C6134A9D853871047550EFB6 /* AudioCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB02BC305BA1F675947256B /* AudioCapture.swift */; };
 		C708ABB34A1C309F2EF1D040 /* DictationCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27B0813F66346BF740B28AE /* DictationCallbackTests.swift */; };
@@ -277,6 +279,7 @@
 		978F772CA247BC66605A1D33 /* CompanionConnectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionConnectionTests.swift; sourceTree = "<group>"; };
 		979EE57CF1979CC0F0EEF8A0 /* CompanionMessageText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionMessageText.swift; sourceTree = "<group>"; };
 		9AF99E9A8800AFB62665823C /* AccountDeletionUIFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionUIFixture.swift; sourceTree = "<group>"; };
+		9BD4B673C2749930ADC2B29B /* LiveAccountUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAccountUITests.swift; sourceTree = "<group>"; };
 		9C4855C4A183DFEC64AE93D8 /* MacUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A27B0813F66346BF740B28AE /* DictationCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictationCallbackTests.swift; sourceTree = "<group>"; };
 		A2BD39CC584AE1ABB9BEDDAC /* GoogleAccountProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAccountProvider.swift; sourceTree = "<group>"; };
@@ -357,6 +360,7 @@
 				958D6A5180E458B927E39E26 /* CompanionUITests.swift */,
 				6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */,
 				6B97B1D1B4D97D9C1A97B45B /* FounderMigrationUITests.swift */,
+				9BD4B673C2749930ADC2B29B /* LiveAccountUITests.swift */,
 				1A0D140F53F36D3A6C7A9F8C /* LiveAskUITests.swift */,
 				46DC5370B42C28B61BE40D0D /* MacUITests.entitlements */,
 				D3A7E394791C84DF944DF808 /* MemoryUITests.swift */,
@@ -738,6 +742,7 @@
 				534B2FEA798FBEBD45B8AE78 /* CompanionUITests.swift in Sources */,
 				09C3FEC872A11562F65FECB0 /* FoundationUITests.swift in Sources */,
 				9718EEED1CF6D9B031C0C02B /* FounderMigrationUITests.swift in Sources */,
+				2BC8B27BCFEA8DA044335D16 /* LiveAccountUITests.swift in Sources */,
 				B66FE09C8BB89570FBBAC0AA /* LiveAskUITests.swift in Sources */,
 				FF9791DA9B94382EB848AA8C /* MemoryUITests.swift in Sources */,
 				2C2E3A5C5EE0583DC3EFA2C5 /* MicrophoneUITests.swift in Sources */,
@@ -930,6 +935,7 @@
 				F4DDD59F3F6BD74BA6EA92D3 /* CompanionUITests.swift in Sources */,
 				2A78082185EA9D9B00BD1443 /* FoundationUITests.swift in Sources */,
 				79AB55D5000B7C38E3F4A625 /* FounderMigrationUITests.swift in Sources */,
+				C1607069B72D7C1EF607530E /* LiveAccountUITests.swift in Sources */,
 				1D6EF96453393998382EFCD5 /* LiveAskUITests.swift in Sources */,
 				EDF341C8C485377AC886C9BE /* MemoryUITests.swift in Sources */,
 				1AEE96BC35A02CA6C540EA30 /* MicrophoneUITests.swift in Sources */,

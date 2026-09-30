@@ -1,5 +1,7 @@
 # An invited third person at the table
 
+> Continuation: the founder-selected shared companion-room UI was subsequently implemented and merged in PR154–155. This brief preserves the experience rationale and proposal history; it does not authorize restarting the visual design. [Shared interface](shared-room-ui.md) and [release handoff](execution/testflight-release-handoff.md) describe the stable design system and remaining functional/release gates. Account and privacy additions must reuse it. The later explicit Quiet/End and state contracts govern actual behavior; aspirational copy, research ideas and journeys below are not evidence of delivered capability or useful social judgment.
+
 Founder direction, September 29, 2026. This supersedes note-taking-led positioning; it does not claim these behaviors are all implemented. The product is an invited AI social presence that remembers relevant shared history, follows a conversation and contributes with judgment. Notes remain useful infrastructure and a record. The exact existing one-liner is retained pending a separately chosen replacement; it does not constrain this revised experience.
 
 ## What the user comes for

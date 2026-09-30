@@ -1,0 +1,21 @@
+test_active_work_refused_in_snapshot_current_and_usage (Backend.test_backup_restore.BackupRestoreTests.test_active_work_refused_in_snapshot_current_and_usage) ... ok
+test_actual_cli_populated_deletion_and_validation (Backend.test_backup_restore.BackupRestoreTests.test_actual_cli_populated_deletion_and_validation) ... ok
+test_existing_canonical_single_link_lease_required (Backend.test_backup_restore.BackupRestoreTests.test_existing_canonical_single_link_lease_required) ... ok
+test_founder_identity_migration_refused (Backend.test_backup_restore.BackupRestoreTests.test_founder_identity_migration_refused) ... ok
+test_hash_tampering_and_overwrite_refused (Backend.test_backup_restore.BackupRestoreTests.test_hash_tampering_and_overwrite_refused) ... ok
+test_inconsistent_deletion_and_unrevoked_credentials_refused (Backend.test_backup_restore.BackupRestoreTests.test_inconsistent_deletion_and_unrevoked_credentials_refused) ... ok
+test_lease_and_sqlite_writers_excluded (Backend.test_backup_restore.BackupRestoreTests.test_lease_and_sqlite_writers_excluded) ... ok
+test_missing_current_and_unknown_schema_refused (Backend.test_backup_restore.BackupRestoreTests.test_missing_current_and_unknown_schema_refused) ... ok
+test_new_owner_refused (Backend.test_backup_restore.BackupRestoreTests.test_new_owner_refused) ... ok
+test_pending_deletion_cli_refusal (Backend.test_backup_restore.BackupRestoreTests.test_pending_deletion_cli_refusal) ... ok
+test_post_snapshot_correction_refused (Backend.test_backup_restore.BackupRestoreTests.test_post_snapshot_correction_refused) ... ok
+test_post_snapshot_source_deletion_refused (Backend.test_backup_restore.BackupRestoreTests.test_post_snapshot_source_deletion_refused) ... ok
+test_private_quarantine_required_for_validation (Backend.test_backup_restore.BackupRestoreTests.test_private_quarantine_required_for_validation) ... ok
+test_reenrollment_refused (Backend.test_backup_restore.BackupRestoreTests.test_reenrollment_refused) ... ok
+test_rotation_preserves_current_credentials_and_all_usage (Backend.test_backup_restore.BackupRestoreTests.test_rotation_preserves_current_credentials_and_all_usage) ... ok
+test_sidecars_and_symlinks_refused (Backend.test_backup_restore.BackupRestoreTests.test_sidecars_and_symlinks_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 1.089s
+
+OK

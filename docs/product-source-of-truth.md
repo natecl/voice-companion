@@ -183,3 +183,20 @@ Founder requests accounts, paywall and price plans in the TestFlight/release han
 ## Release authentication selection — September 29, 2026
 
 Founder selects both Google and Apple sign-in for this release, with Google above Apple in the UI. This supersedes the undecided-provider status above and the Apple-first/Google-later proposal. Prices, allowances, billing periods and pilot timing remain open. Selection is not a claim of implemented or verified authentication.
+
+## Account and release decisions — September 30, 2026
+
+Google and Apple are separate persistent accounts; no linking or automatic merging
+for this release. Google stays above Apple. The founder selected Google for the
+explicit migration of existing development data. This does not authorize moving
+Apple data into Google or using email as identity. Migration implementation and
+acceptance are recorded in [current state](current-state.md).
+
+The approved shared UI system remains the source of truth. Functional account,
+privacy and paywall wiring may reuse its existing components, motion and haptics;
+no redesign is authorized. The founder will supply the final mascot; temporary
+artwork is not cleared for distribution. Finish accounts/data lifecycle before
+plans/limits, then subscriptions/paywall, Release preparation and the pilot.
+Prices, allowances, billing periods and pilot cohort/timing remain undecided.
+See the [current handoff](execution/testflight-release-handoff.md); implementation
+and bounded QA do not establish full release acceptance.
