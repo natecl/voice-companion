@@ -54,7 +54,7 @@ the harness intentionally refuses to overwrite them.
 
 These were empty isolated accounts. This run does not prove populated erasure,
 two-owner data/cache isolation, real expired-session refresh or fresh-proof
-recovery, re-enrollment after deletion, multi-window races, hosted rollout,
+recovery, multi-window races, hosted rollout,
 founder-data migration, backup retention or physical-device acceptance. Prior
 synthetic tests remain supporting contract evidence, not substitutes for those
 remaining checks. Distribution, privacy/support, plans and billing gates remain
@@ -82,3 +82,34 @@ the same evidence limit described above. This empty-account switch is not
 populated cross-owner isolation acceptance. No further founder action is needed
 for this completed sequence; prepare the remaining refresh/isolation checks
 before requesting another manual session.
+
+## Real backend session refresh and replay
+
+`real-backend-refresh.json` records one refresh per provider over the running
+localhost TLS account endpoint. `scripts/qa/real-session-refresh.py` creates
+separate synthetic app-session families bound to the existing real QA owners,
+expires only those access credentials, and sends actual refresh requests. Both
+rotations preserve ownership and issue usable new access and refresh tokens.
+Replaying each old refresh token returns `refresh_replayed`; the new token then
+returns `unauthorized`, proving family revocation. Existing native sessions'
+revocation flags are compared before/after and are unchanged. Test families are
+revoked in cleanup even on failure.
+
+The server observed exactly one successful `apple.validate_refresh` call using
+the real stored Apple grant. Google app-session refresh uses the authenticated
+local refresh secret and makes no Google provider request. No retries or paid
+model calls occurred. The currently signed-in Apple native session remains the
+only active session. This closes the backend real-grant refresh check; native
+automatic expiry/Keychain rotation and revoked-provider recovery remain open.
+
+Reproduce only against the isolated running QA server with both identities:
+
+```sh
+/tmp/ellis-auth-venv/bin/python scripts/qa/real-session-refresh.py \
+  --directory <private-real-account-QA-directory> \
+  --output <sanitized-receipt-path>
+```
+
+The script refuses non-local endpoints and uses the local certificate. It never
+prints session secrets or reads native Keychain; assertions inspect the real
+responses without logging their token payloads.
