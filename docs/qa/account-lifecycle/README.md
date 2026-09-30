@@ -163,3 +163,36 @@ actual native transport received a successful sync response and persisted
 The earlier backend-isolation receipt describes revision 1 before this fixture
 repair. Native Notes rendering/cache and switching still require inspection.
 No production app code or UI was changed; no paid calls occurred.
+
+## Native populated switching and cache clearing
+
+After explicit readiness and the documented fixture repair, the founder opened
+Apple's note, signed out, signed into Google, opened Google's note, then signed
+out, returned to Apple and reopened its note. The agent inspected screenshots
+and owner-scoped cache/session state at each step. This used the unchanged
+Release simulator binary described above with real provider sign-ins and
+explicit fictional content.
+
+- Apple revision-2 lantern summary rendered and its ready cache entry matched
+  Apple's owner/session (`apple-note-cache-before-switch.json`).
+- After Apple sign-out, Apple had no active sessions and no cached JSON files.
+  Google's original owner had one active session and its chat showed only the
+  compass fixture (`google-switch-state.json`, Google home screenshot).
+- Google revision-2 compass summary rendered and its cache entry matched
+  Google's owner/session. Apple had no cached entries
+  (`google-note-cache-before-switch.json`).
+- After Google sign-out, Google had no active sessions and no cached entries;
+  Apple had one active session and its original lantern chat returned
+  (`apple-return-state.json`, Apple return screenshot).
+- Reopening Apple's note displayed the correct summary and rebuilt only the
+  Apple cache (`apple-note-cache-after-return.json`, reopened screenshot).
+
+This proves the exercised native note/history switching and ready-summary
+cache-clearing path for two distinct real provider identities on one simulator.
+The source files remain owner-scoped on disk; this is access isolation and
+cache clearing, not deletion of all local source files on sign-out. No model
+recall request, interrupted capture switch, multi-window race, physical device
+or independent second person's account was exercised. Do not treat this as
+full `access` verifier acceptance or hosted rollout approval. Native automatic
+refresh, provider recovery, populated account erasure, migration and remaining
+release gates still require their own evidence.
