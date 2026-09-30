@@ -36,8 +36,28 @@ class AccountDeletion:
             raise Rejected('no_account_deletion_pending')
         return row[0]
 
-    def recover(self, challenge, provider, identity, identity_token, grant=None):
-        """Fresh verified proof can recover only an already accepted deletion.
+    def recovery_owner(self, identity, expected_owner=None):
+        if expected_owner is not None and not isinstance(expected_owner, str):
+            raise Rejected('invalid_account_request')
+        try:
+            owner = self.pending_owner(identity)
+        except Rejected:
+            if expected_owner is None:
+                raise
+            # A locally saved request may never have reached the server. Fresh
+            # proof can initiate only its exact existing owner, never enrollment.
+            with self.sessions.memory.connect() as db:
+                row = db.execute('SELECT owner FROM account_identity WHERE issuer=? AND subject=?',
+                                 (identity.issuer, identity.subject)).fetchone()
+            if row is None:
+                raise Rejected('no_account_deletion_pending') from None
+            owner = row[0]
+        if expected_owner is not None and owner != expected_owner:
+            raise Rejected('no_account_deletion_pending')
+        return owner
+
+    def recover(self, challenge, provider, identity, identity_token, grant=None, expected_owner=None):
+        """Fresh proof recovers deletion or starts the exact locally saved owner.
 
         One recovery receipt per owner bounds storage. New recovery invalidates
         the previous recovery receipt; the original accepted request still works.
@@ -47,8 +67,10 @@ class AccountDeletion:
             raise Rejected('account_deletion_unavailable')
         token = secrets.token_urlsafe(48)
         with self.sessions.admission.transaction():
-            owner = self.pending_owner(identity)
+            owner = self.recovery_owner(identity, expected_owner)
             self.sessions.consume_identity(challenge, provider, identity, identity_token)
+            if not self.db.execute('SELECT 1 FROM account_deletion WHERE owner=?', (owner,)).fetchone():
+                self._begin_owner(owner, self.sessions.admission.digest(secrets.token_urlsafe(48)))
             if provider == 'apple':
                 if grant is None:
                     raise Rejected('invalid_account_request')
@@ -72,18 +94,21 @@ class AccountDeletion:
         if old:
             return old
         owner = self.sessions.refresh_owner(refresh_token)
+        with self.sessions.admission.transaction():
+            if self.db.execute('SELECT 1 FROM account_deletion WHERE owner=?', (owner,)).fetchone():
+                raise Rejected('account_deletion_pending')
+            self._begin_owner(owner, digest)
+        return owner, 'pending'
+
+    def _begin_owner(self, owner, digest):
         with self.sessions.memory.connect() as db:
             identities = db.execute('SELECT issuer,subject FROM account_identity WHERE owner=?', (owner,)).fetchall()
         if not identities:
             raise Rejected('account_not_enrolled')
-        with self.sessions.admission.transaction():
-            if self.db.execute('SELECT 1 FROM account_deletion WHERE owner=?', (owner,)).fetchone():
-                raise Rejected('account_deletion_pending')
-            self.db.execute("INSERT INTO account_deletion VALUES(?,?,'pending')", (owner, digest))
-            self.db.executemany('INSERT INTO deleting_identity VALUES(?,?)',
-                                [(identity_digest(*row), owner) for row in identities])
-            self.grants.revoke_local_owner(owner)
-        return owner, 'pending'
+        self.db.execute("INSERT INTO account_deletion VALUES(?,?,'pending')", (owner, digest))
+        self.db.executemany('INSERT INTO deleting_identity VALUES(?,?)',
+                            [(identity_digest(*row), owner) for row in identities])
+        self.grants.revoke_local_owner(owner)
 
     async def delete(self, token, *, recovery=False):
         if self.quiesce is None:

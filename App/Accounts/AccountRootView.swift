@@ -5,7 +5,14 @@ import Observation
 private struct AccountSignOutKey: EnvironmentKey {
     static let defaultValue: (@MainActor @Sendable () -> Void)? = nil
 }
+private struct AccountDeleteKey: EnvironmentKey {
+    static let defaultValue: (@MainActor @Sendable () -> Void)? = nil
+}
 extension EnvironmentValues {
+    var accountDelete: (@MainActor @Sendable () -> Void)? {
+        get { self[AccountDeleteKey.self] }
+        set { self[AccountDeleteKey.self] = newValue }
+    }
     var accountSignOut: (@MainActor @Sendable () -> Void)? {
         get { self[AccountSignOutKey.self] }
         set { self[AccountSignOutKey.self] = newValue }
@@ -21,6 +28,9 @@ final class AccountRuntime {
     var legacy = false
     var active: StoredAccount?
     var busy = false
+    var pendingDeletion: PendingAccountDeletion?
+    var recoveringDeletion = false
+    private let deletionController = AccountDeletionController()
     var message: String?
     private var generation = UUID()
     private var manager: AccountSessionManager?
@@ -31,6 +41,12 @@ final class AccountRuntime {
         guard !ready else { return }
         defer { ready = true }
         do {
+            manager = AccountSessionManager.shared
+            if let pending = try AccountCredentialStore.pendingDeletion() {
+                pendingDeletion = pending
+                message = pending.serverDeleted ? "Your account was deleted. Finish removing its data from this device." : "Account deletion is pending. Retry when you’re connected."
+                return
+            }
             let account = try AccountCredentialStore.load()
             manager = AccountSessionManager.shared
             if let account {
@@ -64,6 +80,16 @@ final class AccountRuntime {
             case .google: authorization = try await google.signIn(nonce: challenge.nonce, presenting: presenter,
                 clientID: config.googleClientID, serverClientID: config.googleServerClientID)
             }
+            if recoveringDeletion {
+                let receipt = try await config.transport.recoverDeletion(provider: provider, challenge: challenge.challenge,
+                    identityToken: authorization.identityToken, authorizationCode: authorization.authorizationCode, expectedOwner: pendingDeletion?.owner)
+                let pending = PendingAccountDeletion(endpoint: config.transport.endpoint, provider: provider, receipt: receipt)
+                if let previous = pendingDeletion, previous.owner != pending.owner { throw AccountFailure.invalidResponse }
+                try AccountCredentialStore.saveDeletion(pending)
+                pendingDeletion = pending
+                try await finishDeletion(pending)
+                return
+            }
             let session = try await config.transport.exchange(provider: provider, challenge: challenge.challenge,
                                                               identityToken: authorization.identityToken, authorizationCode: authorization.authorizationCode)
             let account = StoredAccount(endpoint: config.transport.endpoint, provider: provider, session: session)
@@ -72,8 +98,45 @@ final class AccountRuntime {
             generation = UUID()
             legacy = false
             active = account
+        } catch AccountFailure.deletionPending {
+            recoveringDeletion = true
+            message = "Sign in with the same provider to finish the account deletion you requested."
         } catch AccountFailure.cancelled { message = nil }
         catch { message = error.localizedDescription }
+    }
+
+    func deleteAccount() async {
+        guard active != nil, !busy, AccountConfiguration.deletionEnabled else { return }
+        busy = true; message = nil; generation = UUID()
+        defer { busy = false }
+        do {
+            let pending = try await AccountSessionManager.shared.prepareDeletion()
+            pendingDeletion = pending
+            NotificationCenter.default.post(name: .accountWillChange, object: nil)
+            active = nil; legacy = false
+            try await finishDeletion(pending)
+        } catch { message = "Account deletion could not finish. Your request is saved if it was started. Please retry." }
+    }
+
+    func retryDeletion() async {
+        guard let pending = pendingDeletion, !busy else { return }
+        busy = true; message = nil
+        defer { busy = false }
+        do { try await finishDeletion(pending) }
+        catch AccountFailure.signInRequired {
+            recoveringDeletion = true
+            message = "Sign in with the same provider to finish deleting this account."
+        }
+        catch { message = "Deletion could not finish. Check your connection and retry. Your account will stay closed here." }
+    }
+
+    private func finishDeletion(_ pending: PendingAccountDeletion) async throws {
+        try await deletionController.finish(pending)
+        guard pendingDeletion?.id == pending.id else { throw AccountFailure.cancelled }
+        pendingDeletion = nil; recoveringDeletion = false
+        active = nil; legacy = false
+        GIDSignIn.sharedInstance.signOut()
+        message = "Your account was deleted."
     }
 
     func refreshCurrent() async {
@@ -129,6 +192,21 @@ struct AccountRootView<Content: View>: View {
         return { Task { await runtime.signOut() } }
     }
 
+    private var deleteAction: (@MainActor @Sendable () -> Void)? {
+        guard runtime.active != nil, AccountConfiguration.deletionEnabled else { return nil }
+        return { Task { await runtime.deleteAccount() } }
+    }
+
+    private var retryDeletionAction: (() -> Void)? {
+        guard runtime.pendingDeletion != nil, !runtime.recoveringDeletion else { return nil }
+        return { Task { await runtime.retryDeletion() } }
+    }
+
+    private var leaveRecoveryAction: (() -> Void)? {
+        guard runtime.recoveringDeletion, runtime.pendingDeletion == nil else { return nil }
+        return { runtime.recoveringDeletion = false; runtime.message = nil }
+    }
+
     var body: some View {
         Group {
             if !runtime.ready { ProgressView().tint(ExperienceStyle.accent) }
@@ -136,9 +214,13 @@ struct AccountRootView<Content: View>: View {
                 content(runtime.active != nil)
                     .id(runtime.active?.session.owner ?? "legacy")
                     .environment(\.accountSignOut, signOutAction)
+                    .environment(\.accountDelete, deleteAction)
             } else {
                 ExperienceSignupView(onSignIn: { provider in Task { await runtime.signIn(provider) } },
-                                     isBusy: runtime.busy, accountMessage: runtime.message)
+                                     isBusy: runtime.busy, accountMessage: runtime.message,
+                                     deletingAccount: runtime.pendingDeletion != nil || runtime.recoveringDeletion,
+                                     onRetryDeletion: retryDeletionAction,
+                                     onLeaveRecovery: leaveRecoveryAction)
             }
         }
         .task { await runtime.restore() }

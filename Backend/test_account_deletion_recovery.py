@@ -88,6 +88,39 @@ class DeletionRecoveryTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.memory.source(fresh['owner'], 'session-a'), source())
         self.admission.authorized(fresh['token'])
 
+    async def test_unreceived_local_request_recovers_only_exact_existing_owner(self):
+        original = self.enroll()
+        other = self.enroll(subject='other')
+        self.memory.put_source(original['owner'], source())
+        self.memory.put_source(other['owner'], source())
+        self.now += 40 * 86400
+        with self.assertRaises(Rejected): self.deletion.begin(original['refresh_token'])
+        for expected, subject in ((other['owner'], 'fictional-a'), (original['owner'], 'other'),
+                                  (original['owner'], 'unknown')):
+            with self.assertRaisesRegex(Rejected, 'no_account_deletion_pending'):
+                self.deletion.recover(*self.proof(subject), expected_owner=expected)
+        self.assertEqual(self.admission.db.execute('SELECT count(*) FROM account_deletion').fetchone()[0], 0)
+        proof = self.proof()
+        recovered = self.deletion.recover(*proof, expected_owner=original['owner'])
+        self.assertEqual(recovered['owner'], original['owner'])
+        with self.assertRaises(Rejected): self.admission.authorized(original['token'])
+        await self.deletion.delete(recovered['deletion_token'], recovery=True)
+        fresh = self.enroll()
+        with self.assertRaisesRegex(Rejected, 'no_account_deletion_pending'):
+            self.deletion.recover(*self.proof(), expected_owner=original['owner'])
+        self.admission.authorized(fresh['token'])
+        self.assertEqual(self.memory.source(other['owner'], 'session-a'), source())
+
+    async def test_unreceived_apple_request_rolls_back_when_grant_cannot_persist(self):
+        original = self.enroll(provider='apple')
+        proof = self.proof(provider='apple')
+        with patch.object(self.grants, 'save_apple', side_effect=RuntimeError('fixture disk failure')):
+            with self.assertRaises(RuntimeError):
+                self.deletion.recover(*proof, grant={'refresh_token': 'new-grant'}, expected_owner=original['owner'])
+        self.assertEqual(self.admission.db.execute('SELECT count(*) FROM account_deletion').fetchone()[0], 0)
+        self.admission.authorized(original['token'])
+        self.sessions.nonce(proof[0], 'apple')
+
     async def test_apple_grant_and_receipt_persist_atomically(self):
         account = self.enroll(provider='apple')
         self.deletion.begin(account['refresh_token'])
@@ -119,7 +152,7 @@ class DeletionRecoveryTests(unittest.IsolatedAsyncioTestCase):
             for provider in ('google', 'apple'):
                 account = self.enroll(provider=provider)
                 self.memory.put_source(account['owner'], source())
-                self.deletion.begin(account['refresh_token'])
+                if provider == 'google': self.deletion.begin(account['refresh_token'])
                 challenge = await request(operation='challenge', provider=provider)
                 claims = dict(iss=GOOGLE if provider == 'google' else APPLE, sub='fictional-a',
                               aud='backend' if provider == 'google' else 'phone', iat=self.now, exp=self.now+300,
@@ -128,6 +161,7 @@ class DeletionRecoveryTests(unittest.IsolatedAsyncioTestCase):
                 fields = dict(operation='recover_deletion', provider=provider, challenge=challenge['challenge'],
                               identity_token=token, confirmation='delete_account')
                 if provider == 'apple':
+                    fields['expected_owner'] = account['owner']
                     fields['authorization_code'] = 'new-apple-code'
                     bad = jwt.encode(dict(claims, sub='other'), key, algorithm='RS256', headers={'kid': 'fixture'})
                     self.apple.redeem.return_value = dict(identity_token=bad, refresh_token='wrong-grant')

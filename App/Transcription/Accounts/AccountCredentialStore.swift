@@ -11,6 +11,7 @@ struct StoredAccount: Codable, Sendable {
 
 private struct AccountKeychainState: Codable {
     var account: StoredAccount?
+    var deletion: PendingAccountDeletion? = nil
 }
 
 enum AccountCredentialStore {
@@ -24,6 +25,7 @@ enum AccountCredentialStore {
     static func save(_ account: StoredAccount) throws {
         _ = try AccountTransport(endpoint: account.endpoint)
         try account.session.validate()
+        guard try read()?.deletion == nil else { throw AccountFailure.deletionPending }
         try write(AccountKeychainState(account: account))
     }
 
@@ -60,8 +62,27 @@ enum AccountCredentialStore {
         return try JSONDecoder().decode(AccountKeychainState.self, from: data)
     }
 
+    static func pendingDeletion() throws -> PendingAccountDeletion? {
+        let pending = try read()?.deletion
+        try pending?.validate()
+        return pending
+    }
+
+    static func saveDeletion(_ pending: PendingAccountDeletion) throws {
+        try pending.validate()
+        let state = try read()
+        if let active = state?.account, active.session.owner != pending.owner { throw AccountFailure.signInRequired }
+        if let prior = state?.deletion, prior.owner != pending.owner { throw AccountFailure.deletionPending }
+        try write(AccountKeychainState(account: nil, deletion: pending))
+    }
+
+    static func completeDeletion(_ id: UUID) throws {
+        guard let state = try read(), state.account == nil, state.deletion?.id == id else { throw AccountFailure.cancelled }
+        try write(AccountKeychainState(account: nil))
+    }
+
     static func clear() throws {
         // Keep a durable signed-out marker: never fall back to the legacy owner.
-        try write(AccountKeychainState(account: nil))
+        try write(AccountKeychainState(account: nil, deletion: try read()?.deletion))
     }
 }

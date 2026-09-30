@@ -117,7 +117,8 @@
     const n=state.notes.find(n=>n.id===selected);let title='',html='';
     if(page==='attach') {title='Bring a note into the conversation';html=state.notes.length?state.notes.map(n=>card(n,'attach-note')).join(''):'<h3>No notes yet</h3><p>Capture a conversation to create your first note.</p>';}
     if(page==='invite'){title='Invite a friend';html=`<h1>A little more company.</h1><p>Friend invitations aren’t available in this internal build yet.</p><button class="row" data-act="profile">Your profile ${icon('chevron-right')}</button>`;}
-    if(page==='profile'){title='Your space';html=`<h1>Good to have you here.</h1><div class="paper"><button class="row" data-act="theme">Appearance <span>${escape(state.appearance)}</span></button><button class="row" data-act="privacy">What Ellis remembers ${icon('chevron-right')}</button>${state.canSignOut?'<button class="row" data-act="sign-out">Sign out</button>':''}</div>`;}
+    if(page==='profile'){title='Your space';html=`<h1>Good to have you here.</h1><div class="paper"><button class="row" data-act="theme">Appearance <span>${escape(state.appearance)}</span></button><button class="row" data-act="privacy">What Ellis remembers ${icon('chevron-right')}</button>${state.canSignOut?'<button class="row" data-act="sign-out">Sign out</button>':''}${state.canDeleteAccount?'<button class="row" data-act="delete-account">Delete account</button>':''}</div>`;}
+    if(page==='account-delete-confirm'){title='Delete your account?';html='<p>This removes your recordings, notes, conversations and memories. You cannot undo this.</p><button class="primary" data-act="confirm-account-delete">Delete account</button><button class="row" data-act="close">Cancel</button>';}
     if(page==='privacy'){title='What Ellis remembers';html=`<h1>You’re in control.</h1><p>Ellis uses your captured conversations to remember relevant context.</p><button class="row" data-act="memory" role="switch" aria-checked="${state.useMemory}">Use past memory <span>${state.useMemory?'On':'Off'}</span></button><p>Deleting a note removes its transcript. Existing replies and learned memories may remain.</p>`;}
     if(page==='note'||page==='transcript'){
       if(!n){close();return;}const detail=state.detail?.id===selected?state.detail:null,live=page==='transcript';
@@ -223,6 +224,8 @@
     if(a==='invite-friends')open('invite');if(a==='profile')open('profile');if(a==='privacy')open('privacy');
     if(a==='theme'){transport('appearance',{value:state.appearance==='dark'?'light':'dark'});close();}
     if(a==='sign-out')transport('sign-out');
+    if(a==='delete-account'&&state.canDeleteAccount)open('account-delete-confirm');
+    if(a==='confirm-account-delete'&&state.canDeleteAccount)transport('delete-account');
     if(a==='memory')transport('memory',{value:!state.useMemory});
     if(a==='detach')transport('detach');
     if(a==='send'){

@@ -79,6 +79,17 @@ actor AccountSessionManager {
         }
     }
 
+    func prepareDeletion(savePending: @Sendable (PendingAccountDeletion) throws -> Void = AccountCredentialStore.saveDeletion) async throws -> PendingAccountDeletion {
+        let value = try await current()
+        guard account?.session.refreshToken == value.session.refreshToken else { throw AccountFailure.cancelled }
+        let pending = PendingAccountDeletion(account: value)
+        try savePending(pending)
+        generation = UUID()
+        refreshTask?.cancel(); refreshTask = nil
+        account = nil
+        return pending
+    }
+
     /// Caller stops account-owned work before this, then revokes the returned
     /// refresh credential through the service. A failed secure clear is explicit.
     func removeLocalAccount() throws -> StoredAccount? {

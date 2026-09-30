@@ -48,7 +48,7 @@ class AccountService:
                         if op == 'challenge' and fields == {'provider'}:
                             result = self.sessions.challenge(data['provider'])
                         elif op in ('exchange', 'recover_deletion'):
-                            proof_fields = fields - {'confirmation'} if op == 'recover_deletion' else fields
+                            proof_fields = fields - {'confirmation', 'expected_owner'} if op == 'recover_deletion' else fields
                             if proof_fields not in ({'provider', 'challenge', 'identity_token'}, {'provider', 'challenge', 'identity_token', 'authorization_code'}):
                                 raise Rejected('invalid_account_request')
                             if op == 'recover_deletion' and (self.deletion is None or data.get('confirmation') != 'delete_account'):
@@ -60,7 +60,7 @@ class AccountService:
                             identity = await asyncio.to_thread(self.verifier.verify, provider,
                                                               data['identity_token'], expected_nonce=nonce)
                             if op == 'recover_deletion':
-                                self.deletion.pending_owner(identity)
+                                self.deletion.recovery_owner(identity, data.get('expected_owner'))
                             else:
                                 self.sessions.require_identity_available(identity)
                             grant = None
@@ -76,7 +76,7 @@ class AccountService:
                             elif 'authorization_code' in data:
                                 raise Rejected('invalid_account_request')
                             if op == 'recover_deletion':
-                                result = self.deletion.recover(data['challenge'], provider, identity, data['identity_token'], grant)
+                                result = self.deletion.recover(data['challenge'], provider, identity, data['identity_token'], grant, data.get('expected_owner'))
                             else:
                                 result = self.sessions.exchange(data['challenge'], provider, identity, data['identity_token'])
                             if grant and op == 'exchange':
