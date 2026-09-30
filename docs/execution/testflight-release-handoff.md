@@ -31,6 +31,10 @@ Keep the five-minute internal capture cap until separately changed and validated
 
 ## Phases, packets and gates
 
+Founder explicitly requests sequential execution: complete Phase 1 acceptance
+before starting Phase 2, then follow phases 3–5. Existing Apple app-record setup
+is retained; further pricing or distribution work waits for the account gates.
+
 | Phase | Bounded packets | Dependency and completion gate |
 | --- | --- | --- |
 | 0: establish release baseline | REBASE-0 verify main/runtime/build identities; DECIDE-0 prepare concrete account/provider and plan choices; APPLE-0 resolve agreement/app record | No assumption that a Debug install or old receipts prove Release readiness. Founder handles legal acceptance; no automatic paid calls. |

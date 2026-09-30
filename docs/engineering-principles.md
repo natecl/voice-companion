@@ -428,3 +428,9 @@ reason to stop account, plan, paywall or other release preparation. Do not ship
 the unlicensed placeholder or invent a replacement design. Plans and a working
 paywall remain in the requested release scope; creating the App Store record
 does not mean the app is ready for submission or that billing may be skipped.
+
+Founder sequencing instruction, September 30: move through the TestFlight plan
+in order. Finish Phase 1 account/data-lifecycle acceptance before beginning
+Phase 2 pricing/limits, then Phase 3 paywall/subscriptions, Phase 4 release
+preparation and Phase 5 pilot. Preserve already completed Apple setup, but do
+not use a pending account check as a reason to advance to a later phase.
