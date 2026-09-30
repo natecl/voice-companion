@@ -78,4 +78,37 @@ class VerifierTests(unittest.TestCase):
         del self.manifest['not_applicable']['inspection']
         with self.assertRaises(ValueError):v.validate(self.manifest)
 
+    def test_identity_provider_requires_matching_actual_provider_and_configuration(self):
+        self.manifest['checks'] = [dict(id='oauth', group='live_behavior_checks',
+            kind='live_identity_provider', provider='apple', evidence='work/oauth.json')]
+        self.manifest['not_applicable'] = {'mechanical_checks': 'External receipt fixture', 'inspection': 'Review follows'}
+        packet = self.packet()
+        work = self.root / 'work'; work.mkdir()
+        (work / 'raw.txt').write_text('Fictional test artifact only')
+        proof = dict(commit=v.identity(self.root), kind='live_identity_provider', result='pass',
+                     artifacts=['work/raw.txt'], procedure='Fixture procedure', observed='Fixture observed',
+                     provider='apple', configuration='Fixture app/backend configuration',
+                     pipeline_layer='native -> real authorization -> account service', provider_calls=1)
+        path = work / 'oauth.json'
+        for changed in (dict(proof, kind='fixture'), dict(proof, provider='google'),
+                        dict(proof, configuration=''), dict(proof, provider_calls=0),
+                        dict(proof, provider_calls=True)):
+            path.write_text(json.dumps(changed))
+            with self.subTest(proof=changed):
+                self.assertEqual(v.run(self.root, packet)['status'], 'incomplete')
+        path.write_text(json.dumps(proof))
+        receipt = v.run(self.root, packet)
+        self.assertEqual(receipt['status'], 'needs_review')
+        self.assertEqual(receipt['checks'][0]['provider'], 'apple')
+        self.assertEqual(receipt['checks'][0]['provider_calls'], 1)
+        # These are parser fixtures; no OAuth/model call is made by the verifier.
+        self.assertEqual(receipt['paid_calls'], 0)
+
+    def test_malformed_external_receipt_is_incomplete(self):
+        self.manifest['checks'] = [dict(id='proof', group='live_behavior_checks', kind='fixture', evidence='work/proof.json')]
+        self.manifest['not_applicable'] = {'mechanical_checks': 'External fixture', 'inspection': 'Review required'}
+        packet = self.packet(); (self.root / 'work').mkdir()
+        (self.root / 'work/proof.json').write_text('[]')
+        self.assertEqual(v.run(self.root, packet)['status'], 'incomplete')
+
 if __name__=='__main__':unittest.main()

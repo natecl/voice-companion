@@ -1,5 +1,7 @@
 # Internal V1 runbook
 
+> Historical V1 operating record. The former one-liner, installed versions, selected-session Ask interface and remaining budget below describe September 25. They are not current positioning, enrollment instructions or available spending authority. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 Status: founder-only internal V1 accepted September 25, 2026. This is an installed development build, not a public release. The product remains: “Granola with an AI that listens alongside you and can join the conversation.”
 
 ## Use on iPhone
