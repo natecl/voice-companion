@@ -51,7 +51,9 @@ Google native automatic expiry/Keychain rotation and signed-in restart now pass
 in the isolated Release simulator; see [receipt](../../qa/account-lifecycle/native-automatic-refresh.json).
 Real Google fresh-proof deletion recovery also passed through agent-operated
 XCTest and the real provider, with no content session issued.
-Remaining gates: Apple native automatic rotation and fresh-proof recovery, physical deletion lifecycle, independent
+Apple native automatic rotation and persisted signed-in restart now also pass;
+see [receipt](../../qa/account-lifecycle/native-apple-automatic-refresh.json).
+Remaining gates: Apple fresh-proof recovery, physical deletion lifecycle, independent
 second-person isolation, and implemented backup retention/restore handling.
 Google and Apple remain separate accounts. Google stays above Apple; no account
 linking or email-derived identity merge is included. The physical founder Google
@@ -87,7 +89,7 @@ Native transport, device-local account Keychain storage, refresh serialization a
 ## Next bounded work
 
 Google automatic rotation passed without modifying clocks or credentials.
-Complete the remaining Apple automatic/provider-recovery paths against isolated
+Complete the remaining Apple provider-recovery path against isolated
 fixtures, without modifying production credentials. Physical Apple/Google switching, signed-in Apple relaunch and return to Google
 now passed; see the [receipt](../../qa/founder-migration/physical-account-switch.json).
 Founder Google remains signed in. Exercise fresh-proof deletion
