@@ -61,7 +61,7 @@ actor AccountSessionManager {
             guard generation == expected else { throw AccountFailure.cancelled }
             try session.validate()
             guard session.owner == previous.session.owner else { throw AccountFailure.invalidResponse }
-            let next = StoredAccount(endpoint: previous.endpoint, provider: previous.provider, session: session)
+            let next = StoredAccount(endpoint: previous.endpoint, provider: previous.provider, session: session, googleGrant: previous.googleGrant)
             try save(next)
             account = next
             refreshTask = nil

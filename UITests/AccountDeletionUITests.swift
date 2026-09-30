@@ -42,6 +42,36 @@ import XCTest
         XCTAssertFalse(web.buttons["Delete account"].exists)
     }
 
+    func testKeychainAndLocalErasureSurviveTwoRelaunches() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--account-keychain-fixture"]
+        app.launchEnvironment["ELLIS_ACCOUNT_QA_ID"] = UUID().uuidString
+        for (phase, expected) in [("prepare", "Pending erasure saved"), ("finish", "Erased and signed out"), ("verify", "Signed out after relaunch")] {
+            app.launchEnvironment["ELLIS_ACCOUNT_QA_PHASE"] = phase
+            app.launch()
+            XCTAssertTrue(app.staticTexts[expected].waitForExistence(timeout: 10), app.debugDescription)
+            app.terminate()
+        }
+    }
+
+    func testNativeDeletionAgainstLocalTLSBackend() throws {
+        continueAfterFailure = false
+        guard let config = ProcessInfo.processInfo.environment["ELLIS_ACCOUNT_QA_NETWORK"] else { throw XCTSkip("Local TLS fixture required") }
+        let object = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(config.utf8)) as? [String: Any])
+        let session = try XCTUnwrap(object["session"] as? [String: Any])
+        let app = XCUIApplication()
+        app.launchArguments = ["--account-keychain-fixture"]
+        app.launchEnvironment["ELLIS_ACCOUNT_QA_ID"] = try XCTUnwrap(session["owner"] as? String)
+        app.launchEnvironment["ELLIS_ACCOUNT_QA_NETWORK"] = config
+        for (phase, expected) in [("prepare", "Pending erasure saved"), ("finish", "Erased and signed out"), ("verify", "Signed out after relaunch")] {
+            app.launchEnvironment["ELLIS_ACCOUNT_QA_PHASE"] = phase
+            app.launch()
+            XCTAssertTrue(app.staticTexts[expected].waitForExistence(timeout: 15), app.debugDescription)
+            app.terminate()
+        }
+    }
+
     private func shot(_ app: XCUIApplication, _ name: String) {
         let attachment = XCTAttachment(screenshot: app.screenshot())
         attachment.name = name; attachment.lifetime = .keepAlways

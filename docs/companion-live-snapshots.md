@@ -1,5 +1,7 @@
 # Durable evidence for chat during capture
 
+> Historical snapshot-storage checkpoint. The deletion-invalidates-answer behavior and schema number below describe that implementation; ordinary recording deletion now preserves learned knowledge and historic replies under the retained-memory contract, while unavailable sources cannot be reopened. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 September 26, 2026. Checkpoint 6A3, additive schema 14. This backend foundation persists the exact live excerpts used by a question independently of finalized recording memory. Hosted routes, native UI and model instructions are unchanged.
 
 ## Behavior

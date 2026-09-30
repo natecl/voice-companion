@@ -34,6 +34,8 @@ Swift could not infer optional callback closures in the root view. Explicitly ty
 
 ## Remaining gates
 
+The subsequent [Google revocation candidate](../google-account-revocation/README.md) supersedes the missing revocation implementation and adds isolated simulator Keychain/relaunch evidence. It does not satisfy real-provider or full integrated runtime acceptance. The following records this checkpoint’s original limits.
+
 Keep both native and backend deletion flags off. Actual native Keychain crash/relaunch/recovery and complete native-to-backend deletion still need integrated evidence. Google SDK disconnect/revocation is not yet connected (current completion only signs out); implement identity-safe revocation, including a different Google identity chosen during a failed recovery, before enabling. Real Apple revocation/recovery, populated two-owner runtime isolation, cross-window state, physical-device capture and Release lifecycle acceptance remain open.
 
 Backups and restore retention policy, founder-data migration, schema-21 deployment/rollback and privacy/support configuration also remain unfinished. These local checks do not prove forensic erasure or backup deletion. No real account was deleted; the existing signed-in simulator, founder phone, production service and $5 provider budget were untouched.

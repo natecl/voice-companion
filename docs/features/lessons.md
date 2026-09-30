@@ -99,3 +99,14 @@ Stop can expose terminal hypotheses that differ from earlier partial text. The c
 An attractive chat UI, background memory worker or automatic welcome message is not evidence of proactive conversation participation. Trace the initiating event through context selection, contribution/silence decision and actual delivery. Current chat starts from an explicit question. Likewise, generic model knowledge is not live web retrieval, and an account/pricing preview is not an operational account or subscription. Audit active code and dated deployment evidence before making capability claims. [Gap audit](../product-vision-audit-2026-09-28.md).
 
 Keep current maps reconciled after rollout: PR104 ordinary note deletion preserves existing replies; release chat source controls are hidden; v3 is deployed; composer Clear draft was removed. Older checkpoint statements remain historical evidence, not instructions to restore those behaviors.
+
+
+## Account lifecycle lessons — September 30, 2026
+
+**Authorize long-lived connections at each content boundary.** A valid socket handshake does not keep a revoked session authorized. Reproduce revocation while the socket stays open, then inspect reads, queued work and output delivery. The local companion fix has actual loopback-socket regressions; it is not deployed in the recorded `208ca34` service. [Failure and fixed evidence](../qa/account-isolation-review/README.md).
+
+**Cancellation must fence delayed capture callbacks.** A canceled connection can still deliver an in-flight callback. Guard before transcript/storage mutation and after connection completion. The reproduced bug changed the signed-out owner's saved source/outbox, not another owner's content. Twenty-seven native/account/memory tests pass after the fix; no microphone or physical-device claim follows. [Evidence](../qa/account-isolation-review/capture-teardown.md).
+
+**Provider recovery receipts must name the exercised boundary.** Natural Apple/Google native refresh and persisted restart differ from synthetic backend refresh. Apple fresh-proof recovery used real proof/revocation with a staged interrupted local session; the transient completion UI was founder-reported, and automated restart was inspected separately. Do not turn that into physical deletion or independent-human isolation acceptance. [Apple receipt](../qa/account-lifecycle/apple-fresh-proof-recovery.json).
+
+**Backup tooling is not a retention promise or restore activation.** Registered-copy expiry leaves unknown historical/off-host/provider copies outside scope. Restore preparation requires independently established current authority, preserves current spending/authentication state and refuses changed canonical content; hashes alone cannot prove freshness. The local worker is disabled by default and restore remains prepare/validate only. [Expiry limits](../qa/managed-backups/automatic-expiry.md), [restore limits](../qa/backup-restore/README.md).

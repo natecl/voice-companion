@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "fixture": "disposable fictional SQLite only",
+  "subprocess_cli_calls": 4,
+  "snapshot_database_count": 3,
+  "injected_created_at": 100,
+  "injected_expiry_at": 110,
+  "injected_apply_at": 111,
+  "retention_seconds": 10,
+  "retention_is_fixture_only": true,
+  "integrity": "ok for every snapshot database",
+  "pre_expiry_candidates": 0,
+  "expired_sets_pruned": 1,
+  "source_ledger_hashes_unchanged": true,
+  "unknown_historical_and_unregistered_files_preserved": true,
+  "durable_expiry_receipt": true,
+  "production_or_provider_actions": 0
+}

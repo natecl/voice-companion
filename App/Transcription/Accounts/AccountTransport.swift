@@ -3,7 +3,7 @@ import Foundation
 enum AccountProvider: String, Codable, Sendable { case google, apple }
 
 enum AccountFailure: Error, LocalizedError, Sendable {
-    case unavailable, invalidResponse, signInRequired, cancelled, deletionPending, noDeletionPending
+    case unavailable, invalidResponse, signInRequired, cancelled, deletionPending, noDeletionPending, providerGrantExpired
     var errorDescription: String? {
         switch self {
         case .unavailable: "Sign-in is unavailable right now. Please try again."
@@ -11,6 +11,7 @@ enum AccountFailure: Error, LocalizedError, Sendable {
         case .signInRequired: "Please sign in again to continue."
         case .cancelled: "Sign-in was cancelled."
         case .deletionPending: "Account deletion is pending. Sign in again to finish deleting it."
+        case .providerGrantExpired: "Sign in with the same Google account to finish removing its authorization."
         case .noDeletionPending: "There is no pending deletion for this sign-in."
         }
     }
@@ -80,12 +81,18 @@ struct AccountTransport: Sendable {
         _ = try await request(operation: "sign_out", fields: ["refresh_token": token])
     }
 
-    func deleteAccount(_ refreshToken: String) async throws {
+    func deleteAccount(_ refreshToken: String) async throws -> AccountDeletionStatus {
         try await deletionResult(operation: "delete_account", fields: ["refresh_token": refreshToken, "confirmation": "delete_account"])
     }
 
-    func resumeDeletion(_ deletionToken: String) async throws {
+    func resumeDeletion(_ deletionToken: String) async throws -> AccountDeletionStatus {
         try await deletionResult(operation: "resume_deletion", fields: ["deletion_token": deletionToken])
+    }
+
+    func finishGoogleDeletion(_ credential: String, kind: PendingAccountDeletion.Credential, grant: String) async throws {
+        let status = try await deletionResult(operation: "finish_google_deletion", fields: ["credential": credential,
+            "credential_kind": kind.rawValue, "google_refresh_token": grant])
+        guard status == .deleted else { throw AccountFailure.invalidResponse }
     }
 
     func recoverDeletion(provider: AccountProvider, challenge: String, identityToken: String, authorizationCode: String? = nil, expectedOwner: String? = nil) async throws -> AccountDeletionReceipt {
@@ -102,10 +109,10 @@ struct AccountTransport: Sendable {
         return receipt
     }
 
-    private func deletionResult(operation: String, fields: [String: String]) async throws {
+    private func deletionResult(operation: String, fields: [String: String]) async throws -> AccountDeletionStatus {
         let data = try await request(operation: operation, fields: fields)
-        struct Result: Decodable { let status: String }
-        guard try JSONDecoder().decode(Result.self, from: data).status == "deleted" else { throw AccountFailure.invalidResponse }
+        struct Result: Decodable { let status: AccountDeletionStatus }
+        return try JSONDecoder().decode(Result.self, from: data).status
     }
 
     private func session(operation: String, fields: [String: String]) async throws -> AccountSession {
@@ -153,6 +160,7 @@ struct AccountTransport: Sendable {
                 let envelope = try JSONDecoder().decode(AccountEnvelope.self, from: response)
                 if envelope.type == "error" {
                     if ["unauthorized", "refresh_replayed"].contains(envelope.message) { throw AccountFailure.signInRequired }
+                    if envelope.message == "google_authorization_revoked" { throw AccountFailure.providerGrantExpired }
                     if envelope.message == "account_deletion_pending" { throw AccountFailure.deletionPending }
                     if envelope.message == "no_account_deletion_pending" { throw AccountFailure.noDeletionPending }
                     throw AccountFailure.unavailable

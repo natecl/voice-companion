@@ -1,0 +1,18 @@
+{
+  "date": "2026-09-30",
+  "scope": "isolated real-provider Google account; unchanged signed Release simulator app",
+  "native_source": "7f715477a15b92f65a4e0a31dbf3885baf17a20d",
+  "binary_sha256": "3151e25d7d9a4d77a4ad0e11fdeda5bc5a9f26d9871a493b134c5f35d62cc3dd",
+  "normal_access_lifetime_seconds": 3600,
+  "native_refresh_lead_seconds": 600,
+  "clock_or_credential_expiry_modified": false,
+  "new_session_count": 1,
+  "same_owner": true,
+  "same_family": true,
+  "previous_refresh_consumed": true,
+  "new_access_expiry_extended": true,
+  "post_rotation_restart_signed_in_home_inspected": true,
+  "post_restart_extra_rotation": false,
+  "paid_calls": 0,
+  "limitations": "Google native rotation and persisted-session restart only. Apple native automatic rotation, revoked-provider recovery, network-failure recovery and physical timer behavior are separate checks. Existing backend Apple real-grant refresh is separately evidenced."
+}

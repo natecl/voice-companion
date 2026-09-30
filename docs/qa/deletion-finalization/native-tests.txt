@@ -1,0 +1,64 @@
+Test Suite 'Selected tests' started at 2026-09-30 01:08:49.604.
+Test Suite 'CoreTests.xctest' started at 2026-09-30 01:08:49.605.
+Test Suite 'AccountDeletionTests' started at 2026-09-30 01:08:49.605.
+Test Case '-[CoreTests.AccountDeletionTests testConfirmedGoogleRevocationSurvivesFinalKeychainFailure]' started.
+Test Case '-[CoreTests.AccountDeletionTests testConfirmedGoogleRevocationSurvivesFinalKeychainFailure]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testGoogleRevocationFailureRetainsExactGrantAndRetriesWithoutServer]' started.
+Test Case '-[CoreTests.AccountDeletionTests testGoogleRevocationFailureRetainsExactGrantAndRetriesWithoutServer]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testInvalidOwnerAndOwnerSymlinkCannotDeleteOtherFiles]' started.
+Test Case '-[CoreTests.AccountDeletionTests testInvalidOwnerAndOwnerSymlinkCannotDeleteOtherFiles]' passed (0.002 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testLateCompletionCannotClearReplacementReceipt]' started.
+Test Case '-[CoreTests.AccountDeletionTests testLateCompletionCannotClearReplacementReceipt]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testLocalErasurePreservesOtherOwnerAndLegacyAndBlocksLateWrites]' started.
+2026-09-30 01:08:49.614802-0400 xctest[30402:6939058] [Metadata] unable to get a dev_t for store 1795162192.
+Test Case '-[CoreTests.AccountDeletionTests testLocalErasurePreservesOtherOwnerAndLegacyAndBlocksLateWrites]' passed (0.009 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testLocalFailureRetriesAfterRelaunchWithoutAnotherServerCall]' started.
+Test Case '-[CoreTests.AccountDeletionTests testLocalFailureRetriesAfterRelaunchWithoutAnotherServerCall]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testMissingGoogleGrantKeepsPendingUntilFreshProof]' started.
+Test Case '-[CoreTests.AccountDeletionTests testMissingGoogleGrantKeepsPendingUntilFreshProof]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testPreparationSavesPendingBeforeDroppingAccess]' started.
+Test Case '-[CoreTests.AccountDeletionTests testPreparationSavesPendingBeforeDroppingAccess]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testServerFailurePreservesPendingAndNeverErasesLocalData]' started.
+Test Case '-[CoreTests.AccountDeletionTests testServerFailurePreservesPendingAndNeverErasesLocalData]' passed (0.001 seconds).
+Test Suite 'AccountDeletionTests' passed at 2026-09-30 01:08:49.624.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.017 (0.019) seconds
+Test Suite 'AccountSessionTests' started at 2026-09-30 01:08:49.624.
+Test Case '-[CoreTests.AccountSessionTests testAccountStoreRejectsOtherOwnerAndUnownedLegacyRecording]' started.
+Test Case '-[CoreTests.AccountSessionTests testAccountStoreRejectsOtherOwnerAndUnownedLegacyRecording]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testConcurrentRequestsShareOneRefresh]' started.
+Test Case '-[CoreTests.AccountSessionTests testConcurrentRequestsShareOneRefresh]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testExpiredRefreshClearsSessionBeforeAnotherOwnerCanSignIn]' started.
+Test Case '-[CoreTests.AccountSessionTests testExpiredRefreshClearsSessionBeforeAnotherOwnerCanSignIn]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testLateRefreshCannotRestoreSignedOutAccount]' started.
+Test Case '-[CoreTests.AccountSessionTests testLateRefreshCannotRestoreSignedOutAccount]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testOwnerSwitchRequiresTeardownAndSignOut]' started.
+Test Case '-[CoreTests.AccountSessionTests testOwnerSwitchRequiresTeardownAndSignOut]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRefreshStartsBeforeFiveMinuteCaptureCouldOutliveAccess]' started.
+Test Case '-[CoreTests.AccountSessionTests testRefreshStartsBeforeFiveMinuteCaptureCouldOutliveAccess]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRequestRefreshRejectsChangedOwnerOrBackend]' started.
+Test Case '-[CoreTests.AccountSessionTests testRequestRefreshRejectsChangedOwnerOrBackend]' passed (0.000 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRestoredExpiredAccessRefreshesBeforeSaving]' started.
+Test Case '-[CoreTests.AccountSessionTests testRestoredExpiredAccessRefreshesBeforeSaving]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testTransportRejectsUnencryptedOrCredentialBearingEndpoints]' started.
+Test Case '-[CoreTests.AccountSessionTests testTransportRejectsUnencryptedOrCredentialBearingEndpoints]' passed (0.000 seconds).
+Test Suite 'AccountSessionTests' passed at 2026-09-30 01:08:49.631.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.006 (0.007) seconds
+Test Suite 'GoogleAccountGrantTests' started at 2026-09-30 01:08:49.631.
+Test Case '-[CoreTests.GoogleAccountGrantTests testExistingCredentialEncodingRemainsReadable]' started.
+Test Case '-[CoreTests.GoogleAccountGrantTests testExistingCredentialEncodingRemainsReadable]' passed (0.001 seconds).
+Test Suite 'GoogleAccountGrantTests' passed at 2026-09-30 01:08:49.632.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'CoreTests.xctest' passed at 2026-09-30 01:08:49.633.
+	 Executed 19 tests, with 0 failures (0 unexpected) in 0.024 (0.028) seconds
+Test Suite 'Selected tests' passed at 2026-09-30 01:08:49.633.
+	 Executed 19 tests, with 0 failures (0 unexpected) in 0.024 (0.028) seconds
+2026-09-30 01:08:49.915 xcodebuild[30295:6938471] [MT] IDETestOperationsObserverDebug: 0.587 elapsed -- Testing started completed.
+2026-09-30 01:08:49.915 xcodebuild[30295:6938471] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-30 01:08:49.915 xcodebuild[30295:6938471] [MT] IDETestOperationsObserverDebug: 0.587 sec, +0.587 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/ellis-native-accounts-build/Logs/Test/Test-Mac-2026.09.30_01-08-41--0400.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started

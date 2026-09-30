@@ -25,7 +25,11 @@ struct VoiceCompanionApp: App {
     var body: some Scene {
         WindowGroup {
             #if DEBUG && os(iOS)
-            if ProcessInfo.processInfo.arguments.contains("--account-deletion-ui-fixture") {
+            if ProcessInfo.processInfo.arguments.contains("--founder-migration-fixture") {
+                FounderMigrationKeychainFixture()
+            } else if ProcessInfo.processInfo.arguments.contains("--account-keychain-fixture") {
+                AccountDeletionKeychainFixture()
+            } else if ProcessInfo.processInfo.arguments.contains("--account-deletion-ui-fixture") {
                 AccountDeletionUIFixture()
             } else { accountContent }
             #else

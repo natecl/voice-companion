@@ -1,0 +1,18 @@
+{
+  "scope": "isolated local populated Apple deletion",
+  "apple_owner_content_tables_empty": true,
+  "google_owner_all_inventoried_rows_unchanged": true,
+  "budget_policy_request_rows_unchanged": true,
+  "apple_grant_removed": true,
+  "deletion_state": "complete",
+  "native_session_and_outbox_erased_with_tombstones": true,
+  "provider_revoke_success_count": 2,
+  "paid_calls": 0,
+  "physical_phone_changed": false,
+  "google_reauthentication_same_owner": true,
+  "google_content_unchanged_after_reauthentication": true,
+  "apple_signed_out_after_relaunch": true,
+  "google_signed_in_after_relaunch": true,
+  "google_note_visually_confirmed": true,
+  "google_chat_visually_confirmed_after_relaunch": true
+}

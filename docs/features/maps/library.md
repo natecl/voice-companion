@@ -1,12 +1,12 @@
 # Recording library and sync
 
-> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+> September 30 delivery context: [release handoff](../../execution/testflight-release-handoff.md). This map distinguishes source implementation from recorded deployment, installation and bounded verification; historical receipts do not attest current runtime state.
 
 Feature ID: `library` · Context reviewed September 29, 2026 against main `3a30e25`.
 
 ## Purpose and user outcome
 
-Save, reopen, attach, and sync recordings without loss. Product direction: **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
+Save, reopen, attach, and sync recordings without loss. Product direction is an invited AI social presence with personal continuity; the retained agreed one-liner is **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
 
 ## Current implementation
 
@@ -14,7 +14,7 @@ Recordings reopen locally; attaching one supplies context to the persistent main
 
 ## Gaps and non-goals
 
-Backend evidence sync is not a complete cross-device recording library. Persistent generated-summary caching is a separate planned feature.
+Backend evidence sync is not a complete cross-device recording library. Persistent generated-summary caching is implemented; see [note cache](note-cache.md). Owner-scoped account lifecycle has bounded simulator evidence, while independent-person acceptance remains open.
 
 ## Flow and implementation entry points
 

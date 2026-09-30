@@ -1,0 +1,26 @@
+{
+  "scope": "isolated local real-provider QA",
+  "identity_counts": {},
+  "schema": 21,
+  "sessions": 2,
+  "unrevoked_sessions": 0,
+  "deletions": {
+    "complete": 2
+  },
+  "provider_calls": {
+    "google.revoke.ok": 1,
+    "apple.redeem.ok": 1,
+    "apple.revoke.ok": 1
+  },
+  "model_spending_enabled": false,
+  "observations": [
+    "User exercised native Apple account deletion confirmation.",
+    "One real Apple revocation returned success; two total completed deletions; no enrolled identities or active sessions.",
+    "Signed-out screen inspected after deletion and app relaunch."
+  ],
+  "limitations": [
+    "Empty local QA accounts; populated erasure, cross-owner isolation and real provider refresh/recovery remain unverified by this run.",
+    "Successful revocation response was not followed by an independent revoked-token probe.",
+    "Hosted rollout and physical-device acceptance remain unfinished."
+  ]
+}

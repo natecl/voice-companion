@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS account_deletion(
  state TEXT NOT NULL CHECK(state IN ('pending','complete')));
 CREATE TABLE IF NOT EXISTS deletion_recovery(
  owner TEXT PRIMARY KEY REFERENCES account_deletion(owner), digest TEXT UNIQUE NOT NULL);
+CREATE TABLE IF NOT EXISTS google_deletion(
+ owner TEXT PRIMARY KEY REFERENCES account_deletion(owner), content_erased INTEGER NOT NULL DEFAULT 0);
 CREATE TABLE IF NOT EXISTS deleting_identity(
  digest TEXT PRIMARY KEY, owner TEXT NOT NULL REFERENCES account_deletion(owner));
 '''
@@ -23,8 +25,10 @@ def identity_digest(issuer, subject):
 
 
 class AccountDeletion:
-    def __init__(self, sessions, grants, apple):
+    def __init__(self, sessions, grants, apple, google=None):
         self.sessions, self.grants, self.apple = sessions, grants, apple
+        from google_oauth import GoogleOAuth
+        self.google = google if google is not None else GoogleOAuth()
         self.db = sessions.db
         self.quiesce = None  # Relay attaches its owner-scoped socket/task shutdown.
 
@@ -108,6 +112,8 @@ class AccountDeletion:
         self.db.execute("INSERT INTO account_deletion VALUES(?,?,'pending')", (owner, digest))
         self.db.executemany('INSERT INTO deleting_identity VALUES(?,?)',
                             [(identity_digest(*row), owner) for row in identities])
+        if any(issuer == 'https://accounts.google.com' for issuer, _ in identities):
+            self.db.execute('INSERT INTO google_deletion(owner) VALUES(?)', (owner,))
         self.grants.revoke_local_owner(owner)
 
     async def delete(self, token, *, recovery=False):
@@ -123,7 +129,43 @@ class AccountDeletion:
             await asyncio.to_thread(self.apple.revoke, client, refresh)
             self.db.execute('DELETE FROM apple_grant WHERE owner=? AND client=?', (owner, client))
         await asyncio.to_thread(erase_content, self.sessions.memory, owner)
+        if self.db.execute('SELECT 1 FROM google_deletion WHERE owner=?', (owner,)).fetchone():
+            self.db.execute('UPDATE google_deletion SET content_erased=1 WHERE owner=?', (owner,))
+            return {'status': 'awaiting_google_revocation'}
+        self._complete(owner)
+        return {'status': 'deleted'}
+
+    def _complete(self, owner):
         with self.sessions.admission.transaction():
             self.db.execute("UPDATE account_deletion SET state='complete' WHERE owner=?", (owner,))
             self.db.execute('DELETE FROM deleting_identity WHERE owner=?', (owner,))
+
+    async def finish_google(self, token, grant, *, recovery=False):
+        if self.quiesce is None:
+            raise Rejected('account_deletion_unavailable')
+        if recovery:
+            owner, state = self.recovery_receipt(token)
+        else:
+            row = self.db.execute('SELECT owner,state FROM account_deletion WHERE request_digest=?',
+                                  (self.sessions.admission.digest(token),)).fetchone()
+            if row is None:
+                raise Rejected('unauthorized')
+            owner, state = row
+        progress = self.db.execute('SELECT content_erased FROM google_deletion WHERE owner=?', (owner,)).fetchone()
+        if progress is None or not progress[0]:
+            raise Rejected('invalid_account_request')
+        if state == 'complete':
+            return {'status': 'deleted'}
+        # AccountService serializes this provider call and completion with
+        # enrollment/recovery. Never release the identity on client assertion.
+        call = asyncio.create_task(asyncio.to_thread(self.google.revoke, grant))
+        try:
+            await asyncio.shield(call)
+        except asyncio.CancelledError:
+            # A canceled socket/deadline cannot release the account mutation lock
+            # while its bounded provider request still runs in another thread.
+            await call
+            self._complete(owner)
+            raise
+        self._complete(owner)
         return {'status': 'deleted'}

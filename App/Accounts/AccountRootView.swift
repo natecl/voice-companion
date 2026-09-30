@@ -30,6 +30,10 @@ final class AccountRuntime {
     var busy = false
     var pendingDeletion: PendingAccountDeletion?
     var recoveringDeletion = false
+    private var founderMigration: FounderAccountMigration?
+    private let migrationBase: URL
+
+    init(migrationBase: URL = FounderAccountMigration.appBase) { self.migrationBase = migrationBase }
     private let deletionController = AccountDeletionController()
     var message: String?
     private var generation = UUID()
@@ -44,16 +48,26 @@ final class AccountRuntime {
             manager = AccountSessionManager.shared
             if let pending = try AccountCredentialStore.pendingDeletion() {
                 pendingDeletion = pending
-                message = pending.serverDeleted ? "Your account was deleted. Finish removing its data from this device." : "Account deletion is pending. Retry when you’re connected."
+                message = pending.serverDeleted ? "Your account content was deleted. Finish the remaining deletion steps." : "Account deletion is pending. Retry when you’re connected."
                 return
+            }
+            founderMigration = try FounderAccountMigration.pending(base: migrationBase)
+            if founderMigration != nil {
+                message = "Sign in with your selected Google account to restore your existing recordings."
             }
             let account = try AccountCredentialStore.load()
             manager = AccountSessionManager.shared
             if let account {
+                if let migration = founderMigration {
+                    try migration.prepareStorage(account: account, base: migrationBase)
+                    try migration.finish(account: account, base: migrationBase)
+                    founderMigration = nil
+                    message = nil
+                }
                 try await manager?.install(account, restoring: true)
                 active = try await manager?.current()
             }
-            else if try !AccountCredentialStore.hasEnrollmentState() {
+            else if founderMigration == nil, try !AccountCredentialStore.hasEnrollmentState() {
                 legacy = try RelayCredentialStore.load() != nil
             }
         } catch { message = error.localizedDescription }
@@ -64,8 +78,16 @@ final class AccountRuntime {
         busy = true; message = nil
         defer { busy = false }
         do {
+            // Re-read so a malformed plan cannot be bypassed after startup failed.
+            founderMigration = try FounderAccountMigration.pending(base: migrationBase)
+            if founderMigration != nil, provider != .google {
+                message = "Use your selected Google account to finish restoring your existing recordings."
+                return
+            }
+            if let pending = pendingDeletion, provider != pending.provider { throw AccountFailure.noDeletionPending }
             let config = try AccountConfiguration()
             let challenge = try await config.transport.challenge(for: provider)
+            let nonce = challenge.nonce
             let authorization: ProviderAuthorization
             #if os(iOS)
             guard let window = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene })
@@ -76,14 +98,14 @@ final class AccountRuntime {
             let presenter = window
             #endif
             switch provider {
-            case .apple: authorization = try await apple.signIn(nonce: challenge.nonce, anchor: window)
-            case .google: authorization = try await google.signIn(nonce: challenge.nonce, presenting: presenter,
+            case .apple: authorization = try await apple.signIn(nonce: nonce, anchor: window)
+            case .google: authorization = try await google.signIn(nonce: nonce, presenting: presenter,
                 clientID: config.googleClientID, serverClientID: config.googleServerClientID)
             }
             if recoveringDeletion {
                 let receipt = try await config.transport.recoverDeletion(provider: provider, challenge: challenge.challenge,
                     identityToken: authorization.identityToken, authorizationCode: authorization.authorizationCode, expectedOwner: pendingDeletion?.owner)
-                let pending = PendingAccountDeletion(endpoint: config.transport.endpoint, provider: provider, receipt: receipt)
+                let pending = PendingAccountDeletion(endpoint: config.transport.endpoint, provider: provider, receipt: receipt, googleGrant: authorization.googleGrant)
                 if let previous = pendingDeletion, previous.owner != pending.owner { throw AccountFailure.invalidResponse }
                 try AccountCredentialStore.saveDeletion(pending)
                 pendingDeletion = pending
@@ -92,12 +114,27 @@ final class AccountRuntime {
             }
             let session = try await config.transport.exchange(provider: provider, challenge: challenge.challenge,
                                                               identityToken: authorization.identityToken, authorizationCode: authorization.authorizationCode)
-            let account = StoredAccount(endpoint: config.transport.endpoint, provider: provider, session: session)
+            let account = StoredAccount(endpoint: config.transport.endpoint, provider: provider, session: session, googleGrant: authorization.googleGrant)
+            if let migration = founderMigration {
+                do { try migration.prepareStorage(account: account, base: migrationBase) }
+                catch {
+                    // Reject a wrong Google account without retaining its new session.
+                    try await config.transport.signOut(session.refreshToken)
+                    throw error
+                }
+            }
             if manager == nil { manager = AccountSessionManager.shared }
             try await manager?.install(account)
+            if let migration = founderMigration {
+                try migration.finish(account: account, base: migrationBase)
+                founderMigration = nil
+            }
             generation = UUID()
             legacy = false
             active = account
+        } catch AccountFailure.providerGrantExpired {
+            recoveringDeletion = true
+            message = AccountFailure.providerGrantExpired.localizedDescription
         } catch AccountFailure.deletionPending {
             recoveringDeletion = true
             message = "Sign in with the same provider to finish the account deletion you requested."
@@ -115,6 +152,12 @@ final class AccountRuntime {
             NotificationCenter.default.post(name: .accountWillChange, object: nil)
             active = nil; legacy = false
             try await finishDeletion(pending)
+        } catch AccountFailure.signInRequired {
+            recoveringDeletion = pendingDeletion != nil
+            message = "Sign in with the same provider to finish deleting this account."
+        } catch AccountFailure.providerGrantExpired {
+            recoveringDeletion = true
+            message = AccountFailure.providerGrantExpired.localizedDescription
         } catch { message = "Account deletion could not finish. Your request is saved if it was started. Please retry." }
     }
 
@@ -127,11 +170,23 @@ final class AccountRuntime {
             recoveringDeletion = true
             message = "Sign in with the same provider to finish deleting this account."
         }
+        catch AccountFailure.providerGrantExpired {
+            recoveringDeletion = true
+            message = AccountFailure.providerGrantExpired.localizedDescription
+        }
         catch { message = "Deletion could not finish. Check your connection and retry. Your account will stay closed here." }
     }
 
     private func finishDeletion(_ pending: PendingAccountDeletion) async throws {
-        try await deletionController.finish(pending)
+        do { try await deletionController.finish(pending) }
+        catch {
+            // The controller may have durably completed server erasure before
+            // a local/revocation failure. Recovery must use that saved phase.
+            if let saved = try? AccountCredentialStore.pendingDeletion(), saved.id == pending.id {
+                pendingDeletion = saved
+            }
+            throw error
+        }
         guard pendingDeletion?.id == pending.id else { throw AccountFailure.cancelled }
         pendingDeletion = nil; recoveringDeletion = false
         active = nil; legacy = false
