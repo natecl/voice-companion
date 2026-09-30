@@ -1,18 +1,18 @@
 # Accounts and personal data
 
-> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+> September 30 delivery context: [release handoff](../../execution/testflight-release-handoff.md). This map distinguishes source implementation from recorded deployment, installation and bounded verification; historical receipts do not attest current runtime state.
 
-Feature ID: `access` · Context reviewed September 30, 2026; native accounts remain draft PR159, with the dependent account-erasure storage checkpoint separately reviewable.
+Feature ID: `access` · Context reviewed September 30, 2026; source audit at `7079427`; dependent PR159–177 remain unmerged.
 
 ## Purpose and user outcome
 
-Independent per-tester enrollment, isolation and revocation. Product direction: **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
+Independent per-tester enrollment, isolation and revocation. Product direction is an invited AI social presence with personal continuity; the retained agreed one-liner is **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
 
 ## Current implementation
 
 The schema21 account/deletion candidate `208ca34` is deployed on Render with
 accounts and deletion enabled; automatic deployment remains off. Native code
-remains in the dependent draft PR159–169 stack. Both real providers passed
+remains in the dependent draft PR159–177 stack. Both real providers passed
 Release-simulator enrollment, sign-out, relaunch, populated source/note/chat
 isolation and cache clearing. Both populated fictional accounts were deleted
 through the native UI with successful real provider revocation and empty
@@ -38,12 +38,9 @@ fail against the prior source; the primary independently reran all 38 targeted
 account/companion checks successfully. Actual loopback WebSockets and fictional
 SQLite data establish this backend fix; it has not been deployed.
 
-[PR172](https://github.com/natecl/voice-companion/pull/172) adds coordinated managed
-SQLite snapshots and explicit planned expiry. Twelve tests and a four-process
-CLI rehearsal passed independent review and primary execution. No production
-retention duration or scheduler is configured; unknown historical copies and
-provider snapshots remain outside its pruning scope. Restore preparation is
-still under review. Neither checkpoint completes Phase 1.
+Managed snapshots, planned expiry and a disabled-by-default automatic expiry worker are implemented locally. [Managed backup evidence](../../qa/managed-backups/README.md) and [automatic expiry](../../qa/managed-backups/automatic-expiry.md) record disposable SQLite/CLI/hosted-process checks, including expiry while the service retains its database lease. Production duration, enablement and coverage of historical/off-host/provider copies remain open.
+
+[Restore preparation](../../qa/backup-restore/README.md) creates and validates an offline quarantined candidate against independently established current memory/usage authority. It replays completed account erasures, preserves current spending/authentication state, and refuses other canonical content changes. It cannot activate a restore or recover arbitrary historical content. These changes and the [capture teardown fence](../../qa/account-isolation-review/capture-teardown.md) are implemented and locally tested, not deployed or installed. Phase 1 remains incomplete.
 
 ## Gaps and non-goals
 
@@ -53,8 +50,8 @@ Real Google fresh-proof deletion recovery also passed through agent-operated
 XCTest and the real provider, with no content session issued.
 Apple native automatic rotation and persisted signed-in restart now also pass;
 see [receipt](../../qa/account-lifecycle/native-apple-automatic-refresh.json).
-Remaining gates: Apple fresh-proof recovery, physical deletion lifecycle, independent
-second-person isolation, and implemented backup retention/restore handling.
+Apple fresh-proof deletion recovery and re-enrollment also passed against an isolated local service using real Apple proof/revocation. The interrupted session was synthetic; the completion transition is founder-reported, and signed-in restart has separate XCTest/inspection evidence. See the [receipt](../../qa/account-lifecycle/apple-fresh-proof-recovery.json).
+Remaining gates include physical deletion lifecycle, revoked-provider behavior, independent second-person isolation, production backup retention policy/coverage and restore acceptance. Local prepare/validate tooling is not operational restore completion.
 Google and Apple remain separate accounts. Google stays above Apple; no account
 linking or email-derived identity merge is included. The physical founder Google
 migration is complete and must not be replayed.
@@ -88,14 +85,7 @@ Native transport, device-local account Keychain storage, refresh serialization a
 
 ## Next bounded work
 
-Google automatic rotation passed without modifying clocks or credentials.
-Complete the remaining Apple provider-recovery path against isolated
-fixtures, without modifying production credentials. Physical Apple/Google switching, signed-in Apple relaunch and return to Google
-now passed; see the [receipt](../../qa/founder-migration/physical-account-switch.json).
-Founder Google remains signed in. Exercise fresh-proof deletion
-recovery only against isolated disposable fixtures. Define and implement backup
-retention/restore handling before claiming complete account erasure. Keep the
-stack draft until each checkpoint's applicable behavioral and review gates pass.
+Finish the remaining Phase 1 lifecycle and backup gates without repeating completed migration or isolated provider recovery. Physical Apple/Google switching, signed-in Apple relaunch and return to Google passed in the [receipt](../../qa/founder-migration/physical-account-switch.json); founder Google remains signed in in that record. Primary must review the local isolation/retention/restore checkpoints and establish their actual rollout pairing before claiming those fixes live. Keep founder-dependent physical checks behind explicit readiness. Pricing and paywall follow Phase 1 acceptance.
 
 ## Supporting context and evidence
 

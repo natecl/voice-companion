@@ -1,5 +1,7 @@
 # Memory rework checkpoint 2B — durable bounded chunk pipeline
 
+> Historical deterministic chunking checkpoint. Default-off and later-step statements below apply to this foundation stage; they do not describe the selected deployed memory pipeline. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 This checkpoint implements the deterministic chunking/storage path and exercises it through the real writer with fixture provider adapters. It is **off by default** (`MemoryWriter(..., chunking=False)`); hosted startup does not enable it. Jev semantic boundaries and live chunk-provider acceptance remain checkpoint 2C. Deterministic splitting is groundwork/fallback, not a claim of equivalent semantic quality.
 
 ## Behavior

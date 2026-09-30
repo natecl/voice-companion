@@ -1,5 +1,7 @@
 # Ask while listening — verified checkpoint 5
 
+> Historical Ask-during-capture checkpoint. Its selected-session history and visible source/cutoff presentation predate the persistent main chat and current release presentation. The physical/provider evidence remains bounded to the recorded run. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 Checkpoint 5 starts from verified main `5d7437c`; Jev deferral is merged in PR #21. Direct Luna provider/settings remain unchanged; hosted changes add explicitly approved QA admission grants. Native changes allow one Ask while recording, snapshot transcript passages before sending, persist its cutoff and interim-text caveat, and keep capture/answer controls and error states independent. Source snapshots stay fixed across later speech and transcript revisions. Backgrounding cancels Ask while supported background recording continues. Ask remains disabled during connection/finalization/replay and before text arrives.
 
 UI places Ask before the growing transcript, with recording controls kept in the existing fixed bottom bar. Each answer shows the received-transcript cutoff, excludes later speech explicitly, and marks provisional source text. Question/answer history still belongs to the selected session; old saved answers decode without the new optional metadata. No change to backend request shape, prompt, provider, model, monetary budgets, or recording duration.

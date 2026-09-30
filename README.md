@@ -2,7 +2,7 @@
 
 > AI notes that proactively contribute to discussions
 
-An iPhone-first AI companion you deliberately invite into conversations: a third intelligent participant that builds personal context and contributes when it has something useful to add. Mac remains supported. Capture and notes supply continuity; they are no longer the defining consumer positioning. See the [September 29 direction](docs/product-source-of-truth.md#invited-social-presence--september-29-2026), [experience brief](docs/social-presence-experience.md) and [delivery phases](docs/execution/demo-testflight-phases.md).
+An iPhone-first AI companion you deliberately invite into conversations: a third intelligent participant that builds personal context and contributes when it has something useful to add. Mac remains supported. Capture and notes supply continuity; they are no longer the defining consumer positioning. See the [September 29 direction](docs/product-source-of-truth.md#invited-social-presence--september-29-2026), [experience brief](docs/social-presence-experience.md) and [current delivery phases](docs/execution/testflight-release-handoff.md).
 
 This is a private internal foundation, not a public release. The exact prior one-liner above is retained pending a selected replacement. Capture remains deliberately started and internally capped at five minutes; speaker labels are best-effort. Historical capture evidence is in the [V1 runbook](docs/v1-runbook.md) and [acceptance](docs/v1-acceptance.md). Proactive judgment and repeated invitation remain product hypotheses; this plan does not establish current deployed/installed versions or connector availability.
 
@@ -12,7 +12,7 @@ This is a private internal foundation, not a public release. The exact prior one
 
 ## Current knowledge and delivery status
 
-Start with the [current product and implementation brief](docs/current-state.md) for decisions, model roles, deployed versus candidate behavior, research outcomes and remaining gates. The [feature map](docs/features/README.md) connects those decisions to code and targeted QA. PR 99 is merged and internally deployed: native dictation/plain-message behavior passed bounded acceptance, and backend v3 personality rollout passed health, prompt-selection and data-preservation checks. The experimental Jev retrieval gate remains disabled.
+Start with the [current product and implementation brief](docs/current-state.md) and [feature map](docs/features/README.md). Reconciled September 30 against candidate `7079427` and recorded evidence: main is `d4d07f1` (PR158), while account/lifecycle PR159–177 remain unmerged. The last recorded hosted account build is `208ca34`, schema21. Founder Google migration and physical provider switching passed; real simulator Google/Apple refresh and deletion recovery passed within their recorded scope. Later isolation and backup fixes remain candidates. **Phase 1 is incomplete; plans, subscriptions and TestFlight distribution are not ready.** This documentation audit did not perform a fresh runtime check.
 
 ## Current direction and gap audit
 
@@ -42,7 +42,7 @@ The [unified memory foundation](docs/simple-memory-foundation.md) is internally 
 - [V0 implementation plan](docs/v0-implementation-plan.md)
 - [V1 companion-on-tap plan](docs/v1-implementation-plan.md)
 - [Engineering principles and agent feedback loop](docs/engineering-principles.md)
-- [Transcription direction and unresolved selection](docs/transcription-direction.md)
+- [Historical transcription selection and current provider pointer](docs/transcription-direction.md)
 - [Synthetic quality screen and remaining acceptance](docs/quality-evaluation.md)
 - [Permission, empty-transcript, and microphone-disconnect QA](docs/reliability-edge-cases.md)
 - [Initial streaming validation evidence](docs/transcription-validation.md)
@@ -77,4 +77,4 @@ The reviewed memory/main-chat backend is enabled on the existing Render Starter 
 The [recording-deletion retention checkpoint](docs/retained-recording-memory.md) preserves learned knowledge separately from removed transcripts. Live provider, exact replay and simulator QA pass. The [internal rollout](docs/retained-memory-rollout.md) is deployed with updated native builds; the bounded physical-iPhone deletion, recall and reopen check has passed.
 
 
-Current next feature: [proactive contributions from past notes — MVP implementation plan](docs/proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. The first [local native slice](docs/proactive-native.md) now has durable backend delivery, a small [live model screen](docs/proactive-model-screen.md) and simulator QA. It remains disabled in hosted startup and release builds; physical acceptance and rollout are pending.
+Current execution: finish [Phase 1 accounts and data lifecycle](docs/execution/testflight-release-handoff.md), then plans/limits, subscriptions/paywall, Release preparation and the pilot. The [proactive past-note path](docs/proactive-contributions-plan.md) is already implemented with bounded internal pilot/model evidence; it is not a new unstarted feature. General Release enablement and broader usefulness remain open. The hosted default remains v4; later [conversational wording experiments](docs/proactive-conversational-wording.md) were not selected. Connected sources and outside retrieval are later work.
