@@ -43,6 +43,19 @@ import XCTest
         capture(app, name: "Apple authorization entry")
     }
 
+    func testSignedInRestart() throws {
+        let app = try application()
+        app.activate()
+        XCTAssertTrue(app.webViews.buttons["Your profile"].waitForExistence(timeout: 15))
+        capture(app, name: "Signed-in account before restart")
+        app.terminate()
+        app.launch()
+        XCTAssertTrue(app.webViews.buttons["Your profile"].waitForExistence(timeout: 15))
+        XCTAssertFalse(app.buttons["Continue with Apple"].exists)
+        XCTAssertFalse(app.buttons["Continue with Google"].exists)
+        capture(app, name: "Signed-in account after restart")
+    }
+
     func testContinueGooglePermission() throws {
         let app = try application()
         try continueGooglePermission(app)

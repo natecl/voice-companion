@@ -25,7 +25,7 @@ python3 scripts/qa/run-live-account-ui.py inspect \
   --result /private/new-inspection.xcresult
 ```
 
-Available steps: `inspect`, `apple-request`, `sign-out-google`, `google-permission`,
+Available steps: `inspect`, `apple-request`, `signed-in-restart`, `sign-out-google`, `google-permission`,
 `google-account`, `google-request`, `google-pending`, `google-recovery`.
 For account selection/recovery, set `ELLIS_QA_GOOGLE_ACCOUNT` from the current
 observed chooser in the process environment, never in committed code. The
@@ -75,3 +75,15 @@ were entered. An initial entry test failed because it did not activate the app
 after rebuilding; the test now explicitly activates it. Both private result
 bundles are preserved (`live-ui-apple-entry.xcresult` and
 `live-ui-apple-entry-2.xcresult`). No application/UI source changes or paid calls.
+
+The founder subsequently completed the Apple password challenge. Direct
+read-only database inspection verified one Apple identity and one newly issued
+session (15 total historical sessions). `signed-in-restart` passed one executed
+test: activate, assert signed-in profile, terminate, launch, assert profile and
+absence of provider sign-in controls. The resulting screenshot shows Ellis Home;
+the backend retained exactly the same session. See
+[receipt](automated-apple-restart.json). The test runner closes its managed app
+after completion; the operator launched it again for the natural refresh check.
+The private pre-refresh snapshot is preserved; automatic rotation remains pending
+the normal 600-second lead before 3600-second access expiry. No clocks, expiry
+values or Keychain credentials were modified.
