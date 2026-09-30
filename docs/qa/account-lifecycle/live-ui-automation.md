@@ -25,7 +25,7 @@ python3 scripts/qa/run-live-account-ui.py inspect \
   --result /private/new-inspection.xcresult
 ```
 
-Available steps: `inspect`, `sign-out-google`, `google-permission`,
+Available steps: `inspect`, `apple-request`, `sign-out-google`, `google-permission`,
 `google-account`, `google-request`, `google-pending`, `google-recovery`.
 For account selection/recovery, set `ELLIS_QA_GOOGLE_ACCOUNT` from the current
 observed chooser in the process environment, never in committed code. The
@@ -65,3 +65,13 @@ the runner enforces a nonzero executed count. Preserve these failed private logs
 This is real Google fresh-proof recovery on the simulator with deliberate
 interrupted-client setup. Apple fresh-proof recovery, physical erasure,
 independent-human isolation and backup retention remain separate gates.
+
+Apple follow-up: `apple-request` activates the existing app and taps its actual
+Apple control. Release build and one executed test passed; direct screenshot
+inspection showed Apple's existing-account sheet with **Sign In with Password**.
+This is authorization-entry evidence only: enrollment and automatic Apple refresh
+remain unverified. The password challenge requires the founder; no credentials
+were entered. An initial entry test failed because it did not activate the app
+after rebuilding; the test now explicitly activates it. Both private result
+bundles are preserved (`live-ui-apple-entry.xcresult` and
+`live-ui-apple-entry-2.xcresult`). No application/UI source changes or paid calls.

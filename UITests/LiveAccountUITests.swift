@@ -34,6 +34,15 @@ import XCTest
         capture(app, name: "Current account screen")
     }
 
+    func testRequestAppleFromSignedOutScreen() throws {
+        let app = try application()
+        app.activate()
+        let apple = app.buttons["Continue with Apple"]
+        XCTAssertTrue(apple.waitForExistence(timeout: 10))
+        apple.tap()
+        capture(app, name: "Apple authorization entry")
+    }
+
     func testContinueGooglePermission() throws {
         let app = try application()
         try continueGooglePermission(app)
