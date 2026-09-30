@@ -107,6 +107,9 @@ struct ExperienceSignupView: View {
     var onSignIn: ((AccountProvider) -> Void)? = nil
     var isBusy = false
     var accountMessage: String? = nil
+    var deletingAccount = false
+    var onRetryDeletion: (() -> Void)? = nil
+    var onLeaveRecovery: (() -> Void)? = nil
     @State private var notice = false
     @State private var accountHelp = false
     var body: some View {
@@ -115,25 +118,36 @@ struct ExperienceSignupView: View {
                 VStack(spacing: 0) {
                     Color.clear.frame(height: max(40, geometry.size.height * 0.16))
                     Text("Ellis").font(.title2.bold()).padding(.bottom, 40)
-                    Text("Create your account").font(.system(.title, weight: .bold)).multilineTextAlignment(.center)
-                    Text("Capture conversations. Keep what matters.").font(.callout).foregroundStyle(ExperienceStyle.secondary).multilineTextAlignment(.center).padding(.top, 10)
+                    Text(deletingAccount ? "Finish deleting your account" : "Create your account").font(.system(.title, weight: .bold)).multilineTextAlignment(.center)
+                    Text(deletingAccount ? "Your account stays closed here until deletion finishes." : "Capture conversations. Keep what matters.").font(.callout).foregroundStyle(ExperienceStyle.secondary).multilineTextAlignment(.center).padding(.top, 10)
                     VStack(spacing: 12) {
-                        Button { if let onSignIn { onSignIn(.google) } else { notice = true } } label: {
-                            HStack(spacing: 14) {
-                                Text("G").accessibilityHidden(true).font(.system(size: 27, weight: .bold)).foregroundStyle(AngularGradient(colors: [.blue, .green, .yellow, .red, .blue], center: .center))
-                                Text("Continue with Google").font(.body.weight(.medium))
-                            }.frame(maxWidth: .infinity).frame(height: 50).experienceCard(radius: 25)
-                        }
-                        Button { if let onSignIn { onSignIn(.apple) } else { notice = true } } label: {
-                            Label("Continue with Apple", systemImage: "apple.logo").font(.body.weight(.medium))
-                                .frame(maxWidth: .infinity).frame(height: 50).foregroundStyle(.white).background(ExperienceStyle.ink, in: Capsule())
+                        if let onRetryDeletion {
+                            Button(action: onRetryDeletion) {
+                                Text("Retry deletion").font(.body.weight(.medium))
+                                    .frame(maxWidth: .infinity).frame(height: 50).experienceCard(radius: 25)
+                            }
+                        } else {
+                            Button { if let onSignIn { onSignIn(.google) } else { notice = true } } label: {
+                                HStack(spacing: 14) {
+                                    Text("G").accessibilityHidden(true).font(.system(size: 27, weight: .bold)).foregroundStyle(AngularGradient(colors: [.blue, .green, .yellow, .red, .blue], center: .center))
+                                    Text("Continue with Google").font(.body.weight(.medium))
+                                }.frame(maxWidth: .infinity).frame(height: 50).experienceCard(radius: 25)
+                            }
+                            Button { if let onSignIn { onSignIn(.apple) } else { notice = true } } label: {
+                                Label("Continue with Apple", systemImage: "apple.logo").font(.body.weight(.medium))
+                                    .frame(maxWidth: .infinity).frame(height: 50).foregroundStyle(.white).background(ExperienceStyle.ink, in: Capsule())
+                            }
                         }
                     }.disabled(isBusy).padding(.top, 44)
-                    Button { if onSignIn != nil { accountHelp = true } else { notice = true } } label: {
-                        (Text("Already have an account? ").foregroundStyle(ExperienceStyle.secondary) + Text("Log in").foregroundStyle(ExperienceStyle.ink)).font(.footnote)
-                    }.padding(.top, 36)
+                    if !deletingAccount {
+                        Button { if onSignIn != nil { accountHelp = true } else { notice = true } } label: {
+                            (Text("Already have an account? ").foregroundStyle(ExperienceStyle.secondary) + Text("Log in").foregroundStyle(ExperienceStyle.ink)).font(.footnote)
+                        }.padding(.top, 36)
+                    } else if let onLeaveRecovery {
+                        Button("Back to sign in", action: onLeaveRecovery).font(.footnote).padding(.top, 36)
+                    }
                     Spacer(minLength: 70)
-                    Text(accountMessage ?? (isBusy ? "Signing in…" : onSignIn == nil ? "Design preview · sign-in is not connected." : "Choose Google or Apple to sign in.")).font(.caption2).foregroundStyle(ExperienceStyle.secondary)
+                    Text(accountMessage ?? (isBusy ? (deletingAccount ? "Finishing deletion…" : "Signing in…") : onSignIn == nil ? "Design preview · sign-in is not connected." : "Choose Google or Apple to sign in.")).font(.caption2).foregroundStyle(ExperienceStyle.secondary)
                     Button("Terms and Privacy Policy") { notice = true }.font(.caption).padding(.top, 12).padding(.bottom, 28)
                 }.padding(.horizontal, 22).frame(minHeight: geometry.size.height)
             }

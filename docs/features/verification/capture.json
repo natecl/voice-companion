@@ -13,6 +13,13 @@
       "runner": "feature:capture"
     },
     {
+      "id": "capture-native-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "evidence": "work/feature-evidence/capture/native-contracts.json",
+      "claim": "Execute RecordingLifecycleTests, including active-capture and preparing sign-out, late callback rejection and saved owner isolation; synthetic callbacks do not prove hardware microphone teardown"
+    },
+    {
       "id": "capture-behavior-1",
       "group": "live_behavior_checks",
       "kind": "physical_device",

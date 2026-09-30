@@ -74,6 +74,7 @@ struct MemoryOutbox {
 
     private func file(_ id: String) -> URL { directory.appendingPathComponent(id + ".json") }
     private func save(_ entry: MemoryOutboxEntry) throws {
+        guard !FileManager.default.fileExists(atPath: directory.appendingPathComponent(LocalAccountErasure.marker).path) else { throw AccountFailure.signInRequired }
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         #if os(iOS)
         let options: Data.WritingOptions = [.atomic, .completeFileProtectionUntilFirstUserAuthentication]
@@ -243,6 +244,8 @@ final class MemorySync {
                     guard let entry = try outbox.entries().first(where: { !$0.acknowledged }) else { break }
                     try Task.checkCancellation()
                     try await transport.send(entry.operation)
+                    try Task.checkCancellation()
+                    guard !stopped else { return }
                     try outbox.acknowledge(entry.operation)
                     acknowledgmentCount += 1
                     lastError = nil

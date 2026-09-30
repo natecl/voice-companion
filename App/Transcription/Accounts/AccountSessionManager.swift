@@ -61,7 +61,7 @@ actor AccountSessionManager {
             guard generation == expected else { throw AccountFailure.cancelled }
             try session.validate()
             guard session.owner == previous.session.owner else { throw AccountFailure.invalidResponse }
-            let next = StoredAccount(endpoint: previous.endpoint, provider: previous.provider, session: session)
+            let next = StoredAccount(endpoint: previous.endpoint, provider: previous.provider, session: session, googleGrant: previous.googleGrant)
             try save(next)
             account = next
             refreshTask = nil
@@ -77,6 +77,17 @@ actor AccountSessionManager {
             }
             throw error
         }
+    }
+
+    func prepareDeletion(savePending: @Sendable (PendingAccountDeletion) throws -> Void = AccountCredentialStore.saveDeletion) async throws -> PendingAccountDeletion {
+        let value = try await current()
+        guard account?.session.refreshToken == value.session.refreshToken else { throw AccountFailure.cancelled }
+        let pending = PendingAccountDeletion(account: value)
+        try savePending(pending)
+        generation = UUID()
+        refreshTask?.cancel(); refreshTask = nil
+        account = nil
+        return pending
     }
 
     /// Caller stops account-owned work before this, then revokes the returned

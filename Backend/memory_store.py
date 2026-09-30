@@ -21,8 +21,9 @@ import companion_chat
 import companion_snapshots
 import memory_retention
 import recording_notes
+import account_erasure
 
-VERSION = 20
+VERSION = 21
 EXTRACTOR_VERSION = 'memory-v1'
 MAX_SOURCE_BYTES = 60000
 
@@ -196,6 +197,8 @@ class MemoryStore:
                     PRAGMA user_version=20;
                     COMMIT;
                 ''')
+            if version < 21:
+                db.executescript(account_erasure.SCHEMA)
         self.path.chmod(0o600)
         self.identities = memory_identity.IdentityStore(self)
         self.transitions = memory_transitions.MemoryTransitions(self)
@@ -227,6 +230,7 @@ class MemoryStore:
         """Server/admin use only. A renewal explicitly binds to the existing stable owner."""
         identifier(credential)
         with self.transaction() as db:
+            account_erasure.require_live_credential(db, credential)
             row = db.execute('SELECT owner FROM credential_owner WHERE credential=?', (credential,)).fetchone()
             if row:
                 if existing_owner is not None and existing_owner != row['owner']:
@@ -254,6 +258,7 @@ class MemoryStore:
                 ord(c) < 33 or ord(c) > 126 for c in subject):
             raise Rejected('invalid_account_identity')
         with self.transaction() as db:
+            account_erasure.require_live_credential(db, credential)
             identity = db.execute(
                 'SELECT owner FROM account_identity WHERE issuer=? AND subject=?',
                 (issuer, subject)).fetchone()

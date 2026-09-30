@@ -1,0 +1,54 @@
+Test Suite 'Selected tests' started at 2026-09-30 05:04:20.941.
+Test Suite 'CoreTests.xctest' started at 2026-09-30 05:04:20.942.
+Test Suite 'RecordingLifecycleTests' started at 2026-09-30 05:04:20.942.
+Test Case '-[CoreTests.RecordingLifecycleTests testActiveBackgroundCapturePreservesConnectionUntilExplicitStop]' started.
+2026-09-30 05:04:20.945191-0400 xctest[91950:7431293] [session] microphone_recording_started
+2026-09-30 05:04:20.951383-0400 xctest[91950:7431293] [session] microphone_recording_completed
+Test Case '-[CoreTests.RecordingLifecycleTests testActiveBackgroundCapturePreservesConnectionUntilExplicitStop]' passed (0.015 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testBackgroundDuringPreparationCancelsWithoutStartingCapture]' started.
+Test Case '-[CoreTests.RecordingLifecycleTests testBackgroundDuringPreparationCancelsWithoutStartingCapture]' passed (0.007 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testBackgroundDuringPreparationPreservesPreviouslyOpenedRecording]' started.
+Test Case '-[CoreTests.RecordingLifecycleTests testBackgroundDuringPreparationPreservesPreviouslyOpenedRecording]' passed (0.015 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testBackgroundPersistsBeforeCancellationAndSurvivesReload]' started.
+2026-09-30 05:04:20.981313-0400 xctest[91950:7431293] [session] microphone_recording_started
+Test Case '-[CoreTests.RecordingLifecycleTests testBackgroundPersistsBeforeCancellationAndSurvivesReload]' passed (0.015 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testDeniedPermissionNeverStartsConnectionOrCreatesSession]' started.
+Test Case '-[CoreTests.RecordingLifecycleTests testDeniedPermissionNeverStartsConnectionOrCreatesSession]' passed (0.007 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testExplicitStopFinalizesAndSaves]' started.
+2026-09-30 05:04:21.004297-0400 xctest[91950:7431293] [session] microphone_recording_started
+2026-09-30 05:04:21.010564-0400 xctest[91950:7431293] [session] microphone_recording_completed
+Test Case '-[CoreTests.RecordingLifecycleTests testExplicitStopFinalizesAndSaves]' passed (0.039 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testNetworkFailurePreservesTextAndClearsRecording]' started.
+2026-09-30 05:04:21.044246-0400 xctest[91950:7431293] [session] microphone_recording_started
+Test Case '-[CoreTests.RecordingLifecycleTests testNetworkFailurePreservesTextAndClearsRecording]' passed (0.014 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testSignOutDuringCaptureRejectsLateEventsAndPreservesOwnerStorage]' started.
+2026-09-30 05:04:21.059528-0400 xctest[91950:7431293] [session] microphone_recording_started
+<checkout>/UnitTests/RecordingLifecycleTests.swift:102: error: -[CoreTests.RecordingLifecycleTests testSignOutDuringCaptureRejectsLateEventsAndPreservesOwnerStorage] : XCTAssertEqual failed: ("["Before sign-out", "Late private words"]") is not equal to ("["Before sign-out"]") - An in-flight event after sign-out must not change saved owner content
+<checkout>/UnitTests/RecordingLifecycleTests.swift:110: error: -[CoreTests.RecordingLifecycleTests testSignOutDuringCaptureRejectsLateEventsAndPreservesOwnerStorage] : XCTAssertFalse failed
+<checkout>/UnitTests/RecordingLifecycleTests.swift:117: error: -[CoreTests.RecordingLifecycleTests testSignOutDuringCaptureRejectsLateEventsAndPreservesOwnerStorage] : XCTAssertEqual failed: ("Optional(["Before sign-out", "Late private words"])") is not equal to ("Optional(["Before sign-out"])")
+Test Case '-[CoreTests.RecordingLifecycleTests testSignOutDuringCaptureRejectsLateEventsAndPreservesOwnerStorage]' failed (0.436 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testSignOutDuringPreparationPreservesPreviouslyOpenedOwnerRecording]' started.
+Test Case '-[CoreTests.RecordingLifecycleTests testSignOutDuringPreparationPreservesPreviouslyOpenedOwnerRecording]' passed (0.015 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testStopDuringPermissionWaitNeverCreatesConnection]' started.
+Test Case '-[CoreTests.RecordingLifecycleTests testStopDuringPermissionWaitNeverCreatesConnection]' passed (0.007 seconds).
+Test Suite 'RecordingLifecycleTests' failed at 2026-09-30 05:04:21.517.
+	 Executed 10 tests, with 3 failures (0 unexpected) in 0.572 (0.575) seconds
+Test Suite 'CoreTests.xctest' failed at 2026-09-30 05:04:21.517.
+	 Executed 10 tests, with 3 failures (0 unexpected) in 0.572 (0.575) seconds
+Test Suite 'Selected tests' failed at 2026-09-30 05:04:21.517.
+	 Executed 10 tests, with 3 failures (0 unexpected) in 0.572 (0.576) seconds
+2026-09-30 05:04:30.978 xcodebuild[91257:7428029] [MT] IDETestOperationsObserverDebug: 10.790 elapsed -- Testing started completed.
+2026-09-30 05:04:30.979 xcodebuild[91257:7428029] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-30 05:04:30.979 xcodebuild[91257:7428029] [MT] IDETestOperationsObserverDebug: 10.790 sec, +10.790 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/ellis-capture-isolation-tests/Logs/Test/Test-Mac-2026.09.30_05-04-04--0400.xcresult
+
+Failing tests:
+	RecordingLifecycleTests.testSignOutDuringCaptureRejectsLateEventsAndPreservesOwnerStorage()
+	RecordingLifecycleTests.testSignOutDuringCaptureRejectsLateEventsAndPreservesOwnerStorage()
+	RecordingLifecycleTests.testSignOutDuringCaptureRejectsLateEventsAndPreservesOwnerStorage()
+
+** TEST FAILED **
+
+Testing started

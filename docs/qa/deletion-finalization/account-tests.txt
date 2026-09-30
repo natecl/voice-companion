@@ -1,0 +1,6 @@
+.....................................Executing <Task pending name='Task-257' coro=<AccountSocketTests.test_signed_exchange_refresh_replay_and_signout_over_real_sockets() running at /Users/n.chinlue/.codex/worktrees/account-sign-in/voice-companion/Backend/test_account_service.py:40> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py:765> cb=[_run_until_complete_cb() at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py:181] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py:100> took 0.124 seconds
+.................
+----------------------------------------------------------------------
+Ran 54 tests in 2.314s
+
+OK

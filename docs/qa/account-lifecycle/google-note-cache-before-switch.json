@@ -1,0 +1,15 @@
+{
+  "google": {
+    "cached_json_files": 1,
+    "entry_exists": true,
+    "owner_matches": true,
+    "session_matches": true,
+    "revision": 2,
+    "state": "ready",
+    "title": "Fictional Google compass"
+  },
+  "apple": {
+    "cached_json_files": 0,
+    "entry_exists": false
+  }
+}

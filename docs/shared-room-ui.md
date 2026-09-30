@@ -1,4 +1,6 @@
-# Shared prototype interface — internal candidate
+# Shared prototype interface — internal baseline and checkpoint history
+
+> Recorded baseline update: PR154–155 merged the shared interface and functional integration; this is now the established design system. The earlier “keep draft,” “candidate” and simulator-only statements below describe their dated checkpoints and are superseded only by later recorded integration/install evidence. See [phase integration evidence](qa/phase-integration/README.md) and [release handoff](execution/testflight-release-handoff.md). Preserve assets, typography, motion and interactions while integrating account/lifecycle behavior. Temporary mascot distribution rights and physical/release checks remain explicit gates; installation is not proof of haptic or microphone acceptance. No fresh runtime inspection was performed for this update.
 
 September 29, 2026. The founder selected literal shared presentation code after repeated typography and motion differences between the HTML prototype and SwiftUI recreation. The approved prototype remains the visual source of truth.
 
@@ -40,7 +42,7 @@ Verification:
 - Native `SharedRoomPhoneUITests/testSharedRoomNativePipeline` passed in 36.545 s; exercises a real XCTest left swipe into Notes, note swipe/hold/tap, attachments, local chat, synthetic capture/dictation and appearance. Result: `/tmp/CompanionRoomCalmQA/20260929-145306/SharedRoomPhoneUITests-testSharedRoomNativePipeline.xcresult`.
 - Signed physical build and exact package/source byte check passed (`/tmp/room-calm-phone-build.log`, `/tmp/room-calm-bundle.json`). No paid calls.
 - Earlier physical diagnostics measured matching old CSS timings and median 17 ms animation frames with Low Power Mode off. Bold Text was enabled. Neither a device animation speed multiplier nor Low Power Mode was established as the cause. No system preference was changed.
-- Physical mirroring displayed the prior updated build, but automated taps failed with `noWindowsAvailable`; founder confirmed the first swipe revision felt better, then requested this slower revision. Final feel, haptic strength and recording-with-haptics acceptance remain pending. Keep PR 154 draft.
+- Physical mirroring displayed the prior updated build, but automated taps failed with `noWindowsAvailable`; founder confirmed the first swipe revision felt better, then requested this slower revision. Final feel, haptic strength and recording-with-haptics acceptance remain pending. At that checkpoint PR154 remained draft; its later merge is recorded above.
 
 Calmer-motion build installed in place and launched successfully on the enrolled iPhone (`/tmp/room-calm-install.json`, `/tmp/room-calm-launch.json`). No uninstall, reset or account mutation. Installation is not physical haptic acceptance.
 

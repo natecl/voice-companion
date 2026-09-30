@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "native_requests": 3,
+  "fictional_provider_calls": 2,
+  "reenrollment_blocked_until_revocation": true,
+  "other_owner_preserved": true,
+  "content_erased": true,
+  "fresh_owner_after_completion": true,
+  "paid_calls": 0
+}

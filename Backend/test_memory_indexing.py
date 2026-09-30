@@ -77,7 +77,7 @@ class IndexingTests(unittest.IsolatedAsyncioTestCase):
         self.store.put_source(self.owner,incomplete)
         self.assertFalse(await self.worker.step())
         with self.store.connect() as db:
-            db.execute('DROP TABLE memory_index_job');db.execute('DROP INDEX claim_replacement');db.execute('PRAGMA user_version=11')
+            db.execute('DROP TABLE memory_index_job');db.execute('DROP INDEX claim_replacement');db.execute('DROP TABLE account_identity');db.execute('PRAGMA user_version=11')
         reopened=MemoryStore(self.path,embedding_model=self.model.contract)
         self.assertEqual(coverage(reopened,self.owner,self.model.contract),{'unindexed':1})
         self.assertEqual(self.model.calls,0)

@@ -1,0 +1,54 @@
+Test Suite 'Selected tests' started at 2026-09-30 00:59:34.970.
+Test Suite 'PhoneUITests.xctest' started at 2026-09-30 00:59:34.970.
+Test Suite 'AccountDeletionUITests' started at 2026-09-30 00:59:34.970.
+Test Case '-[PhoneUITests.AccountDeletionUITests testKeychainAndLocalErasureSurviveTwoRelaunches]' started.
+    t =     0.00s Start Test at 2026-09-30 00:59:34.971
+    t =     0.22s Set Up
+    t =     0.22s Open ai.voicecompanion.phone
+    t =     0.22s     Launch ai.voicecompanion.phone
+2026-09-30 00:59:35.419 xcodebuild[27353:6914969] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-09-30 00:59:35.419 xcodebuild[27353:6914969] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.07s         Setting up automation session
+    t =     1.84s         Wait for ai.voicecompanion.phone to idle
+    t =     3.00s Waiting 10.0s for "Pending erasure saved" StaticText to exist
+    t =     4.05s     Checking `Expect predicate `existsNoRetry == 1` for object "Pending erasure saved" StaticText`
+    t =     4.05s         Checking existence of `"Pending erasure saved" StaticText`
+    t =     4.11s Terminate ai.voicecompanion.phone:27715
+    t =     5.12s Open ai.voicecompanion.phone
+    t =     5.12s     Launch ai.voicecompanion.phone
+2026-09-30 00:59:40.097 xcodebuild[27353:6914969] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-09-30 00:59:40.097 xcodebuild[27353:6914969] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     5.37s         Setting up automation session
+    t =     6.10s         Wait for ai.voicecompanion.phone to idle
+    t =     7.26s Waiting 10.0s for "Erased and signed out" StaticText to exist
+    t =     8.31s     Checking `Expect predicate `existsNoRetry == 1` for object "Erased and signed out" StaticText`
+    t =     8.31s         Checking existence of `"Erased and signed out" StaticText`
+    t =     8.34s Terminate ai.voicecompanion.phone:27758
+    t =     9.41s Open ai.voicecompanion.phone
+    t =     9.42s     Launch ai.voicecompanion.phone
+2026-09-30 00:59:44.387 xcodebuild[27353:6914969] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-09-30 00:59:44.388 xcodebuild[27353:6914969] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     9.63s         Setting up automation session
+    t =    10.30s         Wait for ai.voicecompanion.phone to idle
+    t =    11.43s Waiting 10.0s for "Signed out after relaunch" StaticText to exist
+    t =    12.47s     Checking `Expect predicate `existsNoRetry == 1` for object "Signed out after relaunch" StaticText`
+    t =    12.47s         Checking existence of `"Signed out after relaunch" StaticText`
+    t =    12.50s Terminate ai.voicecompanion.phone:27778
+    t =    13.58s Tear Down
+Test Case '-[PhoneUITests.AccountDeletionUITests testKeychainAndLocalErasureSurviveTwoRelaunches]' passed (13.644 seconds).
+Test Suite 'AccountDeletionUITests' passed at 2026-09-30 00:59:48.614.
+	 Executed 1 test, with 0 failures (0 unexpected) in 13.644 (13.644) seconds
+Test Suite 'PhoneUITests.xctest' passed at 2026-09-30 00:59:48.615.
+	 Executed 1 test, with 0 failures (0 unexpected) in 13.644 (13.645) seconds
+Test Suite 'Selected tests' passed at 2026-09-30 00:59:48.615.
+	 Executed 1 test, with 0 failures (0 unexpected) in 13.644 (13.646) seconds
+2026-09-30 00:59:48.929 xcodebuild[27353:6914969] [MT] IDETestOperationsObserverDebug: 27.683 elapsed -- Testing started completed.
+2026-09-30 00:59:48.929 xcodebuild[27353:6914969] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-30 00:59:48.929 xcodebuild[27353:6914969] [MT] IDETestOperationsObserverDebug: 27.683 sec, +27.683 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/ellis-native-accounts-phone/Logs/Test/Test-Phone-2026.09.30_00-59-17--0400.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started

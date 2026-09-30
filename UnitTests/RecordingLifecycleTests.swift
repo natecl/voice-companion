@@ -23,6 +23,35 @@ private final class ControlledConnection: RecordingConnection {
     func fail() { finish?.resume(throwing: CaptureFailure.connectionEnded); finish = nil }
 }
 
+
+/// Delivers a receive that was already in flight when cancellation occurred.
+/// The callback remains within run's lifetime; no escaping callback trickery.
+@MainActor
+private final class LateAccountRecording: RecordingConnection {
+    var waiting: CheckedContinuation<Void, Never>?
+    var cancelled = false
+    func run(onReady: (Duration) -> Void, onFinishing: @escaping (RecordingStopReason) -> Void,
+             onEvent: (GrokEvent) throws -> Void) async throws {
+        onReady(.seconds(300))
+        try onEvent(GrokEvent(type: "transcript.partial", text: "Before sign-out", words: [],
+                             start: 0, duration: 1, is_final: true))
+        await withCheckedContinuation { waiting = $0 }
+        // Model an already-delivered receive resuming despite task cancellation.
+        try onEvent(GrokEvent(type: "transcript.partial", text: "Late private words", words: [],
+                             start: 2, duration: 1, is_final: true))
+        throw CancellationError()
+    }
+    func stop() { release() }
+    func cancel() { cancelled = true }
+    func release() { waiting?.resume(); waiting = nil }
+}
+
+@MainActor
+private final class CaptureIsolationMemory: MemoryTransport {
+    var operations: [MemoryOperation] = []
+    func send(_ operation: MemoryOperation) async throws { operations.append(operation) }
+}
+
 @MainActor
 final class RecordingLifecycleTests: XCTestCase {
     private func waitUntil(_ predicate: () -> Bool) async {
@@ -40,6 +69,90 @@ final class RecordingLifecycleTests: XCTestCase {
         let controller = SessionController(store: store, allowsBackgroundRecording: background, makeConnection: { connection }, prepareRecording: {})
         try await body(controller, connection, store)
     }
+    func testSignOutDuringCaptureRejectsLateEventsAndPreservesOwnerStorage() async throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let ownerA = UUID().uuidString, ownerB = UUID().uuidString
+        let pathA = directory.appendingPathComponent(ownerA)
+        let pathB = directory.appendingPathComponent(ownerB)
+        let storeA = SessionStore(directory: pathA.appendingPathComponent("sessions"), expectedOwner: ownerA)
+        let storeB = SessionStore(directory: pathB.appendingPathComponent("sessions"), expectedOwner: ownerB)
+        let boxA = MemoryOutbox(directory: pathA.appendingPathComponent("outbox"), owner: ownerA)
+        let boxB = MemoryOutbox(directory: pathB.appendingPathComponent("outbox"), owner: ownerB)
+        let transportA = CaptureIsolationMemory(), transportB = CaptureIsolationMemory()
+        let connection = LateAccountRecording()
+        defer { connection.release() }
+        let controllerA = SessionController(store: storeA,
+            memorySync: MemorySync(outbox: boxA, transport: transportA),
+            makeConnection: { connection }, prepareRecording: {})
+        controllerA.startRecording()
+        await waitUntil { connection.waiting != nil }
+        XCTAssertEqual(try storeA.load().first?.transcript.segments.map(\.text), ["Before sign-out"])
+        controllerA.endAccountSession()
+        XCTAssertTrue(connection.cancelled)
+        let interrupted = try XCTUnwrap(storeA.load().first)
+        XCTAssertEqual(interrupted.memoryOwnerID, ownerA)
+        XCTAssertFalse(interrupted.completed)
+        XCTAssertTrue(interrupted.endReason?.contains("signed out") == true)
+        let controllerB = SessionController(store: storeB,
+            memorySync: MemorySync(outbox: boxB, transport: transportB), prepareRecording: {})
+        connection.release()
+        await waitUntil { !controllerA.isActive }
+        let saved = try XCTUnwrap(storeA.load().first)
+        XCTAssertEqual(saved.transcript.segments.map(\.text), interrupted.transcript.segments.map(\.text), "An in-flight event after sign-out must not change saved owner content")
+        XCTAssertEqual(saved.memoryOwnerID, ownerA)
+        XCTAssertEqual(saved.endReason, interrupted.endReason)
+        XCTAssertFalse(saved.completed)
+        XCTAssertEqual(saved.memoryTerminal, true)
+        let queued = try XCTUnwrap(boxA.entry(saved.id.uuidString))
+        XCTAssertEqual(queued.operation.owner, ownerA)
+        XCTAssertFalse(queued.acknowledged)
+        XCTAssertFalse(String(decoding: try JSONEncoder().encode(queued), as: UTF8.self).contains("Late private words"))
+        XCTAssertTrue(transportA.operations.isEmpty, "Sign-out must stop networking while preserving the interrupted outbox")
+        XCTAssertTrue(controllerB.sessions.isEmpty)
+        XCTAssertTrue(try storeB.load().isEmpty)
+        XCTAssertTrue(try boxB.entries().isEmpty)
+        XCTAssertTrue(transportB.operations.isEmpty)
+        let reopened = SessionController(store: storeA)
+        XCTAssertEqual(reopened.sessions.first?.transcript.segments.map(\.text), ["Before sign-out"])
+    }
+
+    func testSignOutDuringPreparationPreservesPreviouslyOpenedOwnerRecording() async throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let owner = UUID().uuidString
+        let store = SessionStore(directory: directory.appendingPathComponent("sessions"), expectedOwner: owner)
+        let box = MemoryOutbox(directory: directory.appendingPathComponent("outbox"), owner: owner)
+        let transport = CaptureIsolationMemory()
+        var previous = CaptureSession(id: UUID(), createdAt: .now, source: "microphone")
+        previous.memoryOwnerID = owner; previous.memoryTerminal = true; previous.completed = true
+        previous.transcript.segments = [TranscriptSegment(start: 0, duration: 1, text: "Saved owner words", words: [], isFinal: true)]
+        try store.save(previous)
+        let connection = ControlledConnection()
+        var preparing = false
+        let sync = MemorySync(outbox: box, transport: transport)
+        sync.shutdown() // Preserve constructor recovery locally without a network task.
+        let controller = SessionController(store: store, memorySync: sync,
+            makeConnection: { connection }, prepareRecording: {
+                preparing = true
+                try await Task.sleep(for: .seconds(10))
+            })
+        controller.current = try XCTUnwrap(store.load().first)
+        let sessionFile = directory.appendingPathComponent("sessions").appendingPathComponent(previous.id.uuidString + ".json")
+        let before = try Data(contentsOf: sessionFile)
+        let outboxBefore = try box.entry(previous.id.uuidString)?.operation
+        controller.startRecording()
+        await waitUntil { preparing }
+        controller.endAccountSession()
+        await waitUntil { !controller.isActive }
+        XCTAssertFalse(connection.started)
+        XCTAssertEqual(try store.load().count, 1)
+        XCTAssertEqual(try Data(contentsOf: sessionFile), before)
+        XCTAssertEqual(try box.entry(previous.id.uuidString)?.operation, outboxBefore)
+        XCTAssertTrue(transport.operations.isEmpty)
+        XCTAssertEqual(SessionController(store: store).sessions.first?.transcript.segments.map(\.text), ["Saved owner words"])
+    }
+
     func testActiveBackgroundCapturePreservesConnectionUntilExplicitStop() async throws {
         try await withController(background: true) { controller, connection, store in
             controller.startRecording()
