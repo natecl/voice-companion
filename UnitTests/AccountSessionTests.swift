@@ -21,7 +21,7 @@ final class AccountSessionTests: XCTestCase {
                        refreshExpires: Date.now.timeIntervalSince1970 + 86400)
     }
     func stored(_ session: AccountSession) -> StoredAccount {
-        StoredAccount(endpoint: URL(string: "wss://example.com/account")!, provider: .google, session: session)
+        StoredAccount(endpoint: URL(string: "wss://example.com/account")!, provider: .google, session: session, googleGrant: GoogleAccountGrant(subject: "fictional-subject", token: "fictional-google-grant"))
     }
 
     func testConcurrentRequestsShareOneRefresh() async throws {
@@ -36,6 +36,7 @@ final class AccountSessionTests: XCTestCase {
         let a = try await first.value
         let b = try await second.value
         XCTAssertEqual(a.session.owner, b.session.owner)
+        XCTAssertEqual(a.googleGrant?.token, "fictional-google-grant")
         let count = await fixture.calls
         XCTAssertEqual(count, 1)
     }

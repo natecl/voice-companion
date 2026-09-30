@@ -32,6 +32,7 @@ struct CompanionRootView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accountSignOut) private var signOut
+    @Environment(\.accountDelete) private var deleteAccount
 
     private static func config() throws -> RelayConfiguration {
         #if DEBUG
@@ -583,7 +584,13 @@ struct CompanionRootView: View {
     }
     private var profileContent: some View {
         VStack(alignment: .leading, spacing: 18) {
-            if profilePage == "What Ellis remembers" {
+            if profilePage == "Delete your account?" {
+                Text("This removes your recordings, notes, conversations and memories. You cannot undo this.").lineSpacing(5.3)
+                if let deleteAccount {
+                    Button(action: deleteAccount) { Text("Delete account").modifier(RoomPrimaryButton()) }
+                }
+                Button("Cancel") { profilePage = "Your space" }.modifier(RoomRow())
+            } else if profilePage == "What Ellis remembers" {
                 Text("You’re in control.").modifier(RoomTitle())
                 Text("Ellis uses your captured conversations to remember relevant context. You can choose whether past memory informs your conversations.").lineSpacing(5.3)
                 if let chat { @Bindable var chat = chat
@@ -598,6 +605,9 @@ struct CompanionRootView: View {
                     }.accessibilityIdentifier("roomAppearance")
                     Button { profilePage = "What Ellis remembers" } label: {
                         HStack { Text("What Ellis remembers"); Spacer(); RoomIcon(name: "chevron-right") }.modifier(RoomRow())
+                    }
+                    if deleteAccount != nil {
+                        Button { profilePage = "Delete your account?" } label: { HStack { Text("Delete account"); Spacer() }.modifier(RoomRow()) }
                     }
                     if let signOut {
                         Button(action: signOut) { HStack { Text("Sign out"); Spacer() }.modifier(RoomRow()) }

@@ -27,7 +27,7 @@
       "group": "mechanical_checks",
       "kind": "fixture",
       "evidence": "work/feature-evidence/social-presence/state-contracts.json",
-      "claim": "Implemented state and persistence tests; add reviewed executable suite when UI slice is built"
+      "claim": "Executed shared-room bridge/state/persistence tests and inspected shared assets; native XCTest results remain external evidence, not automatically run by this verifier"
     }
   ],
   "not_applicable": {}

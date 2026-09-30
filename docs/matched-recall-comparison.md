@@ -1,5 +1,7 @@
 # Matched recall comparison — September 27, 2026
 
+> Historical comparison that rejected the strict notes-first candidate. The later unified-memory foundation supersedes that candidate without turning its failed case into a pass; this is not a current prohibition on all notes-based retrieval. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 **Decision: do not enable notes-first yet.** Both paths completed the same nine questions with saved, source-linked answers. The existing indexed harness met the reviewed requirements in all nine; notes-first met them in eight and omitted one side of an unresolved disagreement. These are bounded case outcomes, not general accuracy percentages.
 
 ## What was compared

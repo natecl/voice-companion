@@ -1,0 +1,108 @@
+# Founder account migration: decision and preparation
+
+## Recorded outcome — September 30, 2026
+
+Server and physical Google migration acceptance are complete in the recorded evidence. The normal hosted candidate is `208ca34bbc5fa81278c5ea5720230d1f36caec4b`, schema 21. The exact selected Google identity was bound to the preserved legacy owner; four native session files and 20 outbox files remained byte-identical. Signed-in relaunch and existing notes/chat/note opening passed. Physical Google → Apple → Google switching also passed, preserving separate owners. See [cutover receipt](../qa/founder-migration/live-cutover.json), [switch receipt](../qa/founder-migration/physical-account-switch.json) and [release handoff](testflight-release-handoff.md).
+
+These are recorded checks, not a fresh runtime inspection. The dependent account PR stack remains unmerged and Phase 1 remains incomplete. Do not replay the completed migration or restore historical ledgers over resumed activity. The sections below preserve preparation-time inventories, proposed design and then-open gates; their schema-20 and “unfinished” statements are historical.
+
+Initial September 30, 2026 preparation checkpoint: read-only inspection; no migration had yet been implemented or executed.
+
+At that checkpoint hosted memory was schema 20. Its read-only SQLite inventory found two
+legacy owners with content and separate Apple/Google enrolled owners. Counts
+below include stored rows and are not a claim that every source is active.
+No content, provider subjects, credentials or raw owner IDs were exported.
+
+| Pseudonymous owner | Provider | Source rows | Note rows | Chat turns | Claim rows |
+| --- | --- | --- | --- | --- | --- |
+| 2dc1fb70ce3b | legacy | 23 | 4 | 8 | 0 |
+| a120c666b0ed | legacy | 1 | 0 | 3 | 1 |
+| 8edc6e32268c | Apple | 1 | 1 | 0 | 0 |
+| c5bff466523a | Google | 0 | 0 | 0 | 0 |
+
+These labels are SHA256(owner) prefixes for comparison only, not verified human
+identity. Do not infer which legacy owner is the founder from row count. The
+hosted Apple content means earlier empty-account assumptions must not be used
+for migration. Local simulator fixtures are a separate database and do not
+establish hosted content or migration readiness.
+
+## Founder decision
+
+The founder selected Google for the existing development data and confirmed
+that Google and Apple remain separate accounts with persistent sign-in. No
+account linking is included. Preserve Apple data and unrelated legacy owners;
+verify the exact legacy source and Google destination before any cutover.
+
+## Implementation requirements after selection
+
+Identify the precise legacy source using the existing founder installation's
+credential/owner binding and fresh authenticated destination proof. Prepare a
+read-only plan including local sessions/outboxes/cache, hosted content, notes,
+chat, retained knowledge, credentials, provider grants and all budget ledgers.
+Preserve other legacy owners and the existing enrolled Apple recording/note.
+If a destination already has content, define conflict handling without loss;
+never overwrite it or assume it is disposable QA data.
+
+Keep stable source/evidence references. Rehearse on coordinated private copies
+and verify counts, content hashes, foreign keys, isolation and rollback. Freeze
+or serialize account writes for the actual cutover. Invalidate obsolete sessions
+and require reauthentication without resetting historical spending. Reconcile
+owner-scoped local storage explicitly; automatic import on ordinary sign-in
+remains prohibited. Apply only after the selected plan and real-path verification
+are complete. The destination decision is resolved; source identification and migration
+implementation/rehearsal remain unfinished.
+
+## Verified physical source
+
+A read-only copy of the paired iPhone's existing `VoiceCompanion` application
+support directory contains four saved sessions, all bound to legacy label
+`2dc1fb70ce3b`, and 20 outbox records for that same owner, all acknowledged.
+This matches the hosted legacy owner's label. No raw owner IDs, content or
+credentials were committed. See the [sanitized inventory](../qa/account-lifecycle/founder-source-inventory.json).
+The private copy is under the protected local Ellis QA directory; it is an
+inspection snapshot, not a coordinated cutover backup. The phone was not reset,
+updated or modified.
+
+## Preferred migration design to verify
+
+Preserve this legacy owner's stable ID and its content references; explicitly
+bind the verified selected Google identity to it rather than rewriting every
+source/chat/memory row. This requires proving that Google's current owner is
+empty across the full data inventory at cutover, revoking stale Google sessions,
+and keeping the superseded owner unavailable without losing budget history.
+Never use ordinary enrollment to perform this reassignment. The founder's four
+local sessions and outbox can retain their original owner references while
+moving into managed owner-scoped storage through a verified one-time migration.
+
+Still needed: implementation, coordinated backups/rehearsal, proof of the
+selected hosted Google identity, transition from the legacy app state to Google
+sign-in, stale-write handling and actual native/server cutover acceptance.
+No mapping, credentials, live files or ledgers have been changed.
+
+## Candidate progress after preparation
+
+The earlier preparation status above describes the read-only starting point.
+PR166 now implements the offline server primitive and has passed a current
+coordinated hosted-copy rehearsal: 42 memory tables, 18 usage tables and 22
+other database files preserved except for the intended identity binding and
+credential revocations. See [server evidence](../qa/founder-migration/README.md).
+The native candidate adds an explicitly staged, hash-checked, restartable move
+of the four legacy session files into the same owner's account directory, with
+20 outbox files retained unchanged. See [native evidence and remaining gates](../qa/founder-native-migration/README.md).
+Neither rehearsal changed live account bindings or the physical installation.
+Fresh Google proof, operator orchestration, runtime QA, reviewed rollout and
+physical cutover remain unfinished.
+
+## Fresh destination identity verified
+
+At 2026-09-30 07:03 UTC, the founder-driven real Google re-enrollment in the
+isolated local service matched the current hosted destination's exact verified
+issuer and subject. The comparison used a private SHA256 digest, not email or
+row-count inference. The hosted destination still matched the rehearsed owner
+label and had zero source/note/turn rows; hosted memory remained schema20.
+See [sanitized receipt](../qa/founder-migration/google-identity-match.json).
+No subject, token or raw owner was committed, and no hosted data changed.
+This resolves the destination-proof prerequisite for the current preparation;
+recheck identity binding and the full inventory immediately before cutover.
+Service quiescence, coordinated fresh backups, reviewed matching rollout and
+physical installation/cutover acceptance remain required.

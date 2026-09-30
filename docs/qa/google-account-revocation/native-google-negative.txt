@@ -1,0 +1,34 @@
+Test Suite 'Selected tests' started at 2026-09-30 01:01:33.269.
+Test Suite 'PhoneUITests.xctest' started at 2026-09-30 01:01:33.271.
+Test Suite 'AccountDeletionUITests' started at 2026-09-30 01:01:33.271.
+Test Case '-[PhoneUITests.AccountDeletionUITests testRealGoogleInvalidGrantThroughNativeTransport]' started.
+    t =     0.00s Start Test at 2026-09-30 01:01:33.272
+    t =     0.22s Set Up
+    t =     0.23s Open ai.voicecompanion.phone
+    t =     0.23s     Launch ai.voicecompanion.phone
+2026-09-30 01:01:33.573 xcodebuild[28321:6922956] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-09-30 01:01:33.573 xcodebuild[28321:6922956] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     3.20s         Setting up automation session
+    t =     3.87s         Wait for ai.voicecompanion.phone to idle
+    t =     5.01s Waiting 20.0s for "Invalid grant requests sign-in" StaticText to exist
+    t =     6.05s     Checking `Expect predicate `existsNoRetry == 1` for object "Invalid grant requests sign-in" StaticText`
+    t =     6.05s         Checking existence of `"Invalid grant requests sign-in" StaticText`
+    t =     6.09s Terminate ai.voicecompanion.phone:28885
+    t =     7.15s Tear Down
+Test Case '-[PhoneUITests.AccountDeletionUITests testRealGoogleInvalidGrantThroughNativeTransport]' passed (7.201 seconds).
+Test Suite 'AccountDeletionUITests' passed at 2026-09-30 01:01:40.473.
+	 Executed 1 test, with 0 failures (0 unexpected) in 7.201 (7.201) seconds
+Test Suite 'PhoneUITests.xctest' passed at 2026-09-30 01:01:40.473.
+	 Executed 1 test, with 0 failures (0 unexpected) in 7.201 (7.202) seconds
+Test Suite 'Selected tests' passed at 2026-09-30 01:01:40.473.
+	 Executed 1 test, with 0 failures (0 unexpected) in 7.201 (7.204) seconds
+2026-09-30 01:01:40.778 xcodebuild[28321:6922956] [MT] IDETestOperationsObserverDebug: 19.870 elapsed -- Testing started completed.
+2026-09-30 01:01:40.778 xcodebuild[28321:6922956] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-30 01:01:40.778 xcodebuild[28321:6922956] [MT] IDETestOperationsObserverDebug: 19.870 sec, +19.870 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/ellis-native-accounts-phone/Logs/Test/Test-Phone-2026.09.30_01-01-13--0400.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started

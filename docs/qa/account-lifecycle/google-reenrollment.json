@@ -1,0 +1,28 @@
+{
+  "scope": "isolated local real-provider QA",
+  "identity_counts": {
+    "google": 1
+  },
+  "schema": 21,
+  "sessions": 3,
+  "unrevoked_sessions": 1,
+  "deletions": {
+    "complete": 2
+  },
+  "provider_calls": {
+    "google.revoke.ok": 1,
+    "apple.redeem.ok": 1,
+    "apple.revoke.ok": 1
+  },
+  "model_spending_enabled": false,
+  "active_owner_count": 1,
+  "active_owner_distinct_from_deleted": true,
+  "observations": [
+    "Founder instructed to reuse the same Google account; completed real sign-in after deletion.",
+    "One Google identity and active session; owner differs from both deleted owners; home screen inspected."
+  ],
+  "limitations": [
+    "Original provider subject was erased; same-provider-account selection is founder-reported, not independently compared to a retained subject.",
+    "Empty accounts do not establish populated data isolation or expired-session refresh."
+  ]
+}

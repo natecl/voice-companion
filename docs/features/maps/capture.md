@@ -1,12 +1,12 @@
 # Capture and live transcript
 
-> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+> September 30 delivery context: [release handoff](../../execution/testflight-release-handoff.md). This map distinguishes source implementation from recorded deployment, installation and bounded verification; historical receipts do not attest current runtime state.
 
 Feature ID: `capture` · Context reviewed September 29, 2026 against main `3a30e25`.
 
 ## Purpose and user outcome
 
-Microphone → transcript → stop → saved text. Product direction: **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
+Microphone → transcript → stop → saved text. Product direction is an invited AI social presence with personal continuity; the retained agreed one-liner is **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
 
 ## Current implementation
 
@@ -61,7 +61,11 @@ python3 scripts/verify_feature.py library
 
 The full capture/library verifiers each pass their mechanical contracts but correctly return `incomplete` for missing fresh behavior/inspection receipts; this narrow checkpoint does not mark either whole feature verified. Local raw logs: `work/capture-recovery/capture-recovery-before.log` and `capture-recovery-after.log`; result bundles: `Test-Mac-2026.09.29_04-28-34--0400.xcresult` (reproduction) and `Test-Mac-2026.09.29_04-29-17--0400.xcresult` (fixed), under the dedicated `VoiceCompanion-capture-recovery` DerivedData `Logs/Test` directory.
 
-Zero paid calls. Candidate is not merged, deployed or installed on phone; orchestrator review is pending. Separate device follow-up, with readiness and device lease: open an existing completed recording, start capture while microphone permission is pending, background the app, return and confirm the original recording remains completed and unchanged with no automatic capture restart. Actual microphone/provider capture interruption remains the broader feature gate and requires its own authorized run.
+At that September 29 checkpoint, zero paid calls were made and the candidate was not merged or installed. CAPTURE-1 subsequently integrated through merged PR155; this historical receipt does not establish fresh physical acceptance. Separate device follow-up, with readiness and device lease: open an existing completed recording, start capture while microphone permission is pending, background the app, return and confirm the original recording remains completed and unchanged with no automatic capture restart. Actual microphone/provider capture interruption remains the broader feature gate and requires its own authorized run.
+
+## Account teardown checkpoint — September 30
+
+The unmerged candidate rejects canceled/stale capture callbacks before reducer/storage writes and after connection completion. A reproduced late callback previously appended words to the signed-out owner's recording/outbox; it did not demonstrate cross-owner disclosure. The fixed native controller, memory socket and account-session checks passed 27 tests. [Failure, fix and limits](../../qa/account-isolation-review/capture-teardown.md). This is local synthetic-connection evidence, not real microphone/provider or physical-device verification; the fix is not in recorded hosted/phone `208ca34`.
 
 ## Next bounded work
 

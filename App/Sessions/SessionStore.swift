@@ -40,6 +40,9 @@ struct SessionStore {
     }
 
     func save(_ session: CaptureSession) throws {
+        if expectedOwner != nil, FileManager.default.fileExists(atPath: directory.deletingLastPathComponent().appendingPathComponent(LocalAccountErasure.marker).path) {
+            throw AccountFailure.signInRequired
+        }
         if let expectedOwner, session.memoryOwnerID != expectedOwner { throw AccountFailure.signInRequired }
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         #if os(iOS)

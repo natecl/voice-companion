@@ -49,10 +49,16 @@ class CompanionService:
         token=socket.request.headers.get('Authorization','').removeprefix('Bearer ')
         started_at=time.monotonic();first_text=None;usage={}
         owner=None;request=None;created=False;completed=False;reservation=None;prepared=None
-        async def send(event):await socket.send(json.dumps(event))
+        async def send(event):
+            # Database/provider awaits can outlive sign-out or access expiry.
+            # Check immediately before emitting content, not only at handshake
+            # or on the generation monitor's periodic interval.
+            if event['type'] != 'error':self.admission.authorized(token)
+            await socket.send(json.dumps(event))
         try:
             credential=self.admission.authorized(token)
             async with asyncio.timeout(5):request=validate_request(await socket.recv())
+            self.admission.authorized(token)
             owner=await asyncio.to_thread(self.memory.owner_for,credential)
             if request['operation']=='source':
                 item=await asyncio.to_thread(self.chat.citation,owner,request['turn_id'],request['citation_id'])

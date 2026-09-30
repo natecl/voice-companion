@@ -24,10 +24,23 @@ struct VoiceCompanionApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            if ProcessInfo.processInfo.arguments.contains("--ui-testing") {
-                appContent(authenticated: false)
-            } else { AccountRootView { appContent(authenticated: $0) } }
+            #if DEBUG && os(iOS)
+            if ProcessInfo.processInfo.arguments.contains("--founder-migration-fixture") {
+                FounderMigrationKeychainFixture()
+            } else if ProcessInfo.processInfo.arguments.contains("--account-keychain-fixture") {
+                AccountDeletionKeychainFixture()
+            } else if ProcessInfo.processInfo.arguments.contains("--account-deletion-ui-fixture") {
+                AccountDeletionUIFixture()
+            } else { accountContent }
+            #else
+            accountContent
+            #endif
         }
+    }
+    @ViewBuilder private var accountContent: some View {
+        if ProcessInfo.processInfo.arguments.contains("--ui-testing") {
+            appContent(authenticated: false)
+        } else { AccountRootView { appContent(authenticated: $0) } }
     }
     @ViewBuilder private func appContent(authenticated: Bool) -> some View {
         if companionEnabled || authenticated {
