@@ -14,9 +14,17 @@ UI PR154 and integration PR155 are merged. The dependent account candidate `208c
 
 ## Gaps and non-goals
 
-The founder accepted the Developer Program agreement September 29 and the warning cleared. App Store Connect was reauthenticated September 30 and still showed no app record. Creating the iOS record with name `Ellis`, English (U.S.), existing bundle ID `ai.voicecompanion.phone` and internal SKU `ellis-iphone-001` was rejected because the app name is already used. No record was created; a founder-selected listing name is required. A page error initially left creation controls unresponsive at the narrow browser width; the desktop viewport allowed the form to work, then the viewport was reset. Distribution signing, icon, permitted artwork, privacy/legal/support metadata and fresh-tester access remain open. The EU trader-status notice is also visible; no compliance declaration was submitted.
+The founder accepted the Developer Program agreement September 29 and the warning cleared. The founder created **Ellis: AI Notetaker**, Apple app ID `6817680460`, after Apple rejected `Ellis` as already used. On September 30, direct App Information inspection verified bundle ID `ai.voicecompanion.phone`, SKU `ellis-iphone-001` and English (U.S.). The record is in Prepare for Submission with no build selected; creating it is not a review submission or TestFlight upload. Distribution signing, icon, permitted artwork, privacy/legal/support metadata and fresh-tester access remain open. The EU trader-status notice is visible; no compliance declaration was submitted.
 
 ## Flow and implementation entry points
+
+September 30 setup verification: the iOS 1.0 version is saved with **Manually
+release this version**, confirmed again after reload. TestFlight shows **No
+Builds**. Beta description, feedback email, privacy URL and review contact fields
+remain empty. No review submission, tester group/invitation or legal/compliance
+declaration was made. Before filling review metadata or uploading a build,
+resolve the documented temporary companion-artwork distribution rights and
+missing app icon; the existing UI design remains the source of truth.
 
 Reviewed feature evidence + version pairing → signed archive/configuration → authorized TestFlight upload → independent install/update.
 
