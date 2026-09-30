@@ -78,3 +78,21 @@ are founder-reported, distinct from the independently inspected storage/server
 evidence. The exercised capture/sign-out gate is complete. Native provider
 rejection and network-failure refresh recovery remain unverified; keep the full
 account branch unmerged pending that gate and required review/checks.
+
+## Native network-failure recovery
+
+The isolated localhost service was gracefully stopped while the native access
+session had naturally expired. The unchanged app relaunched to sign-in with
+“Could not connect to the server.” All 13 local content files, including a
+clearly fictional owner-scoped transcript seeded before failure, retained their
+hashes. Resuming the original server and fresh Apple authentication restored the
+same owner. One executed native restart test passed; one executed transcript
+reopen test passed and its screenshot was inspected. The UI harness was corrected
+to use the observed Transcript switch role and start from a fresh app launch;
+initial failed test results remain in the private evidence directory.
+
+[Network recovery receipt](../account-lifecycle/native-network-refresh-recovery.json).
+This closes the network-failure portion of the second gate. Actual Apple-provider
+rejection and same-owner recovery remain pending. QA-only shorter session issuance
+is being prepared to exercise that path without changing native clocks, existing
+credentials or production lifetimes. No paid calls occurred.

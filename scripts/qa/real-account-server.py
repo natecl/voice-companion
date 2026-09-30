@@ -24,6 +24,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'Backend'))
 from cryptography.fernet import Fernet
 from websockets.asyncio.server import serve
+import account_sessions
 from account_service import configured_accounts
 from account_tls import certificate
 from admission import Admission, Rejected
@@ -32,6 +33,32 @@ from memory_service import MemoryService
 from memory_store import MemoryStore, VERSION as MEMORY_VERSION
 from notes_service import NotesService
 from relay import Relay
+
+
+DEFAULT_ACCESS_SECONDS = 3600
+
+
+def access_seconds(value):
+    """Keep issued access beyond the native 600-second refresh lead."""
+    if type(value) is not int or not 660 <= value <= DEFAULT_ACCESS_SECONDS:
+        raise ValueError('QA access lifetime must be an integer from 660 to 3600 seconds')
+    return value
+
+
+def selected_access_seconds(requested, previous=None):
+    # Older receipts predate this option and used the production 3600 seconds.
+    saved = access_seconds((previous or {}).get('access_lifetime_seconds', DEFAULT_ACCESS_SECONDS))
+    return saved if requested is None else access_seconds(requested)
+
+
+def provider_failure_reason(error):
+    # Never persist arbitrary exception/provider text, which can contain secrets.
+    if isinstance(error, Rejected) and str(error) in {
+        'provider_authorization_revoked', 'identity_provider_unavailable',
+        'invalid_identity_token',
+    }:
+        return str(error)
+    return 'other'
 
 
 class AccountQAAdmission(Admission):
@@ -90,15 +117,17 @@ def validate_resume_databases(output):
             raise RuntimeError(f'Resume requires an intact existing QA schema: {name}') from None
 
 
-async def main(output, apple_key, resume=False):
+async def main(output, apple_key, resume=False, requested_access_seconds=None):
     os.umask(0o077)
     output.mkdir(parents=True, exist_ok=True, mode=0o700)
     with (output/'server.lock').open('a') as process_lock:
         fcntl.flock(process_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        await run_locked(output, apple_key, resume)
+        await run_locked(output, apple_key, resume, requested_access_seconds)
 
 
-async def run_locked(output, apple_key, resume):
+async def run_locked(output, apple_key, resume, requested_access_seconds=None):
+    # Validate before creating databases or reading provider credentials.
+    lifetime = selected_access_seconds(requested_access_seconds)
     port = 0
     previous_calls = {}
     if resume:
@@ -118,6 +147,7 @@ async def run_locked(output, apple_key, resume):
         previous = json.loads((output/'status.json').read_text())
         if previous.get('scope') != 'isolated local real-provider QA' or previous.get('model_spending_enabled') is not False:
             raise RuntimeError('Unrecognized QA state')
+        lifetime = selected_access_seconds(requested_access_seconds, previous)
         previous_calls = previous['provider_calls']
         if not isinstance(previous_calls, dict) or any(type(v) is not int or v < 0 for v in previous_calls.values()):
             raise RuntimeError('Invalid provider call counters')
@@ -127,6 +157,8 @@ async def run_locked(output, apple_key, resume):
         context = certificate(output)
         key = Fernet.generate_key()
         (output/'encryption.key').write_bytes(key)
+    # Process-local QA override: existing credentials and native Keychain remain untouched.
+    account_sessions.ACCESS_SECONDS = lifetime
     phone = plistlib.loads((ROOT/'App/Phone-Info.plist').read_bytes())
     mac = plistlib.loads((ROOT/'App/Mac-Info.plist').read_bytes())
     admission = AccountQAAdmission(output/'usage.sqlite', total_microusd=1, limits={'stt': (100,20,5), 'ask': (100,20,5)})
@@ -144,8 +176,10 @@ async def run_locked(output, apple_key, resume):
         def invoke(*args, **kwargs):
             try:
                 result = original(*args, **kwargs)
-            except Exception:
-                with call_lock: calls[label+'.failed'] += 1
+            except Exception as error:
+                with call_lock:
+                    calls[label+'.failed'] += 1
+                    calls[label+'.failed.'+provider_failure_reason(error)] += 1
                 raise
             with call_lock: calls[label+'.ok'] += 1
             return result
@@ -162,6 +196,7 @@ async def run_locked(output, apple_key, resume):
             schema = db.execute('PRAGMA user_version').fetchone()[0]
         with call_lock: provider_calls = dict(calls)
         result = dict(scope='isolated local real-provider QA', identity_counts=identities, schema=schema,
+                      access_lifetime_seconds=lifetime,
                       sessions=admission.db.execute('SELECT count(*) FROM account_session').fetchone()[0],
                       unrevoked_sessions=admission.db.execute('SELECT count(*) FROM account_session s JOIN credential c ON c.id=s.credential WHERE c.revoked=0').fetchone()[0],
                       deletions=dict(admission.db.execute('SELECT state,count(*) FROM account_deletion GROUP BY state').fetchall()),
@@ -189,5 +224,10 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--apple-key', type=Path, required=True)
     parser.add_argument('--resume', action='store_true', help='Reuse original databases, keys, certificate, counters and port')
+    parser.add_argument('--access-seconds', type=int, default=None,
+                        help='QA-only new access lifetime, 660..3600 seconds; default 3600, or saved value on resume')
     args = parser.parse_args()
-    asyncio.run(main(args.output, args.apple_key, args.resume))
+    if args.access_seconds is not None:
+        try: access_seconds(args.access_seconds)
+        except ValueError as error: parser.error(str(error))
+    asyncio.run(main(args.output, args.apple_key, args.resume, args.access_seconds))
