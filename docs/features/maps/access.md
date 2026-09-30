@@ -10,7 +10,7 @@ Independent per-tester enrollment, isolation and revocation. Product direction: 
 
 ## Current implementation
 
-The schema-20 provider/session backend is enabled on Render at `c897dec`. Both Google and Apple basic sign-in, sign-out and relaunch passed on the signed Release simulator; Apple reauthentication reused its original owner. Native account wiring remains draft PR159. The dependent schema-21 storage checkpoint adds atomic enrolled-owner content erasure and stale-credential tombstones, with local populated-owner and late-write checks. It is not deployed and has no deletion endpoint or UI.
+The schema-20 provider/session backend is enabled on Render at `c897dec`. Both Google and Apple basic sign-in, sign-out and relaunch passed on the signed Release simulator; Apple reauthentication reused its original owner. Native account wiring remains draft PR159. The dependent schema-21 storage checkpoint adds atomic enrolled-owner content erasure and stale-credential tombstones, with local populated-owner and late-write checks. It is not deployed. A further dependent [deletion workflow candidate](../../qa/account-deletion-workflow/README.md) adds a default-off authenticated endpoint, durable retry state, session/provider revocation orchestration and owner-scoped socket shutdown. Native cleanup, lost-client recovery, backups and real revocation remain open.
 
 ## Gaps and non-goals
 

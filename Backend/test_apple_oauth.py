@@ -22,6 +22,7 @@ class AppleOAuthTests(unittest.TestCase):
 
     def respond(self, value):
         self.client.opener.open.return_value = io.BytesIO(json.dumps(value).encode())
+        self.client.opener.open.return_value.status = 200
 
     def test_redemption_request_and_real_client_secret_signature(self):
         self.respond(dict(id_token='synthetic-id-token', refresh_token='synthetic-refresh'))
@@ -46,6 +47,13 @@ class AppleOAuthTests(unittest.TestCase):
         request = self.client.opener.open.call_args.args[0]
         self.assertEqual(request.full_url, 'https://appleid.apple.com/auth/revoke')
         self.assertEqual(parse_qs(request.data.decode())['token_type_hint'], ['refresh_token'])
+
+    def test_revocation_requires_apple_success_status(self):
+        self.respond({})
+        self.client.opener.open.return_value.status = 202
+        with self.assertRaisesRegex(Rejected, 'identity_provider_unavailable'):
+            self.client.revoke('app.phone', 'synthetic-refresh')
+        self.client.opener.open.assert_called_once()
 
     def test_invalid_grant_is_safe_and_never_retried(self):
         self.client.opener.open.side_effect = HTTPError('https://appleid.apple.com/auth/token', 400,

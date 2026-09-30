@@ -9,6 +9,7 @@ import uuid
 
 from admission import Rejected
 from account_tokens import VerifiedIdentity, GOOGLE, APPLE
+from account_deletion import SCHEMA as DELETION_SCHEMA, identity_digest
 
 ACCESS_SECONDS = 3600
 REFRESH_SECONDS = 30 * 86400
@@ -32,6 +33,8 @@ class AccountSessions:
             CREATE INDEX IF NOT EXISTS account_session_family ON account_session(family);
         ''')
 
+        self.db.executescript(DELETION_SCHEMA)
+
     def challenge(self, provider):
         if provider not in ('google', 'apple'):
             raise Rejected('invalid_account_request')
@@ -53,11 +56,17 @@ class AccountSessions:
             raise Rejected('invalid_account_challenge')
         return digest
 
+    def require_identity_available(self, identity):
+        if self.db.execute('SELECT 1 FROM deleting_identity WHERE digest=?',
+                           (identity_digest(identity.issuer, identity.subject),)).fetchone():
+            raise Rejected('account_deletion_pending')
+
     def exchange(self, challenge, provider, identity, identity_token):
         if not isinstance(identity, VerifiedIdentity) or identity.issuer != {'google': GOOGLE, 'apple': APPLE}.get(provider):
             raise Rejected('invalid_identity_token')
         if not isinstance(identity_token, str) or not 1 <= len(identity_token) <= 16384:
             raise Rejected('invalid_identity_token')
+        self.require_identity_available(identity)
         fingerprint = hashlib.sha256(identity_token.encode()).hexdigest()
         with self.admission.transaction():
             digest = self.nonce(challenge, provider)

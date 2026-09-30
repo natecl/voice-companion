@@ -26,6 +26,9 @@ class Relay:
     def __init__(self, key, token=None, *, admission=None, ask=None, memory=None, learning_status=None, companion=None, indexing_status=None, notes=None, notes_status=None, proactive=None, accounts=None):
         self.key, self.token = key, token
         self.accounts = accounts
+        self.account_tasks = {}
+        if accounts is not None and accounts.deletion is not None:
+            accounts.deletion.quiesce = self.quiesce_account
         self.admission = admission
         self.ask = ask
         self.memory = memory
@@ -74,7 +77,37 @@ class Relay:
         if self.active or self.sessions >= MAX_SESSIONS or self.total_bytes >= MAX_BYTES:
             return connection.respond(http.HTTPStatus.TOO_MANY_REQUESTS, 'Development limit reached\n')
 
+    async def quiesce_account(self, owner):
+        credentials = {row[0] for row in self.admission.db.execute(
+            'SELECT credential FROM account_session WHERE owner=?', (owner,))}
+        active = [(task, client) for task, (client, credential) in self.account_tasks.items()
+                  if credential in credentials]
+        for task, _ in active:
+            task.cancel()
+        # Cancellation settles provider generators and charged reservations. A
+        # bounded failure leaves durable deletion pending, never falsely complete.
+        async with asyncio.timeout(5):
+            await asyncio.gather(*(client.close(1008, 'account_deleted') for _, client in active))
+            await asyncio.gather(*(task for task, _ in active), return_exceptions=True)
+
     async def handle(self, client):
+        if client.request.path == '/account':
+            return await self._handle(client)
+        task = asyncio.current_task()
+        if self.accounts is not None and self.admission is not None:
+            try:
+                token = client.request.headers.get('Authorization', '').removeprefix('Bearer ')
+                credential = self.admission.authorized(token)
+            except Rejected:
+                await client.close(1008, 'unauthorized')
+                return
+            self.account_tasks[task] = (client, credential)
+        try:
+            return await self._handle(client)
+        finally:
+            self.account_tasks.pop(task, None)
+
+    async def _handle(self, client):
         if client.request.path == "/account" and self.accounts is not None:
             return await self.accounts.handle(client)
         if client.request.path == "/notes" and self.notes is not None:

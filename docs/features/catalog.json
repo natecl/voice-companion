@@ -243,7 +243,8 @@
       "Backend.test_account_tokens",
       "Backend.test_account_sessions",
       "Backend.test_account_service",
-      "Backend.test_account_erasure"
+      "Backend.test_account_erasure",
+      "Backend.test_account_deletion"
     ],
     "manifest": "docs/features/verification/access.json",
     "verification_scope": "Fresh Release enrollment, authenticated session refresh and revoked-session handling without developer credential import; Two-user server isolation and owner-switch/sign-out clearing of local notes, chat and memory state; Account deletion and existing-owner migration preserve the selected lifecycle contract without leaking or losing unrelated data",
