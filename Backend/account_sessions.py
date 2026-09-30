@@ -61,21 +61,25 @@ class AccountSessions:
                            (identity_digest(identity.issuer, identity.subject),)).fetchone():
             raise Rejected('account_deletion_pending')
 
-    def exchange(self, challenge, provider, identity, identity_token):
+    def consume_identity(self, challenge, provider, identity, identity_token):
+        """Consume a verified proof inside the caller's admission transaction."""
         if not isinstance(identity, VerifiedIdentity) or identity.issuer != {'google': GOOGLE, 'apple': APPLE}.get(provider):
             raise Rejected('invalid_identity_token')
         if not isinstance(identity_token, str) or not 1 <= len(identity_token) <= 16384:
             raise Rejected('invalid_identity_token')
-        self.require_identity_available(identity)
+        digest = self.nonce(challenge, provider)
+        if identity.expires <= self.admission.clock():
+            raise Rejected('invalid_identity_token')
         fingerprint = hashlib.sha256(identity_token.encode()).hexdigest()
+        if self.db.execute('SELECT 1 FROM account_exchange WHERE digest=?', (fingerprint,)).fetchone():
+            raise Rejected('identity_token_replayed')
+        self.db.execute('DELETE FROM account_challenge WHERE digest=?', (digest,))
+        self.db.execute('INSERT INTO account_exchange VALUES(?,?)', (fingerprint, identity.expires))
+
+    def exchange(self, challenge, provider, identity, identity_token):
         with self.admission.transaction():
-            digest = self.nonce(challenge, provider)
-            if identity.expires <= self.admission.clock():
-                raise Rejected('invalid_identity_token')
-            if self.db.execute('SELECT 1 FROM account_exchange WHERE digest=?', (fingerprint,)).fetchone():
-                raise Rejected('identity_token_replayed')
-            self.db.execute('DELETE FROM account_challenge WHERE digest=?', (digest,))
-            self.db.execute('INSERT INTO account_exchange VALUES(?,?)', (fingerprint, identity.expires))
+            self.consume_identity(challenge, provider, identity, identity_token)
+            self.require_identity_available(identity)
             credential, token = self.admission.enroll(lifetime_seconds=ACCESS_SECONDS)
             # A memory failure rolls back issuance. A crash after this independent
             # DB commit can leave an unreachable credential mapping, never access.

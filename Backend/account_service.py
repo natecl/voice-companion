@@ -47,14 +47,22 @@ class AccountService:
                         fields = set(data) - {'version', 'operation'}
                         if op == 'challenge' and fields == {'provider'}:
                             result = self.sessions.challenge(data['provider'])
-                        elif op == 'exchange' and fields in ({'provider', 'challenge', 'identity_token'}, {'provider', 'challenge', 'identity_token', 'authorization_code'}):
+                        elif op in ('exchange', 'recover_deletion'):
+                            proof_fields = fields - {'confirmation'} if op == 'recover_deletion' else fields
+                            if proof_fields not in ({'provider', 'challenge', 'identity_token'}, {'provider', 'challenge', 'identity_token', 'authorization_code'}):
+                                raise Rejected('invalid_account_request')
+                            if op == 'recover_deletion' and (self.deletion is None or data.get('confirmation') != 'delete_account'):
+                                raise Rejected('invalid_account_request')
                             provider = data['provider']
                             if not isinstance(provider, str) or provider not in ('google', 'apple'):
                                 raise Rejected('invalid_account_request')
                             nonce = self.sessions.nonce(data['challenge'], provider)
                             identity = await asyncio.to_thread(self.verifier.verify, provider,
                                                               data['identity_token'], expected_nonce=nonce)
-                            self.sessions.require_identity_available(identity)
+                            if op == 'recover_deletion':
+                                self.deletion.pending_owner(identity)
+                            else:
+                                self.sessions.require_identity_available(identity)
                             grant = None
                             if provider == 'apple':
                                 if not isinstance(data.get('authorization_code'), str) or not 1 <= len(data['authorization_code']) <= 8192:
@@ -67,8 +75,11 @@ class AccountService:
                                     raise Rejected('invalid_identity_token')
                             elif 'authorization_code' in data:
                                 raise Rejected('invalid_account_request')
-                            result = self.sessions.exchange(data['challenge'], provider, identity, data['identity_token'])
-                            if grant:
+                            if op == 'recover_deletion':
+                                result = self.deletion.recover(data['challenge'], provider, identity, data['identity_token'], grant)
+                            else:
+                                result = self.sessions.exchange(data['challenge'], provider, identity, data['identity_token'])
+                            if grant and op == 'exchange':
                                 try:
                                     self.grants.save_apple(result['owner'], identity.audience, grant['refresh_token'])
                                 except Exception:
@@ -89,6 +100,10 @@ class AccountService:
                             if data['confirmation'] != 'delete_account' or self.deletion is None:
                                 raise Rejected('invalid_account_request')
                             result = await self.deletion.delete(data['refresh_token'])
+                        elif op == 'resume_deletion' and fields == {'deletion_token'}:
+                            if self.deletion is None:
+                                raise Rejected('invalid_account_request')
+                            result = await self.deletion.delete(data['deletion_token'], recovery=True)
                         elif op == 'sign_out' and fields == {'refresh_token'}:
                             self.sessions.sign_out(data['refresh_token'])
                             result = {}
