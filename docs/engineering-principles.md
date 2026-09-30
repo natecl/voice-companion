@@ -400,3 +400,11 @@ Founder decision: ship both Google and Apple sign-in, with Google above Apple in
 Founder TestFlight clarification, September 29: functional frontend wiring for Google/Apple sign-in and necessary account/privacy pages is authorized. This supersedes the blanket UI-code freeze. The established UI design system is the source of truth: preserve existing screens, styling, typography, colors, spacing, motion and visual character. Reuse current components and patterns for additions; do not redesign or restyle existing UI. Verify actual app behavior and visual consistency.
 
 Founder execution clarification, September 29: proactively implement, verify, review and merge checkpoints toward TestFlight readiness without repeated routine approvals. Reuse existing UI components and elements, including animations, transitions, button-press feedback and haptics; the established UI/UX system remains the source of truth. Do not invent a replacement interaction or visual system. Founder authorizes a new total allowance of $5 for provider/API testing toward TestFlight readiness. Track reservations and actual usage, stop at the cap, and do not automatically retry paid calls. This allowance excludes hosting upgrades, subscriptions and other purchases. Existing budget history and no-automatic-paid-retry rules remain in force. Legal acceptance, purchases outside the specified allowance, required product decisions and physical-test readiness remain distinct gates.
+
+Founder account decision, September 30: keep Google and Apple as separate Ellis
+accounts with persistent sign-in; do not implement automatic or explicit account
+linking for this release. The founder selects Google as the destination for
+existing pre-authentication development data. Verify the exact legacy source and
+Google identity, preserve unrelated owners and all budget history, and rehearse
+the coordinated server/local migration before cutover. This does not authorize
+moving Apple account data into Google or inferring identity from email.
