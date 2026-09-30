@@ -1,5 +1,7 @@
 # Independent main-chat state
 
+> Historical native-state checkpoint. Its “not yet connected” status predates the delivered main chat; source-button and deletion descriptions must be read with subsequent release presentation and retained-memory contracts. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 September 26, 2026. `CompanionController` owns the main chat, draft, attachment, memory preference and streaming operation independently of recording selection. It is not yet connected to the app interface or hosted rollout.
 
 A submitted request freezes its original question/context. The user can compose a follow-up while it streams. After a saved acknowledgment, a read-only history request obtains durable source locations and current answer validity. If that read fails, the confirmed saved answer remains visible with an error; it is not generated again. An uncertain request can be recovered only by explicit user action, using its original ID and context, never the newly edited draft. Ordinary refresh makes no inference calls. Backgrounding cancels the answer operation; foreground refresh reconciles server state. No local chat cache or new cross-device identity mechanism is introduced.

@@ -1,5 +1,7 @@
 # Proactive contributions: local native checkpoint
 
+> Historical first native slice, September 28. The absolute Debug/loopback-only and hosted-unavailable statements below apply to that checkpoint. Later funded hosted phone experiments, conversational multi-message output and PR155 integration supersede those wiring limits; they do not establish unrestricted Release enablement or general usefulness. See [proactive feature map](features/maps/proactive.md), [current state](current-state.md) and [release handoff](execution/testflight-release-handoff.md) for selected behavior, configuration gates and remaining acceptance. September 29 invited social presence supersedes note-taking-led positioning while retaining the exact agreed one-liner. Historical spending figures are not a fresh allowance. This update makes no runtime or provider claim.
+
 September 28, 2026. This is a verified local development slice, **not deployed or App Store ready**. The installed app and hosted startup do not enable it. The exact positioning remains **AI notes that proactively contribute to discussions**.
 
 ## Implemented path
