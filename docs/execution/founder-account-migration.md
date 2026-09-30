@@ -86,3 +86,17 @@ of the four legacy session files into the same owner's account directory, with
 Neither rehearsal changed live account bindings or the physical installation.
 Fresh Google proof, operator orchestration, runtime QA, reviewed rollout and
 physical cutover remain unfinished.
+
+## Fresh destination identity verified
+
+At 2026-09-30 07:03 UTC, the founder-driven real Google re-enrollment in the
+isolated local service matched the current hosted destination's exact verified
+issuer and subject. The comparison used a private SHA256 digest, not email or
+row-count inference. The hosted destination still matched the rehearsed owner
+label and had zero source/note/turn rows; hosted memory remained schema20.
+See [sanitized receipt](../qa/founder-migration/google-identity-match.json).
+No subject, token or raw owner was committed, and no hosted data changed.
+This resolves the destination-proof prerequisite for the current preparation;
+recheck identity binding and the full inventory immediately before cutover.
+Service quiescence, coordinated fresh backups, reviewed matching rollout and
+physical installation/cutover acceptance remain required.
