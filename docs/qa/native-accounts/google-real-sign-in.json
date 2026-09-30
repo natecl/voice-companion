@@ -1,0 +1,15 @@
+{
+  "native_commit": "07f9977",
+  "backend_commit": "c897dec55af9707f74d298772bc3318af6372831",
+  "configuration": "Release 0.1.0 (1), iOS 26.5 simulator",
+  "provider": "google",
+  "user_completed_authentication": true,
+  "companion_screen_after_signin_and_relaunch": true,
+  "backend_google_unrevoked_sessions": 1,
+  "backend_apple_unrevoked_sessions": 0,
+  "provider_identity_count": 2,
+  "distinct_owner_count": 2,
+  "data_isolation_with_populated_accounts_verified": false,
+  "physical_device_verified": false,
+  "provider_spend": 0
+}

@@ -81,3 +81,7 @@ Founder confirmed readiness and completed Apple authentication in the isolated E
 Google enrollment, token rotation against the real Apple grant, sign-out, second-user isolation and physical-device acceptance remain open. Device Hub exposed a screenshot but its coordinate interaction twice returned noWindowsAvailable after refreshing the window binding; user assistance is needed for the existing menu/sign-out tap rather than bypassing UI automation controls.
 
 Founder then tapped Sign out. The app returned to the provider screen, backend inspection confirmed zero unrevoked account sessions, and terminating/relaunching stayed signed out with a clean status. This verifies the real Apple session sign-out path and signed-out persistence; account erasure, capture-in-progress sign-out and Google/two-user acceptance remain separate gates.
+
+## First real Google enrollment
+
+Founder completed Google authentication after Apple sign-out. The existing companion screen opened and persisted across terminate/relaunch. Backend inspection confirmed one Google identity/session, the Apple session still revoked, and two distinct stable owners for the two provider identities. [Sanitized receipt](google-real-sign-in.json) and [inspected screen](google-real-sign-in.png). This proves real Google token exchange and basic relaunch, not populated-account isolation, linking, long-lived refresh, or physical-device acceptance. No paid provider calls were made.
