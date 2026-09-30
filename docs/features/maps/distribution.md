@@ -14,7 +14,7 @@ UI PR154 and integration PR155 are merged. The dependent account candidate `208c
 
 ## Gaps and non-goals
 
-The founder accepted the Developer Program agreement September 29 and the warning cleared. The last inspected App Store Connect state had no app record. Distribution signing, icon, permitted artwork, privacy/legal/support metadata and fresh-tester access remain open.
+The founder accepted the Developer Program agreement September 29 and the warning cleared. App Store Connect was reauthenticated September 30 and still showed no app record. Creating the iOS record with name `Ellis`, English (U.S.), existing bundle ID `ai.voicecompanion.phone` and internal SKU `ellis-iphone-001` was rejected because the app name is already used. No record was created; a founder-selected listing name is required. A page error initially left creation controls unresponsive at the narrow browser width; the desktop viewport allowed the form to work, then the viewport was reset. Distribution signing, icon, permitted artwork, privacy/legal/support metadata and fresh-tester access remain open. The EU trader-status notice is also visible; no compliance declaration was submitted.
 
 ## Flow and implementation entry points
 
