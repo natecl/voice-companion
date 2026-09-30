@@ -1,16 +1,18 @@
 # Companion chat and follow-ups
 
-> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+> September 30 delivery context: [release handoff](../../execution/testflight-release-handoff.md). This map distinguishes source implementation from recorded deployment, installation and bounded verification; historical receipts do not attest current runtime state.
 
 Feature ID: `chat` · Context reviewed September 29, 2026 against main `3a30e25`.
 
 ## Purpose and user outcome
 
-Persistent chat, attachments, streaming and durable recovery. Product direction: **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
+Persistent chat, attachments, streaming and durable recovery. Product direction is an invited AI social presence with personal continuity; the retained agreed one-liner is **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
 
 ## Current implementation
 
 One persistent main chat supports questions during and between captures. Agent is the main screen; Notes is secondary. Normal chat, drafts, attachments and durable turn recovery exist.
+
+The local PR171 candidate reauthorizes companion content on already-open sockets after session revocation. Four regressions reproduced stale-session disclosure; 38 targeted account/companion checks passed independent review using real loopback sockets and fictional data. [Evidence](../../qa/account-isolation-review/README.md). This backend fix is not deployed in recorded `208ca34`.
 
 ## Gaps and non-goals
 
@@ -44,7 +46,7 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 ## Next bounded work
 
-The founder now requests a personable social-presence shell. UI-1 prototypes it before UI-2 replaces native layout; preserve one persistent chat, composer/draft contracts and durable messages. This supersedes blanket preservation of the old navigation shell.
+The approved shared companion-room UI is merged through PR154–155. Preserve its design and interactions while completing Phase 1 account lifecycle; do not restart shell prototyping. See [shared room](shared-room.md).
 
 Verify follow-up, failed delivery/draft preservation, streaming and reopen through the active socket path; inspect actual model output only when model/context behavior changes.
 
@@ -60,6 +62,6 @@ Before editing, read this map and linked code, identify affected contracts, and 
 
 Update this map when behavior, dependencies, verification, deployment evidence or the next blocker changes. Update the linked catalog/verifier with it. Preserve failed evidence and label superseded experiments; do not append contradictory status updates or replace missing verification with a claim of completion.
 
-## Companion-room presentation candidate — September 29
+## Historical native presentation candidate — September 29
 
-Founder approved replacing the native shell with the reviewed lavender/plum prototype. See [bounded implementation and QA](../../qa/companion-room/README.md). Two-line Notes entry and Invite replace root tabs/search; the existing chat/controllers remain. Temporary reference art is debug-only presentation (still bundled; remove before distribution). Invitation delivery is not implemented. This candidate is not a hosted or phone rollout.
+Founder approved replacing the native shell with the reviewed lavender/plum prototype. See [bounded implementation and QA](../../qa/companion-room/README.md). Two-line Notes entry and Invite replace root tabs/search; the existing chat/controllers remain. Temporary reference art is debug-only presentation (still bundled; remove before distribution). Invitation delivery is not implemented. This historical candidate predates the merged shared-room baseline; use [shared room](shared-room.md) for current presentation wiring.

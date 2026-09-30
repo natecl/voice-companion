@@ -1,5 +1,7 @@
 # Internal rollout preflight
 
+> Historical rollout preparation. Hosted activation and bounded physical acceptance were subsequently recorded; the budget and pending gates below are checkpoint-time evidence, not a new execution allowance. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 September 26, 2026. The founder approved the additional $0.50 QA allocation and internal rollout, and explicitly declined the Render plan upgrade. Keep Starter (512 MiB); qualify capacity before enabling semantic retrieval. Hosted activation and physical acceptance are still pending.
 
 ## Canonical-copy migration

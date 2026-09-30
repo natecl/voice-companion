@@ -1,6 +1,6 @@
 # V0 scope and delivery sequence
 
-> Historical/bounded delivery document. The [September 28 product definition](product-source-of-truth.md#full-product-vision--september-28-2026) and [current gap audit](product-vision-audit-2026-09-28.md) govern the full vision and next proposed sequence. Older one-liners, exclusions and pending stages below retain their original checkpoint meaning.
+> Historical/bounded delivery document. The [current product definition](product-source-of-truth.md), [current implementation state](current-state.md) and [TestFlight handoff](execution/testflight-release-handoff.md) govern the full vision and current sequence. Older one-liners, exclusions and pending stages below retain their original checkpoint meaning.
 
 Status: Founder decisions consolidated September 24, 2026.
 

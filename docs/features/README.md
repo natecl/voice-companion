@@ -1,6 +1,6 @@
 # Feature and context map
 
-> Current September 29 release status and remaining phases: [TestFlight handoff](../execution/testflight-release-handoff.md). UI/integration PR154–155 are merged and the internal phone build is installed; backend rollout, independent accounts and paid plans remain pending. Earlier dated evidence below is historical, not a fresh release attestation.
+> September 30 source/evidence audit at `7079427`: UI/integration PR154–155 are merged; account/lifecycle PR159–177 remain unmerged. Recorded hosted account/deletion deployment is `208ca34`, schema21, with a matching development-signed Release phone candidate and bounded physical checks. Later local fixes are not deployed or installed by this audit. Phase 1 remains incomplete; pricing and paywall phases have not started. See the [release handoff](../execution/testflight-release-handoff.md) for exact version and evidence boundaries.
 
 September 29 direction: [invited social presence](../social-presence-experience.md) supersedes note-taking-led positioning; see the [revised execution phases](../execution/demo-testflight-phases.md). Earlier implementation and rollout claims below remain dated evidence, not fresh runtime inspection.
 
@@ -8,11 +8,11 @@ Start with the [dedicated context map for your feature](context-map.md): current
 
 See the [feature verification map](verification-map.md) for each feature’s executable verifier, required real-path evidence, and implementation gaps.
 
-Reconciled against main `660e4c7` on September 28, 2026 and recorded rollout evidence. This documentation audit did not re-inspect the live service. Read [current state](../current-state.md) and the [product vision gap audit](../product-vision-audit-2026-09-28.md) for the implementation/vision boundary.
+Knowledge foundations were originally audited at main `660e4c7` on September 28; current status was reconciled at `7079427` on September 30 against source and durable QA receipts. This documentation audit did not re-inspect the live service. Read [current state](../current-state.md) and the [product vision gap audit](../product-vision-audit-2026-09-28.md) for the implementation/vision boundary.
 
 > AI notes that proactively contribute to discussions
 
-The product vision is an iPhone-first AI note-taking app that proactively contributes context, questions and ideas through text, with Mac support. Calendar, email and messages belong to the full vision; captured notes/conversations are the initial sources. The existing entry points remain **Capture meeting note** and **Talk to companion**. Granola remains the Proven. See the [knowledge map](knowledge.md) for evidence, derived memory and missing source integrations.
+The current product direction is an iPhone-first invited AI social presence with personal continuity and text contributions, with Mac support. Capture and notes are foundations rather than the consumer category. Calendar, email and messages belong to the full vision; captured notes/conversations are the initial sources. The existing entry points remain **Capture meeting note** and **Talk to companion**. Granola remains the Proven. See the [knowledge map](knowledge.md) for evidence, derived memory and missing source integrations.
 
 ## Read in this order
 
@@ -37,9 +37,9 @@ Canonical product/engineering documents retain authority. Maps describe verified
 | Corrections, time and maintenance | Qualified lifecycle and bounded expiry; source-scoped additions; no memory-management UI | [Lifecycle](features.md#corrections-time-and-maintenance) |
 | Retrieval and answer context | Unified notes/transcript discovery, one Jev ranking, independent evidence reserve; pre-retrieval classifier disabled | [Recall](features.md#retrieval-and-answer-context) |
 | Recording deletion and retained memory | Transcript removed; eligible learned knowledge retained with unavailable-source label | [Deletion](features.md#recording-deletion-and-retained-memory) |
-| Proactive contribution and connected context | Proactive past-note path verified locally, disabled for rollout; connected sources remain absent | [Gap map](../product-vision-audit-2026-09-28.md#capability-and-gap-map) |
+| Proactive contribution and connected context | Gated implementation and recorded internal experiments; broader participation acceptance incomplete; connectors absent | [Gap map](../product-vision-audit-2026-09-28.md#capability-and-gap-map) |
 | Knowledge provenance and future sources | Current layers plus connector/participation gaps | [Knowledge](knowledge.md) |
-| Internal access, budgets and deployment | Explicit enrollment, admission caps, persistent single-instance service | [Operations](features.md#internal-access-budgets-and-rollout) |
+| Accounts, budgets and deployment | Separate Google/Apple accounts and deletion deployed internally; later lifecycle fixes local; Phase 1 incomplete | [Operations](features.md#internal-access-budgets-and-rollout) |
 
 ## System flows
 
@@ -69,18 +69,20 @@ These are data dependencies, not a guarantee that background learning has finish
 
 ## What is not delivered by these maps
 
-Production proactive text participation and spoken participation; calendar/email/message connectors; fresh web retrieval; media import; voice recognition/enrollment; silent continuous recording; Mac computer-audio capture; note editing (generated notes are internally deployed with bounded physical acceptance); side chats; full recording-library synchronization between devices; public account/subscription/distribution operations; explicit memory-erasure UX. These need their own approved slices. Recording remains user-started and internally capped. Do not infer launch readiness from the bounded harness acceptance.
+Broadly accepted proactive participation and spoken participation; calendar/email/message connectors; fresh web retrieval; media import; voice recognition/enrollment; silent continuous recording; Mac computer-audio capture; note editing (generated notes are internally deployed with bounded physical acceptance); side chats; full recording-library synchronization between devices; public account/subscription/distribution operations; explicit memory-erasure UX. These need their own approved slices. Recording remains user-started and internally capped. Do not infer launch readiness from the bounded harness acceptance.
 
 ## Keep context useful
 
 Update the affected feature entry when a checkpoint changes behavior, module ownership, a cross-feature contract, verification evidence or a material limitation. Add a lesson only when a failure or decision changes how future work should be done: trigger → cause → guard → evidence. Link evidence instead of copying logs, mutable budget balances, transcripts or secrets. Retain failed evidence, mark superseded guidance, and avoid duplicating canonical policy. No runtime/provider testing is warranted for map-only edits; verify paths, links and factual alignment with code.
 
-## Current consolidation and follow-up
+## Historical foundation and proactive checkpoint ledger
+
+The entries below preserve their dated implementation/experiment history. They do not select the next release phase or attest current flags, quotas or installed builds. Current work finishes Phase 1 account/data lifecycle before pricing, paywall, release preparation and pilot.
 
 The [simpler memory foundation](../simple-memory-foundation.md) completed its bounded learning/recall checkpoints and [internal rollout](../simple-memory-rollout.md). It reuses existing provenance/lifecycle tables; it is not a new notes-only store or removal of every legacy adapter. Dictation/personality and native UI internal rollout are recorded in [dictation and companion feel](../companion-feel-and-dictation.md) and [UI evidence](../native-experience-ui.md). Next proposed work is the [proactive product gap sequence](../product-vision-audit-2026-09-28.md#proposed-delivery-order). The [Jev gate experiment](../memory-gate-screen.md) is disabled by founder decision.
 
 
-Current next feature: [proactive contributions from past notes — MVP implementation plan](../proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. The [local native path](../proactive-native.md) and [seven-call model evidence](../proactive-model-screen.md) are verified within their bounded scope; production enablement and physical acceptance remain pending.
+Historical next-feature selection: [proactive contributions from past notes — MVP implementation plan](../proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. The [local native path](../proactive-native.md) and [seven-call model evidence](../proactive-model-screen.md) are verified within their bounded scope; production enablement and physical acceptance remain pending.
 
 Foundation checkpoint: [proactive foundation](../proactive-foundation.md) implements scheduling, local discovery and model contracts with free replay evidence. The subsequent native and model checkpoints below extend that historical boundary.
 
@@ -100,4 +102,4 @@ V4 wording is internally deployed at `839d2c9`; health and 28-database/134-table
 
 [Conversation-level model screen](../proactive-conversation-validation.md#approved-live-model-screen-result) completed: all five predeclared v4 decisions passed (two useful reminders, three silences), with 197/133-character contributions. All five real responses replay through exact-context service validation and persistence; 44 proactive tests pass. This uses predeclared synthetic prior messages, not a closed-loop physical conversation. No runtime/UI change or deployment needed; $0.10/five-call allowance exhausted.
 
-September 29 UI candidate: [shared prototype interface](maps/shared-room.md) uses one bundled presentation for browser preview and iPhone, retaining native capabilities. [Evidence and remaining acceptance](../shared-room-ui.md).
+Shared UI baseline (PR154–155 merged): [shared prototype interface](maps/shared-room.md) uses one bundled presentation for browser preview and iPhone, retaining native capabilities. [Evidence and remaining acceptance](../shared-room-ui.md).

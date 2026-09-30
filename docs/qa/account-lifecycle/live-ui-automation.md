@@ -155,3 +155,40 @@ and unchanged spending rows were verified. No provider call was made by setup.
 Two operator preflight failures (SQLite row comparison and identity constructor
 argument order) occurred before deletion began. The corrected setup passed on
 private copies before the local QA mutation; all failed artifacts were preserved.
+
+## Apple recovery completion — September 30
+
+The pending check above subsequently completed with real Apple proof and a
+successful revocation response. The founder reported the finish-deletion flow
+completed and then signed in again. Read-only server inspection verified the
+fresh-proof receipt, completed deletion, removed old identity, revoked old
+sessions and a distinct empty re-enrolled owner. Spending rows remained unchanged.
+The `signed-in-restart` step executed once, passed without skips and produced an
+inspected signed-in Home screenshot. See [receipt](apple-fresh-proof-recovery.json).
+The transient success screen was not captured; `apple-recovery-complete` was not
+executed and must not be reported as passing.
+
+The local QA server stopped during the credential handoff. `--resume` restores
+the same localhost endpoint using the original databases, certificate, encryption
+key and recorded provider counters. It must refuse missing or invalid retained
+state rather than initialize a replacement environment. Keep the process detached
+from short-lived tool sessions during manual handoffs, with a private log/PID file;
+verify the running command and a TLS challenge before asking for authentication.
+Resume does not itself retry provider operations. Counter persistence is based on
+the last saved status snapshot, not a crash-proof billing ledger.
+
+Independent review reproduced an empty-database acceptance bug in the first
+resume implementation. Read-only integrity/schema/version/foreign-key validation
+now runs before mutable initialization. Nine disposable regressions passed under
+both worker and primary execution, including byte-preserving refusal, lock
+contention and actual localhost TLS listener startup with retained state:
+
+```sh
+/tmp/ellis-auth-venv/bin/python -W error::ResourceWarning scripts/qa/test_real_account_server.py -v
+```
+
+Those tests substitute provider objects that fail if invoked. The live recovery
+above separately exercised the resumed original server, with before/after hashes
+confirming preservation of both databases, certificate, key, encryption key and
+endpoint before its first challenge. The final schema guard was verified on
+disposable state; the running authenticated QA server was not restarted again.
