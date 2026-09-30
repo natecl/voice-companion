@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-30",
+  "candidate_commit": "208ca34bbc5fa81278c5ea5720230d1f36caec4b",
+  "device": "iPhone 16 Pro",
+  "build": "Release, development signed",
+  "google_to_apple": {
+    "founder_completed_sign_out_and_real_apple_sign_in": true,
+    "founder_confirmed_google_notes_and_chat_not_visible": true,
+    "server_original_apple_owner_reused": true,
+    "apple_unrevoked_sessions": 1,
+    "google_unrevoked_sessions": 0,
+    "both_accounts_content_counts_unchanged": true,
+    "google_four_local_recordings_exact_bytes_preserved": true,
+    "note_cache_files": 0
+  },
+  "apple_relaunch": "launched; visual confirmation pending",
+  "return_to_google": "pending",
+  "limitations": "One founder using two separate provider identities, not two independent people. Cache directory inspected directly after copying an empty directory produced a local missing-directory error. No account content deleted or paid generation requested."
+}
