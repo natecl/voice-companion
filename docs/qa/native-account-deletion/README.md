@@ -26,7 +26,7 @@ TEST_RUNNER_VOICE_TEST_PYTHON=/tmp/ellis-auth-venv/bin/python xcodebuild -projec
 xcodebuild -project VoiceCompanion.xcodeproj -scheme Phone -destination 'platform=iOS Simulator,id=9F0F6623-E33A-4E84-A1EB-B9D7C1530AE7' -derivedDataPath /tmp/ellis-native-accounts-phone -only-testing:PhoneUITests/AccountDeletionUITests test
 ```
 
-The configured Python 2.15.1 PyJWT dependency environment passes all 65 access mechanical checks; [receipt](access-checks.json) correctly remains `needs_review`, `feature_verified=false`. Fifteen verification-tooling self-tests also passed. Final source differs from the recorded native/UI execution only in whitespace formatting; no behavior or assertions changed.
+The configured Python environment with PyJWT 2.15.1 passes all 65 access mechanical checks; [receipt](access-checks.json) correctly remains `needs_review`, `feature_verified=false`. Fifteen verification-tooling self-tests also passed. Final source differs from the recorded native/UI execution only in whitespace formatting; no behavior or assertions changed.
 
 ## Failures diagnosed
 
