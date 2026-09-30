@@ -20,7 +20,7 @@ private actor DeletionServiceFixture: AccountDeleting {
 @MainActor
 final class AccountDeletionTests: XCTestCase {
     private func account(owner: String = UUID().uuidString) -> StoredAccount {
-        StoredAccount(endpoint: URL(string: "wss://example.com/account")!, provider: .google,
+        StoredAccount(endpoint: URL(string: "wss://example.com/account")!, provider: .apple,
                       session: AccountSession(token: String(repeating: "a", count: 43), refreshToken: String(repeating: "r", count: 64),
                           owner: owner, expires: Date.now.timeIntervalSince1970 + 3600, refreshExpires: Date.now.timeIntervalSince1970 + 86400))
     }
@@ -120,6 +120,60 @@ final class AccountDeletionTests: XCTestCase {
         XCTAssertEqual(try reopened.read(.init(owner: other, sessionID: sessions[1].id.uuidString, revision: 1))?.notes?.title, "Fictional note")
         try reopened.clearAll()
         XCTAssertThrowsError(try reopened.store(note, for: deletedKey))
+    }
+
+    func testMissingGoogleGrantRequiresProofBeforeServerDeletion() async throws {
+        var value = account()
+        value = StoredAccount(endpoint: value.endpoint, provider: .google, session: value.session)
+        let pending = PendingAccountDeletion(account: value)
+        let controller = AccountDeletionController(load: { pending }, save: { _ in XCTFail() },
+            complete: { _ in XCTFail() }, erase: { _ in XCTFail() },
+            revokeGoogle: { _ in XCTFail() }, transport: { _ in XCTFail(); return DeletionServiceFixture() })
+        do { try await controller.finish(pending); XCTFail("Deleted without bound grant") }
+        catch AccountFailure.signInRequired {} catch { XCTFail("Unexpected error") }
+    }
+
+    func testGoogleRevocationFailureRetainsExactGrantAndRetriesWithoutServer() async throws {
+        let value = account()
+        let original = PendingAccountDeletion(account: StoredAccount(endpoint: value.endpoint, provider: .google,
+            session: value.session, googleGrant: GoogleAccountGrant(subject: "fictional-subject", token: "fictional-original-grant")))
+        var saved: PendingAccountDeletion? = original
+        let service = DeletionServiceFixture()
+        let failure = AccountDeletionController(load: { saved }, save: { saved = $0 }, complete: { _ in XCTFail() },
+            erase: { _ in }, revokeGoogle: { token in
+                XCTAssertEqual(token, "fictional-original-grant")
+                throw AccountFailure.unavailable
+            }, transport: { _ in service })
+        do { try await failure.finish(original); XCTFail() } catch {}
+        XCTAssertEqual(saved?.serverDeleted, true)
+        XCTAssertEqual(saved?.googleGrant?.token, "fictional-original-grant")
+        // A later SDK-selected identity is deliberately not an input to cleanup.
+        let retry = AccountDeletionController(load: { saved }, save: { saved = $0 }, complete: { _ in
+            XCTAssertNil(saved?.googleGrant)
+            XCTAssertEqual(saved?.googleRevoked, true)
+            saved = nil
+        }, erase: { _ in }, revokeGoogle: { token in XCTAssertEqual(token, "fictional-original-grant") }, transport: { _ in service })
+        try await retry.finish(original)
+        XCTAssertNil(saved)
+        let calls = await service.calls
+        XCTAssertEqual(calls, 1)
+    }
+
+    func testConfirmedGoogleRevocationSurvivesFinalKeychainFailure() async throws {
+        let value = account()
+        let original = PendingAccountDeletion(account: StoredAccount(endpoint: value.endpoint, provider: .google,
+            session: value.session, googleGrant: GoogleAccountGrant(subject: "fictional-subject", token: "fictional-grant")))
+        var saved: PendingAccountDeletion? = original
+        let service = DeletionServiceFixture()
+        let first = AccountDeletionController(load: { saved }, save: { saved = $0 }, complete: { _ in throw AccountFailure.unavailable },
+            erase: { _ in }, revokeGoogle: { _ in }, transport: { _ in service })
+        do { try await first.finish(original); XCTFail() } catch {}
+        XCTAssertEqual(saved?.googleRevoked, true)
+        XCTAssertNil(saved?.googleGrant)
+        let reopened = AccountDeletionController(load: { saved }, save: { saved = $0 }, complete: { _ in saved = nil },
+            erase: { _ in }, revokeGoogle: { _ in XCTFail("Repeated successful revocation") }, transport: { _ in service })
+        try await reopened.finish(original)
+        XCTAssertNil(saved)
     }
 
     func testInvalidOwnerAndOwnerSymlinkCannotDeleteOtherFiles() throws {

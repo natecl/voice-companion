@@ -34,7 +34,9 @@
 		1B87433F944E38148F470A3E /* TransportFailureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1722767CA347C5B2A2A522 /* TransportFailureTests.swift */; };
 		1D6EF96453393998382EFCD5 /* LiveAskUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0D140F53F36D3A6C7A9F8C /* LiveAskUITests.swift */; };
 		1E3FE5CB0B5F336CF66ECDB8 /* SharedRoomCacheUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ECB5C148BF51E4A066E065 /* SharedRoomCacheUITests.swift */; };
+		1E9AA98EA3A6D944B4FB6922 /* GoogleGrantRevoker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05FF2599758D69B4F2A9BC1 /* GoogleGrantRevoker.swift */; };
 		1F63FFF12419AEE5E75751F7 /* ComposerDictation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A61595A22B8D8873EEEA9 /* ComposerDictation.swift */; };
+		27A7D3D95880CDDA39D4941E /* AccountDeletionKeychainFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEF2A9848F83EF8AA0A4F9B /* AccountDeletionKeychainFixture.swift */; };
 		2868919084B83CBB122C6893 /* ExperienceStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108FDE335235A814407D563A /* ExperienceStyle.swift */; };
 		2A78082185EA9D9B00BD1443 /* FoundationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */; };
 		2BDAB947A00EFDBEE4E0A486 /* MicrophoneAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1EED3788D18E4EE3FBB3EC /* MicrophoneAccess.swift */; };
@@ -84,6 +86,7 @@
 		7483BDE49DAD86B4E2B0F346 /* RecordingNotesPhoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179D3083C0FA6C3B0BE5F141 /* RecordingNotesPhoneUITests.swift */; };
 		757F1CD0B9B287BEBF3D60D2 /* CompanionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B5A0FD68A271624EC0C138 /* CompanionController.swift */; };
 		75AFD1B17ECF048228F5645E /* RecordingNotesCacheUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E6507698138456D1A2FB25 /* RecordingNotesCacheUITests.swift */; };
+		762FF8BACC1736E713F6A40B /* GoogleGrantRevoker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05FF2599758D69B4F2A9BC1 /* GoogleGrantRevoker.swift */; };
 		777B22E0271AEF80B05980A4 /* transcript-events.json in Resources */ = {isa = PBXBuildFile; fileRef = F68208B8B28B93C1AEA78F78 /* transcript-events.json */; };
 		7881AFA69F55C6016F54849C /* CompanionMessageText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979EE57CF1979CC0F0EEF8A0 /* CompanionMessageText.swift */; };
 		7911F5804A05B3A6601398CB /* VoiceCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */; };
@@ -135,6 +138,7 @@
 		AE8C87511FE33DCD27B8E90E /* LocalAccountErasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17E4D87884D43F0A7DFDC8D /* LocalAccountErasure.swift */; };
 		B1D6281691172A15C874DC38 /* MemorySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C97C3F135EEAFF5858CD5D /* MemorySync.swift */; };
 		B29B1046EFE1E4F9AD77F80A /* RoomWebModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0A1FA8D2ADE9B06BEEB6B0 /* RoomWebModel.swift */; };
+		B3194C21D9500157B1F3C202 /* GoogleGrantRevokerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF51AFF42C1D1FF9A4F0702 /* GoogleGrantRevokerTests.swift */; };
 		B54FED4EC807E73BC6E8B91B /* SessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07AC85400C84CD8C0027 /* SessionController.swift */; };
 		B66FE09C8BB89570FBBAC0AA /* LiveAskUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0D140F53F36D3A6C7A9F8C /* LiveAskUITests.swift */; };
 		B71FDCA1219DB9F19E1B9CBD /* RecordingNotesCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5CE42FD7EABBBFFD1CEE1 /* RecordingNotesCache.swift */; };
@@ -171,6 +175,7 @@
 		E25E7EBB0E5004E2DE273540 /* AccountConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407B5075A1CF5552D40949C /* AccountConfiguration.swift */; };
 		E319A481A74CCCE3F274C3E0 /* ConversationAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D8082C6B31F2C2E959995 /* ConversationAnswer.swift */; };
 		E64A2E54175D0F2712013043 /* LiveTranscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B8059B564CBD204AA70BA6 /* LiveTranscriber.swift */; };
+		E6D685B38B863712BDC3F24F /* GoogleGrantRevoker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05FF2599758D69B4F2A9BC1 /* GoogleGrantRevoker.swift */; };
 		E96F9023082A9BA296AE20CD /* AccountTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC2DF1C5B4E402B8AE04DE3 /* AccountTransport.swift */; };
 		ECC6B084E812475E28D85CB7 /* VoiceCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */; };
 		ECDFC4E9338320EA178ED9FF /* ConversationAskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BF1AC516A3299E1DFBF855 /* ConversationAskView.swift */; };
@@ -178,6 +183,7 @@
 		EDF341C8C485377AC886C9BE /* MemoryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A7E394791C84DF944DF808 /* MemoryUITests.swift */; };
 		F32B0F3154E602EE085159A7 /* MicrophoneAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1EED3788D18E4EE3FBB3EC /* MicrophoneAccess.swift */; };
 		F4DDD59F3F6BD74BA6EA92D3 /* CompanionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958D6A5180E458B927E39E26 /* CompanionUITests.swift */; };
+		F544A6FC4DE6030F89966DA9 /* AccountDeletionKeychainFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEF2A9848F83EF8AA0A4F9B /* AccountDeletionKeychainFixture.swift */; };
 		F5CA30DA92BCB130D6EE51BC /* ExperienceAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF68AD805B6E63CBC2628D1C /* ExperienceAccountView.swift */; };
 		F673436CDE23257AD9A06DF8 /* RecordingLifecycleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9EC7C7D2F4D7A26C239554 /* RecordingLifecycleTests.swift */; };
 		F6AF624940EE5A378DD8AC7B /* ConversationAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D8082C6B31F2C2E959995 /* ConversationAnswer.swift */; };
@@ -235,6 +241,7 @@
 		43ECB5C148BF51E4A066E065 /* SharedRoomCacheUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedRoomCacheUITests.swift; sourceTree = "<group>"; };
 		46DC5370B42C28B61BE40D0D /* MacUITests.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacUITests.entitlements; sourceTree = "<group>"; };
 		4AAB7B641BD6C1CA47F4F9B4 /* ProactiveCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProactiveCoordinatorTests.swift; sourceTree = "<group>"; };
+		4AF51AFF42C1D1FF9A4F0702 /* GoogleGrantRevokerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleGrantRevokerTests.swift; sourceTree = "<group>"; };
 		4FD7403E3075E4BCA4218CD3 /* RoomUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RoomUI; path = App/RoomUI; sourceTree = SOURCE_ROOT; };
 		518A61595A22B8D8873EEEA9 /* ComposerDictation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerDictation.swift; sourceTree = "<group>"; };
 		52E6507698138456D1A2FB25 /* RecordingNotesCacheUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingNotesCacheUITests.swift; sourceTree = "<group>"; };
@@ -242,6 +249,7 @@
 		57FC749D5FA026FF28B68480 /* AccountSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSessionManager.swift; sourceTree = "<group>"; };
 		58FC567691D4C18C5E45FD1B /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 		5BB02BC305BA1F675947256B /* AudioCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCapture.swift; sourceTree = "<group>"; };
+		5CEF2A9848F83EF8AA0A4F9B /* AccountDeletionKeychainFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionKeychainFixture.swift; sourceTree = "<group>"; };
 		66C627D1B94769284B53CA87 /* RelayConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelayConfiguration.swift; sourceTree = "<group>"; };
 		6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationUITests.swift; sourceTree = "<group>"; };
 		7CC2DF1C5B4E402B8AE04DE3 /* AccountTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTransport.swift; sourceTree = "<group>"; };
@@ -274,6 +282,7 @@
 		BB34ECF3785B087D83C279F1 /* CompanionControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionControllerTests.swift; sourceTree = "<group>"; };
 		BC7CF481EFCB5F5BE1D00D2D /* Mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mac.entitlements; sourceTree = "<group>"; };
 		BDE5D916C772B85F0A028924 /* CompanionMessageTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionMessageTextTests.swift; sourceTree = "<group>"; };
+		C05FF2599758D69B4F2A9BC1 /* GoogleGrantRevoker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleGrantRevoker.swift; sourceTree = "<group>"; };
 		C425260D9BD59D9B7A18C540 /* MicrophoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneUITests.swift; sourceTree = "<group>"; };
 		C9307CD521755B46FDFE30B4 /* AccountDeletion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletion.swift; sourceTree = "<group>"; };
 		CA00A14DB084536CC1A18BB6 /* AppleAccountProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAccountProvider.swift; sourceTree = "<group>"; };
@@ -434,6 +443,7 @@
 				C9307CD521755B46FDFE30B4 /* AccountDeletion.swift */,
 				57FC749D5FA026FF28B68480 /* AccountSessionManager.swift */,
 				7CC2DF1C5B4E402B8AE04DE3 /* AccountTransport.swift */,
+				C05FF2599758D69B4F2A9BC1 /* GoogleGrantRevoker.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -442,6 +452,7 @@
 			isa = PBXGroup;
 			children = (
 				F407B5075A1CF5552D40949C /* AccountConfiguration.swift */,
+				5CEF2A9848F83EF8AA0A4F9B /* AccountDeletionKeychainFixture.swift */,
 				9AF99E9A8800AFB62665823C /* AccountDeletionUIFixture.swift */,
 				B43B929AF9B9795972DD99F9 /* AccountRootView.swift */,
 				CA00A14DB084536CC1A18BB6 /* AppleAccountProvider.swift */,
@@ -489,6 +500,7 @@
 				FB896610CA7C35AA4B7618D7 /* ComposerDictationTests.swift */,
 				B2CDFE903F387C5D9A9995AB /* ConversationAnswerTests.swift */,
 				A27B0813F66346BF740B28AE /* DictationCallbackTests.swift */,
+				4AF51AFF42C1D1FF9A4F0702 /* GoogleGrantRevokerTests.swift */,
 				91AC2A636ABED7261B92DF00 /* LiveAskTests.swift */,
 				A918307E479F9BA8A830B982 /* MemoryTests.swift */,
 				4AAB7B641BD6C1CA47F4F9B4 /* ProactiveCoordinatorTests.swift */,
@@ -730,6 +742,7 @@
 				E25E7EBB0E5004E2DE273540 /* AccountConfiguration.swift in Sources */,
 				9C75A865268DB1C2C490CACD /* AccountCredentialStore.swift in Sources */,
 				73CEE28803F090707CAD7F17 /* AccountDeletion.swift in Sources */,
+				F544A6FC4DE6030F89966DA9 /* AccountDeletionKeychainFixture.swift in Sources */,
 				2DBA64C7678AC1F76ECD27D0 /* AccountDeletionUIFixture.swift in Sources */,
 				035388769212A5B58A9BA106 /* AccountRootView.swift in Sources */,
 				72612960E66A69C19A58520C /* AccountSessionManager.swift in Sources */,
@@ -748,6 +761,7 @@
 				2868919084B83CBB122C6893 /* ExperienceStyle.swift in Sources */,
 				DDD5F98F2DCA4D054E5EA2C5 /* ExperienceSymbol.swift in Sources */,
 				5C621C4D956EDB529BA68431 /* GoogleAccountProvider.swift in Sources */,
+				E6D685B38B863712BDC3F24F /* GoogleGrantRevoker.swift in Sources */,
 				E64A2E54175D0F2712013043 /* LiveTranscriber.swift in Sources */,
 				9D215789DF7BFAA244BA5FCF /* LocalAccountErasure.swift in Sources */,
 				8FE500964FBFECD7EEA61DB6 /* MemorySync.swift in Sources */,
@@ -798,6 +812,8 @@
 				F9B6B6930B11FA2766490C9D /* ConversationAnswerTests.swift in Sources */,
 				C708ABB34A1C309F2EF1D040 /* DictationCallbackTests.swift in Sources */,
 				5156B4BA3496FC0F5762C29E /* DictationRecognizer.swift in Sources */,
+				762FF8BACC1736E713F6A40B /* GoogleGrantRevoker.swift in Sources */,
+				B3194C21D9500157B1F3C202 /* GoogleGrantRevokerTests.swift in Sources */,
 				03FBD8055C7542F1C44E9E3E /* LiveAskTests.swift in Sources */,
 				014DA8AD8ABFB0A3B026AFAC /* LiveTranscriber.swift in Sources */,
 				AE8C87511FE33DCD27B8E90E /* LocalAccountErasure.swift in Sources */,
@@ -834,6 +850,7 @@
 				C8AEE72DBFA02DE7419A954E /* AccountConfiguration.swift in Sources */,
 				88017917CA8A32CF752B8142 /* AccountCredentialStore.swift in Sources */,
 				7E3254F320E9697DFC6956B6 /* AccountDeletion.swift in Sources */,
+				27A7D3D95880CDDA39D4941E /* AccountDeletionKeychainFixture.swift in Sources */,
 				B9D8A3CEC1D799EA234906A9 /* AccountDeletionUIFixture.swift in Sources */,
 				8BBEAD97D59A7F72976A0C43 /* AccountRootView.swift in Sources */,
 				87DE99911791527E482049DE /* AccountSessionManager.swift in Sources */,
@@ -852,6 +869,7 @@
 				46B4EFC25395B55EEE20F581 /* ExperienceStyle.swift in Sources */,
 				7D960CB1DA7FECD6B87040D7 /* ExperienceSymbol.swift in Sources */,
 				F82DFBA92B5AC14CEF464DB5 /* GoogleAccountProvider.swift in Sources */,
+				1E9AA98EA3A6D944B4FB6922 /* GoogleGrantRevoker.swift in Sources */,
 				AA863954E4E818D4E149270B /* LiveTranscriber.swift in Sources */,
 				646CB0F0A6DA0A2928C6D2CE /* LocalAccountErasure.swift in Sources */,
 				B1D6281691172A15C874DC38 /* MemorySync.swift in Sources */,

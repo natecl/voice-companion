@@ -7,6 +7,7 @@ struct StoredAccount: Codable, Sendable {
     let endpoint: URL
     let provider: AccountProvider
     let session: AccountSession
+    var googleGrant: GoogleAccountGrant? = nil
 }
 
 private struct AccountKeychainState: Codable {
@@ -16,8 +17,17 @@ private struct AccountKeychainState: Codable {
 
 enum AccountCredentialStore {
     private static var query: [String: Any] {
-        [kSecClass as String: kSecClassGenericPassword,
-         kSecAttrService as String: (Bundle.main.bundleIdentifier ?? "ai.voicecompanion") + ".accounts",
+        var service = (Bundle.main.bundleIdentifier ?? "ai.voicecompanion") + ".accounts"
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--account-keychain-fixture") {
+            // Every fixture has a separate Keychain service, even for malformed
+            // launch input. It can never read or replace real enrollment state.
+            let raw = ProcessInfo.processInfo.environment["ELLIS_ACCOUNT_QA_ID"] ?? "invalid"
+            service += ".qa." + (UUID(uuidString: raw)?.uuidString ?? "invalid")
+        }
+        #endif
+        return [kSecClass as String: kSecClassGenericPassword,
+         kSecAttrService as String: service,
          kSecAttrAccount as String: "session-v1",
          kSecAttrSynchronizable as String: false]
     }
@@ -25,6 +35,7 @@ enum AccountCredentialStore {
     static func save(_ account: StoredAccount) throws {
         _ = try AccountTransport(endpoint: account.endpoint)
         try account.session.validate()
+        try account.googleGrant?.validate()
         guard try read()?.deletion == nil else { throw AccountFailure.deletionPending }
         try write(AccountKeychainState(account: account))
     }

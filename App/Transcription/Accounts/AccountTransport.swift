@@ -3,7 +3,7 @@ import Foundation
 enum AccountProvider: String, Codable, Sendable { case google, apple }
 
 enum AccountFailure: Error, LocalizedError, Sendable {
-    case unavailable, invalidResponse, signInRequired, cancelled, deletionPending, noDeletionPending
+    case unavailable, invalidResponse, signInRequired, cancelled, deletionPending, noDeletionPending, providerGrantExpired
     var errorDescription: String? {
         switch self {
         case .unavailable: "Sign-in is unavailable right now. Please try again."
@@ -11,6 +11,7 @@ enum AccountFailure: Error, LocalizedError, Sendable {
         case .signInRequired: "Please sign in again to continue."
         case .cancelled: "Sign-in was cancelled."
         case .deletionPending: "Account deletion is pending. Sign in again to finish deleting it."
+        case .providerGrantExpired: "Sign in with the same Google account to finish removing its authorization."
         case .noDeletionPending: "There is no pending deletion for this sign-in."
         }
     }

@@ -24,9 +24,9 @@ final class GoogleAccountProvider {
             let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: presenting, hint: nil,
                                                                   additionalScopes: [], nonce: nonce)
             try Task.checkCancellation()
-            guard let token = result.user.idToken?.tokenString else { throw AccountFailure.invalidResponse }
+            guard let token = result.user.idToken?.tokenString, let subject = result.user.userID, !subject.isEmpty else { throw AccountFailure.invalidResponse }
             return ProviderAuthorization(identityToken: token, authorizationCode: result.serverAuthCode,
-                                         providerUserID: result.user.userID)
+                                         providerUserID: result.user.userID, googleGrant: GoogleAccountGrant(subject: subject, token: result.user.refreshToken.tokenString))
         } catch {
             if Task.isCancelled || (error as? GIDSignInError)?.code == .canceled {
                 throw AccountFailure.cancelled
