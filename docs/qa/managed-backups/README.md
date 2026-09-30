@@ -1,7 +1,7 @@
 # Managed SQLite snapshot retention — local candidate
 
 September 30, 2026. Verified on disposable fictional databases only. This is an
-operator module with no runtime scheduler or production configuration. No actual
+operator module plus a disabled-by-default [automatic expiry worker](automatic-expiry.md). No production configuration has been enabled. No actual
 retention policy is selected by this checkpoint. The ten-second duration below
 is an injected-clock fixture, not a proposed production retention duration.
 
@@ -19,14 +19,14 @@ not a retention policy.
 Plan creation validates every registered manifest and database, including
 permissions, links and exact directory contents, then writes the expired IDs and
 registry hash to a private plan. Apply requires its separately supplied SHA-256,
-reacquires the lease and validates the whole set before deleting any file. It
+acquires the separate managed-registry lease and validates the whole set before deleting any file. The runtime database lease remains required for snapshot creation, not file-only pruning. It
 unlinks only enumerated files and removes the now-empty registered directory;
 it never recursively deletes, adopts historical directories, or selects files
 by names or mtimes. Completed expiry outcomes remain in the registry. New sets
 or changed content invalidate an old plan. Unknown files/directories outside a
 registered set are preserved; unexpected contents inside a registered set block
 pruning. Missing manifests, symlinks (including ancestor components), hardlinks,
-nonprivate artifacts, clock rollback and unavailable leases block the operation.
+nonprivate artifacts, clock rollback and unavailable relevant leases block the operation.
 Supply canonical absolute paths; symlink aliases such as macOS `/tmp` are rejected.
 
 Reproduce from repository root:
@@ -68,7 +68,7 @@ unblock it. This is fail-closed partial-failure handling, not transactional
 multi-file deletion. A snapshot failure before registration similarly leaves an
 unregistered orphan for explicit inspection; pruning will never adopt it.
 
-The runtime lease only excludes participating runtime versions. Production use
+The runtime lease only excludes participating runtime versions. Managed snapshot creation and restore reads also coordinate with file pruning through the registry lease. Production use
 still requires verifying the deployed version and maintenance state. Private
 permissions and hashes protect against accidental modification; this is not a
 security boundary against a privileged operator able to rewrite the registry,

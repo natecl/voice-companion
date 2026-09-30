@@ -126,6 +126,46 @@ def extend_two_topic_resume_policy(db):
         db.execute('UPDATE policy SET cap=? WHERE category=?',(limit,category))
 
 
+
+TESTFLIGHT_SIGNOUT_APPROVAL = 'testflight-account-signout-20260930-020'
+TESTFLIGHT_SIGNOUT_AMOUNT = 20_000
+TESTFLIGHT_SIGNOUT_POLICIES = dict(TWO_TOPIC_RESUME_POLICIES, stt=(1_360_000, 20_000, 6))
+
+
+def testflight_signout_funded(db, cap, policies):
+    if cap != (5_295_000,) or policies != TESTFLIGHT_SIGNOUT_POLICIES:
+        return False
+    if not db.execute("SELECT 1 FROM sqlite_master WHERE name='qa_budget_extension'").fetchone():
+        return False
+    return (db.execute('SELECT amount FROM qa_budget_extension WHERE id=?',
+                       (TWO_TOPIC_RESUME_APPROVAL,)).fetchone() == (45_000,)
+            and db.execute('SELECT amount FROM qa_budget_extension WHERE id=?',
+                           (TESTFLIGHT_SIGNOUT_APPROVAL,)).fetchone() == (TESTFLIGHT_SIGNOUT_AMOUNT,))
+
+
+def extend_testflight_signout_policy(db):
+    """Explicit one-attempt $0.02 STT allocation; caller owns an IMMEDIATE transaction.
+
+    Never called by startup. No new daily attempt, refund or other category cap.
+    """
+    if not db.in_transaction:
+        raise ValueError('Explicit operator transaction required')
+    cap = db.execute('SELECT cap FROM budget WHERE id=1').fetchone()
+    policies = {row[0]: tuple(row[1:]) for row in db.execute('SELECT category,cap,reservation,daily FROM policy')}
+    if testflight_signout_funded(db, cap, policies):
+        return
+    if not two_topic_resume_funded(db, cap, policies):
+        raise ValueError('Unexpected QA baseline')
+    if db.execute('SELECT 1 FROM qa_budget_extension WHERE id=?', (TESTFLIGHT_SIGNOUT_APPROVAL,)).fetchone():
+        raise ValueError('Existing approval does not match funded policy')
+    if db.execute("SELECT 1 FROM request WHERE state='active'").fetchone():
+        raise ValueError('Active request')
+    db.execute('INSERT INTO qa_budget_extension VALUES(?,?)',
+               (TESTFLIGHT_SIGNOUT_APPROVAL, TESTFLIGHT_SIGNOUT_AMOUNT))
+    db.execute('UPDATE budget SET cap=5295000 WHERE id=1')
+    db.execute("UPDATE policy SET cap=1360000 WHERE category='stt'")
+
+
 def redistribute_dictation_policy(db):
     """Caller owns a transaction. Explicit operator action, never startup funding."""
     policies=dict((r[0],tuple(r[1:])) for r in db.execute('SELECT category,cap,reservation,daily FROM policy'))
@@ -179,7 +219,7 @@ def add_ask_policy(path):
         db.execute('BEGIN IMMEDIATE')
         cap = db.execute('SELECT cap FROM budget WHERE id=1').fetchone()
         policies = dict((row[0], tuple(row[1:])) for row in db.execute('SELECT category,cap,reservation,daily FROM policy'))
-        if not two_topic_resume_funded(db,cap,policies) and not two_topic_phone_funded(db,cap,policies) and not cedar_phone_funded(db,cap,policies) and not proactive_phone_funded(db,cap,policies) and not private_dictation_funded(db,cap,policies) and (cap != (5_000_000,) or policies not in ({'stt': STT}, {'stt': STT, 'ask': ASK}, {'stt': STT, 'ask': ASK, 'jev': RETIRED_JEV}, ROLLOUT_POLICIES, PREFERENCE_POLICIES, DICTATION_POLICIES)):
+        if not testflight_signout_funded(db,cap,policies) and not two_topic_resume_funded(db,cap,policies) and not two_topic_phone_funded(db,cap,policies) and not cedar_phone_funded(db,cap,policies) and not proactive_phone_funded(db,cap,policies) and not private_dictation_funded(db,cap,policies) and (cap != (5_000_000,) or policies not in ({'stt': STT}, {'stt': STT, 'ask': ASK}, {'stt': STT, 'ask': ASK, 'jev': RETIRED_JEV}, ROLLOUT_POLICIES, PREFERENCE_POLICIES, DICTATION_POLICIES)):
             raise ValueError('Unexpected ledger policy; migration refused')
         if 'ask' not in policies:
             db.execute('INSERT INTO policy VALUES(?,?,?,?)', ('ask', *ASK))
@@ -217,4 +257,6 @@ def open_ledger(*, migrate=False):
                 limits=dict(policies);total=5_230_000
             if enabled and two_topic_resume_funded(db,db.execute('SELECT cap FROM budget WHERE id=1').fetchone(),policies):
                 limits=dict(policies);total=5_275_000
+            if enabled and testflight_signout_funded(db,db.execute('SELECT cap FROM budget WHERE id=1').fetchone(),policies):
+                limits=dict(policies);total=5_295_000
     return Admission(path, total_microusd=total, limits=limits)

@@ -29,9 +29,42 @@ import XCTest
         capture(app, name: "Google authorization entry")
     }
 
+    func testSignOutToProviderScreen() throws {
+        let app = try application()
+        app.activate()
+        let profile = app.webViews.buttons["Your profile"]
+        XCTAssertTrue(profile.waitForExistence(timeout: 15))
+        profile.tap()
+        let signOut = app.webViews.buttons["Sign out"]
+        XCTAssertTrue(signOut.waitForExistence(timeout: 5))
+        signOut.tap()
+        XCTAssertTrue(app.buttons["Continue with Google"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.buttons["Continue with Apple"].exists)
+        XCTAssertFalse(app.webViews.buttons["Your profile"].exists)
+        capture(app, name: "Signed out before provider recovery")
+    }
+
     func testInspectCurrentScreen() throws {
         let app = try application()
         capture(app, name: "Current account screen")
+    }
+
+    func testPreservedNetworkRecoveryTranscript() throws {
+        let app = try application()
+        app.terminate()
+        app.launch()
+        let notes = app.webViews.buttons["Open notes"]
+        XCTAssertTrue(notes.waitForExistence(timeout: 15))
+        notes.tap()
+        let marker = "Fictional network recovery marker: violet lighthouse."
+        let recording = app.webViews.buttons.matching(NSPredicate(format: "label CONTAINS %@", marker)).firstMatch
+        XCTAssertTrue(recording.waitForExistence(timeout: 10))
+        recording.tap()
+        let transcript = app.webViews.switches["Transcript"]
+        XCTAssertTrue(transcript.waitForExistence(timeout: 10))
+        transcript.tap()
+        XCTAssertTrue(app.webViews.staticTexts[marker].waitForExistence(timeout: 10))
+        capture(app, name: "Preserved fictional transcript after network recovery")
     }
 
     func testRequestAppleFromSignedOutScreen() throws {
@@ -41,6 +74,57 @@ import XCTest
         XCTAssertTrue(apple.waitForExistence(timeout: 10))
         apple.tap()
         capture(app, name: "Apple authorization entry")
+    }
+
+    func testInspectPendingAppleDeletion() throws {
+        let app = try application()
+        app.activate()
+        assertPendingAppleDeletion(app)
+        capture(app, name: "Apple enrollment refused for pending deletion")
+    }
+
+    func testRequestFreshAppleDeletionProof() throws {
+        let app = try application()
+        app.activate()
+        // Verify the refusal and request recovery in one invocation: the
+        // recoveringDeletion flag belongs to the current application runtime.
+        assertPendingAppleDeletion(app)
+        capture(app, name: "Apple pending deletion before fresh proof")
+        app.buttons["Continue with Apple"].tap()
+        // Do not choose an Apple account or operate password/security prompts.
+        // The operator inspects this attachment before the founder handoff.
+        capture(app, name: "Apple fresh-proof authorization entry")
+    }
+
+    private func assertPendingAppleDeletion(_ app: XCUIApplication) {
+        XCTAssertTrue(app.staticTexts[
+            "Sign in with the same provider to finish the account deletion you requested."
+        ].waitForExistence(timeout: 20))
+        XCTAssertTrue(app.buttons["Continue with Apple"].exists)
+        XCTAssertFalse(app.webViews.buttons["Your profile"].exists)
+        XCTAssertFalse(app.buttons["Retry deletion"].exists)
+    }
+
+    func testCompletedAppleDeletionRecoveryAndRestart() throws {
+        let app = try application()
+        app.activate()
+        // Run only after the real Apple authorization handoff completes. A
+        // signed-out screen alone does not establish successful deletion.
+        XCTAssertTrue(app.staticTexts["Your account was deleted."].waitForExistence(timeout: 20))
+        XCTAssertTrue(app.buttons["Continue with Apple"].exists)
+        XCTAssertFalse(app.webViews.buttons["Your profile"].exists)
+        XCTAssertFalse(app.buttons["Retry deletion"].exists)
+        capture(app, name: "Apple fresh-proof deletion completed")
+        app.terminate()
+        app.launch()
+        XCTAssertTrue(app.buttons["Continue with Apple"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.buttons["Continue with Google"].exists)
+        XCTAssertFalse(app.webViews.buttons["Your profile"].exists)
+        XCTAssertFalse(app.buttons["Retry deletion"].exists)
+        XCTAssertFalse(app.staticTexts[
+            "Sign in with the same provider to finish the account deletion you requested."
+        ].exists)
+        capture(app, name: "Signed out after Apple recovery and restart")
     }
 
     func testSignedInRestart() throws {

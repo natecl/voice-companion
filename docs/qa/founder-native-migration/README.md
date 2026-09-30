@@ -1,5 +1,7 @@
 # Explicit founder phone migration candidate
 
+> This document records the earlier local preparation checkpoint. The subsequent [live cutover](../founder-migration/live-cutover.json) and [physical provider switching](../founder-migration/physical-account-switch.json) supersede its pending-migration status. Do not replay the migration. See the [current handoff](../../execution/testflight-release-handoff.md) for remaining acceptance.
+
 September 30, 2026. Candidate implementation; no physical phone changes, hosted
 migration, or ordinary sign-in imports. Builds on PR166's server-copy rehearsal.
 

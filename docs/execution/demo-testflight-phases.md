@@ -1,5 +1,11 @@
 # Orchestrated social-presence demo → TestFlight
 
+## Plan history and current phase boundary
+
+The prototype/background waves below are the September 29 execution history, not the current numbered release sequence. The [release handoff](testflight-release-handoff.md#phases-packets-and-gates) now governs sequential Phase 1 accounts/data lifecycle → Phase 2 plans/limits → Phase 3 subscriptions/paywall → Phase 4 release → Phase 5 pilot. Phase 1 remains incomplete; later phases have not started. PR154–155 established the merged shared-interface baseline; preserve that design rather than restarting UI-1. PR159–177 are the unmerged account/lifecycle candidate stack. Recorded hosted schema 21 / `208ca34b` and physical Google migration evidence do not establish release acceptance.
+
+Historical zero/exhausted allowances below apply to those waves. The subsequent founder-authorized $5 total provider/API testing allowance is tracked separately in the [TestFlight ledger](testflight-provider-budget.md); never infer available balance from this historical plan or automatically retry paid calls. This reconciliation performs no runtime/provider check.
+
 Revised September 29, 2026. Founder direction: an invited third intelligent participant with personal continuity and judgment; a non-traditional, personable interface supports that presence. Notes and capture remain foundations. Read the [canonical revision](../product-source-of-truth.md#invited-social-presence--september-29-2026) and [experience/UI brief](../social-presence-experience.md). The existing one-liner is retained pending explicit replacement. This is an implementation plan, not a claim of finished behavior or authority to launch workers, spend, deploy or invite testers.
 
 ## Current continuation

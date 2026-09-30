@@ -1,6 +1,6 @@
 # Feature details
 
-> Current September 29 release status and remaining phases: [TestFlight handoff](../execution/testflight-release-handoff.md). UI/integration PR154–155 are merged and the internal phone build is installed; backend rollout, independent accounts and paid plans remain pending. Earlier dated evidence below is historical, not a fresh release attestation.
+> September 30 source/evidence audit at `7079427`: UI/integration PR154–155 are merged; account/lifecycle PR159–177 remain unmerged. Recorded hosted account/deletion deployment is `208ca34`, schema21, with a matching development-signed Release phone candidate and bounded physical checks. Later local fixes are not deployed or installed by this audit. Phase 1 remains incomplete; pricing and paywall phases have not started. See the [release handoff](../execution/testflight-release-handoff.md) for exact version and evidence boundaries.
 
 Start with the [dedicated context map for your feature](context-map.md): current behavior, gaps, dependencies, evidence and next bounded work.
 
@@ -110,6 +110,8 @@ Use the [index and authority rules](README.md) first. Paths below are repository
 
 ## Internal access, budgets and rollout
 
+Separate Google/Apple enrollment, persistent sessions, account deletion and founder Google migration now have bounded real-provider evidence. See [accounts](maps/access.md) for current source/hosted/phone boundaries, automatic rotation and recovery receipts, local isolation fixes and managed backup/restore limits. Internal admission controls are not selected commercial plans.
+
 **Code:** native `RelayConfiguration.swift` / `RelayCredentialStore.swift`; `Backend/{hosted,admission,admin,service_policy,memory_budget,profile_budget}.py`; `scripts/check.sh`; `project.yml`.
 
 **Boundaries:** credentials stay out of source and app binaries. Single-instance startup owns the service lock, migrations and interruption recovery. Backend composition/flags determine active paths; the existence of an adapter is not activation. Admission attempts, money reservations, suballocations and manual-QA readiness are separate gates. A provider failure does not refund a reservation. Subledger funding must not be counted twice or mistaken for microphone usage. Deployment approval does not grant more budget.
@@ -125,7 +127,7 @@ Use the [index and authority rules](README.md) first. Paths below are repository
 
 **Code:** `Backend/recording_notes.py` owns revision-bound storage; `MemoryStore.put_source(generate_notes=True)` atomically schedules new terminal recording sources. `notes_generation.py` owns the transcript-only Luna request and validation; `notes_service.py` owns authenticated reads/retries and the serial worker; `notes_budget.py` checks separately funded reservations. `App/Sessions/RecordingNotes.swift` owns bounded socket reads; `App/RecordingNotesView.swift` and `CompanionRootView.swift` present notes and navigate supporting passages.
 
-**Contracts:** unified recall now uses notes for discovery and hydrates original passages; generated notes are not independently verified memory claims. Reads never generate; unchanged uploads never backfill/retry; source changes invalidate; deletion removes notes regardless of learned-memory retention. Saved notes are server-side, so reopening needs connectivity. Existing capture outbox terminality is the scheduling boundary. Notes are not memory claims; the later unified foundation consolidates recall and learning while preserving provenance.
+**Contracts:** unified recall now uses notes for discovery and hydrates original passages; generated notes are not independently verified memory claims. Reads never generate; unchanged uploads never backfill/retry; source changes invalidate; deletion removes notes regardless of learned-memory retention. The backend remains canonical; valid owner/revision-scoped cached notes reopen offline through the implemented [note cache](maps/note-cache.md). Uncached notes and refresh still need connectivity. Existing capture outbox terminality is the scheduling boundary. Notes are not memory claims; the later unified foundation consolidates recall and learning while preserving provenance.
 
 **QA:** `test_recording_notes.py`, `test_notes_generation.py`, `test_notes_service.py`, `test_notes_budget.py`, and `RecordingNotes{,Phone}UITests.swift`. Reuse recorded model responses for quality replay and local synthetic socket fixtures for UI work; don't run paid transcription for a notes presentation bug. See [notes evidence and rollout gate](../recording-notes-plan.md).
 

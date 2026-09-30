@@ -12,8 +12,13 @@ ROOT = Path(__file__).resolve().parents[2]
 DEVICE = '2DABEECA-2BFE-4B62-8B92-DA8972B49D0D'
 STEPS = {
     'inspect': 'testInspectCurrentScreen',
+    'network-recovery-content': 'testPreservedNetworkRecoveryTranscript',
     'apple-request': 'testRequestAppleFromSignedOutScreen',
+    'apple-pending': 'testInspectPendingAppleDeletion',
+    'apple-recovery-request': 'testRequestFreshAppleDeletionProof',
+    'apple-recovery-complete': 'testCompletedAppleDeletionRecoveryAndRestart',
     'signed-in-restart': 'testSignedInRestart',
+    'sign-out': 'testSignOutToProviderScreen',
     'sign-out-google': 'testSignOutAndRequestGoogle',
     'google-permission': 'testContinueGooglePermission',
     'google-account': 'testChooseObservedGoogleAccount',
