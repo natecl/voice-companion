@@ -1,6 +1,6 @@
 # Server finalization of Google account deletion
 
-September 30, 2026. Dependent candidate based on PR163 `35e0bfd`. Not deployed; both deletion flags remain off. This replaces the prior native revocation phase. It preserves the saved owner-bound grant and the existing UI.
+September 30, 2026. Implementation checkpoint `2d21c76`; dependent candidate based on PR163 `35e0bfd`. Not deployed; both deletion flags remain off. This replaces the prior native revocation phase. It preserves the saved owner-bound grant and the existing UI.
 
 ## Closed interval
 
@@ -36,6 +36,8 @@ TEST_RUNNER_VOICE_TEST_PYTHON=/tmp/ellis-auth-venv/bin/python xcodebuild -projec
 ```
 
 Use a new output directory for each TLS run. Boot the dedicated simulator and add its generated `cert.pem` using `xcrun simctl keychain <simulator-id> add-root-cert <certificate>`. Read `account.json` into the test runner environment variable `TEST_RUNNER_ELLIS_ACCOUNT_QA_NETWORK` without logging it; run `PhoneUITests/AccountDeletionUITests/testNativeDeletionAgainstLocalTLSBackend` under the Phone scheme. After the test passes, send SIGINT to that exact fixture server process; it checks the database/operation counts and writes `result.json`. Do not point this fixture at production or an existing real account namespace.
+
+The [access checks-only receipt](access-checks.json) has no unresolved mechanical checks and deliberately remains `feature_verified=false`, `needs_review`.
 
 ## Remaining gates
 
