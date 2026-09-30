@@ -248,3 +248,19 @@ This closes the populated Google deletion/re-enrollment check in this local
 real-provider environment; it does not establish fresh-proof failure recovery or
 physical-device acceptance. Hosted founder data and the phone remain unchanged.
 No model/paid calls. The simulator is now signed into the new empty Google account.
+
+## Native automatic Google session rotation
+
+The unchanged signed Release simulator binary from source `7f71547` reached its
+normal ten-minute pre-expiry renewal threshold while signed into the current
+real Google QA identity. The existing isolated service remained live. No clocks,
+credential lifetimes, native Keychain values or service code were modified.
+Read-only before/after database inspection showed exactly one new session in the
+same family and owner, the old refresh consumed and the access expiry extended.
+After terminate/relaunch, the agent inspected signed-in Home in Device Hub;
+no additional rotation occurred. This exercises native timer → TLS endpoint →
+rotation → Keychain save → restored app behavior. Binary hash was rechecked.
+See `native-automatic-refresh.json`; private row snapshots stay outside Git.
+No generation or paid calls. Apple native automatic rotation and real fresh-proof
+recovery remain separate gaps; the earlier backend Apple refresh evidence is
+not relabeled as native automatic evidence.

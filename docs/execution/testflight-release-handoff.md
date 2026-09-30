@@ -112,5 +112,13 @@ four note and eight chat-turn rows. Controlled terminate/relaunch succeeded.
 The founder then confirmed all three explicit checks: signed-in relaunch without
 a prompt, existing notes/chat visible, and an existing note opens correctly.
 This closes founder migration acceptance; remaining access gates include native
-automatic refresh, real fresh-proof recovery, physical Apple switching, independent
+automatic refresh, real fresh-proof recovery, physical deletion lifecycle, independent
 human isolation and an implemented backup retention/restore policy.
+
+Physical Google → Apple → Google switching passed on the candidate Release build.
+Server checks verified original owners, revocation of the signed-out account,
+unchanged source/note/chat counts, and exact local Google recording bytes.
+The founder confirmed Google content hidden in Apple, Apple signed-in relaunch,
+and original notes/chat/note opening after returning to Google. The note cache
+was empty after Google sign-out. This uses one person's two provider identities,
+not two independent humans. [Receipt](../qa/founder-migration/physical-account-switch.json).

@@ -13,7 +13,14 @@
     "google_four_local_recordings_exact_bytes_preserved": true,
     "note_cache_files": 0
   },
-  "apple_relaunch": "launched; visual confirmation pending",
-  "return_to_google": "pending",
+  "apple_relaunch": "passed: founder confirmed no repeated sign-in prompt",
+  "return_to_google": {
+    "founder_confirmed_original_notes_chat_and_note_open": true,
+    "original_google_owner_reused": true,
+    "google_unrevoked_sessions": 1,
+    "apple_unrevoked_sessions": 0,
+    "both_accounts_content_counts_unchanged": true,
+    "four_local_recordings_exact_bytes_preserved": true
+  },
   "limitations": "One founder using two separate provider identities, not two independent people. Cache directory inspected directly after copying an empty directory produced a local missing-directory error. No account content deleted or paid generation requested."
 }

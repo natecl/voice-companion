@@ -32,8 +32,10 @@ See [cutover evidence](../../qa/founder-migration/live-cutover.json) and the
 
 ## Gaps and non-goals
 
-Remaining gates: native automatic expiry/Keychain rotation, real fresh-proof
-failure recovery, physical Apple sign-in/switching and lifecycle, independent
+Google native automatic expiry/Keychain rotation and signed-in restart now pass
+in the isolated Release simulator; see [receipt](../../qa/account-lifecycle/native-automatic-refresh.json).
+Remaining gates: Apple native automatic rotation, real fresh-proof
+failure recovery, physical deletion lifecycle, independent
 second-person isolation, and implemented backup retention/restore handling.
 Google and Apple remain separate accounts. Google stays above Apple; no account
 linking or email-derived identity merge is included. The physical founder Google
@@ -68,10 +70,11 @@ Native transport, device-local account Keychain storage, refresh serialization a
 
 ## Next bounded work
 
-Verify native automatic rotation against the existing isolated real-provider
-server without modifying production credentials. Prepare one bounded physical
-Apple/Google switch check, retaining all founder recordings and returning to
-Google. Request readiness before that manual check. Exercise fresh-proof deletion
+Google automatic rotation passed without modifying clocks or credentials.
+Complete the remaining Apple automatic/provider-recovery paths against isolated
+fixtures, without modifying production credentials. Physical Apple/Google switching, signed-in Apple relaunch and return to Google
+now passed; see the [receipt](../../qa/founder-migration/physical-account-switch.json).
+Founder Google remains signed in. Exercise fresh-proof deletion
 recovery only against isolated disposable fixtures. Define and implement backup
 retention/restore handling before claiming complete account erasure. Keep the
 stack draft until each checkpoint's applicable behavioral and review gates pass.
