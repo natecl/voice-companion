@@ -14,16 +14,55 @@ ROOT = checkpoint.ROOT
 
 def catalog(root=ROOT):
     features = json.loads((root / 'docs/features/catalog.json').read_text())
+    if not isinstance(features, dict) or not features:
+        raise ValueError('Feature catalog must be a nonempty object')
+    registrations = {}
     for key, feature in features.items():
-        if not re.fullmatch(r'[a-z][a-z0-9-]*', key):
-            raise ValueError('Invalid feature ID')
-        for module in feature['test_modules']:
+        if not re.fullmatch(r'[a-z][a-z0-9-]*', key) or not isinstance(feature, dict):
+            raise ValueError('Invalid feature entry')
+        for field in ('name', 'outcome', 'status', 'verification_scope'):
+            if not isinstance(feature.get(field), str) or not feature[field].strip():
+                raise ValueError('Feature descriptions are required')
+        for field in ('implementation', 'external_test_sources'):
+            paths = feature.get(field, [])
+            if not isinstance(paths, list) or (field == 'implementation' and not paths):
+                raise ValueError('Feature source lists are required')
+            if any(not isinstance(path, str) or not path for path in paths) or len(paths) != len(set(paths)):
+                raise ValueError('Feature source paths must be unique strings')
+            for path in paths:
+                if not checkpoint.local_path(root, path).is_file():
+                    raise ValueError('Missing feature source file')
+        for field in ('manifest', 'context_map'):
+            if not isinstance(feature.get(field), str) or not checkpoint.local_path(root, feature[field]).is_file():
+                raise ValueError('Missing feature manifest or context map')
+        modules = feature.get('test_modules')
+        if not isinstance(modules, list) or any(not isinstance(module, str) for module in modules) or len(modules) != len(set(modules)):
+            raise ValueError('Test modules must be unique strings')
+        for module in modules:
             if not re.fullmatch(r'Backend\.test_[a-z0-9_]+', module):
                 raise ValueError('Only reviewed test modules are allowed')
-            if not (root / (module.replace('.', '/') + '.py')).is_file():
+            if not checkpoint.local_path(root, module.replace('.', '/') + '.py').is_file():
                 raise ValueError('Missing test module')
-        if feature['test_modules']:
-            checkpoint.REGISTRY['feature:' + key] = [sys.executable, '-m', 'unittest', *feature['test_modules']]
+        if modules:
+            registrations['feature:' + key] = [sys.executable, '-m', 'unittest', *modules]
+        manifest = json.loads(checkpoint.local_path(root, feature['manifest']).read_text())
+        if not isinstance(manifest, dict) or manifest.get('packet') != 'FEATURE-' + key:
+            raise ValueError('Feature manifest identity does not match catalog')
+        for check in manifest.get('checks', []):
+            if 'runner' in check and (check['runner'] != 'feature:' + key or not modules):
+                raise ValueError('Feature runner must match its reviewed module mapping')
+    # Replace prior dynamic entries only after all paths/mappings pass. A feature
+    # changed to external-only must never retain a stale executable command.
+    for key in list(checkpoint.REGISTRY):
+        if key.startswith('feature:'):
+            del checkpoint.REGISTRY[key]
+    checkpoint.REGISTRY.update(registrations)
+    for feature in features.values():
+        manifest = json.loads(checkpoint.local_path(root, feature['manifest']).read_text())
+        checkpoint.validate(manifest)
+        groups = {check['group'] for check in manifest['checks']}
+        if not {'live_behavior_checks', 'inspection'} <= groups:
+            raise ValueError('Full feature contracts must retain live behavior and inspection gates')
     return features
 
 

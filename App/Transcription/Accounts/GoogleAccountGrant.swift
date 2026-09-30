@@ -12,4 +12,3 @@ struct GoogleAccountGrant: Codable, Sendable, Equatable {
         }
     }
 }
-

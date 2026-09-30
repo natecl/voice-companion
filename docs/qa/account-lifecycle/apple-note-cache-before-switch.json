@@ -1,0 +1,15 @@
+{
+  "google": {
+    "cache_entry_exists": false,
+    "sync_acknowledged": false
+  },
+  "apple": {
+    "cache_entry_exists": true,
+    "owner_matches": true,
+    "session_matches": true,
+    "revision": 2,
+    "state": "ready",
+    "title": "Fictional Apple lantern",
+    "sync_acknowledged": true
+  }
+}

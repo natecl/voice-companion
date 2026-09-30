@@ -1,0 +1,25 @@
+{
+  "scope": "real enrolled local QA owners; fictional seeded content; synthetic request credentials",
+  "results": {
+    "google": {
+      "own_notes_visible": true,
+      "foreign_notes_rejected": true,
+      "spoofed_owner_delete_rejected": true,
+      "chat_history_isolated": true,
+      "other_source_preserved": true
+    },
+    "apple": {
+      "own_notes_visible": true,
+      "foreign_notes_rejected": true,
+      "spoofed_owner_delete_rejected": true,
+      "chat_history_isolated": true,
+      "other_source_preserved": true
+    }
+  },
+  "native_fixtures_prepared": true,
+  "paid_calls": 0,
+  "limitations": [
+    "Native account switching and notes cache behavior remain to be exercised",
+    "No physical-device or hosted acceptance"
+  ]
+}

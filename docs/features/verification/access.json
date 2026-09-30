@@ -2,10 +2,10 @@
   "packet": "FEATURE-access",
   "base": "5a04ea30d05dcf78537340e66da9e695465249ee",
   "acceptance": [
-    "Fresh Release enrollment, authenticated session refresh and revoked-session handling without developer credential import",
-    "Two-user server isolation and owner-switch/sign-out clearing of local notes, chat and memory state",
-    "Account deletion and existing-owner migration preserve the selected lifecycle contract without leaking or losing unrelated data",
-    "Lead inspects exact final-configuration evidence before dependent work advances"
+    "Both Google and Apple remain separate accounts: fresh Release enrollment, native automatic refresh, sign-out/relaunch and fresh-proof deletion recovery use real provider authorization",
+    "Two-owner isolation and account-change teardown preserve saved transcripts while rejecting stale capture/chat/cache responses; independent-person and physical evidence remain required",
+    "Account deletion and the selected legacy-owner migration preserve unrelated data and spending; backup retention and deletion-safe restore have reviewed operational evidence",
+    "Lead inspects exact final-configuration evidence before dependent phases advance"
   ],
   "checks": [
     {
@@ -15,25 +15,71 @@
       "runner": "feature:access"
     },
     {
+      "id": "access-native-contracts",
+      "group": "mechanical_checks",
+      "kind": "fixture",
+      "evidence": "work/feature-evidence/access/native-contracts.json",
+      "claim": "Executed native AccountSession, AccountDeletion, GoogleAccountGrant, FounderAccountMigration, RecordingLifecycle, Memory and RecordingNotesCache contract tests; provider/device behavior remains separate"
+    },
+    {
       "id": "access-behavior-1",
       "group": "live_behavior_checks",
-      "kind": "fixture",
+      "kind": "live_identity_provider",
       "evidence": "work/feature-evidence/access/behavior-1.json",
-      "claim": "Fresh Release enrollment, authenticated session refresh and revoked-session handling without developer credential import"
+      "claim": "Google Release enrollment, native automatic refresh, sign-out/relaunch and fresh-proof deletion recovery; backend-only refresh and synthetic identities are insufficient",
+      "provider": "google"
+    },
+    {
+      "id": "access-apple-provider",
+      "group": "live_behavior_checks",
+      "kind": "live_identity_provider",
+      "provider": "apple",
+      "evidence": "work/feature-evidence/access/apple-provider.json",
+      "claim": "Apple Release enrollment, native automatic refresh, sign-out/relaunch and fresh-proof deletion recovery; backend-only refresh and synthetic identities are insufficient"
     },
     {
       "id": "access-behavior-2",
       "group": "live_behavior_checks",
-      "kind": "fixture",
+      "kind": "simulator",
       "evidence": "work/feature-evidence/access/behavior-2.json",
-      "claim": "Two-user server isolation and owner-switch/sign-out clearing of local notes, chat and memory state"
+      "claim": "Populated two-owner native switching, signed-out restart, capture teardown, notes/cache/chat isolation and stale-response rejection"
     },
     {
       "id": "access-behavior-3",
       "group": "live_behavior_checks",
       "kind": "simulator",
       "evidence": "work/feature-evidence/access/behavior-3.json",
-      "claim": "Account deletion and existing-owner migration preserve the selected lifecycle contract without leaking or losing unrelated data"
+      "claim": "Native account deletion and selected legacy-owner migration preserve unrelated owners, saved data and spending; existing physical migration receipts remain dated evidence, never an instruction to replay the cutover"
+    },
+    {
+      "id": "access-physical-lifecycle",
+      "group": "live_behavior_checks",
+      "kind": "physical_device",
+      "evidence": "work/feature-evidence/access/physical-lifecycle.json",
+      "claim": "Physical account lifecycle including deletion/relaunch and independent second-person isolation; simulator identities do not establish independent-person acceptance"
+    },
+    {
+      "id": "access-backup-lifecycle",
+      "group": "inspection",
+      "kind": "review",
+      "evidence": "work/feature-evidence/access/backup-lifecycle.json",
+      "claim": "Inspect configured retention, scheduled managed backups, owned/historical/off-host copy scope, and deletion-safe restore rehearsal preserving current revocation/spending; local tests alone establish no production retention promise"
+    },
+    {
+      "id": "access-google-failure-recovery",
+      "group": "live_behavior_checks",
+      "kind": "live_identity_provider",
+      "provider": "google",
+      "evidence": "work/feature-evidence/access/google-failure-recovery.json",
+      "claim": "Actual Google revoked-provider and expired-session/network-failure paths reject stale authorization, preserve local saved content and recover without cross-owner state; successful refresh/deletion alone is insufficient"
+    },
+    {
+      "id": "access-apple-failure-recovery",
+      "group": "live_behavior_checks",
+      "kind": "live_identity_provider",
+      "provider": "apple",
+      "evidence": "work/feature-evidence/access/apple-failure-recovery.json",
+      "claim": "Actual Apple revoked-provider and expired-session/network-failure paths reject stale authorization, preserve local saved content and recover without cross-owner state; successful refresh/deletion alone is insufficient"
     },
     {
       "id": "access-inspection",

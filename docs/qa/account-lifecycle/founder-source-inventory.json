@@ -1,0 +1,15 @@
+{
+  "scope": "read-only copied physical iPhone application data",
+  "sessions": 4,
+  "sessions_by_owner_label": {
+    "2dc1fb70ce3b": 4
+  },
+  "outboxes": [
+    {
+      "owner_label": "2dc1fb70ce3b",
+      "entries": 20,
+      "unacknowledged": 0
+    }
+  ],
+  "live_data_changed": false
+}

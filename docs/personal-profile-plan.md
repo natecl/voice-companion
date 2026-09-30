@@ -1,6 +1,6 @@
 # Personal companion profile — implementation plan
 
-> Historical/bounded delivery document. The [September 28 product definition](product-source-of-truth.md#full-product-vision--september-28-2026) and [current gap audit](product-vision-audit-2026-09-28.md) govern the full vision and next proposed sequence. Older one-liners, exclusions and pending stages below retain their original checkpoint meaning.
+> Historical/bounded delivery document. The [current product definition](product-source-of-truth.md), [current state](current-state.md) and [release handoff](execution/testflight-release-handoff.md) govern positioning, selected implementation and the current sequence. The September 28 gap audit is historical. Older one-liners, exclusions and pending stages below retain their original checkpoint meaning.
 
 Superseded delivery direction: the founder-approved companion-first architecture is now planned in [memory rework](memory-rework-plan.md). Retain this document as checkpoint history; its failed correction gate remains unresolved, not accepted.
 
