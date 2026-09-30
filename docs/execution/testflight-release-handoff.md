@@ -1,6 +1,6 @@
 # TestFlight and paid-launch handoff
 
-Updated September 29, 2026. **Start here when continuing in a new agent.** This is the current remaining-work overview; it supersedes the pending-work sequence in demo-testflight-phases.md, whose earlier execution and evidence remain historical. Read README.md, product-source-of-truth.md, v0-scope.md and engineering-principles.md first. Preserve the exact agreed one-liner and the approved shared UI.
+Updated September 30, 2026. **Start here when continuing in a new agent.** This is the current remaining-work overview; it supersedes the pending-work sequence in demo-testflight-phases.md, whose earlier execution and evidence remain historical. Read README.md, product-source-of-truth.md, v0-scope.md and engineering-principles.md first. Preserve the exact agreed one-liner and the approved shared UI.
 
 ## Verified baseline and delivery ledger
 
@@ -10,7 +10,9 @@ Updated September 29, 2026. **Start here when continuing in a new agent.** This 
 - A real close-button tap loss during transcript updates was reproduced and repaired. Approved shared CSS, HTML, iconography, typography and motion were preserved.
 - Merged phone build was signed, installed in place and launched on the existing iPhone; no reset. Receipts: `/tmp/integration-device-install-retry.json`, `/tmp/integration-device-launch.json`, `/tmp/integration-device-bundle.json`. Temporary local receipts may disappear; preserve sanitized durable evidence before release.
 - Latest phone inspection used the same baseline with temporary DEBUG-only font diagnostics. User/agent computed font family, size (16px) and weight (430) matched; Bold Text was enabled. Founder confirmed they look the same. Diagnostics were reverted from source; no UI fix or data change. Receipt `/tmp/message-font-phone-final.json`; do not mistake this diagnostic binary for an archived release.
-- Last inspected hosted backend: `70f494b50bf7b82f9e350ed220485b2cde7a1f26`, Render deploy `dep-datjp56k1f9s738i5nig`, service `srv-daqtfs7lot8c73dleuug`. Auto-deploy was off. **Merged backend changes have not been deployed in this task.** Recheck before action.
+- Hosted backend: `c897dec55af9707f74d298772bc3318af6372831`, enabled-account Render deploy `dep-dau6gsdg1s2s73bl89e0`, service `srv-daqtfs7lot8c73dleuug`. Auto-deploy remains off. Coordinated backup, migration/data-preservation and endpoint checks are in [native account QA](../qa/native-accounts/README.md). Live schema remains 20.
+- Draft PR159 implements native accounts. Both providers passed basic sign-in/sign-out/relaunch on the signed Release simulator (native source `07f9977`); Apple reauthentication reused its original owner. This is not populated two-user isolation, actual refresh/revocation or physical-device acceptance.
+- The dependent account-erasure storage branch starts from PR159 `8568a20`, not an independently merged baseline. Its schema-21 operation removes one enrolled owner’s complete memory/chat/source content and rejects stale writes; see [local QA and remaining gates](../qa/account-erasure-storage/README.md). No deletion endpoint/UI, migration, live erasure or schema-21 deployment is delivered.
 - App Store Connect login worked. No app record existed. The founder accepted the updated Developer Program License Agreement on September 29; a fresh App Store Connect reload verified that its warning cleared. Xcode team `7HF6VDCZF7` was available for development signing; archive/distribution signing remains unverified.
 - No TestFlight build uploaded and no testers invited. Accounts, prices, paywall and real subscriptions remain unfinished.
 
@@ -49,13 +51,13 @@ Run manifest tooling checks after edits: `python3 -m unittest discover -s script
 
 Continue from latest main in a suitable free worktree. Current accounts checkout: `/Users/n.chinlue/.codex/worktrees/account-sign-in/voice-companion`; original `/Users/n.chinlue/code/voice-companion` has unrelated local state and must be preserved. Never store keys/tokens in docs or evidence.
 
-Founder authorized internal deployment and TestFlight setup/release validation. That does not authorize accepting legal agreements, choosing commercial prices, charging, arbitrary tester invitations, resetting production data, changing Render tier, or paid model runs without a bounded allowance. No new provider budget was granted for this handoff. Observe canonical stop-and-wait rules for required founder input. Ask for physical readiness before timed manual QA.
+Founder authorized internal deployment and TestFlight setup/release validation. That does not authorize accepting legal agreements, choosing commercial prices, charging, arbitrary tester invitations, resetting production data, changing Render tier, or paid model runs without a bounded allowance. Founder subsequently authorized $5 total provider/API testing; [ledger](testflight-provider-budget.md) remains at $0 spent. Hosting upgrades, subscriptions and other purchases are excluded. Observe canonical stop-and-wait rules for required founder input. Ask for physical readiness before timed manual QA.
 
-Render SSH previously failed with publickey authentication; investigate existing authorized deployment configuration rather than assuming access works. Do not deploy until current config, active work, backup, migration and rollback checks are satisfied. Preserve runtime quotas and historical ledgers. App Store Connect agreement is a separate founder-dependent gate; do not silently accept it.
+Render SSH works with the existing dedicated `voice_companion_render` identity; default SSH identity failure does not establish loss of access. Do not deploy until current config, active work, backup, migration and rollback checks are satisfied. Preserve runtime quotas and historical ledgers. App Store Connect agreement is a separate founder-dependent gate; do not silently accept it.
 
 ## First action for the next agent
 
-Read this handoff and linked maps, verify current git/runtime state, and prepare the smallest accounts packet for the selected Google and Apple providers. Recheck whether Apple agreement acceptance is still pending before signing/upload work. Keep pricing/pilot decisions visibly open. Do not restart the completed UI redesign or rerun all paid evaluations just because the agent changed.
+Read this handoff and linked maps, verify current git/runtime state, and prepare the smallest accounts packet for the selected Google and Apple providers. Recheck whether Apple agreement acceptance is still pending before signing/upload work. Keep pricing/pilot decisions visibly open. Do not restart the completed UI redesign or rerun paid evaluations just because the agent changed. Basic provider enrollment is already evidenced; continue from the remaining lifecycle gates rather than repeating it.
 
 ## Handoff documentation validation
 

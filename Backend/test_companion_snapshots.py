@@ -68,7 +68,7 @@ class SnapshotTests(unittest.TestCase):
     def test_migration_preserves_existing_chat_and_source(self):
         self.store.put_source(self.owner,source('old'))
         self.chat.start(self.owner,'old-question','Hello');self.chat.complete(self.owner,'old-question','Hello back')
-        with self.store.connect() as db:db.executescript('DROP TABLE companion_snapshot; PRAGMA user_version=13;')
+        with self.store.connect() as db:db.executescript('DROP TABLE companion_snapshot; DROP TABLE account_identity; PRAGMA user_version=13;')
         migrated=MemoryStore(self.path)
         self.assertEqual(CompanionChat(migrated).page(self.owner)['turns'][0]['answer'],'Hello back')
         self.assertIsNotNone(migrated.source(self.owner,'old'))

@@ -70,7 +70,7 @@ After the founder accepted the updated agreement, a fresh App Store Connect relo
 
 Schema 20 adds `(issuer, subject)` → owner mapping in the existing memory database. The server-only `owner_for_identity` operation atomically binds a fresh credential to the returning identity's owner, or creates an isolated owner for a new identity. Existing founder credentials cannot be adopted or reassigned. No email linking, enrollment endpoint, token verification, refresh service or native login is delivered by this storage checkpoint.
 
-[Account identity QA](../qa/account-identity/README.md) records synthetic identity, migration, concurrency and actual local WebSocket isolation evidence. Hosted deployment remains unchanged. Do not roll schema 20 back to schema 19 binaries against the upgraded database; use the predeployment backup if a future deployment needs rollback.
+[Account identity QA](../qa/account-identity/README.md) records synthetic identity, migration, concurrency and actual local WebSocket isolation evidence. Hosted deployment remains unchanged. Do not run schema-19 binaries on an upgraded database or restore a historical backup over newer ledgers/deletions. Current live rollback uses an accounts-disabled schema-20-compatible build; schema 21 is an undeployed dependent candidate and needs its own compatible rollback plan.
 
 ## Founder constraint: preserve the established design system
 
@@ -82,6 +82,6 @@ Functional frontend work must reuse the existing components, animations, transit
 
 September 29: founder explicitly approved the action-time key request. Registered `Ellis Sign in with Apple`, key ID `6JCPHWJT4A`, with only Sign in with Apple enabled, scoped to primary `ai.voicecompanion.phone` and its grouped Mac app. Registration initially encountered an expired portal session; the refreshed inventory confirmed no key existed before retrying. The final portal showed the registered key and completed download. The download event observer timed out, but the actual file was present in Downloads; it was validated as P-256 and moved to owner-only local credential storage outside all repositories. No private material appears in source, logs or screenshots. This does not establish deployed secret configuration or real Apple authentication.
 
-### Backend configuration staged, accounts disabled
+### Historical configuration staging, superseded by enabled rollout
 
-The registered Apple key and locally generated Fernet encryption key are configured on the existing Render voice-companion service with the selected Google/Apple client IDs. Per-variable API writes preserved every pre-existing setting, verified by readback; values are never recorded here. `VOICE_ENABLE_ACCOUNTS=0` remains set. No deployment or real provider exchange has occurred. The signing key registration receipt is not account acceptance.
+The registered Apple key and locally generated Fernet encryption key are configured on the existing Render voice-companion service with the selected Google/Apple client IDs. Per-variable API writes preserved every pre-existing setting, verified by readback; values are never recorded here. At that staging checkpoint `VOICE_ENABLE_ACCOUNTS=0` was set. Subsequently the backend was deployed with accounts enabled and both real providers passed basic Release-simulator enrollment; see [current native account QA](../qa/native-accounts/README.md). The signing key registration receipt is not account acceptance.

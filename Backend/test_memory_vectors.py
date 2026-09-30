@@ -66,7 +66,7 @@ class VectorTests(unittest.TestCase):
 
     def test_schema10_adds_empty_cache_without_inference(self):
         with self.store.connect() as db:
-            db.execute('DROP TABLE memory_embedding');db.execute('PRAGMA user_version=10')
+            db.execute('DROP TABLE memory_embedding');db.execute('DROP TABLE account_identity');db.execute('PRAGMA user_version=10')
         reopened=MemoryStore(self.store.path)
         with reopened.connect() as db:
             self.assertEqual(db.execute('SELECT count(*) FROM memory_embedding').fetchone()[0],0)

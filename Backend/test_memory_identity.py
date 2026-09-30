@@ -183,7 +183,7 @@ class IdentityTests(unittest.TestCase):
         self.assertEqual(self.store.owner_for('owner-a'), self.owner)
         self.assertEqual(self.store.put_source(self.owner, source('deleted'))['status'], 'deleted')
         with self.store.connect() as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 20)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 21)
             # Later additive migrations must exist without inventing notes or contributions.
             for table in ('recording_note_index', 'proactive_attempt', 'proactive_connection'):
                 self.assertEqual(db.execute('SELECT count(*) FROM '+table).fetchone()[0], 0)

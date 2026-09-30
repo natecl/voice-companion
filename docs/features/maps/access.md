@@ -2,7 +2,7 @@
 
 > Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
 
-Feature ID: `access` · Context reviewed September 29, 2026 against main `3a30e25`.
+Feature ID: `access` · Context reviewed September 30, 2026; native accounts remain draft PR159, with the dependent account-erasure storage checkpoint separately reviewable.
 
 ## Purpose and user outcome
 
@@ -10,11 +10,11 @@ Independent per-tester enrollment, isolation and revocation. Product direction: 
 
 ## Current implementation
 
-Internal admission/credential foundations and schema-20 provider-to-owner storage exist; a disabled-by-default account endpoint now verifies ID tokens, binds owners, rotates app refresh tokens and revokes app sessions. Fresh Release enrollment, native sign-out/owner switching, provider-side revocation and full account deletion are not delivered.
+The schema-20 provider/session backend is enabled on Render at `c897dec`. Both Google and Apple basic sign-in, sign-out and relaunch passed on the signed Release simulator; Apple reauthentication reused its original owner. Native account wiring remains draft PR159. The dependent schema-21 storage checkpoint adds atomic enrolled-owner content erasure and stale-credential tombstones, with local populated-owner and late-write checks. It is not deployed and has no deletion endpoint or UI.
 
 ## Gaps and non-goals
 
-Session refresh/revocation, owner-scoped cache clearing, existing-account migration and complete account erasure are required release work. Founder selected both Google and Apple on September 29, with Google above Apple in the sign-in UI. Google OAuth clients and Apple Sign in with Apple identifiers are configured; real authentication remains unverified.
+Session refresh/revocation, owner-scoped cache clearing, existing-account migration and complete account erasure are required release work. Founder selected both Google and Apple on September 29, with Google above Apple in the sign-in UI. Google OAuth clients and Apple identifiers/server grants are configured. Real provider enrollment has simulator evidence; full populated two-user native isolation, actual refresh/revocation, physical-device checks, deletion and migration remain release gates.
 
 ## Flow and implementation entry points
 
@@ -39,13 +39,13 @@ These links describe integration boundaries, not a mandatory execution order. Th
 
 Release feature remains incomplete. [Verifier](../verification/access.json): `python3 scripts/verify_feature.py access`. Its updated gates require final-configuration lifecycle evidence; existing local checks or preview navigation alone do not satisfy them. See the [handoff delivery ledger](../../execution/testflight-release-handoff.md) for merged, installed and deployed boundaries. [Storage checkpoint QA](../../qa/account-identity/README.md) exercises stable ownership and actual local WebSocket isolation with synthetic identities. This does not establish provider authentication, native owner switching or Release acceptance.
 
-The [backend account protocol and QA](../../qa/account-backend/README.md) distinguish signed synthetic-token socket evidence from unverified live providers. No deployment has enabled this endpoint.
+The [backend account protocol and QA](../../qa/account-backend/README.md) distinguish signed synthetic-token socket evidence from unverified live providers. Current deployment and basic real-provider evidence are recorded in the native account QA below.
 
-Native transport, device-local account Keychain storage, refresh serialization and Google/Apple adapters are connected to the existing signup view in the draft candidate. [Native account QA](../../qa/native-accounts/README.md) records build and fixture limits. Fresh simulator entry has been inspected; real provider success, signed-device lifecycle and full two-user acceptance remain open.
+Native transport, device-local account Keychain storage, refresh serialization and Google/Apple adapters are connected to the existing signup view in the draft candidate. [Native account QA](../../qa/native-accounts/README.md) records build and fixture limits. Both providers completed basic Release-simulator enrollment/sign-out/relaunch. This does not establish physical-device lifecycle or full populated two-user acceptance.
 
 ## Next bounded work
 
-Verify the candidate Apple code redemption, encrypted grant storage and provider revocation handling against Apple, verify deployed account endpoint configuration, and prove fresh Release enrollment plus two-user isolation through the connected native flow. Use a stable server-owned account identity independent of expiring session credentials. Never automatically merge accounts by matching email; preserve existing founder data through an explicitly verified migration. See the [first account packet](../../execution/account-enrollment-packet.md).
+Integrate authenticated, resumable deletion with provider revocation and local cleanup, then complete populated native isolation, actual refresh/revocation and physical-device checks. The [storage checkpoint](../../qa/account-erasure-storage/README.md) proves only local content erasure; backups and restore policy remain explicit work. Use a stable server-owned account identity independent of expiring session credentials. Never automatically merge accounts by matching email; preserve existing founder data through an explicitly verified migration. See the [first account packet](../../execution/account-enrollment-packet.md).
 
 ## Supporting context and evidence
 
