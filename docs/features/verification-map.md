@@ -1,6 +1,6 @@
 # Product feature verification map
 
-> September 30 source/evidence audit at `7079427`: UI/integration PR154–155 are merged; account/lifecycle PR159–177 remain unmerged. Recorded hosted account/deletion deployment is `208ca34`, schema21, with a matching development-signed Release phone candidate and bounded physical checks. Later local fixes are not deployed or installed by this audit. Phase 1 remains incomplete; pricing and paywall phases have not started. See the [release handoff](../execution/testflight-release-handoff.md) for exact version and evidence boundaries.
+> September 30 integration: account/lifecycle PR159–180 merged to main `31b284340fda`. Hosted backend remains `482394e`, schema21; later backend fixes are not deployed by this merge. The physical capture/sign-out check and isolated native network/Apple-provider rejection recovery passed within their recorded scope. Phase 1 remains incomplete. See the [release handoff](../execution/testflight-release-handoff.md).
 
 Start with the [dedicated context map for your feature](context-map.md): current behavior, gaps, dependencies, evidence and next bounded work.
 

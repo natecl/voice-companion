@@ -124,3 +124,11 @@ stated environments. The account stack is eligible for integration after its
 repository checks and final diff review. This is not full Phase 1 or TestFlight
 acceptance: physical deletion, independent-human isolation, operational backup
 policy and remaining legal/assets/distribution gates retain their separate scope.
+
+## Merge result
+
+PR180, PR179 and PR177–159 were merged through their dependency branches into
+main `31b284340fda`. Every merge result retained the reviewed `afe114a` Git tree exactly.
+Main had no branch protection or rulesets and the PRs had no required check runs;
+recorded local and behavioral checks were still required and reviewed. No merge
+override, production deployment or TestFlight upload accompanied integration.

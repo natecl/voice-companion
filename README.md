@@ -12,7 +12,7 @@ This is a private internal foundation, not a public release. The exact prior one
 
 ## Current knowledge and delivery status
 
-Start with the [current product and implementation brief](docs/current-state.md) and [feature map](docs/features/README.md). Reconciled September 30 against candidate `7079427` and recorded evidence: main is `d4d07f1` (PR158), while account/lifecycle PR159–177 remain unmerged. The last recorded hosted account build is `208ca34`, schema21. Founder Google migration and physical provider switching passed; real simulator Google/Apple refresh and deletion recovery passed within their recorded scope. Later isolation and backup fixes remain candidates. **Phase 1 is incomplete; plans, subscriptions and TestFlight distribution are not ready.** This documentation audit did not perform a fresh runtime check.
+Start with the [current product and implementation brief](docs/current-state.md) and [feature map](docs/features/README.md). Account integration merged to main at `31b284340fda` (PR159–180, including documentation PR178). Physical capture/sign-out and original-owner return passed; isolated native network-failure and actual Apple-provider rejection recovery passed. Hosted backend remains `482394e` (prior `208ca34` plus the bounded capture-budget patch), schema21; merging does not deploy the later backend fixes. **Phase 1 remains incomplete; plans, paywall and TestFlight distribution are not ready.** See the [merge review](docs/qa/account-merge-review/README.md) for evidence limits.
 
 ## Current direction and gap audit
 
