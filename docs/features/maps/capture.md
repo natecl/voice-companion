@@ -65,7 +65,7 @@ At that September 29 checkpoint, zero paid calls were made and the candidate was
 
 ## Account teardown checkpoint — September 30
 
-The unmerged candidate rejects canceled/stale capture callbacks before reducer/storage writes and after connection completion. A reproduced late callback previously appended words to the signed-out owner's recording/outbox; it did not demonstrate cross-owner disclosure. The fixed native controller, memory socket and account-session checks passed 27 tests. [Failure, fix and limits](../../qa/account-isolation-review/capture-teardown.md). This is local synthetic-connection evidence, not real microphone/provider or physical-device verification; the fix is not in recorded hosted/phone `208ca34`.
+The merged account implementation rejects canceled/stale capture callbacks before reducer/storage writes and after connection completion. A reproduced late callback previously appended words to the signed-out owner's recording/outbox; it did not demonstrate cross-owner disclosure. The fixed native controller, memory socket and account-session checks passed 27 tests. [Failure, fix and limits](../../qa/account-isolation-review/capture-teardown.md). The original callback regression used synthetic connections. Later native `1da7e188` passed actual microphone/provider capture followed by profile sign-out on the physical iPhone; files stayed stable and original Google ownership was preserved. [Physical receipt](../../qa/account-capture-signout/physical-receipt.json).
 
 ## Next bounded work
 

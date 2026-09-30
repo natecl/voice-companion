@@ -1,21 +1,21 @@
 # TestFlight and paid-launch handoff
 
-Updated September 30, 2026 against candidate `7079427` and recorded receipts.
+Updated September 30, 2026 after account integration to main `31b284340fda`.
 **Start here when continuing. Phase 1 is incomplete.** This supersedes the
 pending-work sequence in demo-testflight-phases.md. Read README.md,
 product-source-of-truth.md, v0-scope.md and engineering-principles.md first.
-Preserve the agreed one-liner and approved shared UI. The latest documentation
-reconciliation did not deploy, inspect live production or rerun physical QA.
+Preserve the agreed one-liner and approved shared UI. The account merge did not deploy later backend fixes or upload a build.
+See the merge review for physical and simulator evidence recorded before integration.
 
 ## Recorded delivery baseline
 
-- Main: `d4d07f1` (backend account PR158). UI154 and integration155 are merged; [integration evidence](../qa/phase-integration/README.md) covers cache and touch behavior. PR159–177 remain open drafts; no green local check silently accepts their full release gates.
-- Hosted candidate: `208ca34bbc5fa81278c5ea5720230d1f36caec4b`, normal Render deploy `dep-daubmspsrm7s73bke6n0`, service `srv-daqtfs7lot8c73dleuug`; schema21, accounts/deletion enabled, auto-deploy off. Later isolation/capture/backup candidates are not deployed.
+- Main: `31b284340fda`, account/lifecycle PR159–180 merged, including PR178 knowledge reconciliation. [Merge review](../qa/account-merge-review/README.md) records independent review, automated checks and actual behavior. Full Phase 1 remains incomplete.
+- Hosted backend: `482394e23dd081cc4a9a1e67ef79f7f4aa3b676e`, Render deploy `dep-daukpurtqb8s73boufmg`, service `srv-daqtfs7lot8c73dleuug`, schema21, auto-deploy off. This is prior `208ca34` plus only bounded transcription-budget compatibility; later companion-session and backup fixes are not deployed.
 - Founder Google migration is complete: coordinated server mapping, preserved unrelated rows/usage, exact native four-session/20-outbox file preservation, physical signed-in relaunch and content acceptance. [Cutover receipt](../qa/founder-migration/live-cutover.json). Never replay this migration or restore its old ledgers over current activity.
 - Physical Google→Apple→Google switching passed on the recorded Release candidate: old owner access revoked, cache cleared, original content restored on returning to Google. [Receipt](../qa/founder-migration/physical-account-switch.json). One person's two provider identities are not independent-human isolation.
 - Real isolated Release simulator checks cover Google/Apple enrollment, populated switching/deletion/re-enrollment, provider revocation, normal native automatic refresh and fresh-proof recovery. [Lifecycle evidence](../qa/account-lifecycle/README.md), [Google recovery](../qa/account-lifecycle/automated-google-recovery.json), [Apple refresh](../qa/account-lifecycle/native-apple-automatic-refresh.json), [Apple recovery](../qa/account-lifecycle/apple-fresh-proof-recovery.json). Apple completion transition was founder-reported; subsequent signed-in restart was executed and inspected by the agent.
-- Candidate PR171 prevents companion sends after revocation; PR174 rejects late capture events after account teardown. [Local review and regression evidence](../qa/account-isolation-review/README.md). These do not replace real capture/sign-out or physical failure evidence.
-- Candidate PR172/175 supplies managed snapshots and explicit automatic expiry; PR173 prepares/validates deletion-aware offline restore candidates. [Backup scope](../qa/managed-backups/README.md), [automatic expiry](../qa/managed-backups/automatic-expiry.md), [restore limits](../qa/backup-restore/README.md). No production retention duration, activation or comprehensive historical/off-host/provider-snapshot policy is accepted.
+- Merged PR171 prevents companion sends after revocation; PR174 rejects late capture events after account teardown. [Local review and regression evidence](../qa/account-isolation-review/README.md). Native `1da7e188` subsequently passed physical capture/sign-out, preserved Google data, Apple isolation and Google return/relaunch; [receipt](../qa/account-capture-signout/physical-receipt.json).
+- Merged PR172/175 supplies managed snapshots and explicit automatic expiry; PR173 prepares/validates deletion-aware offline restore candidates. [Backup scope](../qa/managed-backups/README.md), [automatic expiry](../qa/managed-backups/automatic-expiry.md), [restore limits](../qa/backup-restore/README.md). No production retention duration, activation or comprehensive historical/off-host/provider-snapshot policy is accepted.
 - PR170/176 provides native simulator QA automation; PR177 resumes interrupted local QA on its original endpoint/databases/keys, with nine focused offline regressions. [Runner and evidence](../qa/account-lifecycle/live-ui-automation.md). Password/security challenges remain founder handoffs.
 - App Store Connect: `Ellis: AI Notetaker`, ID6817680460, bundle `ai.voicecompanion.phone`, SKU `ellis-iphone-001`, English(U.S.), version1.0 Prepare for Submission, manual release selected. Founder accepted the Developer agreement September29. Archive/distribution signing remains unverified. No build uploaded, review submitted or testers invited.
 
@@ -26,8 +26,9 @@ first. Founder legacy data belongs to Google; no account linking or Apple-data
 migration is authorized. Shared UI components, styling, motion and haptics are the
 source of truth; only functional wiring using that system is authorized.
 
-Remaining acceptance: real capture/sign-out; revoked-provider/network-failure
-behavior; independent-second-person isolation; physical deletion/failure/relaunch;
+Native network-failure and staged actual Apple-provider rejection recovery passed
+with preserved content and same-owner relaunch; [review](../qa/account-merge-review/README.md).
+Remaining acceptance: Google-specific negative refresh coverage and final provider-revocation contract; independent-second-person isolation; physical deletion/failure/relaunch;
 reviewed retention duration/production configuration and deletion-safe restore
 handling for owned, historical, off-host and provider snapshots. The native
 migration's real wrong-account selection negative remains separately unproven;
@@ -84,9 +85,9 @@ Run manifest tooling checks after edits: `python3 -m unittest discover -s script
 
 ## Operational handoff and permissions
 
-Use the current explicitly dependent candidate for this in-progress stack; start independent new phases from verified main after their dependencies merge. Current accounts checkout: `/Users/n.chinlue/.codex/worktrees/account-sign-in/voice-companion`; original `/Users/n.chinlue/code/voice-companion` has unrelated local state and must be preserved. Never store keys/tokens in docs or evidence.
+The account stack is merged; start subsequent bounded work from verified main. Current accounts checkout: `/Users/n.chinlue/.codex/worktrees/account-sign-in/voice-companion`; original `/Users/n.chinlue/code/voice-companion` has unrelated local state and must be preserved. Never store keys/tokens in docs or evidence.
 
-Founder authorized internal deployment and TestFlight setup/release validation. That does not authorize accepting legal agreements, choosing commercial prices, charging, arbitrary tester invitations, resetting production data, changing Render tier, or paid model runs without a bounded allowance. Founder subsequently authorized $5 total provider/API testing; [ledger](testflight-provider-budget.md) remains at $0 spent. Hosting upgrades, subscriptions and other purchases are excluded. Observe canonical stop-and-wait rules for required founder input. Ask for physical readiness before timed manual QA.
+Founder authorized internal deployment and TestFlight setup/release validation. That does not authorize accepting legal agreements, choosing commercial prices, charging, arbitrary tester invitations, resetting production data, changing Render tier, or paid model runs without a bounded allowance. Founder subsequently authorized $5 total provider/API testing; [ledger](testflight-provider-budget.md) records one $0.02 transcription reservation, with invoice cost unavailable. Hosting upgrades, subscriptions and other purchases are excluded. Observe canonical stop-and-wait rules for required founder input. Ask for physical readiness before timed manual QA.
 
 Render SSH works with the existing dedicated `voice_companion_render` identity; default SSH identity failure does not establish loss of access. Do not deploy until current config, active work, backup, migration and rollback checks are satisfied. Preserve runtime quotas and historical ledgers. App Store Connect agreement is a separate founder-dependent gate; do not silently accept it.
 
