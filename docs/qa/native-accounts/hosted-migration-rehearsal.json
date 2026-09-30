@@ -1,0 +1,17 @@
+{
+  "source_commit": "a18528e",
+  "remote_commit": "70f494b50bf7b82f9e350ed220485b2cde7a1f26",
+  "memory_schema_before": 19,
+  "memory_schema_after": 20,
+  "preserved_existing_memory_tables": 39,
+  "preserved_usage_tables": 10,
+  "integrity": "ok",
+  "scope": "Private per-database online snapshots; rehearsal only, not coordinated deployment backup",
+  "account_tables_added": [
+    "account_challenge",
+    "account_exchange",
+    "account_session",
+    "apple_grant"
+  ],
+  "existing_ledger_rows_preserved": true
+}
