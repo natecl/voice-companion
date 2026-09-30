@@ -1,0 +1,18 @@
+{
+  "native_commit": "07f9977",
+  "backend_commit": "c897dec55af9707f74d298772bc3318af6372831",
+  "native_configuration": "Release 0.1.0 (1), signed iOS simulator",
+  "simulator": "Ellis Account QA, iOS 26.5",
+  "provider": "apple",
+  "user_completed_authentication": true,
+  "observed_companion_after_authentication": true,
+  "observed_companion_after_terminate_and_relaunch": true,
+  "backend_apple_identity_count": 1,
+  "backend_account_session_count": 1,
+  "backend_unrevoked_account_session_count": 1,
+  "encrypted_apple_grant_count": 1,
+  "google_enrollment_verified": false,
+  "sign_out_verified": false,
+  "physical_device_verified": false,
+  "provider_spend": 0
+}
