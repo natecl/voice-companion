@@ -1,4 +1,4 @@
-"""Offline managed SQLite sets. No retention default, scheduler, or legacy adoption.
+"""Managed SQLite sets. No retention default or legacy adoption.
 
 Only runtimes honoring database.lock are excluded. Verify maintenance/version
 before live use. Hashes detect accidental modification, not a malicious operator
@@ -6,6 +6,7 @@ who can rewrite both registry and files. Failed partial pruning needs inspection
 """
 import argparse
 from contextlib import contextmanager, ExitStack, closing
+import fcntl
 import hashlib
 import json
 import os
@@ -20,6 +21,10 @@ from maintenance import database_lease
 MAX_TIMESTAMP = 253402300799  # Last whole UTC second representable in year 9999.
 ROOT = 'managed-backups'
 REGISTRY = 'registry.json'
+
+
+class RegistryBusy(BlockingIOError):
+    """No managed-file mutation was attempted; another operation owns the lease."""
 
 
 def digest(path):
@@ -80,6 +85,36 @@ def lease(directory):
         yield directory
 
 
+@contextmanager
+def registry_lease(directory):
+    """Serialize managed files only; never open or lease active databases.
+
+    Operations requiring both leases always take database.lock first. Pruning
+    does not need the runtime lease and can run while the service holds it.
+    """
+    directory = checked_path(directory, True)
+    path = directory / 'managed-backups.lock'
+    descriptor = os.open(path, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    with os.fdopen(descriptor, 'a') as lock:
+        private(path)
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as error:
+            raise RegistryBusy('Managed registry is busy') from error
+        yield directory
+
+
+@contextmanager
+def snapshot_read_lease(snapshot_path):
+    """Keep a managed snapshot alive during an offline restore inspection."""
+    path = checked_path(snapshot_path)
+    if path.parent.parent.name == ROOT:
+        with registry_lease(path.parent.parent.parent):
+            yield
+    else:
+        yield
+
+
 def registry(directory, create=False):
     root = directory / ROOT
     if not root.exists() and create:
@@ -131,7 +166,7 @@ def snapshot(directory, retention_seconds, clock=None):
     created = now(clock)
     if type(retention_seconds) is not int or retention_seconds <= 0 or retention_seconds > MAX_TIMESTAMP - created:
         raise ValueError('Explicit positive bounded retention seconds required')
-    with lease(directory) as directory:
+    with lease(directory) as directory, registry_lease(directory):
         paths = sorted(directory.glob('*.sqlite'))
         if not {'memory.sqlite', 'usage.sqlite'} <= {p.name for p in paths}:
             raise ValueError('Required databases missing')
@@ -167,24 +202,65 @@ def snapshot(directory, retention_seconds, clock=None):
         return manifest
 
 
+def _plan_locked(directory, planned_at):
+    root, registry_path, data = registry(directory)
+    expired = {}
+    next_expiry = None
+    for identifier, expected in data['sets'].items():
+        manifest = inspect_set(root, identifier, expected)
+        expires = manifest['expires_at']
+        if expires <= planned_at:
+            expired[identifier] = expected
+        elif next_expiry is None or expires < next_expiry:
+            next_expiry = expires
+    return (dict(version=1, directory=str(directory), planned_at=planned_at,
+                 registry_sha256=digest(registry_path), expired=expired), next_expiry)
+
+
 def plan_prune(directory, plan_path, clock=None):
     planned_at = now(clock)
     plan_path = Path(plan_path).absolute()
     checked_path(plan_path.parent, True)
-    with lease(directory) as directory:
-        root, registry_path, data = registry(directory)
-        # Keep plans outside managed artifacts and active databases.
-        if plan_path == directory / 'database.lock' or plan_path.suffix == '.sqlite' or root == plan_path or root in plan_path.parents:
+    with registry_lease(directory) as directory:
+        root = directory / ROOT
+        if (plan_path in (directory / 'database.lock', directory / 'managed-backups.lock')
+                or plan_path.suffix == '.sqlite' or root == plan_path or root in plan_path.parents):
             raise ValueError('Plan destination overlaps protected paths')
-        expired = {}
-        for identifier, expected in data['sets'].items():
-            manifest = inspect_set(root, identifier, expected)
-            if manifest['expires_at'] <= planned_at:
-                expired[identifier] = expected
-        plan = dict(version=1, directory=str(directory), planned_at=planned_at,
-                    registry_sha256=digest(registry_path), expired=expired)
+        plan, _ = _plan_locked(directory, planned_at)
         write_json(plan_path, plan)
-        return dict(plan_sha256=digest(plan_path), expired_count=len(expired))
+        return dict(plan_sha256=digest(plan_path), expired_count=len(plan['expired']))
+
+
+def _apply_locked(directory, plan, expected_sha256, applied_at):
+    if set(plan) != {'version', 'directory', 'planned_at', 'registry_sha256', 'expired'} or plan['version'] != 1:
+        raise ValueError('Invalid prune plan')
+    if str(directory) != plan['directory'] or applied_at < timestamp(plan['planned_at']):
+        raise ValueError('Clock moved before inspected plan or directory changed')
+    root, registry_path, data = registry(directory)
+    if digest(registry_path) != plan['registry_sha256']:
+        raise ValueError('Registry changed since plan')
+    manifests = {}
+    for identifier, expected in data['sets'].items():
+        manifest = inspect_set(root, identifier, expected)
+        if manifest['expires_at'] <= plan['planned_at']:
+            manifests[identifier] = manifest
+    if plan['expired'] != {key: data['sets'][key] for key in manifests}:
+        raise ValueError('Prune plan does not match registered expiry')
+    pending = root / 'prune-pending.json'
+    write_json(pending, dict(plan=plan, plan_sha256=expected_sha256, manifests=manifests))
+    # Validate the entire set before deleting any file. Never recurse.
+    for identifier, manifest in manifests.items():
+        folder = root / identifier
+        for name in manifest['databases']:
+            (folder / name).unlink()
+        (folder / 'manifest.json').unlink()
+        folder.rmdir()
+        data['expired'].append(dict(id=identifier, manifest_sha256=data['sets'].pop(identifier),
+                                    expired_at=manifest['expires_at'], pruned_at=applied_at,
+                                    plan_sha256=expected_sha256))
+    write_json(registry_path, data, replace=True)
+    pending.unlink()
+    return dict(status='pruned', expired_count=len(manifests))
 
 
 def apply_prune(plan_path, expected_sha256, clock=None):
@@ -192,39 +268,31 @@ def apply_prune(plan_path, expected_sha256, clock=None):
     if digest(path) != expected_sha256:
         raise ValueError('Plan approval hash mismatch')
     plan = json.loads(path.read_text())
-    if set(plan) != {'version', 'directory', 'planned_at', 'registry_sha256', 'expired'} or plan['version'] != 1:
-        raise ValueError('Invalid prune plan')
-    applied_at = now(clock)
-    if applied_at < timestamp(plan['planned_at']):
-        raise ValueError('Clock moved before inspected plan')
-    with lease(plan['directory']) as directory:
-        root, registry_path, data = registry(directory)
-        if digest(registry_path) != plan['registry_sha256']:
-            raise ValueError('Registry changed since plan')
-        manifests = {}
-        for identifier, expected in data['sets'].items():
-            manifest = inspect_set(root, identifier, expected)
-            if manifest['expires_at'] <= plan['planned_at']:
-                manifests[identifier] = manifest
-        if plan['expired'] != {key: data['sets'][key] for key in manifests}:
-            raise ValueError('Prune plan does not match registered expiry')
-        # Persist exact recovery evidence before the first unlink; interruption
-        # blocks all subsequent operations until an operator reconciles it.
-        pending = root / 'prune-pending.json'
-        write_json(pending, dict(plan=plan, plan_sha256=expected_sha256, manifests=manifests))
-        # Validate the entire set before deleting any file. Never recurse.
-        for identifier, manifest in manifests.items():
-            folder = root / identifier
-            for name in manifest['databases']:
-                (folder / name).unlink()
-            (folder / 'manifest.json').unlink()
-            folder.rmdir()
-            data['expired'].append(dict(id=identifier, manifest_sha256=data['sets'].pop(identifier),
-                                        expired_at=manifest['expires_at'], pruned_at=applied_at,
-                                        plan_sha256=expected_sha256))
-        write_json(registry_path, data, replace=True)
-        pending.unlink()
-        return dict(status='pruned', expired_count=len(manifests))
+    with registry_lease(plan['directory']) as directory:
+        return _apply_locked(directory, plan, expected_sha256, now(clock))
+
+
+def expire_registered(directory, clock=None):
+    """One authorized automatic scan, with an inspectable exact-hash plan.
+
+    No active database opens, snapshot creation, or historical adoption. Errors
+    propagate to the worker, which stops instead of retrying failed pruning.
+    """
+    with registry_lease(directory) as directory:
+        root = directory / ROOT
+        if not root.exists() and not root.is_symlink():
+            return dict(expired_count=0, next_expiry=None)
+        planned_at = now(clock)
+        plan, next_expiry = _plan_locked(directory, planned_at)
+        if plan['expired']:
+            path = root / ('automatic-prune-plan-' + uuid.uuid4().hex + '.json')
+            write_json(path, plan)
+            expected = digest(path)
+            pinned = json.loads(path.read_text())
+            if digest(path) != expected or pinned != plan:
+                raise ValueError('Automatic plan changed')
+            _apply_locked(directory, pinned, expected, planned_at)
+        return dict(expired_count=len(plan['expired']), next_expiry=next_expiry)
 
 
 def main():

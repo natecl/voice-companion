@@ -1,0 +1,67 @@
+test_clock_rollback_rejected (Backend.test_managed_backups.ManagedBackupTests.test_clock_rollback_rejected) ... ok
+test_expire_exact_managed_set_preserves_unknown_and_live_ledgers (Backend.test_managed_backups.ManagedBackupTests.test_expire_exact_managed_set_preserves_unknown_and_live_ledgers) ... ok
+test_interrupted_prune_preserves_exact_recovery_evidence (Backend.test_managed_backups.ManagedBackupTests.test_interrupted_prune_preserves_exact_recovery_evidence) ... ok
+test_invalid_retention (Backend.test_managed_backups.ManagedBackupTests.test_invalid_retention) ... ok
+test_missing_manifest_and_unsafe_permissions (Backend.test_managed_backups.ManagedBackupTests.test_missing_manifest_and_unsafe_permissions) ... ok
+test_missing_or_busy_runtime_lease (Backend.test_managed_backups.ManagedBackupTests.test_missing_or_busy_runtime_lease) ... ok
+test_plan_hash_and_registry_change (Backend.test_managed_backups.ManagedBackupTests.test_plan_hash_and_registry_change) ... ok
+test_registry_traversal_rejected (Backend.test_managed_backups.ManagedBackupTests.test_registry_traversal_rejected) ... ok
+test_symlink_and_hardlink_rejected (Backend.test_managed_backups.ManagedBackupTests.test_symlink_and_hardlink_rejected) ... ok
+test_tampered_file_blocks_all_deletion (Backend.test_managed_backups.ManagedBackupTests.test_tampered_file_blocks_all_deletion) ... ok
+test_unknown_extra_file_in_registered_set_is_not_deleted (Backend.test_managed_backups.ManagedBackupTests.test_unknown_extra_file_in_registered_set_is_not_deleted) ... ok
+test_wal_source_rejected_without_registration (Backend.test_managed_backups.ManagedBackupTests.test_wal_source_rejected_without_registration) ... ok
+test_disabled_then_restart_catches_up (Backend.test_backup_retention.HostedRetentionTests.test_disabled_then_restart_catches_up) ... ok
+test_maintenance_expiry_preserves_active_database_bytes (Backend.test_backup_retention.HostedRetentionTests.test_maintenance_expiry_preserves_active_database_bytes) ... ok
+test_running_hosted_service_prunes_with_runtime_lease_held (Backend.test_backup_retention.HostedRetentionTests.test_running_hosted_service_prunes_with_runtime_lease_held) ... ok
+test_explicit_settings (Backend.test_backup_retention.RetentionTests.test_explicit_settings) ... ok
+test_interrupted_prune_stops_without_retry (Backend.test_backup_retention.RetentionTests.test_interrupted_prune_stops_without_retry) ... Managed backup expiry worker started
+Managed backup expiry failed; inspect private status; worker stopped
+ok
+test_prune_while_runtime_lease_held_opens_only_snapshot_databases (Backend.test_backup_retention.RetentionTests.test_prune_while_runtime_lease_held_opens_only_snapshot_databases) ... ok
+test_registry_busy_is_deferred_without_plan_or_deletion_then_expires (Backend.test_backup_retention.RetentionTests.test_registry_busy_is_deferred_without_plan_or_deletion_then_expires) ... Managed backup expiry worker started
+ok
+test_registry_lock_excludes_creation_prune_and_managed_reads (Backend.test_backup_retention.RetentionTests.test_registry_lock_excludes_creation_prune_and_managed_reads) ... ok
+test_restore_obeys_managed_registry_lock (Backend.test_backup_retention.RetentionTests.test_restore_obeys_managed_registry_lock) ... ok
+test_tampering_stops_worker_and_restart_does_not_retry (Backend.test_backup_retention.RetentionTests.test_tampering_stops_worker_and_restart_does_not_retry) ... Managed backup expiry worker started
+Managed backup expiry failed; inspect private status; worker stopped
+Managed backup expiry failed; inspect private status; worker stopped
+ok
+test_unknown_status_file_is_preserved (Backend.test_backup_retention.RetentionTests.test_unknown_status_file_is_preserved) ... Managed backup expiry failed; status file unavailable; operator inspection required
+Managed backup expiry failed; status file unavailable; operator inspection required
+ok
+test_worker_scans_immediately_then_periodically (Backend.test_backup_retention.RetentionTests.test_worker_scans_immediately_then_periodically) ... Managed backup expiry worker started
+ok
+test_active_work_refused_in_snapshot_current_and_usage (Backend.test_backup_restore.BackupRestoreTests.test_active_work_refused_in_snapshot_current_and_usage) ... ok
+test_actual_cli_populated_deletion_and_validation (Backend.test_backup_restore.BackupRestoreTests.test_actual_cli_populated_deletion_and_validation) ... ok
+test_existing_canonical_single_link_lease_required (Backend.test_backup_restore.BackupRestoreTests.test_existing_canonical_single_link_lease_required) ... ok
+test_founder_identity_migration_refused (Backend.test_backup_restore.BackupRestoreTests.test_founder_identity_migration_refused) ... ok
+test_hash_tampering_and_overwrite_refused (Backend.test_backup_restore.BackupRestoreTests.test_hash_tampering_and_overwrite_refused) ... ok
+test_inconsistent_deletion_and_unrevoked_credentials_refused (Backend.test_backup_restore.BackupRestoreTests.test_inconsistent_deletion_and_unrevoked_credentials_refused) ... ok
+test_lease_and_sqlite_writers_excluded (Backend.test_backup_restore.BackupRestoreTests.test_lease_and_sqlite_writers_excluded) ... ok
+test_missing_current_and_unknown_schema_refused (Backend.test_backup_restore.BackupRestoreTests.test_missing_current_and_unknown_schema_refused) ... ok
+test_new_owner_refused (Backend.test_backup_restore.BackupRestoreTests.test_new_owner_refused) ... ok
+test_pending_deletion_cli_refusal (Backend.test_backup_restore.BackupRestoreTests.test_pending_deletion_cli_refusal) ... ok
+test_post_snapshot_correction_refused (Backend.test_backup_restore.BackupRestoreTests.test_post_snapshot_correction_refused) ... ok
+test_post_snapshot_source_deletion_refused (Backend.test_backup_restore.BackupRestoreTests.test_post_snapshot_source_deletion_refused) ... ok
+test_private_quarantine_required_for_validation (Backend.test_backup_restore.BackupRestoreTests.test_private_quarantine_required_for_validation) ... ok
+test_reenrollment_refused (Backend.test_backup_restore.BackupRestoreTests.test_reenrollment_refused) ... ok
+test_rotation_preserves_current_credentials_and_all_usage (Backend.test_backup_restore.BackupRestoreTests.test_rotation_preserves_current_credentials_and_all_usage) ... ok
+test_sidecars_and_symlinks_refused (Backend.test_backup_restore.BackupRestoreTests.test_sidecars_and_symlinks_refused) ... ok
+test_actual_maintenance_process_never_opens_databases_or_accepts_work (Backend.test_maintenance.MaintenanceTests.test_actual_maintenance_process_never_opens_databases_or_accepts_work) ... FAIL
+test_database_lease_blocks_normal_startup_before_ledger_access (Backend.test_maintenance.MaintenanceTests.test_database_lease_blocks_normal_startup_before_ledger_access) ... ok
+test_flag_requires_explicit_boolean (Backend.test_maintenance.MaintenanceTests.test_flag_requires_explicit_boolean) ... ok
+test_exclusive_lock_and_crash_recovery_preserve_usage (Backend.test_hosted_startup.HostedStartupTests.test_exclusive_lock_and_crash_recovery_preserve_usage) ... ok
+
+======================================================================
+FAIL: test_actual_maintenance_process_never_opens_databases_or_accepts_work (Backend.test_maintenance.MaintenanceTests.test_actual_maintenance_process_never_opens_databases_or_accepts_work)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/n.chinlue/.codex/worktrees/account-sign-in/voice-companion/Backend/test_maintenance.py", line 46, in test_actual_maintenance_process_never_opens_databases_or_accepts_work
+    else: self.fail('Maintenance did not become healthy')
+          ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Maintenance did not become healthy
+
+----------------------------------------------------------------------
+Ran 44 tests in 6.595s
+
+FAILED (failures=1)

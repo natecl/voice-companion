@@ -18,6 +18,7 @@ import sqlite3
 
 from account_erasure import erase_content
 from maintenance import database_lease
+from managed_backups import snapshot_read_lease
 from memory_store import MemoryStore
 
 # Exact reviewed schema21 and account-enabled usage schema (including grants).
@@ -166,7 +167,7 @@ def prepare(directory, snapshot, output, *, snapshot_hash, memory_hash, usage_ha
     if output.exists() or output.is_symlink() or output.parent.resolve() != output.parent:
         raise ValueError('Require new quarantine directory with canonical parent')
     regular(directory/'database.lock')  # Existing runtime lease; do not create authority.
-    with database_lease(directory), ExitStack() as stack:
+    with database_lease(directory), snapshot_read_lease(paths[0]), ExitStack() as stack:
         old, current, usage = locked_inputs(stack, paths, pins)
         erased_owners = check_relationships(old, current, usage)
         output.mkdir(mode=0o700)
@@ -226,7 +227,7 @@ def validate(output, manifest_hash):
     directory = Path(manifest['directory'])
     paths = [Path(manifest['snapshot']), directory/'memory.sqlite', directory/'usage.sqlite']
     regular(directory/'database.lock')  # Existing runtime lease; do not create authority.
-    with database_lease(directory), ExitStack() as stack:
+    with database_lease(directory), snapshot_read_lease(paths[0]), ExitStack() as stack:
         _, current, usage = locked_inputs(stack, paths, manifest['input_hashes'])
         for name, kind in (('memory.sqlite', 'memory'), ('usage.sqlite', 'usage')):
             pin(output/name, manifest['candidate_hashes'][name])
