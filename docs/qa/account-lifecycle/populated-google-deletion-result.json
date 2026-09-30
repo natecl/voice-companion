@@ -1,0 +1,18 @@
+{
+  "scope": "isolated local populated Google deletion",
+  "owner_content_erased": true,
+  "identity_reservation_released": true,
+  "deletion_state": "complete",
+  "native_sessions_and_outbox_erased": true,
+  "budget_history_unchanged": true,
+  "foreign_keys_valid": true,
+  "google_revocation_success_counter": 2,
+  "paid_calls": 0,
+  "hosted_data_changed": false,
+  "reenrollment_new_owner": true,
+  "reenrollment_all_content_tables_empty": true,
+  "previous_apple_and_google_content_stays_erased": true,
+  "same_google_account_selection": "founder reported; prior subject erased",
+  "signed_out_after_relaunch": true,
+  "empty_notes_visually_verified": true
+}

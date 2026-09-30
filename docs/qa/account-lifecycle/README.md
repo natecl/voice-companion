@@ -224,3 +224,27 @@ deletion recovery, independent-human isolation, physical Release acceptance or
 founder migration. Hosted data and the physical phone were unchanged; no paid
 provider/model calls occurred. The Google account remains signed in in the local
 QA simulator. Only seeded fictional data was erased.
+
+
+## Populated Google deletion and empty re-enrollment
+
+September 30, same signed Release binary and isolated local server. After fresh
+readiness, founder deleted the Google account containing the compass fixture via
+the native profile. The real Google revoke endpoint returned success (counter
+advanced from one to two), deletion became complete and its identity reservation
+was released. Every inventoried content/identity/credential-owner table was empty
+for that owner; the owner row was absent and foreign-key checks passed. Native
+session/outbox directories contained only deletion tombstones. Budget, policy and
+request hashes still matched the pre-deletion baseline. Terminate/relaunch stayed
+signed out. The founder then selected the same Google account as instructed;
+re-enrollment produced a new owner, distinct from both erased fixture owners,
+with zero source/note/turn/other content rows. Notes visibly showed its empty state.
+Both previous owners' content remained absent. Old provider subjects were erased,
+so selection of the same Google identity is founder-reported rather than an old
+subject comparison. See `populated-google-deletion-result.json` and the three
+`populated-google-*` screenshots.
+
+This closes the populated Google deletion/re-enrollment check in this local
+real-provider environment; it does not establish fresh-proof failure recovery or
+physical-device acceptance. Hosted founder data and the phone remain unchanged.
+No model/paid calls. The simulator is now signed into the new empty Google account.

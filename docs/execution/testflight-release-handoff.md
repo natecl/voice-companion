@@ -74,7 +74,7 @@ The [real-provider local QA](../qa/account-lifecycle/README.md) now covers popul
 provider switching, backend refresh rotation/replay rejection, and populated Apple
 deletion while preserving Google's notes/chat and all spending rows. Google then
 reauthenticated to the same owner and stayed signed in after relaunch. Native
-automatic timed refresh, populated Google deletion, real fresh-proof recovery,
+automatic timed refresh, real fresh-proof recovery,
 independent-human isolation and physical acceptance remain open.
 
 [Server migration](../qa/founder-migration/README.md) passed a coordinated private
@@ -85,3 +85,8 @@ Draft PR166 and PR167 remain undeployed/unmerged; no live founder migration occu
 Fresh Google proof, coordinated operator cutover and physical migration remain
 required. These additions supersede older pending-status wording above only for
 the specific tested scopes; Phase 1 and TestFlight readiness are still incomplete.
+
+Populated Google deletion also passed in the same isolated environment: real
+revocation success, server/native content erasure, preserved budget history,
+signed-out relaunch, and re-enrollment into a new empty owner. The native Notes
+empty state was inspected. This completes that bounded check, not Phase 1.
