@@ -6,6 +6,7 @@ from contextlib import suppress
 import os
 from pathlib import Path
 from service_policy import open_ledger
+import maintenance
 from ask import AskService, Luna
 from relay import Relay
 from memory_store import MemoryStore
@@ -88,6 +89,10 @@ def validate_rework_allocations(admission, *, rollout=False, verification=False)
 
 
 async def main():
+    os.umask(0o077)
+    if maintenance.enabled(os.environ):
+        await maintenance.run(Path(os.environ['VOICE_DATA_DIR']), int(os.environ.get('PORT', '10000')))
+        return
     notes_enabled=notes_setting(os.environ)
     notes_recall_enabled=notes_recall_setting(os.environ)
     rework_enabled,companion_enabled,semantic_enabled=rework_settings(os.environ)
@@ -99,7 +104,7 @@ async def main():
     os.umask(0o077)
     directory = Path(os.environ['VOICE_DATA_DIR'])
     # Keep this descriptor open until all connections and the ledger are closed.
-    with (directory / 'service.lock').open('a') as lock:
+    with (directory / 'service.lock').open('a') as lock, maintenance.database_lease(directory):
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         key = os.environ['XAI_API_KEY'].strip()
         if not key:
