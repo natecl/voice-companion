@@ -420,3 +420,11 @@ required decision or judgment, or physical behavior that automation cannot prove
 check needs founder participation; it is not a new permission gate for each
 agent-operated simulator action. Keep live-provider evidence distinct from
 fixtures and preserve private result bundles containing account identifiers.
+
+Founder release-sequencing clarification, September 30: the existing mascot is
+temporary and the founder will provide the final mascot later. Its unresolved
+distribution rights are an asset gate before distributing that image, not a
+reason to stop account, plan, paywall or other release preparation. Do not ship
+the unlicensed placeholder or invent a replacement design. Plans and a working
+paywall remain in the requested release scope; creating the App Store record
+does not mean the app is ready for submission or that billing may be skipped.

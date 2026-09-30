@@ -26,6 +26,10 @@ declaration was made. Before filling review metadata or uploading a build,
 resolve the documented temporary companion-artwork distribution rights and
 missing app icon; the existing UI design remains the source of truth.
 
+Founder clarified that the final mascot will be supplied later. Do not block
+unrelated account, pricing or billing engineering on that asset; keep it as a
+pre-distribution gate. The current placeholder is not cleared for distribution.
+
 Reviewed feature evidence + version pairing → signed archive/configuration → authorized TestFlight upload → independent install/update.
 
 - [project.yml](../../../project.yml)

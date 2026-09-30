@@ -18,6 +18,13 @@ Updated September 30, 2026. **Start here when continuing in a new agent.** This 
 
 ## Product decisions versus proposals
 
+September 30 founder clarification: final mascot will be supplied later; the
+current temporary artwork is not cleared for distribution. Defer that asset
+gate while continuing the phased engineering work. Preserve the UI design
+system and do not distribute the placeholder or invent a replacement. Plans,
+limits and the real paywall remain required; app-record setup is not release
+readiness or authorization to skip billing.
+
 Founder asks to include accounts, paywall and price plans in this release plan. Freemium plus subscription is already agreed. Founder selected both Google and Apple sign-in on September 29, with Google above Apple in the UI. The earlier Apple-first/Google-later proposal is superseded. Founder confirmed separate Google and Apple accounts with persistent sign-in on September 30, and selected Google for the existing founder development data. See the [migration preparation](founder-account-migration.md); server and physical Google migration acceptance are complete. Exact prices, allowances, billing periods and paid-pilot timing are **not selected**. Free and Pro, and a free student pilot before charging while purchases are tested in sandbox, remain proposals, not implementation facts or permission to charge.
 
 Keep the five-minute internal capture cap until separately changed and validated. Do not promise full lectures. Calendar/email/messages, outside-knowledge expansion, TTS and silent always-on capture remain outside this release slice. Preserve the single persistent chat, ordinary multi-message interjections, Quiet/End bounds, upright paperclip, purple actions and approved shared interface. New account/paywall surfaces should follow that design, not redesign the app.
