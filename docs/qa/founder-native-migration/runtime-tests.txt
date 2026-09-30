@@ -1,0 +1,12 @@
+Test Suite 'Selected tests' started at 2026-09-30 02:48:58.408.
+Test Suite 'PhoneUITests.xctest' started at 2026-09-30 02:48:58.408.
+Test Suite 'FounderMigrationUITests' started at 2026-09-30 02:48:58.408.
+Test Case '-[PhoneUITests.FounderMigrationUITests testRuntimeKeychainMigrationAcrossFourLaunches]' started.
+Test Case '-[PhoneUITests.FounderMigrationUITests testRuntimeKeychainMigrationAcrossFourLaunches]' passed (17.662 seconds).
+Test Suite 'FounderMigrationUITests' passed at 2026-09-30 02:49:16.071.
+	 Executed 1 test, with 0 failures (0 unexpected) in 17.662 (17.663) seconds
+Test Suite 'PhoneUITests.xctest' passed at 2026-09-30 02:49:16.072.
+	 Executed 1 test, with 0 failures (0 unexpected) in 17.662 (17.664) seconds
+Test Suite 'Selected tests' passed at 2026-09-30 02:49:16.072.
+	 Executed 1 test, with 0 failures (0 unexpected) in 17.662 (17.664) seconds
+** TEST SUCCEEDED **

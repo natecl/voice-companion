@@ -9,6 +9,7 @@ import uuid
 
 from admission import Rejected
 from account_tokens import VerifiedIdentity, GOOGLE, APPLE
+from account_deletion import SCHEMA as DELETION_SCHEMA, identity_digest
 
 ACCESS_SECONDS = 3600
 REFRESH_SECONDS = 30 * 86400
@@ -32,6 +33,8 @@ class AccountSessions:
             CREATE INDEX IF NOT EXISTS account_session_family ON account_session(family);
         ''')
 
+        self.db.executescript(DELETION_SCHEMA)
+
     def challenge(self, provider):
         if provider not in ('google', 'apple'):
             raise Rejected('invalid_account_request')
@@ -53,20 +56,30 @@ class AccountSessions:
             raise Rejected('invalid_account_challenge')
         return digest
 
-    def exchange(self, challenge, provider, identity, identity_token):
+    def require_identity_available(self, identity):
+        if self.db.execute('SELECT 1 FROM deleting_identity WHERE digest=?',
+                           (identity_digest(identity.issuer, identity.subject),)).fetchone():
+            raise Rejected('account_deletion_pending')
+
+    def consume_identity(self, challenge, provider, identity, identity_token):
+        """Consume a verified proof inside the caller's admission transaction."""
         if not isinstance(identity, VerifiedIdentity) or identity.issuer != {'google': GOOGLE, 'apple': APPLE}.get(provider):
             raise Rejected('invalid_identity_token')
         if not isinstance(identity_token, str) or not 1 <= len(identity_token) <= 16384:
             raise Rejected('invalid_identity_token')
+        digest = self.nonce(challenge, provider)
+        if identity.expires <= self.admission.clock():
+            raise Rejected('invalid_identity_token')
         fingerprint = hashlib.sha256(identity_token.encode()).hexdigest()
+        if self.db.execute('SELECT 1 FROM account_exchange WHERE digest=?', (fingerprint,)).fetchone():
+            raise Rejected('identity_token_replayed')
+        self.db.execute('DELETE FROM account_challenge WHERE digest=?', (digest,))
+        self.db.execute('INSERT INTO account_exchange VALUES(?,?)', (fingerprint, identity.expires))
+
+    def exchange(self, challenge, provider, identity, identity_token):
         with self.admission.transaction():
-            digest = self.nonce(challenge, provider)
-            if identity.expires <= self.admission.clock():
-                raise Rejected('invalid_identity_token')
-            if self.db.execute('SELECT 1 FROM account_exchange WHERE digest=?', (fingerprint,)).fetchone():
-                raise Rejected('identity_token_replayed')
-            self.db.execute('DELETE FROM account_challenge WHERE digest=?', (digest,))
-            self.db.execute('INSERT INTO account_exchange VALUES(?,?)', (fingerprint, identity.expires))
+            self.consume_identity(challenge, provider, identity, identity_token)
+            self.require_identity_available(identity)
             credential, token = self.admission.enroll(lifetime_seconds=ACCESS_SECONDS)
             # A memory failure rolls back issuance. A crash after this independent
             # DB commit can leave an unreachable credential mapping, never access.

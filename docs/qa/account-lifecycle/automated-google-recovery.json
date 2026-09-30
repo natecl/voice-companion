@@ -1,0 +1,22 @@
+{
+  "date": "2026-09-30",
+  "scope": "isolated localhost Google QA account, native Release simulator with real provider proof",
+  "operator_setup": "separate synthetic app session deliberately stopped after accepted content erasure; original receipt never staged in native Keychain",
+  "automation": "XCTest sign-out, real Google saved-account selection, OS permission, normal-enrollment rejection, fresh-proof recovery and signed-out restart",
+  "recovery_ui_test_passed": true,
+  "deletion_complete": true,
+  "google_revoke_success_increment": 1,
+  "identity_reservation_released": true,
+  "recovery_receipt_count": 1,
+  "new_content_sessions_issued": 0,
+  "owner_and_identity_erased": true,
+  "budget_policy_request_rows_unchanged": true,
+  "foreign_keys_valid": true,
+  "human_clicks_required_this_run": 0,
+  "paid_calls": 0,
+  "limitations": "Intentional interrupted-client setup, not a real network outage. Google recovery only; Apple fresh-proof and physical deletion remain separate. Provider credentials and result bundles are private.",
+  "native_application_source": "ebcfbd2 (application code unchanged by UI-test additions)",
+  "installed_release_binary_sha256": "f90fe5e8e733782b934e5aec707d2b845d36248ff030f431e49b424407d839ad",
+  "ui_test_source_sha256": "6e7e22451dd585322af080283298fd5690ae409c2a95745c866638858a0ad64f",
+  "native_owner_directories_contain_only_deletion_markers": true
+}

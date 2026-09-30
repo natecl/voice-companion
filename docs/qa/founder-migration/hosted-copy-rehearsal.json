@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "code_base": "588c08f",
+  "migration_module_sha256": "86f17aac7dda1eb86e79af1bcb427d1c5fff1e3a117d526a76e25e3e8c4bc9ca",
+  "snapshot": "google-migration-rehearsal-20260930-01",
+  "downloaded_database_hashes_verified": 24,
+  "memory_tables_compared": 42,
+  "usage_tables_compared": 18,
+  "other_database_files_byte_unchanged": 22,
+  "credentials_revoked": 5,
+  "allowed_changes": [
+    "selected Google identity owner",
+    "affected credential revoked flags"
+  ],
+  "schema_preparation": "memory 20 to 21 and account deletion tables on copies before comparison",
+  "all_other_rows_unchanged": true,
+  "pristine_copies_unchanged": true,
+  "integrity_checks": "ok",
+  "foreign_key_checks": "ok",
+  "live_data_changed": false,
+  "fresh_google_identity_proof": false,
+  "native_migration_exercised": false,
+  "paid_calls": 0
+}

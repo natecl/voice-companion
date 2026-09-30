@@ -49,6 +49,8 @@ class AppleOAuth:
                 if len(raw) > 32768:
                     raise Rejected('identity_provider_unavailable')
                 if endpoint == 'revoke':
+                    if response.status != 200:
+                        raise Rejected('identity_provider_unavailable')
                     return None
                 result = json.loads(raw)
                 if not isinstance(result, dict) or 'error' in result:

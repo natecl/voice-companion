@@ -1,0 +1,25 @@
+{
+  "scope": "isolated simulator actual localhost network failure",
+  "failure": "server unavailable during naturally expired native session refresh",
+  "observed_screen": "Sign-in screen with Could not connect to the server.",
+  "local_content_files_preserved": 13,
+  "fixture": "Explicitly seeded fictional violet lighthouse transcript; not real capture.",
+  "server_resumed": true,
+  "recovery": "same owner, persistent sign-in and visible transcript reopen verified",
+  "paid_calls": 0,
+  "same_apple_owner_after_fresh_sign_in": true,
+  "original_local_files_preserved_after_sign_in": 13,
+  "signed_in_restart_executed_tests": 1,
+  "signed_in_restart_passed": true,
+  "transcript_reopen_executed_tests": 1,
+  "transcript_reopen_passed": true,
+  "transcript_screenshot_inspected": true,
+  "qa_corrections": [
+    "Transcript accessibility role is switch, not button.",
+    "Relaunch before navigation clears prior test panel state."
+  ],
+  "date": "2026-09-30",
+  "native_app_code": "1da7e188 (unchanged by subsequent documentation, budget and QA tooling)",
+  "fixture_provenance": "One owner-scoped fictional transcript seeded into isolated simulator before failure; no microphone or model generation.",
+  "limitations": "Network failure recovery only; provider rejection still pending. Two unrevoked server sessions after login include the old unreachable-session record; no claim that network loss revokes server credentials."
+}

@@ -1,5 +1,7 @@
 # Companion and recording-library interface
 
+> Historical SwiftUI interface checkpoint. The opt-in rollout and visible citation navigation below predate the delivered shared iPhone room and release chat without source controls; internal provenance and note passage links remain separate. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 September 26, 2026. Opt in with `--companion-ui`; normal installed behavior remains unchanged until the matching hosted rollout is approved.
 
 The main Companion view has ongoing server-owned history, a draft, explicit recording attachment and bounded memory preference. The Recordings view preserves transcripts and legacy personal-note access/deletion. Separate selection state means opening a past recording or citation never replaces the active capture. Both surfaces stay mounted to preserve reading position during navigation. Capture/stop controls stay available across both. The mobile keyboard dismisses on Send or opening Recordings.

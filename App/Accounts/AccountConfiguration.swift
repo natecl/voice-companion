@@ -1,6 +1,7 @@
 import Foundation
 
 struct AccountConfiguration {
+    static var deletionEnabled: Bool { Bundle.main.object(forInfoDictionaryKey: "EllisAccountDeletionEnabled") as? Bool ?? false }
     let transport: AccountTransport
     let googleClientID: String
     let googleServerClientID: String

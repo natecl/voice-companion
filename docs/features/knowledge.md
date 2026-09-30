@@ -1,10 +1,10 @@
 # Knowledge feature map
 
-> Current September 29 release status and remaining phases: [TestFlight handoff](../execution/testflight-release-handoff.md). UI/integration PR154–155 are merged and the internal phone build is installed; backend rollout, independent accounts and paid plans remain pending. Earlier dated evidence below is historical, not a fresh release attestation.
+> September 30 source/evidence audit at `7079427`: UI/integration PR154–155 are merged; account/lifecycle PR159–177 remain unmerged. Recorded hosted account/deletion deployment is `208ca34`, schema21, with a matching development-signed Release phone candidate and bounded physical checks. Later local fixes are not deployed or installed by this audit. Phase 1 remains incomplete; pricing and paywall phases have not started. See the [release handoff](../execution/testflight-release-handoff.md) for exact version and evidence boundaries.
 
 September 29 direction: [invited social presence](../social-presence-experience.md) supersedes note-taking-led positioning; see the [revised execution phases](../execution/demo-testflight-phases.md). Earlier implementation and rollout claims below remain dated evidence, not fresh runtime inspection.
 
-Updated September 28, 2026 against main `660e4c7`. Read [product definition](../product-source-of-truth.md), [current state](../current-state.md), [feature details](features.md) and [gap audit](../product-vision-audit-2026-09-28.md). This map distinguishes implemented storage/knowledge from target capabilities; it does not claim all sources are connected.
+Knowledge foundations audited September 28 at `660e4c7`; current implementation boundaries reconciled September 30 at `7079427`. Read [product definition](../product-source-of-truth.md), [current state](../current-state.md), [feature details](features.md) and [gap audit](../product-vision-audit-2026-09-28.md). This map distinguishes implemented storage/knowledge from target capabilities; it does not claim all sources are connected.
 
 ## Implemented knowledge layers
 
@@ -15,12 +15,12 @@ Updated September 28, 2026 against main `660e4c7`. Read [product definition](../
 | Generated recording notes | Title, overview, sections with original passage references; `recording_notes.py`, `notes_generation.py`, `notes_search.py` | Derived discovery aid. Terminal capture schedules generation; no live coauthoring or note editing. Never independent evidence for biography. |
 | Supported personal/context knowledge | Source-scoped observations, exact support, entity/relationship and modality/time judgments; `memory_source_pipeline.py`, `memory_source_verification.py`, `memory_atomic.py`, `memory_identity.py` | Luna extracts, Sol checks factual support, Jev handles modality/time in active recording route; identity has separate judgments. Legacy/personal-text routes differ. Supported statement is not necessarily current truth. |
 | Lifecycle | Correction, uncertainty, expiry, provenance; `memory_transitions.py`, `memory_expiry.py`, `memory_related.py` | Preserve competing evidence and unknown attribution. Newer does not automatically mean correct. Stable knowledge does not simply expire. |
-| Discovery and answer context | Notes/transcript/personal/retained evidence, local embeddings, Jev ranking and independent reserve; `notes_recall.py`, `memory_context.py` | Deployed Ask queries come from user questions. The local proactive path derives a bounded query from finalized conversation text. Retrieval can miss relevant material; source qualification must reach generation. Proactive runtime remains disabled. |
+| Discovery and answer context | Notes/transcript/personal/retained evidence, local embeddings, Jev ranking and independent reserve; `notes_recall.py`, `memory_context.py` | Deployed Ask queries come from user questions. The implemented gated proactive path derives a bounded query from finalized conversation text. Retrieval can miss relevant material; source qualification must reach generation. Proactive runtime is gated; recorded internal experiments do not establish a currently enabled grant. |
 | Chat history | Persistent user/assistant turns and internal references; `companion_chat.py` | Continuity, not automatic evidence for user biography. Ordinary recording deletion preserves historical answers while removing unavailable links. Release chat hides source controls; Notes passage links remain. |
-| Retained knowledge after note deletion | Eligible committed claims and bounded existing excerpts; `memory_retention.py` | Does not retain a viewable full transcript. Ordinary delete is not complete erasure. Explicit account/memory erasure remains unimplemented. |
+| Retained knowledge after note deletion | Eligible committed claims and bounded existing excerpts; `memory_retention.py` | Does not retain a viewable full transcript. Ordinary delete is not complete erasure. Account deletion is implemented and internally deployed; its complete lifecycle/backup acceptance remains open. Separate memory-management UX is not delivered. |
 | General model knowledge | Luna answers/brainstorms via `ask.py`, `companion-chat-v3.md` | No live web tools (`tools=[]`); no assured freshness or specialized professional accuracy. Generated ideas must remain identifiable as ideas. |
 
-## Full-vision additions, not implemented
+## Full-vision gaps and bounded foundations
 
 | Source or capability | Required knowledge semantics | First proof needed |
 | --- | --- | --- |
@@ -39,10 +39,14 @@ Explicit source connection is separate from permission to use every item in ever
 
 ## Debugging route
 
-For a missed or wrong contribution, inspect source availability → speaker/subject identity → time/revision → candidate retrieval → selected evidence → timing/silence decision → generated wording → delivery. Today only the source/retrieval/explicit-answer portions exist. Reuse saved events and judgments for local iteration; paid runs and physical checks must answer a specific unresolved question. [Lessons](lessons.md) preserve known failures; [audit](../product-vision-audit-2026-09-28.md) provides proposed build gates.
+For a missed or wrong contribution, inspect source availability → speaker/subject identity → time/revision → candidate retrieval → selected evidence → timing/silence decision → generated wording → delivery. The gated proactive scheduling, judgment and durable-delivery path also exists; bounded experiments do not establish broad relevance or participation quality. Reuse saved events and judgments for local iteration; paid runs and physical checks must answer a specific unresolved question. [Lessons](lessons.md) preserve known failures; [audit](../product-vision-audit-2026-09-28.md) provides proposed build gates.
 
 
-Current next feature: [proactive contributions from past notes — MVP implementation plan](../proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. A [local native slice](../proactive-native.md) now reuses local evidence discovery without a user question. The initial model comparison favors Luna provisionally; three additional retrieved-evidence negatives returned silence (seven calls total). See the [model evidence](../proactive-model-screen.md). Hosted/release enablement, broader quality and physical acceptance remain pending.
+## Historical proactive and presentation checkpoint ledger
+
+The following entries preserve sequential experimental evidence, not current phase priority or runtime attestations. Phase 1 accounts/data lifecycle is the current release work.
+
+Historical next-feature selection: [proactive contributions from past notes — MVP implementation plan](../proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. A [local native slice](../proactive-native.md) now reuses local evidence discovery without a user question. The initial model comparison favors Luna provisionally; three additional retrieved-evidence negatives returned silence (seven calls total). See the [model evidence](../proactive-model-screen.md). Hosted/release enablement, broader quality and physical acceptance remain pending.
 
 The [proactive phone experiment](../proactive-phone-test.md) isolates two new video recordings from existing personal context and suppresses personal-learning jobs for those sources. Notes/transcript persistence remains enabled; this is an expiring test configuration, not a permanent change to knowledge learning.
 

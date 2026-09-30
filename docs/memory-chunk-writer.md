@@ -1,5 +1,7 @@
 # Evidence writer for long recordings
 
+> Historical long-source writer checkpoint. Its undeployed status, model roles and allowance describe that stage, before subsequent memory integration and rollout; preserve failed cases and their bounded conclusions. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 Status: backend integration verified; not deployed. This extends the bounded atomic writer from PR 41 through the existing deterministic/optional Jev chunk planner. It does not complete the whole memory rework or authorize hosted rollout.
 
 ## Delivered behavior

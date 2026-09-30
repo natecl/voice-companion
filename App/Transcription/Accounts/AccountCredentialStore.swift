@@ -7,16 +7,27 @@ struct StoredAccount: Codable, Sendable {
     let endpoint: URL
     let provider: AccountProvider
     let session: AccountSession
+    var googleGrant: GoogleAccountGrant? = nil
 }
 
 private struct AccountKeychainState: Codable {
     var account: StoredAccount?
+    var deletion: PendingAccountDeletion? = nil
 }
 
 enum AccountCredentialStore {
     private static var query: [String: Any] {
-        [kSecClass as String: kSecClassGenericPassword,
-         kSecAttrService as String: (Bundle.main.bundleIdentifier ?? "ai.voicecompanion") + ".accounts",
+        var service = (Bundle.main.bundleIdentifier ?? "ai.voicecompanion") + ".accounts"
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--account-keychain-fixture") {
+            // Every fixture has a separate Keychain service, even for malformed
+            // launch input. It can never read or replace real enrollment state.
+            let raw = ProcessInfo.processInfo.environment["ELLIS_ACCOUNT_QA_ID"] ?? "invalid"
+            service += ".qa." + (UUID(uuidString: raw)?.uuidString ?? "invalid")
+        }
+        #endif
+        return [kSecClass as String: kSecClassGenericPassword,
+         kSecAttrService as String: service,
          kSecAttrAccount as String: "session-v1",
          kSecAttrSynchronizable as String: false]
     }
@@ -24,6 +35,8 @@ enum AccountCredentialStore {
     static func save(_ account: StoredAccount) throws {
         _ = try AccountTransport(endpoint: account.endpoint)
         try account.session.validate()
+        try account.googleGrant?.validate()
+        guard try read()?.deletion == nil else { throw AccountFailure.deletionPending }
         try write(AccountKeychainState(account: account))
     }
 
@@ -60,8 +73,27 @@ enum AccountCredentialStore {
         return try JSONDecoder().decode(AccountKeychainState.self, from: data)
     }
 
+    static func pendingDeletion() throws -> PendingAccountDeletion? {
+        let pending = try read()?.deletion
+        try pending?.validate()
+        return pending
+    }
+
+    static func saveDeletion(_ pending: PendingAccountDeletion) throws {
+        try pending.validate()
+        let state = try read()
+        if let active = state?.account, active.session.owner != pending.owner { throw AccountFailure.signInRequired }
+        if let prior = state?.deletion, prior.owner != pending.owner { throw AccountFailure.deletionPending }
+        try write(AccountKeychainState(account: nil, deletion: pending))
+    }
+
+    static func completeDeletion(_ id: UUID) throws {
+        guard let state = try read(), state.account == nil, state.deletion?.id == id else { throw AccountFailure.cancelled }
+        try write(AccountKeychainState(account: nil))
+    }
+
     static func clear() throws {
         // Keep a durable signed-out marker: never fall back to the legacy owner.
-        try write(AccountKeychainState(account: nil))
+        try write(AccountKeychainState(account: nil, deletion: try read()?.deletion))
     }
 }

@@ -1,0 +1,100 @@
+Test Suite 'Selected tests' started at 2026-09-30 05:05:47.854.
+Test Suite 'CoreTests.xctest' started at 2026-09-30 05:05:47.854.
+Test Suite 'AccountSessionTests' started at 2026-09-30 05:05:47.854.
+Test Case '-[CoreTests.AccountSessionTests testAccountStoreRejectsOtherOwnerAndUnownedLegacyRecording]' started.
+Test Case '-[CoreTests.AccountSessionTests testAccountStoreRejectsOtherOwnerAndUnownedLegacyRecording]' passed (0.003 seconds).
+Test Case '-[CoreTests.AccountSessionTests testConcurrentRequestsShareOneRefresh]' started.
+Test Case '-[CoreTests.AccountSessionTests testConcurrentRequestsShareOneRefresh]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testExpiredRefreshClearsSessionBeforeAnotherOwnerCanSignIn]' started.
+Test Case '-[CoreTests.AccountSessionTests testExpiredRefreshClearsSessionBeforeAnotherOwnerCanSignIn]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testLateRefreshCannotRestoreSignedOutAccount]' started.
+Test Case '-[CoreTests.AccountSessionTests testLateRefreshCannotRestoreSignedOutAccount]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testOwnerSwitchRequiresTeardownAndSignOut]' started.
+Test Case '-[CoreTests.AccountSessionTests testOwnerSwitchRequiresTeardownAndSignOut]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRefreshStartsBeforeFiveMinuteCaptureCouldOutliveAccess]' started.
+Test Case '-[CoreTests.AccountSessionTests testRefreshStartsBeforeFiveMinuteCaptureCouldOutliveAccess]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRequestRefreshRejectsChangedOwnerOrBackend]' started.
+Test Case '-[CoreTests.AccountSessionTests testRequestRefreshRejectsChangedOwnerOrBackend]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRestoredExpiredAccessRefreshesBeforeSaving]' started.
+Test Case '-[CoreTests.AccountSessionTests testRestoredExpiredAccessRefreshesBeforeSaving]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testTransportRejectsUnencryptedOrCredentialBearingEndpoints]' started.
+Test Case '-[CoreTests.AccountSessionTests testTransportRejectsUnencryptedOrCredentialBearingEndpoints]' passed (0.000 seconds).
+Test Suite 'AccountSessionTests' passed at 2026-09-30 05:05:47.864.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.008 (0.010) seconds
+Test Suite 'MemoryTests' started at 2026-09-30 05:05:47.865.
+Test Case '-[CoreTests.MemoryTests testAccountShutdownKeepsOutboxButStopsNetworkWork]' started.
+Test Case '-[CoreTests.MemoryTests testAccountShutdownKeepsOutboxButStopsNetworkWork]' passed (0.002 seconds).
+Test Case '-[CoreTests.MemoryTests testFailedStartDoesNotRewritePreviouslySavedMemorySource]' started.
+2026-09-30 05:05:47.869008-0400 xctest[92271:7434580] [memory] memory_sync_failed: MemorySyncFailure
+Test Case '-[CoreTests.MemoryTests testFailedStartDoesNotRewritePreviouslySavedMemorySource]' passed (0.015 seconds).
+Test Case '-[CoreTests.MemoryTests testLibraryDeletionPreservesActiveCaptureAndRequiresAcknowledgedAttachment]' started.
+Test Case '-[CoreTests.MemoryTests testLibraryDeletionPreservesActiveCaptureAndRequiresAcknowledgedAttachment]' passed (0.004 seconds).
+Test Case '-[CoreTests.MemoryTests testOfflineRecoveryExcludesLegacyAndKeepsLocalTranscript]' started.
+2026-09-30 05:05:47.888850-0400 xctest[92271:7434580] [memory] memory_sync_failed: MemorySyncFailure
+Test Case '-[CoreTests.MemoryTests testOfflineRecoveryExcludesLegacyAndKeepsLocalTranscript]' passed (0.019 seconds).
+Test Case '-[CoreTests.MemoryTests testOutboxRevisionDeletionWinsAndOwnerIsolation]' started.
+Test Case '-[CoreTests.MemoryTests testOutboxRevisionDeletionWinsAndOwnerIsolation]' passed (0.003 seconds).
+Test Case '-[CoreTests.MemoryTests testOutboxWriteFailureDoesNotRemoveSavedTranscript]' started.
+Test Case '-[CoreTests.MemoryTests testOutboxWriteFailureDoesNotRemoveSavedTranscript]' passed (0.001 seconds).
+Test Case '-[CoreTests.MemoryTests testPersonalNoteOfflineSaveRecoveryAndValidation]' started.
+2026-09-30 05:05:47.911323-0400 xctest[92271:7434580] [memory] memory_sync_failed: MemorySyncFailure
+Test Case '-[CoreTests.MemoryTests testPersonalNoteOfflineSaveRecoveryAndValidation]' passed (0.016 seconds).
+Test Case '-[CoreTests.MemoryTests testRealSocketControllerSaveRestartAndDelete]' started.
+Traceback (most recent call last):
+  File "<checkout>/Backend/memory_fixture.py", line 7, in <module>
+    from websockets.asyncio.server import serve
+ModuleNotFoundError: No module named 'websockets'
+<checkout>/UnitTests/MemoryTests.swift:196: error: -[CoreTests.MemoryTests testRealSocketControllerSaveRestartAndDelete] : XCTAssertTrue failed
+2026-09-30 05:05:48.662469-0400 xctest[92271:7434580] [Default] Exception attempting to serialize sanitized error of issue. All userInfo with be discarded except localized description: NSInvalidUnarchiveOperationException: The data couldn’t be read because it isn’t in the correct format.
+<checkout>/UnitTests/MemoryTests.swift:197: error: -[CoreTests.MemoryTests testRealSocketControllerSaveRestartAndDelete] : failed: caught error: "Error Domain=NSCocoaErrorDomain Code=260 "The file “config.json” couldn’t be opened because there is no such file." UserInfo={NSFilePath=<temporary-path>, NSURL=file://<temporary-path>, NSUnderlyingError=0x838f84000 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Test Case '-[CoreTests.MemoryTests testRealSocketControllerSaveRestartAndDelete]' failed (0.737 seconds).
+Test Suite 'MemoryTests' failed at 2026-09-30 05:05:48.663.
+	 Executed 8 tests, with 2 failures (1 unexpected) in 0.797 (0.799) seconds
+Test Suite 'RecordingLifecycleTests' started at 2026-09-30 05:05:48.663.
+Test Case '-[CoreTests.RecordingLifecycleTests testActiveBackgroundCapturePreservesConnectionUntilExplicitStop]' started.
+2026-09-30 05:05:48.664845-0400 xctest[92271:7434580] [session] microphone_recording_started
+2026-09-30 05:05:48.672821-0400 xctest[92271:7434580] [session] microphone_recording_completed
+Test Case '-[CoreTests.RecordingLifecycleTests testActiveBackgroundCapturePreservesConnectionUntilExplicitStop]' passed (0.016 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testBackgroundDuringPreparationCancelsWithoutStartingCapture]' started.
+Test Case '-[CoreTests.RecordingLifecycleTests testBackgroundDuringPreparationCancelsWithoutStartingCapture]' passed (0.008 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testBackgroundDuringPreparationPreservesPreviouslyOpenedRecording]' started.
+Test Case '-[CoreTests.RecordingLifecycleTests testBackgroundDuringPreparationPreservesPreviouslyOpenedRecording]' passed (0.016 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testBackgroundPersistsBeforeCancellationAndSurvivesReload]' started.
+2026-09-30 05:05:48.705158-0400 xctest[92271:7434580] [session] microphone_recording_started
+Test Case '-[CoreTests.RecordingLifecycleTests testBackgroundPersistsBeforeCancellationAndSurvivesReload]' passed (0.017 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testDeniedPermissionNeverStartsConnectionOrCreatesSession]' started.
+Test Case '-[CoreTests.RecordingLifecycleTests testDeniedPermissionNeverStartsConnectionOrCreatesSession]' passed (0.009 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testExplicitStopFinalizesAndSaves]' started.
+2026-09-30 05:05:48.731021-0400 xctest[92271:7434580] [session] microphone_recording_started
+2026-09-30 05:05:48.738637-0400 xctest[92271:7434580] [session] microphone_recording_completed
+Test Case '-[CoreTests.RecordingLifecycleTests testExplicitStopFinalizesAndSaves]' passed (0.041 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testNetworkFailurePreservesTextAndClearsRecording]' started.
+2026-09-30 05:05:48.772584-0400 xctest[92271:7434580] [session] microphone_recording_started
+Test Case '-[CoreTests.RecordingLifecycleTests testNetworkFailurePreservesTextAndClearsRecording]' passed (0.015 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testSignOutDuringCaptureRejectsLateEventsAndPreservesOwnerStorage]' started.
+2026-09-30 05:05:48.787823-0400 xctest[92271:7434580] [session] microphone_recording_started
+Test Case '-[CoreTests.RecordingLifecycleTests testSignOutDuringCaptureRejectsLateEventsAndPreservesOwnerStorage]' passed (0.017 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testSignOutDuringPreparationPreservesPreviouslyOpenedOwnerRecording]' started.
+Test Case '-[CoreTests.RecordingLifecycleTests testSignOutDuringPreparationPreservesPreviouslyOpenedOwnerRecording]' passed (0.022 seconds).
+Test Case '-[CoreTests.RecordingLifecycleTests testStopDuringPermissionWaitNeverCreatesConnection]' started.
+Test Case '-[CoreTests.RecordingLifecycleTests testStopDuringPermissionWaitNeverCreatesConnection]' passed (0.007 seconds).
+Test Suite 'RecordingLifecycleTests' passed at 2026-09-30 05:05:48.832.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.166 (0.169) seconds
+Test Suite 'CoreTests.xctest' failed at 2026-09-30 05:05:48.833.
+	 Executed 27 tests, with 2 failures (1 unexpected) in 0.972 (0.978) seconds
+Test Suite 'Selected tests' failed at 2026-09-30 05:05:48.833.
+	 Executed 27 tests, with 2 failures (1 unexpected) in 0.972 (0.979) seconds
+2026-09-30 05:05:58.099 xcodebuild[92239:7434285] [MT] IDETestOperationsObserverDebug: 10.516 elapsed -- Testing started completed.
+2026-09-30 05:05:58.099 xcodebuild[92239:7434285] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-30 05:05:58.099 xcodebuild[92239:7434285] [MT] IDETestOperationsObserverDebug: 10.516 sec, +10.516 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/ellis-capture-isolation-tests/Logs/Test/Test-Mac-2026.09.30_05-05-42--0400.xcresult
+
+Failing tests:
+	MemoryTests.testRealSocketControllerSaveRestartAndDelete()
+	MemoryTests.testRealSocketControllerSaveRestartAndDelete()
+
+** TEST FAILED **
+
+Testing started

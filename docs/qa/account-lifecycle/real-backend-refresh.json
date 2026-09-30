@@ -1,0 +1,23 @@
+{
+  "scope": "localhost TLS backend with real provider grants and synthetic app sessions",
+  "results": {
+    "google": {
+      "expired_access_refreshed": true,
+      "owner_preserved": true,
+      "refresh_rotated": true,
+      "replay_revoked_family": true
+    },
+    "apple": {
+      "expired_access_refreshed": true,
+      "owner_preserved": true,
+      "refresh_rotated": true,
+      "replay_revoked_family": true
+    }
+  },
+  "preexisting_sessions_unchanged": true,
+  "paid_calls": 0,
+  "limitations": [
+    "Not native timer/Keychain refresh acceptance",
+    "Google app refresh does not contact Google; Apple validates its stored real grant"
+  ]
+}

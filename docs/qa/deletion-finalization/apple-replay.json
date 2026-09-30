@@ -1,0 +1,30 @@
+{
+  "scope": "local deletion endpoint; synthetic identities/content and fixture Apple revocation",
+  "sqlite_version": "3.50.4",
+  "results": {
+    "populated_cross_owner_write_rejected": true,
+    "endpoint_revoke_erase_and_idempotent_response": true,
+    "both_revoked_sessions_rejected_http_401_and_refresh": true,
+    "other_account_transcript_notes_and_chat_unchanged": true,
+    "content_and_provider_identity_absent_after_reopen": true,
+    "reservation_rows_unchanged": true,
+    "fresh_provider_enrollment_has_new_empty_owner": true
+  },
+  "provider_calls": 0,
+  "source_sha256": {
+    "Backend/account_deletion.py": "cc5cd95e009a67b35c7563bdcda6e577123fdd74ad835b2dfb91174c05a4b26d",
+    "Backend/account_service.py": "91ac4a36cfed127b00bc39d210e2f1736b6c480df65ab48d54bb98ec80a15ebd",
+    "Backend/account_sessions.py": "8d51ae315be1be906fbca3697fea6ecae3fc044cb5005cf9d2e5db2e1ab5761a",
+    "Backend/relay.py": "b0046641576463eee9a08a570f50e0642dc049a59248738246cec6144f46f6aa",
+    "Backend/apple_oauth.py": "d3e2e9e4ee785bc7308898d7e952825fbe4d47ff0added5db3907282df72dbd1",
+    "scripts/qa/account-deletion.py": "530b1e436ffd0ea1895b5569758c120ff8655dd102f0d36f655ced6eb127a882"
+  },
+  "not_proven": [
+    "real Apple revocation",
+    "native local erasure",
+    "lost-client deletion recovery",
+    "operational backup retention",
+    "physical device",
+    "founder migration"
+  ]
+}

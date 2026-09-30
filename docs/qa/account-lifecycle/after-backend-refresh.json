@@ -1,0 +1,20 @@
+{
+  "scope": "isolated local real-provider QA",
+  "identity_counts": {
+    "google": 1,
+    "apple": 1
+  },
+  "schema": 21,
+  "sessions": 8,
+  "unrevoked_sessions": 1,
+  "deletions": {
+    "complete": 2
+  },
+  "provider_calls": {
+    "google.revoke.ok": 1,
+    "apple.redeem.ok": 2,
+    "apple.revoke.ok": 1,
+    "apple.validate_refresh.ok": 1
+  },
+  "model_spending_enabled": false
+}

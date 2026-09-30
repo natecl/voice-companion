@@ -4,6 +4,7 @@ struct ProviderAuthorization: Sendable {
     let identityToken: String
     let authorizationCode: String?
     let providerUserID: String?
+    var googleGrant: GoogleAccountGrant? = nil
 }
 
 @MainActor
