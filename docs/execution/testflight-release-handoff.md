@@ -103,3 +103,11 @@ files; the staged plan was read back exactly and the app launched. Await founder
 Google sign-in before claiming the native move or persistent-session acceptance.
 Do not replay the server migration or restore old ledgers over resumed activity.
 See the [receipt](../qa/founder-migration/live-cutover.json). No paid calls.
+
+Physical Google sign-in subsequently succeeded. Readback shows the native plan
+removed, legacy sessions directory moved into the preserved account owner, and
+all four session files plus 20 outbox files byte-identical. Hosted verification
+confirms the selected Google binding, one valid session and existing 23 source,
+four note and eight chat-turn rows. Controlled terminate/relaunch succeeded.
+Await founder visual confirmation of signed-in Home, Notes and chat before
+marking physical persistence/content acceptance complete.

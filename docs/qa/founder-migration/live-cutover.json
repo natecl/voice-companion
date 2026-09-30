@@ -33,9 +33,10 @@
     "build": "Release, development signed",
     "installed": true,
     "staged_plan_readback_matches": true,
-    "google_sign_in_and_storage_transition": "pending",
-    "physical_acceptance": "pending",
-    "launched": true
+    "google_sign_in_and_storage_transition": "passed: founder real Google sign-in; expected server owner and one valid session; plan removed; all four session and 20 outbox files preserved byte-for-byte",
+    "physical_acceptance": "pending visual confirmation after controlled relaunch",
+    "launched": true,
+    "controlled_relaunch_succeeded": true
   },
   "normal_service_verification": {
     "deployed_commit_matches": true,
@@ -47,5 +48,12 @@
     "learning": "idle; no failure"
   },
   "paid_provider_calls": 0,
-  "limitations": "Server mapping is applied and normal service is verified. Physical Google sign-in, native storage transition and content/relaunch acceptance remain pending. This is not TestFlight distribution readiness. Private backups, plans, identities and transcript files remain outside Git."
+  "limitations": "Server and native migration succeeded with exact data preservation. Physical visual content inspection and persistent sign-in after relaunch still require founder confirmation. Not TestFlight distribution readiness.",
+  "hosted_after_google": {
+    "verified_google_binding_preserved": true,
+    "valid_unrevoked_sessions": 1,
+    "source_rows": 23,
+    "note_rows": 4,
+    "chat_turns": 8
+  }
 }
