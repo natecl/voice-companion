@@ -45,7 +45,7 @@ Native transport, device-local account Keychain storage, refresh serialization a
 
 ## Next bounded work
 
-Complete provider-side redemption/revocation, verify deployed account endpoint configuration, and prove fresh Release enrollment plus two-user isolation through the connected native flow. Use a stable server-owned account identity independent of expiring session credentials. Never automatically merge accounts by matching email; preserve existing founder data through an explicitly verified migration. See the [first account packet](../../execution/account-enrollment-packet.md).
+Verify the candidate Apple code redemption, encrypted grant storage and provider revocation handling against Apple, verify deployed account endpoint configuration, and prove fresh Release enrollment plus two-user isolation through the connected native flow. Use a stable server-owned account identity independent of expiring session credentials. Never automatically merge accounts by matching email; preserve existing founder data through an explicitly verified migration. See the [first account packet](../../execution/account-enrollment-packet.md).
 
 ## Supporting context and evidence
 

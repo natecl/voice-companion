@@ -85,6 +85,19 @@ class AccountSessions:
         self.db.execute('UPDATE credential SET revoked=1 WHERE id IN '
                         '(SELECT credential FROM account_session WHERE family=?)', (family,))
 
+    def refresh_owner(self, token):
+        row = self.db.execute('SELECT s.owner,s.refresh_expires,s.consumed,c.revoked '
+                              'FROM account_session s JOIN credential c ON c.id=s.credential '
+                              'WHERE s.refresh_digest=?', (self.admission.digest(token),)).fetchone()
+        if row is None or row[1] <= self.admission.clock():
+            raise Rejected('unauthorized')
+        if row[2]:
+            # Preserve the committed replay-revocation behavior before any API call.
+            self.refresh(token)
+        if row[3]:
+            raise Rejected("unauthorized")
+        return row[0]
+
     def refresh(self, token):
         digest = self.admission.digest(token)
         replayed = False

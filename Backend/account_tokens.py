@@ -18,6 +18,7 @@ class VerifiedIdentity:
     issuer: str
     subject: str
     expires: int
+    audience: str = ""
 
 
 class AccountTokenVerifier:
@@ -75,7 +76,7 @@ class AccountTokenVerifier:
                 nonce = claims.get('nonce')
                 if not isinstance(nonce, str) or not hmac.compare_digest(nonce.encode(), expected_nonce.encode()):
                     raise Rejected('invalid_identity_token')
-            return VerifiedIdentity(GOOGLE if provider == 'google' else APPLE, subject, claims['exp'])
+            return VerifiedIdentity(GOOGLE if provider == 'google' else APPLE, subject, claims['exp'], claims['aud'])
         except jwt.PyJWKClientConnectionError:
             raise Rejected('identity_provider_unavailable') from None
         except (jwt.PyJWTError, ValueError, TypeError, KeyError):

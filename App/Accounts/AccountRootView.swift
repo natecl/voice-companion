@@ -62,7 +62,7 @@ final class AccountRuntime {
                 clientID: config.googleClientID, serverClientID: config.googleServerClientID)
             }
             let session = try await config.transport.exchange(provider: provider, challenge: challenge.challenge,
-                                                              identityToken: authorization.identityToken)
+                                                              identityToken: authorization.identityToken, authorizationCode: authorization.authorizationCode)
             let account = StoredAccount(endpoint: config.transport.endpoint, provider: provider, session: session)
             if manager == nil { manager = AccountSessionManager(account: nil) }
             try await manager?.install(account)

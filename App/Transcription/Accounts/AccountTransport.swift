@@ -61,9 +61,13 @@ struct AccountTransport: Sendable {
         return result
     }
 
-    func exchange(provider: AccountProvider, challenge: String, identityToken: String) async throws -> AccountSession {
-        try await session(operation: "exchange", fields: ["provider": provider.rawValue,
-                          "challenge": challenge, "identity_token": identityToken])
+    func exchange(provider: AccountProvider, challenge: String, identityToken: String, authorizationCode: String? = nil) async throws -> AccountSession {
+        var fields = ["provider": provider.rawValue, "challenge": challenge, "identity_token": identityToken]
+        if provider == .apple {
+            guard let authorizationCode, !authorizationCode.isEmpty else { throw AccountFailure.invalidResponse }
+            fields["authorization_code"] = authorizationCode
+        }
+        return try await session(operation: "exchange", fields: fields)
     }
 
     func refresh(_ token: String) async throws -> AccountSession {
