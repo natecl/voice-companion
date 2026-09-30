@@ -16,7 +16,7 @@ terminated/relaunched the app, and inspected the resulting screen again.
 | Apple enrollment/relaunch | One successful real Apple code redemption; one Apple identity and active session; home screen after relaunch |
 | Apple deletion/relaunch | One successful real Apple revocation call; identity removed and session revoked; signed-out screen after relaunch |
 
-Final state: zero enrolled identities, zero active sessions, two completed
+State after the initial deletion sequence: zero enrolled identities, zero active sessions, two completed
 deletions. Historical session/deletion ledger rows remain. The provider success
 responses establish accepted revocation requests; this run did not separately
 probe the deleted grants afterward. The success counters instrument the actual
@@ -60,3 +60,13 @@ synthetic tests remain supporting contract evidence, not substitutes for those
 remaining checks. Distribution, privacy/support, plans and billing gates remain
 open. Keep the dependent implementation drafts unmerged until their applicable
 acceptance and review gates are satisfied.
+
+## Google re-enrollment after deletion
+
+The founder was instructed to reuse the same Google account and completed the
+provider flow. One Google identity and one active session now exist, with a new
+owner distinct from both deleted owners; the home screen was inspected. See
+`google-reenrollment.json` and `ellis-real-google-reenrolled.png`. Original provider
+subjects were erased, so same-account selection is founder-reported rather than
+an independent comparison against a retained old subject. Apple re-enrollment,
+real refresh and populated isolation remain open.
