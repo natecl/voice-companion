@@ -1,0 +1,60 @@
+{
+  "date": "2026-09-30",
+  "candidate_commit": "208ca34bbc5fa81278c5ea5720230d1f36caec4b",
+  "maintenance_deploy": "dep-daubkv7avr4c738hr500",
+  "normal_deploy_requested": "dep-daubmspsrm7s73bke6n0",
+  "maintenance_verified": {
+    "exact_remote_commit": true,
+    "single_hosted_process_in_maintenance": true,
+    "database_open": false,
+    "workers": "stopped",
+    "account_http_status": 503,
+    "active_requests": 0
+  },
+  "fresh_backups": {
+    "hosted_databases": 24,
+    "download_hashes_and_integrity_verified": true,
+    "phone_sessions": 4,
+    "phone_acknowledged_outbox_records": 20,
+    "phone_original_files_preserved_after_install": 24
+  },
+  "server_apply": {
+    "status": "applied",
+    "schema": 21,
+    "credentials_revoked": 5,
+    "content_owner_preserved": true,
+    "memory_tables_compared": 42,
+    "usage_tables_compared": 18,
+    "other_database_files_byte_unchanged": 22,
+    "only_identity_and_credential_flags_changed": true
+  },
+  "native": {
+    "device": "iPhone 16 Pro",
+    "build": "Release, development signed",
+    "installed": true,
+    "staged_plan_readback_matches": true,
+    "google_sign_in_and_storage_transition": "passed: founder real Google sign-in; expected server owner and one valid session; plan removed; all four session and 20 outbox files preserved byte-for-byte",
+    "physical_acceptance": "passed: founder confirmed signed-in relaunch without prompt, existing notes and chat visible, and an existing note opens correctly",
+    "launched": true,
+    "controlled_relaunch_succeeded": true,
+    "acceptance_provenance": "founder response done to the three explicit physical checks; file preservation and server binding independently inspected"
+  },
+  "normal_service_verification": {
+    "deployed_commit_matches": true,
+    "schema": 21,
+    "health": "ready",
+    "account_deletion_enabled": true,
+    "notes": "idle; no failure",
+    "indexing": "idle; no failure",
+    "learning": "idle; no failure"
+  },
+  "paid_provider_calls": 0,
+  "limitations": "Founder Google migration and the exercised physical content/persistent-sign-in path passed. This does not prove physical Apple switching, deletion/recovery, independent-human isolation or TestFlight distribution readiness.",
+  "hosted_after_google": {
+    "verified_google_binding_preserved": true,
+    "valid_unrevoked_sessions": 1,
+    "source_rows": 23,
+    "note_rows": 4,
+    "chat_turns": 8
+  }
+}

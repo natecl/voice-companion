@@ -1,5 +1,7 @@
 # Saved-conversation Ask — verified internal checkpoint
 
+> Historical saved-session Ask checkpoint. Independent questions and per-session Q&A below predate the persistent main companion chat; its paid allocation is a historical grant, not an available balance. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 Checkpoint 3. Luna access was verified with a read-only model lookup. No comparative model evaluation is planned. A versioned 12-case synthetic functional suite is frozen in `Fixtures/ask-cases.json` before paid calls, with case-specific review criteria. The $5 total approved envelope remains; answers have a $2.50 allocation and $0.003 conservative per-request reservation.
 
 Implementation: authenticated Ask WebSocket, bounded same-session input, Luna Responses with reasoning off and Standard processing, partial streaming, explicit cancellation/errors, source ID validation, saved Q&A with immutable source snapshots, and deletion with the session. Each question is independent; prior Q&A is not supplied to the model. Background Ask cancels. Capture remains independent and is not used for these tests.

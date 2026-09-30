@@ -1,8 +1,14 @@
 # Founder account migration: decision and preparation
 
-September 30, 2026. Read-only inspection; no migration implemented or executed.
+## Recorded outcome — September 30, 2026
 
-Hosted memory remains schema 20. A fresh read-only SQLite inventory found two
+Server and physical Google migration acceptance are complete in the recorded evidence. The normal hosted candidate is `208ca34bbc5fa81278c5ea5720230d1f36caec4b`, schema 21. The exact selected Google identity was bound to the preserved legacy owner; four native session files and 20 outbox files remained byte-identical. Signed-in relaunch and existing notes/chat/note opening passed. Physical Google → Apple → Google switching also passed, preserving separate owners. See [cutover receipt](../qa/founder-migration/live-cutover.json), [switch receipt](../qa/founder-migration/physical-account-switch.json) and [release handoff](testflight-release-handoff.md).
+
+These are recorded checks, not a fresh runtime inspection. The dependent account PR stack remains unmerged and Phase 1 remains incomplete. Do not replay the completed migration or restore historical ledgers over resumed activity. The sections below preserve preparation-time inventories, proposed design and then-open gates; their schema-20 and “unfinished” statements are historical.
+
+Initial September 30, 2026 preparation checkpoint: read-only inspection; no migration had yet been implemented or executed.
+
+At that checkpoint hosted memory was schema 20. Its read-only SQLite inventory found two
 legacy owners with content and separate Apple/Google enrolled owners. Counts
 below include stored rows and are not a claim that every source is active.
 No content, provider subjects, credentials or raw owner IDs were exported.
@@ -72,3 +78,31 @@ Still needed: implementation, coordinated backups/rehearsal, proof of the
 selected hosted Google identity, transition from the legacy app state to Google
 sign-in, stale-write handling and actual native/server cutover acceptance.
 No mapping, credentials, live files or ledgers have been changed.
+
+## Candidate progress after preparation
+
+The earlier preparation status above describes the read-only starting point.
+PR166 now implements the offline server primitive and has passed a current
+coordinated hosted-copy rehearsal: 42 memory tables, 18 usage tables and 22
+other database files preserved except for the intended identity binding and
+credential revocations. See [server evidence](../qa/founder-migration/README.md).
+The native candidate adds an explicitly staged, hash-checked, restartable move
+of the four legacy session files into the same owner's account directory, with
+20 outbox files retained unchanged. See [native evidence and remaining gates](../qa/founder-native-migration/README.md).
+Neither rehearsal changed live account bindings or the physical installation.
+Fresh Google proof, operator orchestration, runtime QA, reviewed rollout and
+physical cutover remain unfinished.
+
+## Fresh destination identity verified
+
+At 2026-09-30 07:03 UTC, the founder-driven real Google re-enrollment in the
+isolated local service matched the current hosted destination's exact verified
+issuer and subject. The comparison used a private SHA256 digest, not email or
+row-count inference. The hosted destination still matched the rehearsed owner
+label and had zero source/note/turn rows; hosted memory remained schema20.
+See [sanitized receipt](../qa/founder-migration/google-identity-match.json).
+No subject, token or raw owner was committed, and no hosted data changed.
+This resolves the destination-proof prerequisite for the current preparation;
+recheck identity binding and the full inventory immediately before cutover.
+Service quiescence, coordinated fresh backups, reviewed matching rollout and
+physical installation/cutover acceptance remain required.

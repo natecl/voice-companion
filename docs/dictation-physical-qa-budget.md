@@ -1,5 +1,7 @@
 # Bounded physical dictation QA funding
 
+> Historical single-run QA funding and accounting. This document does not authorize another recording, answer, budget transfer or deployment; its original reservations remain part of the audit trail. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 Founder approved up to $0.04 from the existing budget for one short recording and one companion answer, including redistribution of transcription capacity. No overall cap increase, automatic paid retry, runtime reset or permission to deploy the unfinished dictation/personality PR.
 
 Read-only preflight: runtime reservations 4,956,868 microUSD of 5,000,000. Transcription used its full 1,200,000 category cap; Ask used 2,923,868 of 2,950,000. Move exactly 20,000 unused microUSD from Ask to transcription: new category caps 1,220,000 / 2,930,000 / 850,000 (STT / Ask / Jev). Per-call reservations and daily limits remain unchanged. One STT plus one Ask reserves 23,000 microUSD; the $0.04 approval is an upper bound, not an instruction to consume the remainder.

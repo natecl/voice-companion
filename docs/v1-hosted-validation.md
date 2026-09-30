@@ -1,5 +1,7 @@
 # V1 hosted recording evidence
 
+> Historical first hosted rollout. Commit, health, enrollment and ledger figures below are observations from that run, not current deployment or authorization to provision/spend again. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 September 24, 2026; implementation commit `381d243`. Internal trial only.
 
 Render service `srv-daqtfs7lot8c73dleuug`, Virginia Starter, one instance, 1 GB disk, automatic deploys/previews disabled. Deployment `dep-daqtfsnlot8c73dlf0tg` is live at that commit. HTTPS `/health` returned 200. The founder approved approximately $7.25/month hosting and $5 total provider testing. The current ledger enables only STT with a $2 allocation and $0.02 permanent reservation per attempt.

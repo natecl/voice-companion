@@ -1,6 +1,6 @@
 # Engineering direction and agent feedback loop
 
-Status: Canonical engineering source of truth, explicitly designated by the founder September 24, 2026. Swift/SwiftUI is the accepted working direction, subject to validating the development workflow. The native foundation workflow has been exercised; no provider benchmark has been completed. See development.md for the bounded verification evidence.
+Status: Canonical engineering source of truth, explicitly designated by the founder September 24, 2026. Swift/native controllers and the approved shared WKWebView iPhone interface are implemented; the dated foundation sections below record how this direction was established. See development.md and current-state.md for bounded verification and current delivery identities. A functioning provider integration does not imply a universal quality benchmark.
 
 ## Authority and application
 
@@ -11,6 +11,8 @@ All implementation plans and changes must follow these principles. Supporting re
 Concrete technology choices below retain their stated provisional status. Canonical principles do not turn an untested stack or provider into a validated decision.
 
 ## Shared native codebase
+
+The September 29 shared-prototype revision below supersedes independent SwiftUI recreation of the iPhone companion room. Native capture, dictation, storage/security and Mac support retain their boundaries. Historical technology-evaluation statements below do not mean the current stack is unimplemented.
 
 Use Swift and SwiftUI for native Mac and iPhone apps in one repository. Share product logic and suitable views; keep platform-specific audio permissions, audio lifecycle, interruptions, and window behavior behind clear boundaries. One codebase produces two app builds; it does not automatically provide cross-device data synchronization.
 
@@ -408,3 +410,36 @@ existing pre-authentication development data. Verify the exact legacy source and
 Google identity, preserve unrelated owners and all budget history, and rehearse
 the coordinated server/local migration before cutover. This does not authorize
 moving Apple account data into Google or inferring identity from email.
+
+Founder QA workflow revision, September 30: automate live simulator interaction
+and inspection instead of repeatedly asking the founder to tap routine controls
+or report screenshots. Use native UI tests and real backend/state evidence for
+sign-in navigation, sign-out, relaunch, account switching and recovery where the
+available tooling supports them. This does not change the UI design system.
+Request founder input only for an actual access/credential/security challenge,
+required decision or judgment, or physical behavior that automation cannot prove
+(such as microphone quality and haptics). The readiness rule applies when the
+check needs founder participation; it is not a new permission gate for each
+agent-operated simulator action. Keep live-provider evidence distinct from
+fixtures and preserve private result bundles containing account identifiers.
+
+Founder release-sequencing clarification, September 30: the existing mascot is
+temporary and the founder will provide the final mascot later. Its unresolved
+distribution rights are an asset gate before distributing that image, not a
+reason to stop account, plan, paywall or other release preparation. Do not ship
+the unlicensed placeholder or invent a replacement design. Plans and a working
+paywall remain in the requested release scope; creating the App Store record
+does not mean the app is ready for submission or that billing may be skipped.
+
+Founder sequencing instruction, September 30: move through the TestFlight plan
+in order. Finish Phase 1 account/data-lifecycle acceptance before beginning
+Phase 2 pricing/limits, then Phase 3 paywall/subscriptions, Phase 4 release
+preparation and Phase 5 pilot. Preserve already completed Apple setup, but do
+not use a pending account check as a reason to advance to a later phase.
+
+Founder orchestration instruction, September 30: the primary agent coordinates
+parallel execution by GPT-6 Astra workers at low reasoning effort, owns shared
+contracts and device/deployment control, and independently reviews and verifies
+the results. Optimize speed and efficiency through bounded file ownership and
+parallel work within the current phase; retain its acceptance gates before
+advancing. Workers do not self-approve, deploy or merge their own output.

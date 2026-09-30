@@ -1,0 +1,8 @@
+test_actual_maintenance_process_never_opens_databases_or_accepts_work (test_maintenance.MaintenanceTests.test_actual_maintenance_process_never_opens_databases_or_accepts_work) ... ok
+test_database_lease_blocks_normal_startup_before_ledger_access (test_maintenance.MaintenanceTests.test_database_lease_blocks_normal_startup_before_ledger_access) ... ok
+test_flag_requires_explicit_boolean (test_maintenance.MaintenanceTests.test_flag_requires_explicit_boolean) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.215s
+
+OK

@@ -9,6 +9,7 @@ import time
 import unittest
 from urllib.request import urlopen
 from admission import Admission
+from maintenance import database_lease
 
 
 class HostedStartupTests(unittest.TestCase):
@@ -35,6 +36,9 @@ class HostedStartupTests(unittest.TestCase):
                         time.sleep(.02)
                 else:
                     self.fail('Service failed to become healthy')
+                with self.assertRaises(BlockingIOError):
+                    with database_lease(directory):
+                        self.fail("Offline operator acquired a running service database")
                 second = subprocess.run(command, env=env, capture_output=True, timeout=5)
                 self.assertNotEqual(second.returncode, 0)
                 self.assertIn(b'BlockingIOError', second.stderr)

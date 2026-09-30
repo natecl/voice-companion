@@ -1,0 +1,26 @@
+{
+  "result": "passed",
+  "operator_sha256": "8a143cacf8796fa66d165d194eb2391e5792e4f0f25a394ea22e4c1efab88aaf",
+  "backup_databases_logically_equal_to_pristine": 24,
+  "prepared": {
+    "status": "prepared",
+    "databases_backed_up": 24,
+    "credentials_to_revoke": 5,
+    "schema": 21
+  },
+  "applied": {
+    "status": "applied",
+    "credentials_revoked": 5,
+    "content_owner_preserved": true
+  },
+  "memory_tables_compared": 42,
+  "usage_tables_compared": 18,
+  "other_database_files_byte_unchanged": 22,
+  "all_pristine_files_unchanged": true,
+  "only_allowed_row_changes": [
+    "selected Google identity owner",
+    "affected credential revoked flags"
+  ],
+  "live_data_changed": false,
+  "paid_calls": 0
+}

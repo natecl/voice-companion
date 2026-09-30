@@ -1,0 +1,6 @@
+test_exclusive_lock_and_crash_recovery_preserve_usage (test_hosted_startup.HostedStartupTests.test_exclusive_lock_and_crash_recovery_preserve_usage) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.139s
+
+OK

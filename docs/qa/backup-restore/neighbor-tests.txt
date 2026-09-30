@@ -1,0 +1,8 @@
+......../Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:552: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x1088fd210>
+  def _push_exit_callback(self, callback, is_sync=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+...
+----------------------------------------------------------------------
+Ran 11 tests in 0.386s
+
+OK

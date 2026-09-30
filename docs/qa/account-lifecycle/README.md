@@ -1,5 +1,7 @@
 # Real Google and Apple account lifecycle
 
+> Recorded September 30 follow-ups supersede pending statements in this historical run: [Google recovery](automated-google-recovery.json), [Google automatic refresh](native-automatic-refresh.json), [Apple automatic refresh](native-apple-automatic-refresh.json), and [Apple fresh-proof recovery/re-enrollment](apple-fresh-proof-recovery.json) passed within their stated scope. Physical deletion, independent-human isolation and full Phase 1 acceptance remain open. See the [current handoff](../../execution/testflight-release-handoff.md).
+
 September 30, 2026. Bounded Release simulator acceptance on source
 `7f715477a15b92f65a4e0a31dbf3885baf17a20d`, dependent on draft PR164.
 No production deployment or app UI changes in this checkpoint.
@@ -196,3 +198,71 @@ or independent second person's account was exercised. Do not treat this as
 full `access` verifier acceptance or hosted rollout approval. Native automatic
 refresh, provider recovery, populated account erasure, migration and remaining
 release gates still require their own evidence.
+
+
+## Populated Apple deletion and Google preservation
+
+September 30 follow-up, same isolated real-provider server and unchanged signed
+Release simulator binary. Founder confirmed readiness and used the native profile
+Delete account action while Apple owned its fictional lantern source/note/chat.
+The service completed deletion and its real Apple revocation call returned success
+(counter advanced from one to two). All inventoried Apple owner rows were absent,
+including the owner and provider grant; native account sessions/outbox contained
+only deletion tombstones. Google rows in every inventoried memory owner table
+matched their pre-deletion hashes. Budget, policy and request rows also matched.
+The app showed deletion success and stayed signed out after terminate/relaunch.
+
+Founder then signed into the same Google account and opened Fictional Google
+compass. The server returned the original Google owner; all Google content hashes
+still matched (new credential mapping expected). The note visibly retained its
+summary. Another terminate/relaunch returned directly to signed-in home showing
+Google's original fictional chat. See `populated-apple-deletion-result.json` and
+`populated-apple-deleted.png`, `populated-apple-deleted-relaunch.png`,
+`google-note-after-apple-deletion.png`, `google-preserved-relaunch.png`.
+
+This proves populated Apple deletion with another real provider identity's local
+QA data preserved. It does not prove populated Google deletion, real fresh-proof
+deletion recovery, independent-human isolation, physical Release acceptance or
+founder migration. Hosted data and the physical phone were unchanged; no paid
+provider/model calls occurred. The Google account remains signed in in the local
+QA simulator. Only seeded fictional data was erased.
+
+
+## Populated Google deletion and empty re-enrollment
+
+September 30, same signed Release binary and isolated local server. After fresh
+readiness, founder deleted the Google account containing the compass fixture via
+the native profile. The real Google revoke endpoint returned success (counter
+advanced from one to two), deletion became complete and its identity reservation
+was released. Every inventoried content/identity/credential-owner table was empty
+for that owner; the owner row was absent and foreign-key checks passed. Native
+session/outbox directories contained only deletion tombstones. Budget, policy and
+request hashes still matched the pre-deletion baseline. Terminate/relaunch stayed
+signed out. The founder then selected the same Google account as instructed;
+re-enrollment produced a new owner, distinct from both erased fixture owners,
+with zero source/note/turn/other content rows. Notes visibly showed its empty state.
+Both previous owners' content remained absent. Old provider subjects were erased,
+so selection of the same Google identity is founder-reported rather than an old
+subject comparison. See `populated-google-deletion-result.json` and the three
+`populated-google-*` screenshots.
+
+This closes the populated Google deletion/re-enrollment check in this local
+real-provider environment; it does not establish fresh-proof failure recovery or
+physical-device acceptance. Hosted founder data and the phone remain unchanged.
+No model/paid calls. The simulator is now signed into the new empty Google account.
+
+## Native automatic Google session rotation
+
+The unchanged signed Release simulator binary from source `7f71547` reached its
+normal ten-minute pre-expiry renewal threshold while signed into the current
+real Google QA identity. The existing isolated service remained live. No clocks,
+credential lifetimes, native Keychain values or service code were modified.
+Read-only before/after database inspection showed exactly one new session in the
+same family and owner, the old refresh consumed and the access expiry extended.
+After terminate/relaunch, the agent inspected signed-in Home in Device Hub;
+no additional rotation occurred. This exercises native timer → TLS endpoint →
+rotation → Keychain save → restored app behavior. Binary hash was rechecked.
+See `native-automatic-refresh.json`; private row snapshots stay outside Git.
+No generation or paid calls. Apple native automatic rotation and real fresh-proof
+recovery remain separate gaps; the earlier backend Apple refresh evidence is
+not relabeled as native automatic evidence.

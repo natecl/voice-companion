@@ -1,108 +1,57 @@
 # Current product, implementation and research knowledge
 
-> Current September 29 release status and remaining phases: [TestFlight handoff](execution/testflight-release-handoff.md). UI/integration PR154–155 are merged and the internal phone build is installed; backend rollout, independent accounts and paid plans remain pending. Earlier dated evidence below is historical, not a fresh release attestation.
+Reconciled September 30, 2026 against candidate `7079427`, repository source and recorded QA. GitHub main is `d4d07f1` (PR158); account/lifecycle PR159–177 remain open drafts. This documentation audit did not query production, run providers or repeat physical QA. Runtime facts below are **last recorded**, not a fresh health attestation.
 
-## Current release snapshot — September 29
+The [product source of truth](product-source-of-truth.md) and [engineering principles](engineering-principles.md) govern decisions. Use the [TestFlight handoff](execution/testflight-release-handoff.md) for execution order and the [feature maps](features/README.md) for code, contracts and verification routes.
 
-UI PR154 and phased integration PR155 are merged at `5a04ea3`. The shared WKWebView UI is the accepted interface; native audio, dictation and storage remain behind it. Note caching is integrated and locally verified, including offline relaunch and invalidation. The signed internal phone build is installed; full Release enrollment, owner lifecycle, subscriptions and TestFlight are not complete. Last inspected hosted backend remains `70f494b`, so merged backend fixes must not be described as deployed. See the handoff for evidence, permissions and exact remaining packets.
-
-The next sequence is accounts → selected plans/limits → subscriptions/paywall → Release validation → independent TestFlight pilot. A free pilot before commercial billing remains an explicit decision. No price or auth provider has been selected. The September 29 social-presence direction governs positioning; the following September 28 material is retained as dated history.
-
-## Historical September 28 implementation and research
-
-September 29 direction: [invited social presence](social-presence-experience.md) supersedes note-taking-led positioning; see the [revised execution phases](execution/demo-testflight-phases.md). Earlier implementation and rollout claims below remain dated evidence, not fresh runtime inspection.
-
-Updated September 28, 2026 against main `660e4c7` for the proactive AI note-taking vision. Last recorded backend rollout: `4dd5b70` (PR104); latest installed native fix: `3954284` (PR106). This audit did not query the live service or rerun physical/provider QA. See [UI rollout evidence](native-experience-ui.md#approved-internal-rollout--september-28-2026).
-
-The [product source of truth](product-source-of-truth.md) and [engineering principles](engineering-principles.md) are canonical. This brief consolidates their current application; it is not a replacement specification. Earlier plans and failed experiments remain evidence, not current requirements.
-
-## Product and intended feeling
+## Product and approved experience
 
 > AI notes that proactively contribute to discussions
 
-- **Proven:** Granola. This is the reference product, not a claim that we have copied every Granola feature.
-- **Better:** faster responses, lower latency and price, and recognizable improvements. These are goals; the implementation has not established a universal comparative advantage.
-- **New:** an iPhone-first AI note-taking app that proactively contributes useful personal context, questions and ideas through text during conversations. Mac remains supported. Proactive participation is the product hypothesis; a local gated implementation now has simulator and bounded model evidence, while production participation remains disabled.
+The agreed one-liner is retained pending a selected replacement. Current positioning is an **iPhone-first invited AI social presence**: a third participant deliberately brought into a conversation. Granola remains Proven; speed, latency and price improvements are Better goals; useful personal participation is the New hypothesis. Mac remains supported. Repeated voluntary use and broad proactive usefulness are not validated.
 
-Prior ICP hypothesis (not yet a validated launch segment): a curious, ambitious, AI-comfortable person who thinks out loud and wants useful perspective without repeatedly explaining their life. The founder, Mark Pincus and Garry Tan are reference personas, not a restriction to founders or developers. Whole-life context includes relationships, family, pets, interests, study, appointments, work and goals.
+One persistent companion chat and a recording library share deliberately captured context. Starting capture does not create a new chat. Capture is internally capped at five minutes; numeric speaker labels are best-effort, never verified identity. Notes and remembered context supply continuity. Calendar/email/messages, fresh outside-information retrieval, voice replies and silently always-on capture are not delivered.
 
-The experience should feel like an attentive, quietly sharp friend: personal intelligence on tap, candid and naturally warm, concise when appropriate, willing to disagree. It must not invent familiarity, emotional experiences, identity or capabilities. The companion supports casual conversation, general questions, brainstorming, writing and reflection without a recording; relevant captured context enriches those interactions.
+The shared local HTML/CSS/JavaScript companion-room interface in WKWebView is the current iPhone design source of truth. Native controllers retain capture, dictation, storage and credentials. Google appears above Apple; existing components, motion, feedback and haptics must be reused. The earlier separate SwiftUI Agent/Notes mockups are historical. The temporary mascot is not cleared for distribution; the founder will supply the final asset.
 
-Two actions: **Capture meeting note** and **Talk to companion**. Voice notes and meetings are one source type. One persistent main chat works during and between captures; recordings live in a library. Starting a recording does not create a chat. “Ask about this” attaches a recording. The Manus pill is a layout reference, not a required design system. Muse informs feel, not feature parity or autonomous-agent scope.
+## Delivery identities and boundaries
 
-## Current product vision and gaps
-
-The [full product description](product-source-of-truth.md#full-product-vision--september-28-2026) includes calendar, email and messages as context sources. Initial sources remain deliberately captured notes/conversations. Existing general chat supports the experience, but current positioning is note-taking-led rather than a generic messaging assistant. The core hypothesis is that useful unsolicited contributions earn repeated voluntary use. A first exclusive audience, contribution policy and connector providers remain unresolved.
-
-The [implementation audit](product-vision-audit-2026-09-28.md) identifies missing proactive trigger/context/decision/delivery, connected sources, fresh outside-information retrieval, realistic recording duration and public account/data operations. The [knowledge map](features/knowledge.md) separates current evidence/memory layers from proposed additions. No runtime changes follow from this documentation revision.
-
-## Internal UI
-
-The [native experience UI checkpoint](native-experience-ui.md) implements the approved visual direction. Agent is the primary/default screen and first top tab; Notes is the secondary recording library. Notes now uses a secondary-page header with Back to Agent, a Notes title pill and search/options. Both share a single-row composer with an upright paperclip, inline text and mic/send control. Drafts wrap naturally up to five visible lines, then scroll. The recording bar has a View label and separate Stop control. Saved notes and account use full pages; live transcription uses a sheet. Authentication and subscription screens remain previews. The UI rollout and subsequent rounded-note long-press fix (source `3954284`) are installed and launched on the physical iPhone. Installation is verified; full physical behavioral acceptance and Mac UI automation remain pending. Actual screenshots are in the [gallery](qa/native-experience/index.html).
-
-## Delivery status and acceptance
-
-| Area | Last verified status | Evidence / remaining boundary |
+| Layer | Last recorded state | What it does not establish |
 | --- | --- | --- |
-| Microphone → live transcript → saved recording | Internally delivered on Mac/iPhone; locked-screen iPhone capture and interruption preservation exercised | [V1 acceptance](v1-acceptance.md), [edge cases](reliability-edge-cases.md); five-minute internal cap, best-effort speaker labels |
-| Persistent companion and contextual Ask | Internally delivered during/after capture, with history and recording attachments | [Companion rollout](companion-internal-rollout.md); ongoing chat is not autonomous action |
-| Notes/summary beside transcript | Internally deployed; physical capture → notes → passage → reopen passed | [Notes rollout](recording-notes-rollout.md); generated after terminal capture, no manual note editing, server reads need connectivity |
-| Automatic memory, personal context, correction and deletion retention | Internally delivered with bounded verification; unknown speakers stay unknown | [Retention rollout](retained-memory-rollout.md), [verification](verification-rollout.md) |
-| Simpler unified memory | Internally deployed at `145f4c8`; schema 18, preserved old rows and ledgers, authenticated reads checked | [Foundation](simple-memory-foundation.md), [rollout](simple-memory-rollout.md); no new physical acceptance claimed by that rollout |
-| Composer dictation | PR 99 bounded native acceptance complete; candidate installed on physical iPhone | [Input and feel](companion-feel-and-dictation.md); first physical attempt exposed an authorization-callback actor crash; repaired with background-callback regressions, subsequent Stop loss repaired; founder confirmed physical Stop/edit and Clear draft on `da0f39a`; subsequent permission/background-interruption, explicit Send and private capture-pause/resume checks passed (details and evidence limits in the linked acceptance) |
-| v3 personality and plain-message chat | Internally deployed; ten live synthetic Luna responses reviewed; local presentation QA passed | [Results](companion-feel-and-dictation.md#approved-ten-response-personality-check); v3 is internally deployed; one response sounded too therapeutic |
-| Jev pre-retrieval classifier | Evaluated, never wired into production; founder explicitly left it disabled | [Screen](memory-gate-screen.md); useful classification does not establish net efficiency |
+| Merged main | `d4d07f1`, backend provider authentication/session PR158; UI154 and integration155 are already merged | Candidate PR159–177 are not merged |
+| Account candidate | `7079427`, through local QA resume tooling; drafts159–177 | Whole Phase 1 acceptance or deployment of all candidate fixes |
+| Hosted backend | `208ca34bbc5fa81278c5ea5720230d1f36caec4b`, normal deployment `dep-daubmspsrm7s73bke6n0`, schema21, accounts/deletion enabled; Render Starter, one instance, auto-deploy off | Later companion-session/capture fixes and managed backup/restore tooling are not deployed |
+| Founder iPhone | Recorded Release candidate `208ca34` / native migration `75bcfed`, signed into Google; migration and Google→Apple→Google switching passed | New physical deletion, revoked-provider or later-candidate acceptance |
+| Isolated simulator | Real Google/Apple lifecycle; latest Apple recovery binary pinned in its receipt | Physical-device or two-independent-person acceptance |
+| App Store Connect | Ellis: AI Notetaker; app6817680460; bundle `ai.voicecompanion.phone`; SKU `ellis-iphone-001`; version1.0 Prepare for Submission | No uploaded TestFlight build, review submission or invited testers |
 
-PR 99 completed its bounded acceptance and final review. The signed native candidate is installed. Backend prompt v3 is now internally deployed; no public-release readiness claim follows from these checkpoints.
+See [live cutover](qa/founder-migration/live-cutover.json), [physical account switching](qa/founder-migration/physical-account-switch.json), [Apple recovery](qa/account-lifecycle/apple-fresh-proof-recovery.json) and the [handoff](execution/testflight-release-handoff.md). Do not infer deployment from branch ancestry or a merged PR.
 
-## Current memory harness
+## Feature state and evidence
 
-```text
-Recording transcript (source, owner, revision, time, identity uncertainty)
-  +-> Luna generated notes -> revision-bound note search index
-  +-> original transcript lexical + local semantic index
-  +-> source-scoped background learning
-        Luna extraction -> Sol factual support -> Jev modality/time
-        -> relationship / identity checks where needed
-        -> atomic supported observations + lifecycle + source evidence
+| Area | Implemented / bounded evidence | Remaining boundary |
+| --- | --- | --- |
+| Capture, transcript, saved recordings | Internal Mac/iPhone flow, locked-screen capture and interruption evidence; [V1 acceptance](v1-acceptance.md), [edge cases](reliability-edge-cases.md) | Five-minute cap, best-effort attribution; real capture/sign-out acceptance still open |
+| Shared room and note cache | Merged shared UI/cache integration, offline relaunch, revision/deletion invalidation and touch repair; [integration evidence](qa/phase-integration/README.md) | No redesign; account-specific evidence must be read with lifecycle receipts |
+| Notes | Transcript-derived generation, passage navigation and bounded physical reopen; [rollout](recording-notes-rollout.md) | No note editing or full cross-device recording-library sync |
+| Main chat and dictation | Persistent ordinary messages, attachments/follow-ups, private composer dictation with bounded physical pause/exclusion/resume; [evidence](companion-feel-and-dictation.md) | Source provenance stays internal in release chat; no side chats or TTS |
+| Memory and retrieval | Source-scoped learning, supported personal context, correction/time lifecycle, unified notes/transcript recall; [foundation](simple-memory-foundation.md), [rollout](simple-memory-rollout.md) | Bounded acceptance, no general accuracy guarantee or voice identity |
+| Ordinary recording deletion | Removes transcript and unavailable source links, retains eligible learned knowledge and existing chat answers; [retention](retained-memory-rollout.md), [UI rollout](native-experience-ui.md) | Distinct from complete account deletion; erased historical answers are not reconstructed |
+| Google/Apple accounts | Separate persistent accounts; real enrollment, rotation, populated provider switching/deletion and re-enrollment in simulator; [lifecycle](qa/account-lifecycle/README.md) | Two provider identities belonging to one person do not prove independent-human isolation |
+| Automatic refresh and recovery | Native normal-threshold Google/Apple rotation, fresh-proof Google/Apple deletion recovery, persisted restart; [Google recovery](qa/account-lifecycle/automated-google-recovery.json), [Apple refresh](qa/account-lifecycle/native-apple-automatic-refresh.json), [Apple recovery](qa/account-lifecycle/apple-fresh-proof-recovery.json) | Apple recovery completion transition is founder-reported; failure/revoked-provider and physical lifecycle gates remain |
+| Founder migration | Server binding and phone file migration preserved original recordings/outbox and budgets; physical content/relaunch accepted | Explicit one-time Google migration, not account linking; never replay it |
+| Revoked-session/capture fixes | Candidate blocks companion sends after revocation and late recording writes after teardown; [review](qa/account-isolation-review/README.md) | Locally tested, not deployed or physical real-capture proof |
+| Backup/restore | Candidate managed snapshots, explicit expiry, online file pruning and deletion-aware offline restore preparation; [retention](qa/managed-backups/README.md), [restore](qa/backup-restore/README.md) | No production duration/enablement, restore activation, or complete historical/off-host/provider-snapshot policy |
+| Proactive contribution | Past-note pipeline, durable ordinary chat delivery, controls and bounded model/physical pilot evidence; [Cedar pilot](qa/proactive-personal/README.md), [conversation checks](proactive-conversation-validation.md) | Hosted default v4 remains gated. Later v5–v10 wording trials did not earn selection; expired QA gates are not ongoing rollout authorization |
+| Plans, subscriptions, distribution | Freemium plus subscription agreed; Apple app record exists | Prices/allowances/pilot undecided; server plans, real StoreKit paywall and TestFlight release are unfinished |
 
-Main chat message + bounded recent chat + attached/live snapshot
-  +-> when past memory enabled: unified evidence discovery
-        notes -> original passages
-        transcripts + supported personal references + retained knowledge
-        -> deduplicate original evidence
-        -> one Jev usefulness ranking + independent two-excerpt reserve
-        -> bounded related/correction expansion + integrity checks
-  -> Luna answer -> durable chat + internal evidence dependencies
-       release: plain message, source inspection in DEBUG
-```
+## Knowledge and model roles
 
-There is no active intent classifier or retrieval tool chosen by Luna. The harness supplies context; Luna interprets the conversational request. Current live/attached context is separate from past-memory retrieval. The disabled gate experiment would only have skipped past retrieval, never those explicit contexts.
+Recording transcripts are source material, not instructions. Generated notes are discovery aids, not independent evidence. Original passages, owner/revision/time and uncertain identity ground verified memories. Ordinary deletion can retain eligible learned knowledge; account erasure has a stronger separate boundary.
 
-“Thin personal layer” means supported relevant knowledge in the existing store, not a second profile database or a work-only form. Account ownership of a microphone does not identify its speaker. Named people, related people and the user must remain distinct. Voice enrollment and manual speaker labeling are deferred.
+The enabled source-scoped learner uses Luna extraction, Sol factual entailment and Jev modality/time judgments, with bounded identity/relationship checks and atomic provenance writes. Legacy/personal-text routes differ. Unified recall discovers original evidence through notes/transcript indexes, ranks it once with Jev and preserves an independent evidence reserve. Luna answers using bounded past evidence, current/attached snapshots and recent chat. The experimental Jev pre-retrieval gate remains disabled by founder decision. [Knowledge map](features/knowledge.md).
 
-Notes aid discovery; they do not replace original evidence or independently verified retained knowledge. The final path is unified notes/transcript recall, not strict notes-only retrieval. The historical `NotesFirstRecall` class and `VOICE_ENABLE_NOTES_RECALL` flag now select unified recall and source-scoped learning. Deterministic overlapping chunks are active in that learner; semantic boundary calls and cross-source duplicate consolidation are disabled for this route. Existing normalized provenance, identity and correction tables remain deliberately shared.
-
-Compatible observations remain source-scoped. Corrections still need supported identity, relation and applicability; an extraction hint alone cannot authorize or suppress them. A newer recording is not automatically a correction. Ambiguous dates remain qualified, and a bare weekday is not automatically next Tuesday. Retirement from current applicability does not prove an event occurred or erase source history.
-
-Ordinary recording deletion removes transcript, notes and source indexes, but can preserve committed knowledge and bounded supporting excerpts. It does not mean “forget everything.” Deleted originals must never open through a broken reference. Ordinary recording deletion preserves old answers and removes unavailable source links; source revisions remain a distinct invalidation contract. Newly generated retained-memory answers can survive. Explicit erasure/account deletion and backup retention remain separate future product work.
-
-## Models and providers by role
-
-| Role | Current implementation / boundary |
-| --- | --- |
-| Hosted microphone transcription | Grok Voice Transcribe 2.0 (`grok-voice-transcribe-2.0`); best-effort diarization |
-| Short composer dictation | Apple on-device Speech; supported locale required, no silent cloud fallback |
-| Main companion responses | GPT-6 Luna, reasoning none, default tier in tested requests; v3 uses 1,000-output-token bound |
-| Notes and learning extraction | Luna, separate requests/contracts from chat |
-| Independent recording factual entailment | GPT-6 Sol in the enabled source-verification path |
-| Recording-subject identity | Luna with the independently evaluated identity configuration; does not infer owner from anonymous speech |
-| Modality/time and bounded relationship judgments | Jev; deterministic code retains authority over ownership, revision and commits |
-| Candidate evidence ranking | Jev with independent discovery reserve; not a truth verifier or exclusive hard gate |
-| Semantic source discovery | Pinned local `BAAI/bge-small-en-v1.5`, FastEmbed CPU; retained deleted-recording claims remain lexical |
-| Whether to retrieve memory | No classifier enabled; experimental Jev gate is disabled |
-
-Inspect active hosted branches before changing roles: legacy/personal-text routes differ. Provider names are implementation choices with dated evidence, not permanent guarantees or a reason to preserve a failing role.
+The companion v3 personality is internally delivered. Proactive v4 is the selected hosted default; grouped-message capability and candidate wording do not imply that later prompts are accepted. [Conversational trials](proactive-conversational-wording.md) preserve failures and exhausted grants. Exact-request replay proves the exercised mechanics, not fresh model quality or a closed-loop conversation.
 
 ## Research and decisions that changed the implementation
 
@@ -118,62 +67,18 @@ Inspect active hosted branches before changing roles: legacy/personal-text route
 | [Personality screen](companion-feel-and-dictation.md#approved-ten-response-personality-check) | General chat and brainstorming worked without forcing memory; factual safeguards survived tested cases | Ten synthetic responses, no broad benchmark; therapeutic tone remains a taste limitation |
 | [Jev gate](memory-gate-screen.md) | Seven safe skips, zero false skips with conservative thresholds across sixteen cases; wrong top label on a follow-up caught by uncertainty | Added 174 ms median; hypothetical 25 model calls vs 16 rankings in the test mix; savings unproven; disabled by decision |
 
-## Operational and engineering knowledge
+## Current execution and operating rules
 
-Use the canonical principles: purposeful small slices, simple modular code, agent-observable behavior, narrow QA at the affected layer, no paid retries, and honest acceptance boundaries. Reuse exact requests/responses only when the actual request matches; a changed prompt or context can invalidate a cache. Never substitute mocked transcription for a claimed real microphone/provider test.
+Finish **Phase 1 accounts/data lifecycle**, then Phase 2 selected plans/limits, Phase 3 subscriptions/paywall, Phase 4 Release preparation and Phase 5 pilot. Preserve the current UI. Do not restart completed migration or provider enrollment checks just because a new agent takes over.
 
-The last verified host uses existing Render Starter, one instance and persistent disk, with automatic deployment off. Back up consistently before migration, preserve usage ledgers and source tombstones, and inspect the serving process rather than a shell's environment. Schema-18-compatible rollback must preserve later data and charges.
+Remaining Phase 1 gates: real capture/sign-out; revoked-provider/network-failure behavior; two independent humans' isolation; physical deletion/failure/relaunch; retention duration, production enablement and restore/historical-copy handling. Candidate tests and one-person Google/Apple switching do not waive these gates. The [handoff](execution/testflight-release-handoff.md) owns the detailed remaining work.
 
-Spending permission, runtime/daily quotas, deployment approval and physical readiness are separate. Latest completed screens reserved $0.20 for ten personality calls and $0.08 for sixteen gate calls; both are exhausted. Combined approved envelopes total $5.83, with unchanged $5 runtime envelope. These are historical approvals/reservations, not invoices or permission to reuse another scope's remaining balance. Consult operator receipts for actual usage before a new run; do not include credentials/private recordings in knowledge docs.
+The founder authorizes proactive implementation, internal preparation and verified checkpoint merges, with Astra-low execution workers and primary review. Required decisions, credentials, legal acceptance and physical-test readiness remain human gates. Agent-operated simulator steps use native XCTest; passwords/security challenges stay with the founder. No production reset, arbitrary tester invitation or UI redesign is implied.
 
-## Remaining narrow-release work
+The separate [TestFlight provider allowance](execution/testflight-provider-budget.md) is $5, with $0 reserved/recorded against this grant. Historical grants remain historical and cannot be reused implicitly. OAuth lifecycle checks and local fixtures did not consume model allowance. Runtime quotas and spending approval are distinct; no automatic paid retries.
 
-PR 99 is merged and personality v3 is internally deployed. No further paid transcription run is needed for accepted paths. Continue product UX work on the agreed narrow foundation. Public distribution, onboarding/account/subscription operations and broader release acceptance remain separate from internal feature completion.
+Use coordinated backups and current authoritative deletion/spending state; never restore old ledgers over resumed activity. Candidate restore preparation deliberately refuses stale application content and does not activate a restore. Inspect live configuration before any rollout rather than treating this recorded snapshot as runtime truth.
 
-Core remaining product work: production acceptance/enablement of the local proactive path, calendar/email/message context and fresh outside-information retrieval. Separately deferred: TTS, silently always-on capture, Mac system audio, voiceprints, manual speaker labeling, side chats, note editing, full cross-device recording-library sync, autonomous tools and explicit memory-management UX. A mascot or self-editing SOUL/MEMORY files are not an agreed implementation requirement. No additional research or feature is automatically authorized by being listed here.
+## Reading historical documents
 
-
-### Private composer dictation refinement — September 27
-
-Founder-approved behavior: pause meeting audio while dictation captures the companion message, visibly indicate it, then resume automatically. The question is excluded from meeting transcripts/notes; other simultaneous speech is also omitted. Candidate routing uses same-length silence for the meeting stream and original audio for on-device dictation, preserving session timestamps. Prior physical omission was not deliberate routing and does not verify this change. See [dictation evidence](companion-feel-and-dictation.md). The bounded physical pause/exclusion/resume check now passes: the founder saw the paused indicator; direct iPhone Mirroring inspection confirmed both meeting statements in the transcript and generated notes, and the private arithmetic question/answer only in chat. Stop/edit/Clear also have prior founder-confirmed physical evidence. The physical background-interruption check also passes by explicit founder confirmation: editable dictated text remains, the stopped notice appears, and nothing sends. Permission-denied UX subsequently passed with an empty composer and no crash; access was restored. Final PR review and focused tests passed. The founder approved an additional $0.05 for this one run; PR 101 deployed explicit budget compatibility, raising the runtime ceiling to $5.05 and combined approved envelopes to $5.88. This supersedes the earlier budget totals above; allowances are not invoices or authorization for repeat runs.
-
-Native UI follow-up (September 28): active composer dictation now offers trash, timer, PCM waveform and Send; existing typed text is preserved and appended before a successful send. Notices are dismissible, and profile/search outlines are stronger. Focused native tests and simulator behaviors pass; physical dictation/visual acceptance remains distinct. See [UI evidence](native-experience-ui.md#dictation-composer-and-dismissible-notices--september-28).
-
-Latest UI refinement: paperclip menu contains Attach note, Use past memory and Refresh chat; Dictate message and Clear draft are removed. Refresh retains the visible conversation while loading and shows explicit completion feedback. Notice dismissal fades/collapses with Reduce Motion support. Agent replies use the founder's light-gray rounded bubble reference. See [UI follow-up evidence](native-experience-ui.md#paperclip-menu-and-refresh-follow-up).
-
-
-September 28 local UI checkpoint: Notes swipe Delete and long-press Share/Delete verified with synthetic simulator notes. Deletion now preserves prior chat answers in the backend candidate, removing unavailable links without presenting a source-deleted notice. This historical pending status is superseded by the PR104 rollout below; existing erased answers are not recoverable. See [UI QA](native-experience-ui.md#note-actions-and-preserved-chat--september-28).
-
-
-September 28 internal UI rollout complete: PR104 backend is live at `4dd5b70`; matching native app installed in place and launched on the founder’s iPhone. Includes welcome-message onboarding, stacked note cards with icon-only swipe actions, shared composer/dictation, refined motion, and preserved historical replies after note deletion. Verified all 20 databases/106 tables unchanged and no new paid usage. Physical feel/performance is not newly claimed. See [rollout receipt](native-experience-ui.md#approved-internal-rollout--september-28-2026).
-
-
-Current next feature: [proactive contributions from past notes — MVP implementation plan](proactive-contributions-plan.md). Founder selected this MVP scope; connected sources and outside knowledge remain later full-vision work. The [local native checkpoint](proactive-native.md) is implemented and simulator-verified, with seven bounded model calls including three retrieved-evidence silence cases. The [model evidence](proactive-model-screen.md) records $0.11 conservative reservations under the $0.25 / 12-call grant. Production enablement, broader quality and physical acceptance remain pending.
-
-September 28 phone-test preparation: [bounded proactive test](proactive-phone-test.md) scopes the next physical check to two video excerpts, Luna only and five remaining feature-QA calls, with a separately approved $0.09 recording/notes extension. Preparation is not physical acceptance or broad rollout.
-
-The bounded proactive phone setup is now internally deployed (PR 115), with a signed real-audio Debug build installed and launched on the iPhone 16 Pro. The account-scoped gate expires September 29 around 13:25 Eastern. Allowances are provisioned; no new paid calls/captures have run. See [rollout evidence](proactive-phone-test.md#internal-setup-deployed). Physical acceptance awaits founder readiness.
-
-Personal proactive evaluation completed locally: v2 selected after 30 real Luna calls (matched decisions v1 9/10, v2 10/10; fresh v2 10/10). The baseline wrongly raised a third party’s sleep issue; v2 stayed silent. All 30 responses replay through the durable service with exact requests; 38 proactive tests pass. Native presentation/draft/quiet/reopen evidence from PR123 remains applicable. Small fictional screen, not physical or broad quality acceptance; hosted deployment remains pending. [Results, limitations and screenshot](qa/proactive-personal/README.md).
-
-September 28 authorized backend rollout: PR124 commit `734bb3d` is now hosted and v2 prompt selection verified. Health passed; 24 databases / 112 tables retained identical rows and usage. Continuous-speech repair is deployed too. Normal-phone proactive participation remains gated, with no new allowance or phone installation. [Rollout evidence](qa/proactive-personal/README.md#authorized-backend-rollout--september-28).
-
-Cedar solo phone test setup is deployed at PR126 `ce2dfec`: fictional prior seeded without learning, one live capture/one generated note/six proactive calls funded within $0.17, expiring account gate active, compatible phone app launched with test enabled. Zero paid calls during setup; founder readiness still pending. [Setup and script](qa/proactive-personal/README.md#cedar-solo-phone-pilot-setup).
-
-Cedar physical pilot passed its narrow useful-reminder check: founder saw one relevant past-note interjection; hosted evidence confirms completed capture, saved main-chat turn around 19 seconds after start, ready notes, no personal-learning job, and $0.065 reserved usage. Recording ended before the cooldown, so post-acknowledgment silence and longer-session usefulness remain untested. [Observed result and limits](qa/proactive-personal/README.md#physical-cedar-pilot-result--september-28).
-
-Local proactive readability checkpoint: explicit paragraphs render as grouped ordinary Agent bubbles with full content and one durable turn. Simulator delivery/draft/quiet/relaunch and core text checks pass. Candidate v3 wording is unselected and awaits separately authorized model QA; hosted v2 and phone installation are unchanged. [Evidence and screenshot](qa/proactive-readability/README.md).
-
-Readability model screen is incomplete: one Luna result retained Cedar details but failed paragraph grouping; the second request returned an undiagnosed HTTPError and the batch stopped without retry. Three planned calls were never sent and remain held in the original ledger. Candidate v3 is not selected; runtime v2 is unchanged. See the proactive-readability QA receipt.
-
-Founder clarified readability means character amount, not a bubble UI change. The PR129 paragraph-grouping renderer is reverted to the prior chat UI. Candidate v3 remains unselected and its grouping direction is superseded. Preserve useful details while simplifying wording; no new model calls or deployment.
-
-Character-length refinement v4 is selected locally after three authorized Luna calls: one useful 135-character reminder preserved corrected times; unknown-subject and resolved-commitment cases stayed silent. Forty-two proactive tests pass, including exact current-prompt service/reopen replay. Soft 120–240-character guidance never overrides necessary content. Phone UI sources are unchanged; no deployment or app installation. The Cedar proactive allowance is fully reserved with no calls remaining. See proactive-readability QA for limits and receipts.
-
-V4 wording is internally deployed at `839d2c9`; health and 28-database/134-table preservation checks pass, without phone/UI changes or quota increases. [Conversation-level validation](proactive-conversation-validation.md) now has a seven-step free replay exercising real scheduling, retrieval and durable chat beyond cooldown. Forty-three proactive tests pass; model decisions in this new sequence remain synthetic. Five bounded live-model checks are proposed, not yet funded.
-
-[Conversation-level model screen](proactive-conversation-validation.md#approved-live-model-screen-result) completed: all five predeclared v4 decisions passed (two useful reminders, three silences), with 197/133-character contributions. All five real responses replay through exact-context service validation and persistence; 44 proactive tests pass. This uses predeclared synthetic prior messages, not a closed-loop physical conversation. No runtime/UI change or deployment needed; $0.10/five-call allowance exhausted.
-
-[Two-topic physical test](two-topic-phone-test.md) has two locally prepared fictional sources and a spoken script that explicitly waits past cooldown. Zero provider calls/learning jobs. Hosted seeding, a new allowance and activation are pending approval; existing exhausted grants are not reused.
-
-Two-topic phone pilot is activated at `74f7cdb`: two fictional histories seeded, one capture/one generated note/eight Luna checks funded within $0.21, 24-hour gate expiring September 29 at 23:49 Eastern. Data/health checks passed and unchanged installed phone app launched with test flags. No capture or provider call started. Await founder readiness; see [script and receipt](two-topic-phone-test.md).
+Dated plans, experiments and rollout receipts retain their original evidence, failures and limits. A historical “pending” or “deployed” statement applies to that checkpoint, not the entire current product. Start here and in the handoff, then follow the relevant feature map. The [September 28 gap audit](product-vision-audit-2026-09-28.md) is a historical comparison; the September 29 invited-social-presence direction and September 30 account decisions supersede its old next-work sequence.

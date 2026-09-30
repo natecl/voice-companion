@@ -1,6 +1,29 @@
 # Legacy owner to Google: offline storage primitive
 
-September 30, 2026. Dependent on PR165; no hosted migration or deployment.
+September 30, 2026. Dependent on PR165. The server migration is now applied;
+the physical Google migration and signed-in relaunch passed. Earlier evidence
+below describes the pre-cutover rehearsals.
+
+The [live cutover receipt](live-cutover.json) records candidate `208ca34`,
+maintenance deployment `dep-daubkv7avr4c738hr500`, and normal deployment
+`dep-daubmspsrm7s73bke6n0`. Verified the exact maintenance process, closed work
+routes and zero active reservations before operator preparation. All 24 fresh
+database backups were downloaded, hash-verified and integrity-checked. Apply
+changed only the selected Google binding and five credential revoked flags,
+verified across every row in 42 memory and 18 usage tables; 22 other databases
+remained byte-identical. Normal schema21 service and all three idle workers are
+healthy, with account deletion enabled. No paid provider calls were made.
+
+The physical Release candidate was installed on the paired iPhone 16 Pro.
+Readback proved all four session files and 20 acknowledged outbox files stayed
+byte-identical, and the staged native plan matched. Founder Google sign-in completed, the plan was removed, and readback verified
+the four sessions moved under the preserved owner with all original bytes intact.
+The server confirmed the exact Google identity binding and a valid new session.
+After controlled terminate/relaunch, the founder confirmed no sign-in prompt,
+existing notes/chat visible, and an existing note opening correctly. This is
+physical migration/persistence evidence, not full Apple/deletion acceptance. Private backup/plan artifacts
+remain outside Git. After resumed traffic, do not restore historical ledgers over
+new activity; diagnose failures and use a controlled forward fix.
 
 `Backend/account_migration.py` prepares a fingerprinted plan for a verified
 legacy owner and exact existing Google identity. Applying that same plan keeps

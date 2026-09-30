@@ -20,4 +20,4 @@ Planned, not implemented or accepted. Run `python3 scripts/verify_feature.py pri
 
 ## Next bounded work
 
-Prepare a measured cost and allowance proposal, mark assumptions, get concrete founder selection, then implement server enforcement with local fixtures before paid integration checks. See [accounts](access.md) and [subscriptions](subscriptions.md).
+After Phase 1 account/data-lifecycle acceptance, start Phase 2: prepare a measured cost and allowance proposal, mark assumptions, get concrete founder selection, then implement server enforcement with local fixtures before paid integration checks. See [accounts](access.md) and [subscriptions](subscriptions.md).
