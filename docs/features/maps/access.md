@@ -30,6 +30,21 @@ confirmation verified no sign-in prompt, existing notes/chat and note opening.
 See [cutover evidence](../../qa/founder-migration/live-cutover.json) and the
 [real-provider lifecycle record](../../qa/account-lifecycle/README.md).
 
+## September 30 reviewed local checkpoints
+
+[PR171](https://github.com/natecl/voice-companion/pull/171) fixes a reproduced
+stale-session disclosure on an already-open companion socket. Four regressions
+fail against the prior source; the primary independently reran all 38 targeted
+account/companion checks successfully. Actual loopback WebSockets and fictional
+SQLite data establish this backend fix; it has not been deployed.
+
+[PR172](https://github.com/natecl/voice-companion/pull/172) adds coordinated managed
+SQLite snapshots and explicit planned expiry. Twelve tests and a four-process
+CLI rehearsal passed independent review and primary execution. No production
+retention duration or scheduler is configured; unknown historical copies and
+provider snapshots remain outside its pruning scope. Restore preparation is
+still under review. Neither checkpoint completes Phase 1.
+
 ## Gaps and non-goals
 
 Google native automatic expiry/Keychain rotation and signed-in restart now pass

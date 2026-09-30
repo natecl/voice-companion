@@ -434,3 +434,10 @@ in order. Finish Phase 1 account/data-lifecycle acceptance before beginning
 Phase 2 pricing/limits, then Phase 3 paywall/subscriptions, Phase 4 release
 preparation and Phase 5 pilot. Preserve already completed Apple setup, but do
 not use a pending account check as a reason to advance to a later phase.
+
+Founder orchestration instruction, September 30: the primary agent coordinates
+parallel execution by GPT-6 Astra workers at low reasoning effort, owns shared
+contracts and device/deployment control, and independently reviews and verifies
+the results. Optimize speed and efficiency through bounded file ownership and
+parallel work within the current phase; retain its acceptance gates before
+advancing. Workers do not self-approve, deploy or merge their own output.

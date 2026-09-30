@@ -46,9 +46,18 @@ is retained; further pricing or distribution work waits for the account gates.
 
 ## Safe parallelization
 
-After contracts are fixed, account implementation, pricing/cost analysis and read-only release-assets audit can run independently. Serialize owner migration/cache invalidation, entitlements/usage reservations, schema migrations, deployment, signing and physical-device access. No concurrent writers in RoomWebModel/shared UI without explicit file ownership. Preserve the accepted baseline and use separate worktrees/DerivedData for authorized workers.
+The founder now authorizes GPT-6 Astra/low workers under the primary orchestrator.
+Parallelize independent work **within the current phase**, after shared contracts
+and file ownership are fixed. In Phase 1 the lanes are account lifecycle QA,
+managed backup/restore preparation, and independent isolation review. Pricing
+and distribution execution wait for Phase 1 acceptance, as required above.
+Serialize shared-file changes, migration, deployment and simulator/device use.
 
-If the founder authorizes workers for execution, use bounded Astra/low packets with exact base SHA, files, feature map, verifier, failure cases and budget. This documentation request launches no workers. Workers submit reproducible evidence to the lead; the lead reviews actual outputs and explicitly accepts dependent work. No worker self-approval or broad “own billing” assignment.
+Workers receive bounded files, feature context, verifiers, failure cases and
+budget. The primary reviews actual outputs and independently runs targeted
+checks before accepting each checkpoint. Workers do not approve, deploy or merge
+their own changes. Current workers share the account checkout with disjoint file
+ownership; the primary alone commits and controls branches.
 
 ## Verifiers and evidence
 
