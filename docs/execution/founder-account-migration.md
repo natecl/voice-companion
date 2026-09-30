@@ -1,8 +1,14 @@
 # Founder account migration: decision and preparation
 
-September 30, 2026. Read-only inspection; no migration implemented or executed.
+## Recorded outcome — September 30, 2026
 
-Hosted memory remains schema 20. A fresh read-only SQLite inventory found two
+Server and physical Google migration acceptance are complete in the recorded evidence. The normal hosted candidate is `208ca34bbc5fa81278c5ea5720230d1f36caec4b`, schema 21. The exact selected Google identity was bound to the preserved legacy owner; four native session files and 20 outbox files remained byte-identical. Signed-in relaunch and existing notes/chat/note opening passed. Physical Google → Apple → Google switching also passed, preserving separate owners. See [cutover receipt](../qa/founder-migration/live-cutover.json), [switch receipt](../qa/founder-migration/physical-account-switch.json) and [release handoff](testflight-release-handoff.md).
+
+These are recorded checks, not a fresh runtime inspection. The dependent account PR stack remains unmerged and Phase 1 remains incomplete. Do not replay the completed migration or restore historical ledgers over resumed activity. The sections below preserve preparation-time inventories, proposed design and then-open gates; their schema-20 and “unfinished” statements are historical.
+
+Initial September 30, 2026 preparation checkpoint: read-only inspection; no migration had yet been implemented or executed.
+
+At that checkpoint hosted memory was schema 20. Its read-only SQLite inventory found two
 legacy owners with content and separate Apple/Google enrolled owners. Counts
 below include stored rows and are not a claim that every source is active.
 No content, provider subjects, credentials or raw owner IDs were exported.

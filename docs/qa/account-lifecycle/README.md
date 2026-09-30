@@ -1,5 +1,7 @@
 # Real Google and Apple account lifecycle
 
+> Recorded September 30 follow-ups supersede pending statements in this historical run: [Google recovery](automated-google-recovery.json), [Google automatic refresh](native-automatic-refresh.json), [Apple automatic refresh](native-apple-automatic-refresh.json), and [Apple fresh-proof recovery/re-enrollment](apple-fresh-proof-recovery.json) passed within their stated scope. Physical deletion, independent-human isolation and full Phase 1 acceptance remain open. See the [current handoff](../../execution/testflight-release-handoff.md).
+
 September 30, 2026. Bounded Release simulator acceptance on source
 `7f715477a15b92f65a4e0a31dbf3885baf17a20d`, dependent on draft PR164.
 No production deployment or app UI changes in this checkpoint.

@@ -1,5 +1,7 @@
 # Opt-in hosted companion runtime
 
+> Historical runtime wiring/preflight. Its deployment, capacity and physical-acceptance prerequisites describe that checkpoint; subsequent internal rollout is recorded separately. Do not replay its activation steps or infer current flags or funding. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 September 26, 2026. This checkpoint wires existing verified components into `hosted.py`; it does not deploy or enable them on Render.
 
 ## Configuration

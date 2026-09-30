@@ -1,12 +1,12 @@
 # Proactive contributions
 
-> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+> September 30 delivery context: [release handoff](../../execution/testflight-release-handoff.md). This map distinguishes source implementation from recorded deployment, installation and bounded verification; historical receipts do not attest current runtime state.
 
 Feature ID: `proactive` · Context reviewed September 29, 2026 against main `3a30e25`.
 
 ## Purpose and user outcome
 
-Useful unsolicited context with Quiet, budgets and stale-result rejection. Product direction: **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
+Useful unsolicited context with Quiet, budgets and stale-result rejection. Product direction is an invited AI social presence with personal continuity; the retained agreed one-liner is **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
 
 ## Current implementation
 
@@ -105,4 +105,4 @@ not fresh LLM judgment. Paid calls: zero. No UI/device/capture-quality, distribu
 activation, deployment or broad relevance claims. The wider targeted run emits
 SQLite ResourceWarnings from fixture helpers; checks still pass. Their baseline
 frequency was not separately measured; shared storage code is unchanged.
-Primary review/merge is pending; this packet does not advance dependent phases.
+This packet originally awaited primary review; its bounded control integration subsequently merged through PR155. That merge does not establish current hosted activation or advance release phases.

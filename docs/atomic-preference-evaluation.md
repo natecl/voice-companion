@@ -1,5 +1,7 @@
 # Atomic verification evaluation — not approved for production
 
+> Historical experiment and accounting. The remaining balance below is a checkpoint-time snapshot, not an unused grant; preserve the failed future-status case and do not treat the experiment as selected production behavior. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 September 26, 2026. Founder approved up to $0.30 for a bounded follow-up to the [context experiment](preference-context-evaluation.md). This checkpoint delivers reproducible evaluation evidence, not a fix for the open retention defect.
 
 ## Method and outcome

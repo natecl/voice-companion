@@ -1,5 +1,7 @@
 # Two-topic phone test
 
+> Historical two-topic preparation and continuation. The opening “not funded or activated” status is superseded by the activated-setup section below; old quotas and readiness do not authorize another run or extend the expired test. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 Status: seed preparation verified locally; NOT seeded into the hosted account, funded or activated. Phone UI unchanged. Do not start recording until activation and a separate readiness confirmation.
 
 ## Prepared history
