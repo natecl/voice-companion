@@ -1,6 +1,6 @@
 # Development and foundation QA
 
-For current operation and accepted limits, use the [V0 runbook](v0-runbook.md). Sections below preserve chronological checkpoint evidence; earlier pending-work lists and recording limits are superseded by later checkpoints.
+For current implementation and release gates, use [current state](current-state.md), the [feature map](features/README.md) and [TestFlight handoff](execution/testflight-release-handoff.md). The [V0 runbook](v0-runbook.md) and sections below preserve early chronological checkpoint evidence and development commands; provider wiring, UI, pending-work lists and recording limits there are not a current rollout attestation. Current hosted transcription uses Grok Voice Transcribe 2.0; the five-minute internal cap remains. No historical test or cost receipt is refreshed by this documentation reconciliation.
 
 ## Setup and commands
 
