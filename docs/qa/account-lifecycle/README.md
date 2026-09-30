@@ -68,5 +68,17 @@ provider flow. One Google identity and one active session now exist, with a new
 owner distinct from both deleted owners; the home screen was inspected. See
 `google-reenrollment.json` and `ellis-real-google-reenrolled.png`. Original provider
 subjects were erased, so same-account selection is founder-reported rather than
-an independent comparison against a retained old subject. Apple re-enrollment,
-real refresh and populated isolation remain open.
+an independent comparison against a retained old subject. Real refresh and populated isolation remain open.
+
+## Sign-out and Apple re-enrollment
+
+The founder signed out of the new Google account, then was instructed to reuse
+the same Apple account and completed its real provider flow. Google has zero
+active sessions; Apple has one and its new owner differs from both deleted
+owners. The Apple home screen was inspected. See `apple-reenrollment.json` and
+`ellis-real-apple-reenrolled.png`. Both new identities remain enrolled in the
+isolated database; only Apple is signed in. Same-provider-account selection has
+the same evidence limit described above. This empty-account switch is not
+populated cross-owner isolation acceptance. No further founder action is needed
+for this completed sequence; prepare the remaining refresh/isolation checks
+before requesting another manual session.
