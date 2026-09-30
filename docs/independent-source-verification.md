@@ -1,5 +1,7 @@
 # Independent source verification — verified internal rollout
 
+> Historical verifier checkpoint. The statement that recording-deletion retention is unimplemented is superseded by the retained-memory rollout; preserve the original independent-verification evidence and its limits. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 Current status: enabled internally after the separately approved funding and [hosted rollout check](verification-rollout.md). The preparation and QA history below records the earlier checkpoint boundary.
 
 Founder direction: keep our backend and fix supported memories being rejected. Ordinary recording deletion retaining memory remains a separately approved, unimplemented change.

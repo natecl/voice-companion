@@ -1,5 +1,7 @@
 # Bounded physical proactive test
 
+> Historical expiring phone-test setup and evidence. Activation instructions, account gate and budgets apply to the recorded experiment and do not authorize restarting it. Bounded contributions do not establish unrestricted Release enablement or general participation quality. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 September 28, 2026. Setup checkpoint; real-microphone usefulness is **pending**.
 
 The founder approved $0.09 additional funding: two recordings and two generated notes. Five Luna calls remain in the original separate proactive grant ($0.25/12 calls; seven already used). Failed/cancelled calls remain charged; no automatic paid retries. Existing runtime charges remain intact. The operator script provisions the explicit extension; startup cannot create funding.
