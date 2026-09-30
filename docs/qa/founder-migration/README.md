@@ -1,7 +1,7 @@
 # Legacy owner to Google: offline storage primitive
 
 September 30, 2026. Dependent on PR165. The server migration is now applied;
-physical Google sign-in and native acceptance remain pending. Earlier evidence
+the physical Google migration and signed-in relaunch passed. Earlier evidence
 below describes the pre-cutover rehearsals.
 
 The [live cutover receipt](live-cutover.json) records candidate `208ca34`,
@@ -16,9 +16,12 @@ healthy, with account deletion enabled. No paid provider calls were made.
 
 The physical Release candidate was installed on the paired iPhone 16 Pro.
 Readback proved all four session files and 20 acknowledged outbox files stayed
-byte-identical, and the staged native plan matched. The app was launched for
-founder Google sign-in. No successful physical storage move, content inspection
-or persistent-sign-in acceptance is claimed yet. Private backup/plan artifacts
+byte-identical, and the staged native plan matched. Founder Google sign-in completed, the plan was removed, and readback verified
+the four sessions moved under the preserved owner with all original bytes intact.
+The server confirmed the exact Google identity binding and a valid new session.
+After controlled terminate/relaunch, the founder confirmed no sign-in prompt,
+existing notes/chat visible, and an existing note opening correctly. This is
+physical migration/persistence evidence, not full Apple/deletion acceptance. Private backup/plan artifacts
 remain outside Git. After resumed traffic, do not restore historical ledgers over
 new activity; diagnose failures and use a controlled forward fix.
 

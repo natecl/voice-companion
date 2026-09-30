@@ -34,9 +34,10 @@
     "installed": true,
     "staged_plan_readback_matches": true,
     "google_sign_in_and_storage_transition": "passed: founder real Google sign-in; expected server owner and one valid session; plan removed; all four session and 20 outbox files preserved byte-for-byte",
-    "physical_acceptance": "pending visual confirmation after controlled relaunch",
+    "physical_acceptance": "passed: founder confirmed signed-in relaunch without prompt, existing notes and chat visible, and an existing note opens correctly",
     "launched": true,
-    "controlled_relaunch_succeeded": true
+    "controlled_relaunch_succeeded": true,
+    "acceptance_provenance": "founder response done to the three explicit physical checks; file preservation and server binding independently inspected"
   },
   "normal_service_verification": {
     "deployed_commit_matches": true,
@@ -48,7 +49,7 @@
     "learning": "idle; no failure"
   },
   "paid_provider_calls": 0,
-  "limitations": "Server and native migration succeeded with exact data preservation. Physical visual content inspection and persistent sign-in after relaunch still require founder confirmation. Not TestFlight distribution readiness.",
+  "limitations": "Founder Google migration and the exercised physical content/persistent-sign-in path passed. This does not prove physical Apple switching, deletion/recovery, independent-human isolation or TestFlight distribution readiness.",
   "hosted_after_google": {
     "verified_google_binding_preserved": true,
     "valid_unrevoked_sessions": 1,

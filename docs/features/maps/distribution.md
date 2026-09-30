@@ -2,7 +2,7 @@
 
 > Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
 
-Feature ID: `distribution` · Context reviewed September 29, 2026 against main `47eadb4`.
+Feature ID: `distribution` · Context reviewed September 30, 2026; see the handoff for exact source/configuration pairing.
 
 ## Purpose and user outcome
 
@@ -10,11 +10,11 @@ Correct signed release configuration and independently usable beta. Product dire
 
 ## Current implementation
 
-UI PR154 and integration PR155 are merged; the merged Debug phone build was installed and launched in place. Backend remains at last-inspected 70f494b; no TestFlight upload or signed distribution archive is established.
+UI PR154 and integration PR155 are merged. The dependent account candidate `208ca34` is deployed with schema21 and deletion enabled; its development-signed Release phone build passed Google migration and persistent sign-in/content checks. This is not an App Store distribution export. No TestFlight upload is established.
 
 ## Gaps and non-goals
 
-App Store Connect showed no app record and an updated agreement pending Account Holder review. Acceptance remains unverified. Distribution signing, icon, permitted artwork, privacy/legal/support metadata and fresh-tester access remain open.
+The founder accepted the Developer Program agreement September 29 and the warning cleared. The last inspected App Store Connect state had no app record. Distribution signing, icon, permitted artwork, privacy/legal/support metadata and fresh-tester access remain open.
 
 ## Flow and implementation entry points
 

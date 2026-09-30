@@ -10,11 +10,34 @@ Independent per-tester enrollment, isolation and revocation. Product direction: 
 
 ## Current implementation
 
-The schema-20 provider/session backend is enabled on Render at `c897dec`. Both Google and Apple basic sign-in, sign-out and relaunch passed on the signed Release simulator; Apple reauthentication reused its original owner. Native account wiring remains draft PR159. The dependent schema-21 storage checkpoint adds atomic enrolled-owner content erasure and stale-credential tombstones, with local populated-owner and late-write checks. It is not deployed. A further dependent [deletion workflow candidate](../../qa/account-deletion-workflow/README.md) adds a default-off authenticated endpoint, durable retry state, session/provider revocation orchestration and owner-scoped socket shutdown. Fresh-provider-proof backend recovery can finish pending deletion after losing the original receipt. A dependent [native deletion candidate](../../qa/native-account-deletion/README.md) adds durable pending state, owner-local cleanup and existing-component confirmation/recovery UI, with 34 native tests and two simulator presentation tests. Exact-owner fresh-proof recovery also handles a locally saved request that never reached the server. The dependent [Google revocation adapter](../../qa/google-account-revocation/README.md) now binds revocation to the original verified grant and has isolated simulator Keychain/relaunch evidence. The latest [server finalization candidate](../../qa/deletion-finalization/README.md) closes the identity-reservation interval and passes an actual native/TLS service/Keychain retry run with fictional provider responses. The subsequent [real-provider Release simulator run](../../qa/account-lifecycle/README.md) verifies enrollment, relaunch, successful revocation responses, deletion and fresh re-enrollment for both providers. Backend refresh/replay and populated TLS isolation also pass with real enrolled QA owners and separate synthetic request credentials. The same Release simulator also passed the exercised Apple → Google → Apple populated chat/note switch and ready-summary cache clearing. Native automatic refresh, recovery, populated erasure, backups, migration and physical-device checks remain open; the detailed QA record preserves coverage limits.
+The schema21 account/deletion candidate `208ca34` is deployed on Render with
+accounts and deletion enabled; automatic deployment remains off. Native code
+remains in the dependent draft PR159–169 stack. Both real providers passed
+Release-simulator enrollment, sign-out, relaunch, populated source/note/chat
+isolation and cache clearing. Both populated fictional accounts were deleted
+through the native UI with successful real provider revocation and empty
+re-enrollment; the other owner's rows and all spending history were preserved.
+Backend refresh/replay passed for real enrolled owners using separate synthetic
+app sessions; this is distinct from native automatic rotation.
+
+The founder's selected Google identity is now bound to the preserved legacy
+owner. The operator compared every row in 42 memory and 18 usage tables; only
+the identity binding and five revoked flags changed. Twenty-two other database
+files were unchanged. Fresh coordinated backups were downloaded and verified.
+Physical iPhone Release Google sign-in moved all four original recordings with
+exact bytes preserved, retaining 20 outbox files. Controlled relaunch and founder
+confirmation verified no sign-in prompt, existing notes/chat and note opening.
+See [cutover evidence](../../qa/founder-migration/live-cutover.json) and the
+[real-provider lifecycle record](../../qa/account-lifecycle/README.md).
 
 ## Gaps and non-goals
 
-Session refresh/revocation, owner-scoped cache clearing, existing-account migration and complete account erasure are required release work. Founder selected both Google and Apple on September 29, with Google above Apple in the sign-in UI. Google OAuth clients and Apple identifiers/server grants are configured. Real provider enrollment has simulator evidence; full populated two-user native isolation, actual refresh/revocation, physical-device checks, deletion and migration remain release gates.
+Remaining gates: native automatic expiry/Keychain rotation, real fresh-proof
+failure recovery, physical Apple sign-in/switching and lifecycle, independent
+second-person isolation, and implemented backup retention/restore handling.
+Google and Apple remain separate accounts. Google stays above Apple; no account
+linking or email-derived identity merge is included. The physical founder Google
+migration is complete and must not be replayed.
 
 ## Flow and implementation entry points
 
@@ -45,9 +68,13 @@ Native transport, device-local account Keychain storage, refresh serialization a
 
 ## Next bounded work
 
-Complete the remaining provider/runtime acceptance on the matching [server finalization candidate](../../qa/deletion-finalization/README.md). The synthetic native/TLS flow passes; real successful revocation/recovery and physical lifecycle still need evidence.
-
-Integrate authenticated, resumable deletion with provider revocation and local cleanup, then complete populated native isolation, actual refresh/revocation and physical-device checks. The [storage checkpoint](../../qa/account-erasure-storage/README.md) proves only local content erasure; backups and restore policy remain explicit work. Use a stable server-owned account identity independent of expiring session credentials. Never automatically merge accounts by matching email; preserve existing founder data through an explicitly verified migration. See the [first account packet](../../execution/account-enrollment-packet.md).
+Verify native automatic rotation against the existing isolated real-provider
+server without modifying production credentials. Prepare one bounded physical
+Apple/Google switch check, retaining all founder recordings and returning to
+Google. Request readiness before that manual check. Exercise fresh-proof deletion
+recovery only against isolated disposable fixtures. Define and implement backup
+retention/restore handling before claiming complete account erasure. Keep the
+stack draft until each checkpoint's applicable behavioral and review gates pass.
 
 ## Supporting context and evidence
 
