@@ -1,6 +1,6 @@
 # Native deletion checkpoint — September 30, 2026
 
-Draft candidate, disabled and not deployed. Depends on PR161 `f6548e8`, which depends on PR160 and PR159. This is local native lifecycle and presentation evidence, not full release acceptance.
+Draft [PR162](https://github.com/natecl/voice-companion/pull/162), implementation `e3172e7`, disabled and not deployed. Depends on PR161 `f6548e8`, which depends on PR160 and PR159. This is local native lifecycle and presentation evidence, not full release acceptance.
 
 ## Behavior
 
@@ -26,9 +26,11 @@ TEST_RUNNER_VOICE_TEST_PYTHON=/tmp/ellis-auth-venv/bin/python xcodebuild -projec
 xcodebuild -project VoiceCompanion.xcodeproj -scheme Phone -destination 'platform=iOS Simulator,id=9F0F6623-E33A-4E84-A1EB-B9D7C1530AE7' -derivedDataPath /tmp/ellis-native-accounts-phone -only-testing:PhoneUITests/AccountDeletionUITests test
 ```
 
+The configured Python 2.15.1 PyJWT dependency environment passes all 65 access mechanical checks; [receipt](access-checks.json) correctly remains `needs_review`, `feature_verified=false`. Fifteen verification-tooling self-tests also passed. Final source differs from the recorded native/UI execution only in whitespace formatting; no behavior or assertions changed.
+
 ## Failures diagnosed
 
-Swift could not infer optional callback closures in the root view. Explicitly typed computed actions fixed compilation. An initial test invocation named the wrong target (`VoiceCompanionTests` instead of `CoreTests`) and ran no tests. The first targeted suite exposed an over-broad stopped-state guard suppressing local transcript staging after sign-out. Removed that guard; deletion markers supply the scoped protection. The corrected 34-test run passed. No acceptance assertion was weakened.
+Swift could not infer optional callback closures in the root view. Explicitly typed computed actions fixed compilation. An initial test invocation named the wrong target (`VoiceCompanionTests` instead of `CoreTests`) and ran no tests. The first targeted suite exposed an over-broad stopped-state guard suppressing local transcript staging after sign-out. Removed that guard; deletion markers supply the scoped protection. The corrected 34-test run passed. No acceptance assertion was weakened. An initial verifier run used system Python with PyJWT 2.10.1 and failed the existing JWKS cooldown check. Repository requirements pin PyJWT 2.15.1; rerunning with the already-configured venv passed all 65 contracts. System packages and the security assertion were left unchanged.
 
 ## Remaining gates
 
