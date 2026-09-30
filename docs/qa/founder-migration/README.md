@@ -29,7 +29,7 @@ revoking newly issued sessions.
 
 ## Executed evidence
 
-`account-tests.txt`: 62 account regression tests passed, including eight new
+`account-tests.txt`: 65 account regression tests passed, including eleven new
 migration checks using actual temporary SQLite databases. They verify data and
 Apple grant preservation, budget/policy/completed-reservation preservation,
 old-session rejection and fresh Google owner selection; plan/identity/content
@@ -49,10 +49,38 @@ Reproduce:
 /tmp/ellis-auth-venv/bin/python -m unittest discover -s Backend -p 'test_account*.py' -v
 ```
 
+## Current hosted-copy rehearsal
+
+`hosted-copy-rehearsal.json` records the September 30 rehearsal of the exact
+migration module hash. A coordinated private snapshot held write locks across
+all 24 hosted SQLite databases while copying. Downloaded hashes matched the
+remote manifest. Original copies remain private and unchanged; a separate set
+was upgraded from memory schema 20 to 21 and given the account-deletion tables
+before migration comparisons. No live account/content migration occurred.
+
+The first plan stopped with `migration_google_has_content`: opening chat had
+created an empty `companion_chat` container. Inspection confirmed its only
+columns are owner and ID, with zero destination turns or other content. The
+migration now preserves this metadata row and still rejects every destination
+turn, dependency, request or snapshot. A future additional chat column also
+blocks migration. Three regression checks cover these distinctions; the refusal
+was not bypassed by deleting data.
+
+A second rehearsal began from fresh pristine copies. It verified the physical
+app's previously inventoried legacy owner and the sole existing hosted Google
+identity; this selection is **not fresh authenticated Google proof**. The plan
+made no row changes. Applying it changed exactly the selected identity's owner
+and five affected credentials' revoked flags. All rows in 42 memory tables and
+18 usage tables were compared against precisely those allowed changes. All
+other rows, including Apple content/grants and budget history, stayed identical.
+The other 22 database files stayed byte-identical. Integrity and foreign-key
+checks passed. The private script and databases remain outside Git; the receipt
+contains no raw owners, subjects, credentials or personal content. No provider
+or model call was made.
+
 ## Remaining gates
 
-Private-copy rehearsal on the current coordinated hosted databases, fresh
-Google identity proof, operator orchestration/service quiescence, native legacy
+Fresh Google identity proof, operator orchestration/service quiescence, native legacy
 sign-in transition and owner-scoped file migration, interruption/restart
 acceptance, reviewed matching deployment and physical cutover remain required.
 This bounded primitive is not a completed founder migration or full Phase 1.

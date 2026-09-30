@@ -15,8 +15,7 @@ test_apple_grant_and_receipt_persist_atomically (test_account_deletion_recovery.
 test_other_identity_active_account_expired_and_replayed_proofs_fail (test_account_deletion_recovery.DeletionRecoveryTests.test_other_identity_active_account_expired_and_replayed_proofs_fail) ... ok
 test_recovery_rotates_only_recovery_receipt_and_never_issues_session (test_account_deletion_recovery.DeletionRecoveryTests.test_recovery_rotates_only_recovery_receipt_and_never_issues_session) ... ok
 test_recovery_survives_restart_and_cannot_delete_a_new_account (test_account_deletion_recovery.DeletionRecoveryTests.test_recovery_survives_restart_and_cannot_delete_a_new_account) ... ok
-test_signed_google_and_apple_recovery_over_real_sockets (test_account_deletion_recovery.DeletionRecoveryTests.test_signed_google_and_apple_recovery_over_real_sockets) ... Executing <Task pending name='Task-143' coro=<DeletionRecoveryTests.test_signed_google_and_apple_recovery_over_real_sockets() running at /Users/n.chinlue/.codex/worktrees/account-sign-in/voice-companion/Backend/test_account_deletion_recovery.py:147> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py:765> cb=[_run_until_complete_cb() at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py:181] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py:100> took 0.129 seconds
-ok
+test_signed_google_and_apple_recovery_over_real_sockets (test_account_deletion_recovery.DeletionRecoveryTests.test_signed_google_and_apple_recovery_over_real_sockets) ... ok
 test_unreceived_apple_request_rolls_back_when_grant_cannot_persist (test_account_deletion_recovery.DeletionRecoveryTests.test_unreceived_apple_request_rolls_back_when_grant_cannot_persist) ... ok
 test_unreceived_local_request_recovers_only_exact_existing_owner (test_account_deletion_recovery.DeletionRecoveryTests.test_unreceived_local_request_recovers_only_exact_existing_owner) ... ok
 test_embedding_finishing_after_erasure_is_rejected (test_account_erasure.AccountErasureTests.test_embedding_finishing_after_erasure_is_rejected) ... ok
@@ -37,14 +36,17 @@ test_two_owners_reauthentication_and_cross_owner_rejection (test_account_identit
 test_active_request_blocks_cutover (test_account_migration.AccountMigrationTests.test_active_request_blocks_cutover) ... ok
 test_binding_failure_rolls_back_session_revocations (test_account_migration.AccountMigrationTests.test_binding_failure_rolls_back_session_revocations) ... ok
 test_changed_plan_rejects_before_revocation (test_account_migration.AccountMigrationTests.test_changed_plan_rejects_before_revocation) ... ok
+test_chat_container_with_future_content_column_blocks_migration (test_account_migration.AccountMigrationTests.test_chat_container_with_future_content_column_blocks_migration) ... ok
+test_chat_message_blocks_migration_even_without_answer (test_account_migration.AccountMigrationTests.test_chat_message_blocks_migration_even_without_answer) ... ok
 test_cutover_preserves_content_ledgers_and_other_provider (test_account_migration.AccountMigrationTests.test_cutover_preserves_content_ledgers_and_other_provider) ... ok
 test_deletion_and_future_owner_table_rejected (test_account_migration.AccountMigrationTests.test_deletion_and_future_owner_table_rejected) ... ok
+test_empty_chat_container_is_preserved (test_account_migration.AccountMigrationTests.test_empty_chat_container_is_preserved) ... ok
 test_nonempty_destination_and_wrong_identity_rejected (test_account_migration.AccountMigrationTests.test_nonempty_destination_and_wrong_identity_rejected) ... ok
 test_unknown_usage_owner_table_blocks_cutover (test_account_migration.AccountMigrationTests.test_unknown_usage_owner_table_blocks_cutover) ... ok
 test_wal_pair_rejected_without_changing_journal_mode (test_account_migration.AccountMigrationTests.test_wal_pair_rejected_without_changing_journal_mode) ... ok
 test_default_disabled_and_incomplete_configuration_fails_closed (test_account_service.AccountConfigurationTests.test_default_disabled_and_incomplete_configuration_fails_closed) ... ok
 test_disabled_endpoint_stays_closed (test_account_service.AccountSocketTests.test_disabled_endpoint_stays_closed) ... ok
-test_signed_exchange_refresh_replay_and_signout_over_real_sockets (test_account_service.AccountSocketTests.test_signed_exchange_refresh_replay_and_signout_over_real_sockets) ... Executing <Task pending name='Task-257' coro=<AccountSocketTests.test_signed_exchange_refresh_replay_and_signout_over_real_sockets() running at /Users/n.chinlue/.codex/worktrees/account-sign-in/voice-companion/Backend/test_account_service.py:40> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py:765> cb=[_run_until_complete_cb() at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py:181] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py:100> took 0.116 seconds
+test_signed_exchange_refresh_replay_and_signout_over_real_sockets (test_account_service.AccountSocketTests.test_signed_exchange_refresh_replay_and_signout_over_real_sockets) ... Executing <Task pending name='Task-257' coro=<AccountSocketTests.test_signed_exchange_refresh_replay_and_signout_over_real_sockets() running at /Users/n.chinlue/.codex/worktrees/account-sign-in/voice-companion/Backend/test_account_service.py:40> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py:765> cb=[_run_until_complete_cb() at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py:181] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py:100> took 0.107 seconds
 ok
 test_identity_token_and_challenge_replay (test_account_sessions.AccountSessionTests.test_identity_token_and_challenge_replay) ... ok
 test_invalid_challenge_and_owner_failure_never_issue_access (test_account_sessions.AccountSessionTests.test_invalid_challenge_and_owner_failure_never_issue_access) ... ok
@@ -64,6 +66,6 @@ test_provider_failure_is_safe_and_recoverable (test_account_tokens.AccountTokenT
 test_real_jwks_fetch_cache_rotation_and_unknown_key (test_account_tokens.JWKSIntegrationTests.test_real_jwks_fetch_cache_rotation_and_unknown_key) ... ok
 
 ----------------------------------------------------------------------
-Ran 62 tests in 2.523s
+Ran 65 tests in 2.282s
 
 OK

@@ -100,6 +100,30 @@ class AccountMigrationTests(unittest.TestCase):
         with self.assertRaisesRegex(Rejected, 'migration_google_has_content'):
             self.migrate()
 
+    def test_empty_chat_container_is_preserved(self):
+        from companion_chat import CompanionChat
+        chat = CompanionChat(self.memory)
+        container = chat.main(self.google['owner'])
+        plan = self.migrate()
+        self.migrate(plan['plan'])
+        self.assertEqual(chat.main(self.google['owner']), container)
+
+    def test_chat_message_blocks_migration_even_without_answer(self):
+        from companion_chat import CompanionChat
+        chat = CompanionChat(self.memory)
+        chat.start(self.google['owner'], 'question-a', 'Preserve this question')
+        with self.assertRaisesRegex(Rejected, 'migration_google_has_content'):
+            self.migrate()
+        self.admission.authorized(self.google['token'])
+
+    def test_chat_container_with_future_content_column_blocks_migration(self):
+        from companion_chat import CompanionChat
+        CompanionChat(self.memory).main(self.google['owner'])
+        with self.memory.connect() as db:
+            db.execute('ALTER TABLE companion_chat ADD COLUMN title TEXT')
+        with self.assertRaisesRegex(Rejected, 'migration_google_has_content'):
+            self.migrate()
+
     def test_deletion_and_future_owner_table_rejected(self):
         self.admission.db.execute("INSERT INTO account_deletion VALUES(?,?,'pending')", (self.legacy, 'fixture'))
         with self.assertRaisesRegex(Rejected, 'migration_deletion_exists'):

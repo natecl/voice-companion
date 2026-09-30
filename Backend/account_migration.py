@@ -72,7 +72,12 @@ deleted or reassigned. The empty old Google owner remains with revoked credentia
         inventory = {}
         for table in OWNER_TABLES + INDEX_TABLES:
             count = db.execute(f'SELECT count(*) FROM {table} WHERE owner=?', (google_owner,)).fetchone()[0]
-            if table not in ('account_identity', 'credential_owner') and count:
+            # Opening chat creates only an owner/id container. Keep it untouched;
+            # all turn, request, dependency and snapshot rows still block cutover.
+            metadata_only = table in ('account_identity', 'credential_owner')
+            if table == 'companion_chat':
+                metadata_only = {r[1] for r in db.execute('PRAGMA table_info(companion_chat)')} == {'owner', 'id'}
+            if not metadata_only and count:
                 raise Rejected('migration_google_has_content')
             inventory[table] = db.execute(f'SELECT * FROM {table} WHERE owner IN (?,?) ORDER BY owner',
                                           (source_owner, google_owner)).fetchall()
