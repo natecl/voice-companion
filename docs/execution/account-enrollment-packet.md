@@ -81,3 +81,7 @@ Functional frontend work must reuse the existing components, animations, transit
 ### Apple server key registered
 
 September 29: founder explicitly approved the action-time key request. Registered `Ellis Sign in with Apple`, key ID `6JCPHWJT4A`, with only Sign in with Apple enabled, scoped to primary `ai.voicecompanion.phone` and its grouped Mac app. Registration initially encountered an expired portal session; the refreshed inventory confirmed no key existed before retrying. The final portal showed the registered key and completed download. The download event observer timed out, but the actual file was present in Downloads; it was validated as P-256 and moved to owner-only local credential storage outside all repositories. No private material appears in source, logs or screenshots. This does not establish deployed secret configuration or real Apple authentication.
+
+### Backend configuration staged, accounts disabled
+
+The registered Apple key and locally generated Fernet encryption key are configured on the existing Render voice-companion service with the selected Google/Apple client IDs. Per-variable API writes preserved every pre-existing setting, verified by readback; values are never recorded here. `VOICE_ENABLE_ACCOUNTS=0` remains set. No deployment or real provider exchange has occurred. The signing key registration receipt is not account acceptance.
