@@ -155,3 +155,23 @@ and [runner instructions](../qa/account-lifecycle/live-ui-automation.md).
 No founder clicks were required. Desktop coordinate input failed on Device Hub;
 XCTest worked. Password/security challenges and physical-only judgments still
 require founder input. The remaining account gates are not waived.
+
+### Apple refresh and recovery — September 30
+
+Native Apple automatic refresh passed at the normal renewal threshold, with a
+same-owner/family rotation and signed-in restart; see the
+[refresh receipt](../qa/account-lifecycle/native-apple-automatic-refresh.json).
+Fresh-proof Apple deletion recovery also completed against an empty isolated QA
+owner after a deliberately staged lost-client-receipt interruption. Real Apple
+proof/revocation succeeded, the old owner remained revoked and deleted, and the
+founder confirmed completion followed by signing in again. Re-enrollment created
+a distinct empty owner; automated native restart passed and signed-in Home was
+inspected. Spending tables were unchanged. The transient completion screen was
+founder-reported, not captured by the agent; see the
+[recovery receipt](../qa/account-lifecycle/apple-fresh-proof-recovery.json).
+The local QA server had stopped during the credential handoff; it was resumed
+with its original databases, endpoint, certificate, encryption key and counters.
+Production and the founder's phone were untouched. No paid model calls occurred.
+Phase 1 remains incomplete: capture/sign-out, revoked-provider/failure behavior,
+independent-human isolation, physical deletion and retention/restore acceptance
+remain distinct gates. Later phases have not started.
