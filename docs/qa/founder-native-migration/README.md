@@ -96,3 +96,22 @@ Physical Release migration must use fresh source/destination proof and a stopped
 app/server cutover. This candidate is not merged or ready to run against the
 founder's live installation. Operator orchestration and final acceptance remain
 part of Phase 1.
+
+## Prepared physical Release candidate
+
+`physical-build-receipt.json` pins a Release-iphoneos build at source75bcfed,
+production account endpoint, native account-deletion capability enabled, executable
+and processed Info hashes, valid code signature, Apple sign-in entitlement and a
+profile including the paired iPhone. It is development-signed for physical QA,
+not an App Store distribution archive. No install occurred. The source plist is
+unchanged; a private plist copy enables the previously tested deletion UI flag.
+An initial INFOPLIST_KEY override was ignored by Xcode, caught by inspecting the
+built plist, and replaced with an explicit INFOPLIST_FILE build input. The rebuilt
+app's actual boolean flag and signing were checked. Build directory:
+`/tmp/ellis-founder-physical-release`.
+
+A read-only hosted check still found commitc897dec, memory schema20 and zero active
+usage reservations. That is point-in-time evidence, not a cutover lease; recheck
+under confirmed maintenance and take fresh coordinated backups before changes.
+Physical readiness, actual installation/sign-in and migration acceptance remain
+required. This receipt does not establish distribution signing or TestFlight.
