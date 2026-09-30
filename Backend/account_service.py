@@ -104,6 +104,11 @@ class AccountService:
                             if self.deletion is None:
                                 raise Rejected('invalid_account_request')
                             result = await self.deletion.delete(data['deletion_token'], recovery=True)
+                        elif op == 'finish_google_deletion' and fields == {'credential', 'credential_kind', 'google_refresh_token'}:
+                            if self.deletion is None or data['credential_kind'] not in ('session', 'recovery'):
+                                raise Rejected('invalid_account_request')
+                            result = await self.deletion.finish_google(data['credential'], data['google_refresh_token'],
+                                                                      recovery=data['credential_kind'] == 'recovery')
                         elif op == 'sign_out' and fields == {'refresh_token'}:
                             self.sessions.sign_out(data['refresh_token'])
                             result = {}

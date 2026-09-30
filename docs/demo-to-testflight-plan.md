@@ -1,6 +1,6 @@
 # Invited companion → demo → TestFlight
 
-> Current September 29 release status and remaining phases: [TestFlight handoff](execution/testflight-release-handoff.md). UI/integration PR154–155 are merged and the internal phone build is installed; backend rollout, independent accounts and paid plans remain pending. Earlier dated evidence below is historical, not a fresh release attestation.
+> Recorded September 30 status: [TestFlight handoff](execution/testflight-release-handoff.md). UI/integration PR154–155 are merged. The account candidate is recorded deployed at `208ca34b` / schema 21; physical Google migration and provider switching passed. PR159–177 remain unmerged, Phase 1 account/data lifecycle remains incomplete, and later pricing/paywall/release/pilot phases have not started. Earlier phase names below preserve planning history; the handoff governs the current sequential release phases. This is not a fresh runtime attestation.
 
 Founder revision, September 29, 2026: build the experience of inviting a third intelligent participant into a conversation. Personal continuity, good participation judgment and a personable interface are the product reward. Capture, notes and caching support that experience. See the [canonical direction](product-source-of-truth.md#invited-social-presence--september-29-2026) and [experience/UI proposal](social-presence-experience.md). The earlier exact one-liner is preserved pending a selected replacement; note-taking-led positioning is superseded.
 

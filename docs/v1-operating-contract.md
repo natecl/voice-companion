@@ -1,5 +1,7 @@
 # V1 operating contract
 
+> Historical V1 provisioning contract. Its developer enrollment, provider allocations and Jev routing proposal do not establish current account behavior or an available budget; the failed routing gate remains failed. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 Status: internal V1 checkpoints 1–3, 5 and 6 verified; Jev checkpoint 4 deferred by founder decision. See [final acceptance](v1-acceptance.md) and [current runbook](v1-runbook.md). The following provisioning details retain their original context; [Jev deferral](v1-jev-decision.md) supersedes its planned routing requirement. The founder accepted the paid Render recommendation after reviewing its free-tier limitations and approximately $7.25/month baseline. Render CLI authentication and workspace access are verified; the founder has now explicitly approved up to $5 total V1 provider-testing spend, allocated as below. The internal relay is deployed and successive physical-iPhone recordings are verified; see [hosted validation](v1-hosted-validation.md). Checkpoint 1 review and targeted verification are complete. Governed by [engineering principles](engineering-principles.md) and the [V1 plan](v1-implementation-plan.md).
 
 ## First delivery and deployment proposal

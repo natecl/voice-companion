@@ -12,7 +12,7 @@
       "group": "mechanical_checks",
       "kind": "fixture",
       "evidence": "work/feature-evidence/note-cache/mechanical.json",
-      "claim": "Eleven focused CoreTests exercise actual cache disk and state contracts; runner integration remains separate."
+      "claim": "Executed RecordingNotesCacheTests covering disk state, revisions, coalescing, owner clearing and late responses; these native checks are external receipts, not run by the Python backend runner"
     },
     {
       "id": "note-cache-behavior-1",
@@ -26,7 +26,7 @@
       "group": "live_behavior_checks",
       "kind": "simulator",
       "evidence": "work/feature-evidence/note-cache/behavior-2.json",
-      "claim": "Cold launch/offline read, refresh success/failure, deletion and sign-out"
+      "claim": "Shared WKWebView cold launch/offline read, refresh success/failure, note/account deletion and sign-out/owner switching with populated notes"
     },
     {
       "id": "note-cache-inspection",

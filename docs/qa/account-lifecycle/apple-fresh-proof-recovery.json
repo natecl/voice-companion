@@ -1,0 +1,35 @@
+{
+  "date": "2026-09-30",
+  "scope": "isolated localhost real Apple fresh-proof deletion recovery and re-enrollment",
+  "setup": "empty disposable Apple owner; synthetic local session stopped after deletion begin; original receipt never placed in native Keychain",
+  "checks": {
+    "deletion_complete": true,
+    "fresh_proof_receipt_recorded": true,
+    "old_identity_removed": true,
+    "old_sessions_revoked": true,
+    "spending_tables_unchanged": true,
+    "reenrolled_distinct_owner": true,
+    "old_and_new_content_empty": true,
+    "isolated_endpoint_matches": true
+  },
+  "binary_sha256": "cc799ca9f3d47e9353f7682500ee2ff403656d2d39e646ce70ad680918741d68",
+  "provider_calls_after": {
+    "google.revoke.ok": 3,
+    "apple.redeem.ok": 6,
+    "apple.revoke.ok": 3,
+    "apple.validate_refresh.ok": 2
+  },
+  "founder_report": "It said finish deleting your account, then it finished and I signed in.",
+  "ui_evidence_limit": "Completion transition is founder-reported; agent did not capture the transient success screen. Native restart is checked separately.",
+  "paid_model_calls": 0,
+  "production_modified": false,
+  "native_source": "596733a (native build inputs unchanged from this source)",
+  "restart": {
+    "executed": 1,
+    "passed": 1,
+    "skipped": 0,
+    "signed_in_home_inspected": true,
+    "private_result": "live-ui-apple-recovery-new-account-restart.xcresult"
+  },
+  "limitations": "Local simulator recovery only. The interruption was deliberately staged using a synthetic local session; recovery used real Apple proof and revocation. Completion UI is founder-reported. Physical deletion, revoked-provider behavior and independent-human isolation remain separate gates."
+}

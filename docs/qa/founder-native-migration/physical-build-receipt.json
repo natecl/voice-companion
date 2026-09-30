@@ -1,0 +1,15 @@
+{
+  "source_commit": "75bcfeda8d48162985e7f1ecf2b3c7b57a0556c6",
+  "bundle": "ai.voicecompanion.phone",
+  "endpoint": "wss://voice-companion-sdbr.onrender.com/account",
+  "deletion_enabled": true,
+  "executable_sha256": "3c09298d8ccf8da9558488f07f3cb6ec000fdb40356cd61c918cb19707ce503f",
+  "info_sha256": "ce7f9e5263500382c090675c62e4b44f0c727b92e4908072d22eb1ac4147d5ba",
+  "configuration": "Release-iphoneos",
+  "signature_verified": true,
+  "apple_signin_entitlement_verified": true,
+  "physical_device_in_profile": true,
+  "profile_expiration": "2027-09-30T01:36:41",
+  "development_signed": true,
+  "installed": false
+}

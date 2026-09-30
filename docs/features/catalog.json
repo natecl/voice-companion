@@ -6,7 +6,10 @@
     "implementation": [
       "Backend/relay.py",
       "UnitTests/RecordingLifecycleTests.swift",
-      "UITests/MicrophoneUITests.swift"
+      "UITests/MicrophoneUITests.swift",
+      "App/Sessions/SessionController.swift",
+      "App/Transcription/LiveTranscriber.swift",
+      "App/Audio/SharedMicrophone.swift"
     ],
     "test_modules": [
       "Backend.test_relay",
@@ -14,7 +17,12 @@
     ],
     "manifest": "docs/features/verification/capture.json",
     "verification_scope": "Actual microphone/provider capture, interruption and save/reopen",
-    "context_map": "docs/features/maps/capture.md"
+    "context_map": "docs/features/maps/capture.md",
+    "external_test_sources": [
+      "UnitTests/RecordingLifecycleTests.swift",
+      "UITests/RecordingInterruptionUITests.swift",
+      "UITests/MicrophoneUITests.swift"
+    ]
   },
   "library": {
     "name": "Recording library and sync",
@@ -23,14 +31,20 @@
     "implementation": [
       "App/Sessions/SessionStore.swift",
       "App/Sessions/MemorySync.swift",
-      "UITests/SavedRecordingUITests.swift"
+      "UITests/SavedRecordingUITests.swift",
+      "App/RoomWebModel.swift",
+      "App/RoomUI/room.js"
     ],
     "test_modules": [
       "Backend.test_memory"
     ],
     "manifest": "docs/features/verification/library.json",
     "verification_scope": "Offline save/relaunch, sync recovery and attaching a recording",
-    "context_map": "docs/features/maps/library.md"
+    "context_map": "docs/features/maps/library.md",
+    "external_test_sources": [
+      "UnitTests/MemoryTests.swift",
+      "UITests/SavedRecordingUITests.swift"
+    ]
   },
   "meeting-notes": {
     "name": "Meeting note summaries",
@@ -40,7 +54,9 @@
       "Backend/recording_notes.py",
       "Backend/notes_generation.py",
       "App/RecordingNotesView.swift",
-      "UITests/RecordingNotesUITests.swift"
+      "UITests/RecordingNotesUITests.swift",
+      "App/RoomWebModel.swift",
+      "App/Sessions/RecordingNotes.swift"
     ],
     "test_modules": [
       "Backend.test_recording_notes",
@@ -55,17 +71,24 @@
   "note-cache": {
     "name": "On-device note caching",
     "outcome": "Instant persistent/offline summaries with owner/revision-safe refresh",
-    "status": "cache and shared iPhone integration verified locally; account lifecycle pending",
+    "status": "persistent cache and account clearing implemented; final lifecycle/physical acceptance remains separate",
     "implementation": [
       "App/RecordingNotesView.swift",
       "App/Sessions/RecordingNotes.swift",
       "App/Sessions/RecordingNotesCache.swift",
-      "App/RoomWebModel.swift"
+      "App/RoomWebModel.swift",
+      "App/Accounts/AccountRootView.swift",
+      "App/Sessions/LocalAccountErasure.swift"
     ],
     "test_modules": [],
     "manifest": "docs/features/verification/note-cache.json",
     "verification_scope": "Implement and exercise disk persistence, invalidation, owner separation and refresh coalescing; Cold launch/offline read, refresh success/failure, deletion and sign-out",
-    "context_map": "docs/features/maps/note-cache.md"
+    "context_map": "docs/features/maps/note-cache.md",
+    "external_test_sources": [
+      "UnitTests/RecordingNotesCacheTests.swift",
+      "UITests/SharedRoomCacheUITests.swift",
+      "scripts/check-shared-note-cache.py"
+    ]
   },
   "chat": {
     "name": "Companion chat and follow-ups",
@@ -74,17 +97,25 @@
     "implementation": [
       "Backend/companion_service.py",
       "App/Sessions/CompanionController.swift",
-      "UITests/CompanionUITests.swift"
+      "UITests/CompanionUITests.swift",
+      "App/RoomWebModel.swift",
+      "App/RoomUI/room.js"
     ],
     "test_modules": [
       "Backend.test_companion_chat",
       "Backend.test_companion_context",
       "Backend.test_companion_service",
-      "Backend.test_companion_snapshots"
+      "Backend.test_companion_snapshots",
+      "Backend.test_account_isolation_regression"
     ],
     "manifest": "docs/features/verification/chat.json",
     "verification_scope": "Actual answer/follow-up pipeline with final model configuration; Streaming, draft preservation, attachment, failed delivery and reopen",
-    "context_map": "docs/features/maps/chat.md"
+    "context_map": "docs/features/maps/chat.md",
+    "external_test_sources": [
+      "UnitTests/CompanionControllerTests.swift",
+      "UnitTests/CompanionRefreshTests.swift",
+      "UITests/SharedRoomPhoneUITests.swift"
+    ]
   },
   "dictation": {
     "name": "Composer dictation",
@@ -100,7 +131,12 @@
     ],
     "manifest": "docs/features/verification/dictation.json",
     "verification_scope": "Actual dictation recognition, discard/send, permission and interruption; backend budget test alone is insufficient",
-    "context_map": "docs/features/maps/dictation.md"
+    "context_map": "docs/features/maps/dictation.md",
+    "external_test_sources": [
+      "UnitTests/ComposerDictationTests.swift",
+      "UnitTests/DictationCallbackTests.swift",
+      "UITests/SharedRoomPhoneUITests.swift"
+    ]
   },
   "notes-search": {
     "name": "Notes search",
@@ -108,13 +144,15 @@
     "status": "implemented foundations; fresh feature verification required",
     "implementation": [
       "Backend/notes_search.py",
-      "App/CompanionRootView.swift"
+      "App/CompanionRootView.swift",
+      "App/RoomWebModel.swift",
+      "App/RoomUI/room.js"
     ],
     "test_modules": [
       "Backend.test_notes_search"
     ],
     "manifest": "docs/features/verification/notes-search.json",
-    "verification_scope": "Search results, empty/error state and opening the correct note",
+    "verification_scope": "Shared-room local library text filtering and opening the correct note; backend indexed note search has separate contracts and does not prove the UI uses ranked retrieval",
     "context_map": "docs/features/maps/notes-search.md"
   },
   "memory-learning": {
@@ -193,7 +231,9 @@
     "status": "implemented foundations; fresh feature verification required",
     "implementation": [
       "Backend/memory_retention.py",
-      "App/Sessions/SessionController.swift"
+      "App/Sessions/SessionController.swift",
+      "App/RoomWebModel.swift",
+      "App/RoomUI/room.js"
     ],
     "test_modules": [
       "Backend.test_memory_retention",
@@ -210,7 +250,9 @@
     "implementation": [
       "Backend/proactive_service.py",
       "Backend/proactive_policy.py",
-      "UITests/ProactiveUITests.swift"
+      "UITests/ProactiveUITests.swift",
+      "App/Sessions/ProactiveCoordinator.swift",
+      "App/RoomWebModel.swift"
     ],
     "test_modules": [
       "Backend.test_proactive_policy",
@@ -225,7 +267,7 @@
   "access": {
     "name": "Accounts and personal data",
     "outcome": "Independent per-tester enrollment, isolation and revocation",
-    "status": "internal foundations only; release implementation and real-path acceptance pending",
+    "status": "account lifecycle, isolation and backup tooling implemented with bounded evidence; Phase 1 final acceptance remains incomplete",
     "implementation": [
       "Backend/admission.py",
       "Backend/admin.py",
@@ -233,7 +275,24 @@
       "Backend/memory_store.py",
       "Backend/account_tokens.py",
       "Backend/account_sessions.py",
-      "Backend/account_service.py"
+      "Backend/account_service.py",
+      "Backend/provider_grants.py",
+      "Backend/apple_oauth.py",
+      "Backend/google_oauth.py",
+      "Backend/account_deletion.py",
+      "Backend/account_erasure.py",
+      "Backend/account_migration.py",
+      "Backend/migration_operator.py",
+      "Backend/managed_backups.py",
+      "Backend/backup_restore.py",
+      "Backend/backup_retention.py",
+      "Backend/maintenance.py",
+      "App/Accounts/AccountRootView.swift",
+      "App/Transcription/Accounts/AccountSessionManager.swift",
+      "App/Transcription/Accounts/AccountDeletion.swift",
+      "App/Sessions/LocalAccountErasure.swift",
+      "App/Sessions/FounderAccountMigration.swift",
+      "App/Sessions/SessionController.swift"
     ],
     "test_modules": [
       "Backend.test_admission",
@@ -245,11 +304,35 @@
       "Backend.test_account_service",
       "Backend.test_account_erasure",
       "Backend.test_account_deletion",
-      "Backend.test_account_deletion_recovery"
+      "Backend.test_account_deletion_recovery",
+      "Backend.test_account_deletion_finalization",
+      "Backend.test_google_oauth",
+      "Backend.test_apple_oauth",
+      "Backend.test_provider_grants",
+      "Backend.test_account_migration",
+      "Backend.test_migration_operator",
+      "Backend.test_account_isolation_regression",
+      "Backend.test_managed_backups",
+      "Backend.test_backup_restore",
+      "Backend.test_backup_retention",
+      "Backend.test_maintenance"
     ],
     "manifest": "docs/features/verification/access.json",
-    "verification_scope": "Fresh Release enrollment, authenticated session refresh and revoked-session handling without developer credential import; Two-user server isolation and owner-switch/sign-out clearing of local notes, chat and memory state; Account deletion and existing-owner migration preserve the selected lifecycle contract without leaking or losing unrelated data",
-    "context_map": "docs/features/maps/access.md"
+    "verification_scope": "Both real providers: fresh Release enrollment, native automatic refresh, sign-out/relaunch and fresh-proof deletion recovery; owner isolation and capture/cache teardown; account deletion and selected legacy-owner migration preserve unrelated data and spending; reviewed backup retention and deletion-safe restore; physical and independent-person acceptance remain distinct; revoked-provider and expired-session/network-failure recovery preserve local content",
+    "context_map": "docs/features/maps/access.md",
+    "external_test_sources": [
+      "UnitTests/AccountSessionTests.swift",
+      "UnitTests/AccountDeletionTests.swift",
+      "UnitTests/GoogleAccountGrantTests.swift",
+      "UnitTests/FounderAccountMigrationTests.swift",
+      "UnitTests/RecordingLifecycleTests.swift",
+      "UnitTests/MemoryTests.swift",
+      "UnitTests/RecordingNotesCacheTests.swift",
+      "UITests/LiveAccountUITests.swift",
+      "UITests/AccountDeletionUITests.swift",
+      "UITests/FounderMigrationUITests.swift",
+      "scripts/qa/test_real_account_server.py"
+    ]
   },
   "distribution": {
     "name": "TestFlight install and update",
@@ -262,13 +345,13 @@
     ],
     "test_modules": [],
     "manifest": "docs/features/verification/distribution.json",
-    "verification_scope": "Signed Release archive and exact backend/native configuration pairing pass deployment health, migration, preservation and rollback checks; Fresh independent TestFlight install and update preserve account data and exercise capture, notes, chat and bounded proactive controls without Debug activation; Signing, app record, authorized artwork/icon, privacy/legal/support metadata and selected free-or-paid release gates are reviewed",
+    "verification_scope": "Signed Release archive and exact backend/native configuration pairing pass deployment health, migration, preservation and rollback checks; Fresh independent TestFlight install and update preserve account data and exercise capture, notes, chat and bounded proactive controls without Debug activation; Signing, app record, authorized artwork/icon, privacy/legal/support metadata and required approved plans/paywall/subscription gates are reviewed in phase order",
     "context_map": "docs/features/maps/distribution.md"
   },
   "subscriptions": {
     "name": "Subscriptions and paywall",
-    "outcome": "Current preview surfaces; real purchase/subscription implementation is deferred",
-    "status": "preview only; real billing planned and unverified",
+    "outcome": "Working purchase, restore and account-bound subscription entitlement after approved plans; currently preview only",
+    "status": "preview only; Phase 3 billing implementation waits for accepted Phase 1 accounts and Phase 2 plans",
     "implementation": [
       "App/ExperienceStyle.swift",
       "App/ExperienceAccountView.swift"
@@ -293,21 +376,30 @@
   "social-presence": {
     "name": "Invited social presence and interface",
     "outcome": "Deliberately invite a familiar AI participant; read useful contributions and remain in control",
-    "status": "planned interface and experience revision; existing capture/chat foundations only",
+    "status": "shared WKWebView companion-room interface implemented; proactive usefulness and full experience acceptance remain unverified",
     "implementation": [
       "App/CompanionRootView.swift",
       "App/ExperienceStyle.swift",
-      "docs/social-presence-experience.md"
+      "docs/social-presence-experience.md",
+      "App/RoomWebView.swift",
+      "App/RoomWebModel.swift",
+      "App/RoomUI/index.html",
+      "App/RoomUI/room.js",
+      "App/RoomUI/room.css"
     ],
     "test_modules": [],
     "manifest": "docs/features/verification/social-presence.json",
     "verification_scope": "Reviewed prototype, actual native state transitions, accessible controls, drafts and history; changed model judgment verified through proactive contract",
-    "context_map": "docs/features/maps/social-presence.md"
+    "context_map": "docs/features/maps/social-presence.md",
+    "external_test_sources": [
+      "UITests/SharedRoomPhoneUITests.swift",
+      "UITests/SharedRoomCacheUITests.swift"
+    ]
   },
   "pricing": {
     "name": "Plans and usage limits",
     "outcome": "Selected Free/Pro plans with server-enforced allowances and clear usage feedback",
-    "status": "planned; prices and allowances undecided",
+    "status": "planned Phase 2; prices and allowances undecided; waits for Phase 1 acceptance",
     "implementation": [
       "Backend/admission.py",
       "Backend/admin.py"

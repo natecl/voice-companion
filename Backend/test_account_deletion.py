@@ -35,7 +35,8 @@ class AccountDeletionTests(unittest.IsolatedAsyncioTestCase):
         self.key = Fernet.generate_key()
         self.grants = ProviderGrants(self.admission, self.key)
         self.apple = Mock()
-        self.deletion = AccountDeletion(self.sessions, self.grants, self.apple)
+        self.google = Mock()
+        self.deletion = AccountDeletion(self.sessions, self.grants, self.apple, self.google)
         self.deletion.quiesce = AsyncMock()
         self.sequence = 0
 
@@ -44,6 +45,12 @@ class AccountDeletionTests(unittest.IsolatedAsyncioTestCase):
         identity = VerifiedIdentity(GOOGLE if provider == 'google' else APPLE, subject, self.now + 300, 'phone')
         challenge = self.sessions.challenge(provider)
         return self.sessions.exchange(challenge['challenge'], provider, identity, 'fictional-token-' + str(self.sequence))
+
+    async def finish(self, token, *, recovery=False):
+        result = await self.deletion.delete(token, recovery=recovery)
+        if result['status'] == 'awaiting_google_revocation':
+            result = await self.deletion.finish_google(token, 'fictional-google-grant', recovery=recovery)
+        return result
 
     def state(self, owner):
         return self.admission.db.execute('SELECT state FROM account_deletion WHERE owner=?', (owner,)).fetchone()[0]
@@ -55,7 +62,7 @@ class AccountDeletionTests(unittest.IsolatedAsyncioTestCase):
         request = self.admission.reserve(first['token'], 'stt')
         self.admission.finish(request, completed=True)
         ledger = self.admission.db.execute('SELECT * FROM request').fetchall()
-        self.assertEqual(await self.deletion.delete(first['refresh_token']), {'status': 'deleted'})
+        self.assertEqual(await self.finish(first['refresh_token']), {'status': 'deleted'})
         for account in (first, second):
             with self.assertRaises(Rejected): self.admission.authorized(account['token'])
             with self.assertRaises(Rejected): self.sessions.refresh(account['refresh_token'])
@@ -72,22 +79,22 @@ class AccountDeletionTests(unittest.IsolatedAsyncioTestCase):
         self.grants.save_apple(account['owner'], 'phone', 'fictional-apple-refresh')
         self.memory.put_source(account['owner'], source())
         self.apple.revoke.side_effect = Rejected('identity_provider_unavailable')
-        with self.assertRaises(Rejected): await self.deletion.delete(account['refresh_token'])
+        with self.assertRaises(Rejected): await self.finish(account['refresh_token'])
         self.assertEqual(self.state(account['owner']), 'pending')
         self.assertIsNotNone(self.memory.source(account['owner'], 'session-a'))
         with self.assertRaises(Rejected): self.admission.authorized(account['token'])
         with self.assertRaisesRegex(Rejected, 'account_deletion_pending'): self.enroll(provider='apple')
         self.apple.revoke.assert_called_once_with('phone', 'fictional-apple-refresh')
         self.sessions = AccountSessions(self.admission, MemoryStore(self.memory.path))
-        self.deletion = AccountDeletion(self.sessions, ProviderGrants(self.admission, self.key), self.apple)
+        self.deletion = AccountDeletion(self.sessions, ProviderGrants(self.admission, self.key), self.apple, self.google)
         self.deletion.quiesce = AsyncMock()
         self.apple.revoke.side_effect = None
         self.now += 40 * 86400  # An accepted deletion can finish after its app session expires.
-        self.assertEqual(await self.deletion.delete(account['refresh_token']), {'status': 'deleted'})
+        self.assertEqual(await self.finish(account['refresh_token']), {'status': 'deleted'})
         self.assertEqual(self.grants.apple_for(account['owner']), [])
         self.assertEqual(self.state(account['owner']), 'complete')
         self.assertEqual(self.apple.revoke.call_count, 2)
-        await self.deletion.delete(account['refresh_token'])
+        await self.finish(account['refresh_token'])
         self.assertEqual(self.apple.revoke.call_count, 2)
 
     async def test_partial_grant_revocation_only_retries_unfinished_client(self):
@@ -95,10 +102,10 @@ class AccountDeletionTests(unittest.IsolatedAsyncioTestCase):
         self.grants.save_apple(account['owner'], 'a-phone', 'phone-refresh')
         self.grants.save_apple(account['owner'], 'b-mac', 'mac-refresh')
         self.apple.revoke.side_effect = [None, Rejected('identity_provider_unavailable')]
-        with self.assertRaises(Rejected): await self.deletion.delete(account['refresh_token'])
+        with self.assertRaises(Rejected): await self.finish(account['refresh_token'])
         self.assertEqual(self.grants.apple_for(account['owner']), [('b-mac', 'mac-refresh')])
         self.apple.revoke.side_effect = None
-        await self.deletion.delete(account['refresh_token'])
+        await self.finish(account['refresh_token'])
         self.assertEqual([call.args[0] for call in self.apple.revoke.call_args_list], ['a-phone', 'b-mac', 'b-mac'])
 
     async def test_incomplete_quiescence_never_erases_or_calls_provider(self):
@@ -106,12 +113,12 @@ class AccountDeletionTests(unittest.IsolatedAsyncioTestCase):
         self.grants.save_apple(account['owner'], 'phone', 'refresh')
         self.memory.put_source(account['owner'], source())
         self.deletion.quiesce.side_effect = TimeoutError()
-        with self.assertRaises(TimeoutError): await self.deletion.delete(account['refresh_token'])
+        with self.assertRaises(TimeoutError): await self.finish(account['refresh_token'])
         self.assertEqual(self.state(account['owner']), 'pending')
         self.assertIsNotNone(self.memory.source(account['owner'], 'session-a'))
         self.apple.revoke.assert_not_called()
         self.deletion.quiesce.side_effect = None
-        await self.deletion.delete(account['refresh_token'])
+        await self.finish(account['refresh_token'])
         self.assertIsNone(self.memory.source(account['owner'], 'session-a'))
 
     async def test_interrupted_final_receipt_retries_erased_storage_idempotently(self):
@@ -121,9 +128,9 @@ class AccountDeletionTests(unittest.IsolatedAsyncioTestCase):
             erase_content(store, owner)
             raise RuntimeError('fixture crash after content commit')
         with patch('account_deletion.erase_content', side_effect=interrupted):
-            with self.assertRaises(RuntimeError): await self.deletion.delete(account['refresh_token'])
+            with self.assertRaises(RuntimeError): await self.finish(account['refresh_token'])
         with self.assertRaisesRegex(Rejected, 'account_deletion_pending'): self.enroll()
-        self.assertEqual(await self.deletion.delete(account['refresh_token']), {'status': 'deleted'})
+        self.assertEqual(await self.finish(account['refresh_token']), {'status': 'deleted'})
         self.assertNotEqual(self.enroll()['owner'], account['owner'])
 
     def test_deletion_configuration_is_explicit_and_default_off(self):
@@ -138,10 +145,10 @@ class AccountDeletionTests(unittest.IsolatedAsyncioTestCase):
     async def test_unauthorized_or_unwired_request_has_no_effect(self):
         account = self.enroll()
         for token in ('short', 'unknown-' * 8):
-            with self.assertRaises(Rejected): await self.deletion.delete(token)
+            with self.assertRaises(Rejected): await self.finish(token)
         self.deletion.quiesce = None
         with self.assertRaisesRegex(Rejected, 'account_deletion_unavailable'):
-            await self.deletion.delete(account['refresh_token'])
+            await self.finish(account['refresh_token'])
         self.assertEqual(self.admission.db.execute('SELECT count(*) FROM account_deletion').fetchone()[0], 0)
         self.admission.authorized(account['token'])
 
@@ -172,7 +179,10 @@ class AccountDeletionTests(unittest.IsolatedAsyncioTestCase):
                     malformed = await request(**args, owner=other['owner'])
                     self.assertEqual(malformed['message'], 'invalid_account_request')
                     self.assertFalse(stopped[first['token']].is_set())
-                    self.assertEqual((await request(**args))['status'], 'deleted')
+                    self.assertEqual((await request(**args))['status'], 'awaiting_google_revocation')
+                    final = dict(operation='finish_google_deletion', credential=first['refresh_token'],
+                                 credential_kind='session', google_refresh_token='fictional-google-grant')
+                    self.assertEqual((await request(**final))['status'], 'deleted')
                     await asyncio.wait_for(a.wait_closed(), 2)
                     self.assertTrue(stopped[first['token']].is_set())
                     self.assertFalse(stopped[other['token']].is_set())

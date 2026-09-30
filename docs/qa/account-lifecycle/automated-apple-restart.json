@@ -1,0 +1,18 @@
+{
+  "date": "2026-09-30",
+  "scope": "isolated real Apple account Release simulator persistent-session restart",
+  "app_source": "ebcfbd2",
+  "binary_sha256": "f90fe5e8e733782b934e5aec707d2b845d36248ff030f431e49b424407d839ad",
+  "test": "LiveAccountUITests/testSignedInRestart",
+  "executed": 1,
+  "passed": 1,
+  "skipped": 0,
+  "backend_apple_identity_count": 1,
+  "session_rows_before": 15,
+  "session_rows_after": 15,
+  "same_session_after_restart": true,
+  "screenshot_inspected": true,
+  "founder_participation": "Apple password challenge only; restart automated",
+  "automatic_refresh": "Pending normal elapsed threshold; clocks and expiry unchanged",
+  "paid_calls": 0
+}

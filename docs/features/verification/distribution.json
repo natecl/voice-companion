@@ -4,7 +4,7 @@
   "acceptance": [
     "Signed Release archive and exact backend/native configuration pairing pass deployment health, migration, preservation and rollback checks",
     "Fresh independent TestFlight install and update preserve account data and exercise capture, notes, chat and bounded proactive controls without Debug activation",
-    "Signing, app record, authorized artwork/icon, privacy/legal/support metadata and selected free-or-paid release gates are reviewed",
+    "Signing, app record, authorized artwork/icon, privacy/legal/support metadata and required approved plans/paywall/subscription gates are reviewed in phase order",
     "Lead inspects exact final-configuration evidence before dependent work advances"
   ],
   "checks": [
@@ -27,7 +27,7 @@
       "group": "live_behavior_checks",
       "kind": "physical_device",
       "evidence": "work/feature-evidence/distribution/behavior-3.json",
-      "claim": "Signing, app record, authorized artwork/icon, privacy/legal/support metadata and selected free-or-paid release gates are reviewed"
+      "claim": "Signing, app record, authorized artwork/icon, privacy/legal/support metadata and required approved plans/paywall/subscription gates are reviewed in phase order"
     },
     {
       "id": "distribution-inspection",

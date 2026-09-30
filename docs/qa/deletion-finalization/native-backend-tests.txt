@@ -1,0 +1,56 @@
+Test Suite 'Selected tests' started at 2026-09-30 01:15:11.537.
+Test Suite 'PhoneUITests.xctest' started at 2026-09-30 01:15:11.537.
+Test Suite 'AccountDeletionUITests' started at 2026-09-30 01:15:11.537.
+Test Case '-[PhoneUITests.AccountDeletionUITests testNativeDeletionAgainstLocalTLSBackend]' started.
+    t =     0.00s Start Test at 2026-09-30 01:15:11.538
+2026-09-30 01:15:11.555876-0400 PhoneUITests-Runner[32131:6953686] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+    t =     0.02s Set Up
+    t =     0.03s Open ai.voicecompanion.phone
+    t =     0.03s     Launch ai.voicecompanion.phone
+2026-09-30 01:15:11.632 xcodebuild[31840:6951807] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-09-30 01:15:11.632 xcodebuild[31840:6951807] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     0.50s         Setting up automation session
+objc[32131]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x106e74310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x1062f4398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =     1.12s         Wait for ai.voicecompanion.phone to idle
+    t =     2.26s Waiting 15.0s for "Pending erasure saved" StaticText to exist
+    t =     3.34s     Checking `Expect predicate `existsNoRetry == 1` for object "Pending erasure saved" StaticText`
+    t =     3.35s         Checking existence of `"Pending erasure saved" StaticText`
+    t =     3.39s Terminate ai.voicecompanion.phone:32137
+    t =     4.48s Open ai.voicecompanion.phone
+    t =     4.48s     Launch ai.voicecompanion.phone
+2026-09-30 01:15:16.024 xcodebuild[31840:6951807] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-09-30 01:15:16.024 xcodebuild[31840:6951807] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     4.70s         Setting up automation session
+    t =     5.29s         Wait for ai.voicecompanion.phone to idle
+    t =     6.42s Waiting 15.0s for "Erased and signed out" StaticText to exist
+    t =     7.50s     Checking `Expect predicate `existsNoRetry == 1` for object "Erased and signed out" StaticText`
+    t =     7.50s         Checking existence of `"Erased and signed out" StaticText`
+    t =     7.53s Terminate ai.voicecompanion.phone:32144
+    t =     8.62s Open ai.voicecompanion.phone
+    t =     8.62s     Launch ai.voicecompanion.phone
+2026-09-30 01:15:20.163 xcodebuild[31840:6951807] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-09-30 01:15:20.163 xcodebuild[31840:6951807] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     8.83s         Setting up automation session
+    t =     9.41s         Wait for ai.voicecompanion.phone to idle
+    t =    10.53s Waiting 15.0s for "Signed out after relaunch" StaticText to exist
+    t =    11.60s     Checking `Expect predicate `existsNoRetry == 1` for object "Signed out after relaunch" StaticText`
+    t =    11.60s         Checking existence of `"Signed out after relaunch" StaticText`
+    t =    11.63s Terminate ai.voicecompanion.phone:32166
+    t =    12.72s Tear Down
+Test Case '-[PhoneUITests.AccountDeletionUITests testNativeDeletionAgainstLocalTLSBackend]' passed (12.761 seconds).
+Test Suite 'AccountDeletionUITests' passed at 2026-09-30 01:15:24.299.
+	 Executed 1 test, with 0 failures (0 unexpected) in 12.761 (12.762) seconds
+Test Suite 'PhoneUITests.xctest' passed at 2026-09-30 01:15:24.299.
+	 Executed 1 test, with 0 failures (0 unexpected) in 12.761 (12.762) seconds
+Test Suite 'Selected tests' passed at 2026-09-30 01:15:24.300.
+	 Executed 1 test, with 0 failures (0 unexpected) in 12.761 (12.763) seconds
+2026-09-30 01:15:24.592 xcodebuild[31840:6951807] [MT] IDETestOperationsObserverDebug: 14.241 elapsed -- Testing started completed.
+2026-09-30 01:15:24.592 xcodebuild[31840:6951807] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-30 01:15:24.592 xcodebuild[31840:6951807] [MT] IDETestOperationsObserverDebug: 14.241 sec, +14.241 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/ellis-native-accounts-phone/Logs/Test/Test-Phone-2026.09.30_01-15-05--0400.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started

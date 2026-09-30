@@ -1,0 +1,43 @@
+Test Suite 'Selected tests' started at 2026-09-30 02:45:20.258.
+Test Suite 'CoreTests.xctest' started at 2026-09-30 02:45:20.259.
+Test Suite 'AccountSessionTests' started at 2026-09-30 02:45:20.259.
+Test Case '-[CoreTests.AccountSessionTests testAccountStoreRejectsOtherOwnerAndUnownedLegacyRecording]' started.
+Test Case '-[CoreTests.AccountSessionTests testAccountStoreRejectsOtherOwnerAndUnownedLegacyRecording]' passed (0.003 seconds).
+Test Case '-[CoreTests.AccountSessionTests testConcurrentRequestsShareOneRefresh]' started.
+Test Case '-[CoreTests.AccountSessionTests testConcurrentRequestsShareOneRefresh]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testExpiredRefreshClearsSessionBeforeAnotherOwnerCanSignIn]' started.
+Test Case '-[CoreTests.AccountSessionTests testExpiredRefreshClearsSessionBeforeAnotherOwnerCanSignIn]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testLateRefreshCannotRestoreSignedOutAccount]' started.
+Test Case '-[CoreTests.AccountSessionTests testLateRefreshCannotRestoreSignedOutAccount]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testOwnerSwitchRequiresTeardownAndSignOut]' started.
+Test Case '-[CoreTests.AccountSessionTests testOwnerSwitchRequiresTeardownAndSignOut]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRefreshStartsBeforeFiveMinuteCaptureCouldOutliveAccess]' started.
+Test Case '-[CoreTests.AccountSessionTests testRefreshStartsBeforeFiveMinuteCaptureCouldOutliveAccess]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRequestRefreshRejectsChangedOwnerOrBackend]' started.
+Test Case '-[CoreTests.AccountSessionTests testRequestRefreshRejectsChangedOwnerOrBackend]' passed (0.000 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRestoredExpiredAccessRefreshesBeforeSaving]' started.
+Test Case '-[CoreTests.AccountSessionTests testRestoredExpiredAccessRefreshesBeforeSaving]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testTransportRejectsUnencryptedOrCredentialBearingEndpoints]' started.
+Test Case '-[CoreTests.AccountSessionTests testTransportRejectsUnencryptedOrCredentialBearingEndpoints]' passed (0.000 seconds).
+Test Suite 'AccountSessionTests' passed at 2026-09-30 02:45:20.269.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.008 (0.010) seconds
+Test Suite 'FounderAccountMigrationTests' started at 2026-09-30 02:45:20.269.
+Test Case '-[CoreTests.FounderAccountMigrationTests testChangedSourceAndExistingDestinationAreRejected]' started.
+Test Case '-[CoreTests.FounderAccountMigrationTests testChangedSourceAndExistingDestinationAreRejected]' passed (0.005 seconds).
+Test Case '-[CoreTests.FounderAccountMigrationTests testOrdinarySignInHasNoMigrationAndSymlinkCannotRedirectMove]' started.
+Test Case '-[CoreTests.FounderAccountMigrationTests testOrdinarySignInHasNoMigrationAndSymlinkCannotRedirectMove]' passed (0.003 seconds).
+Test Case '-[CoreTests.FounderAccountMigrationTests testPrivatePhysicalSnapshotWhenExplicitlyProvided]' started.
+Test Case '-[CoreTests.FounderAccountMigrationTests testPrivatePhysicalSnapshotWhenExplicitlyProvided]' passed (0.042 seconds).
+Test Case '-[CoreTests.FounderAccountMigrationTests testRenamePreservesBytesAndResumesBeforeCredentialCommit]' started.
+Test Case '-[CoreTests.FounderAccountMigrationTests testRenamePreservesBytesAndResumesBeforeCredentialCommit]' passed (0.021 seconds).
+Test Case '-[CoreTests.FounderAccountMigrationTests testUnplannedOutboxAndDeletionBarrierAreRejected]' started.
+Test Case '-[CoreTests.FounderAccountMigrationTests testUnplannedOutboxAndDeletionBarrierAreRejected]' passed (0.003 seconds).
+Test Case '-[CoreTests.FounderAccountMigrationTests testWrongProviderOwnerOrEndpointCannotMoveFiles]' started.
+Test Case '-[CoreTests.FounderAccountMigrationTests testWrongProviderOwnerOrEndpointCannotMoveFiles]' passed (0.004 seconds).
+Test Suite 'FounderAccountMigrationTests' passed at 2026-09-30 02:45:20.348.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.078 (0.079) seconds
+Test Suite 'CoreTests.xctest' passed at 2026-09-30 02:45:20.348.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.087 (0.090) seconds
+Test Suite 'Selected tests' passed at 2026-09-30 02:45:20.349.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.087 (0.090) seconds
+** TEST SUCCEEDED **
