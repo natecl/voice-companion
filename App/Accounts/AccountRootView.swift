@@ -30,6 +30,7 @@ final class AccountRuntime {
     var busy = false
     var pendingDeletion: PendingAccountDeletion?
     var recoveringDeletion = false
+    private var founderMigration: FounderAccountMigration?
     private let deletionController = AccountDeletionController()
     var message: String?
     private var generation = UUID()
@@ -47,13 +48,23 @@ final class AccountRuntime {
                 message = pending.serverDeleted ? "Your account content was deleted. Finish the remaining deletion steps." : "Account deletion is pending. Retry when you’re connected."
                 return
             }
+            founderMigration = try FounderAccountMigration.pending()
+            if founderMigration != nil {
+                message = "Sign in with your selected Google account to restore your existing recordings."
+            }
             let account = try AccountCredentialStore.load()
             manager = AccountSessionManager.shared
             if let account {
+                if let migration = founderMigration {
+                    try migration.prepareStorage(account: account)
+                    try migration.finish(account: account)
+                    founderMigration = nil
+                    message = nil
+                }
                 try await manager?.install(account, restoring: true)
                 active = try await manager?.current()
             }
-            else if try !AccountCredentialStore.hasEnrollmentState() {
+            else if founderMigration == nil, try !AccountCredentialStore.hasEnrollmentState() {
                 legacy = try RelayCredentialStore.load() != nil
             }
         } catch { message = error.localizedDescription }
@@ -64,6 +75,12 @@ final class AccountRuntime {
         busy = true; message = nil
         defer { busy = false }
         do {
+            // Re-read so a malformed plan cannot be bypassed after startup failed.
+            founderMigration = try FounderAccountMigration.pending()
+            if founderMigration != nil, provider != .google {
+                message = "Use your selected Google account to finish restoring your existing recordings."
+                return
+            }
             if let pending = pendingDeletion, provider != pending.provider { throw AccountFailure.noDeletionPending }
             let config = try AccountConfiguration()
             let challenge = try await config.transport.challenge(for: provider)
@@ -95,8 +112,20 @@ final class AccountRuntime {
             let session = try await config.transport.exchange(provider: provider, challenge: challenge.challenge,
                                                               identityToken: authorization.identityToken, authorizationCode: authorization.authorizationCode)
             let account = StoredAccount(endpoint: config.transport.endpoint, provider: provider, session: session, googleGrant: authorization.googleGrant)
+            if let migration = founderMigration {
+                do { try migration.prepareStorage(account: account) }
+                catch {
+                    // Reject a wrong Google account without retaining its new session.
+                    try await config.transport.signOut(session.refreshToken)
+                    throw error
+                }
+            }
             if manager == nil { manager = AccountSessionManager.shared }
             try await manager?.install(account)
+            if let migration = founderMigration {
+                try migration.finish(account: account)
+                founderMigration = nil
+            }
             generation = UUID()
             legacy = false
             active = account

@@ -72,3 +72,17 @@ Still needed: implementation, coordinated backups/rehearsal, proof of the
 selected hosted Google identity, transition from the legacy app state to Google
 sign-in, stale-write handling and actual native/server cutover acceptance.
 No mapping, credentials, live files or ledgers have been changed.
+
+## Candidate progress after preparation
+
+The earlier preparation status above describes the read-only starting point.
+PR166 now implements the offline server primitive and has passed a current
+coordinated hosted-copy rehearsal: 42 memory tables, 18 usage tables and 22
+other database files preserved except for the intended identity binding and
+credential revocations. See [server evidence](../qa/founder-migration/README.md).
+The native candidate adds an explicitly staged, hash-checked, restartable move
+of the four legacy session files into the same owner's account directory, with
+20 outbox files retained unchanged. See [native evidence and remaining gates](../qa/founder-native-migration/README.md).
+Neither rehearsal changed live account bindings or the physical installation.
+Fresh Google proof, operator orchestration, runtime QA, reviewed rollout and
+physical cutover remain unfinished.

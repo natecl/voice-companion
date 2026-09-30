@@ -14,6 +14,7 @@
 		035388769212A5B58A9BA106 /* AccountRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43B929AF9B9795972DD99F9 /* AccountRootView.swift */; };
 		03FA4ADC9F69442A9E86ACB3 /* Transcript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103C8B997E39422BEEFF5D9B /* Transcript.swift */; };
 		03FBD8055C7542F1C44E9E3E /* LiveAskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AC2A636ABED7261B92DF00 /* LiveAskTests.swift */; };
+		0415394FA3D551279BB84D41 /* FounderAccountMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9DC40B235A1C4899E765AE /* FounderAccountMigrationTests.swift */; };
 		0470ED1A1534D608DC5EE888 /* CompanionConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DC5EAF399C9BA0167DE08F /* CompanionConnection.swift */; };
 		04D9F0D8EED3EE48B71BB0C7 /* RelayConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C627D1B94769284B53CA87 /* RelayConfiguration.swift */; };
 		04F2C5449254D925FD700876 /* AccountTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC2DF1C5B4E402B8AE04DE3 /* AccountTransport.swift */; };
@@ -45,6 +46,7 @@
 		2DBA64C7678AC1F76ECD27D0 /* AccountDeletionUIFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF99E9A8800AFB62665823C /* AccountDeletionUIFixture.swift */; };
 		2EB6B00CF0B59D267ECE26BA /* RelayConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C627D1B94769284B53CA87 /* RelayConfiguration.swift */; };
 		2F512AA2470FDCF02B7AC8B4 /* ProactiveUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41C90D7A71AD128D64B3958 /* ProactiveUITests.swift */; };
+		2F7D7063755D4A28B4B7F88F /* FounderAccountMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A74A31E77B072E57592975 /* FounderAccountMigration.swift */; };
 		30F7F902CD878EF2CB1ECDE0 /* ExperienceAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF68AD805B6E63CBC2628D1C /* ExperienceAccountView.swift */; };
 		33194AB168B44429BA555E21 /* ComposerDictation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A61595A22B8D8873EEEA9 /* ComposerDictation.swift */; };
 		3543D18AF22468B790597010 /* MemorySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C97C3F135EEAFF5858CD5D /* MemorySync.swift */; };
@@ -95,6 +97,7 @@
 		80C8FD2119A42FB8F5D4D98C /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FC567691D4C18C5E45FD1B /* SessionStore.swift */; };
 		8149CEC136411CE6C74C3F36 /* RelayCredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78DF2FA0976B69003E482D9 /* RelayCredentialStore.swift */; };
 		822939BAFB8BA3E279430B34 /* ConversationAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D8082C6B31F2C2E959995 /* ConversationAnswer.swift */; };
+		82B4C3E6C024624ADCD8DFCF /* FounderAccountMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A74A31E77B072E57592975 /* FounderAccountMigration.swift */; };
 		85F6A547F11EC86BA0C572E0 /* AccountEnrollmentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A3C2B7CFAD362CD4D19CE9 /* AccountEnrollmentUITests.swift */; };
 		87663E33968A85359DFDF085 /* RecordingNotesPhoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179D3083C0FA6C3B0BE5F141 /* RecordingNotesPhoneUITests.swift */; };
 		87DE99911791527E482049DE /* AccountSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FC749D5FA026FF28B68480 /* AccountSessionManager.swift */; };
@@ -105,6 +108,7 @@
 		8A79EA39AFB90F2CEB27264A /* RecordingInterruptionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9A8E1CB9DCDAF32438CC86 /* RecordingInterruptionUITests.swift */; };
 		8AFC584C612FAD225AAB0487 /* ComposerDictation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A61595A22B8D8873EEEA9 /* ComposerDictation.swift */; };
 		8BBEAD97D59A7F72976A0C43 /* AccountRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43B929AF9B9795972DD99F9 /* AccountRootView.swift */; };
+		8D33537F823EA9791383D5B8 /* FounderAccountMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A74A31E77B072E57592975 /* FounderAccountMigration.swift */; };
 		8E8C24BCF370C0D72057E3C1 /* RecordingNotesCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0625808F858C5F6B82140213 /* RecordingNotesCacheTests.swift */; };
 		8FE500964FBFECD7EEA61DB6 /* MemorySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C97C3F135EEAFF5858CD5D /* MemorySync.swift */; };
 		90E32B488D8E56B6C95BA57D /* RoomWebModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0A1FA8D2ADE9B06BEEB6B0 /* RoomWebModel.swift */; };
@@ -228,6 +232,7 @@
 		17299C35871EB9F6BF75A7D7 /* ProactiveConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProactiveConnection.swift; sourceTree = "<group>"; };
 		179D3083C0FA6C3B0BE5F141 /* RecordingNotesPhoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingNotesPhoneUITests.swift; sourceTree = "<group>"; };
 		1A0D140F53F36D3A6C7A9F8C /* LiveAskUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAskUITests.swift; sourceTree = "<group>"; };
+		1A9DC40B235A1C4899E765AE /* FounderAccountMigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FounderAccountMigrationTests.swift; sourceTree = "<group>"; };
 		1EB98735F45BAE3A547067BB /* Lucide-LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Lucide-LICENSE.txt"; sourceTree = "<group>"; };
 		220AAC839C8995F4A61DD83B /* SessionController+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionController+App.swift"; sourceTree = "<group>"; };
 		22C97C3F135EEAFF5858CD5D /* MemorySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySync.swift; sourceTree = "<group>"; };
@@ -259,6 +264,7 @@
 		88BF1AC516A3299E1DFBF855 /* ConversationAskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationAskView.swift; sourceTree = "<group>"; };
 		8DFB90B5CA243BB3A58F4071 /* RelayConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelayConfigurationTests.swift; sourceTree = "<group>"; };
 		91AC2A636ABED7261B92DF00 /* LiveAskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAskTests.swift; sourceTree = "<group>"; };
+		94A74A31E77B072E57592975 /* FounderAccountMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FounderAccountMigration.swift; sourceTree = "<group>"; };
 		958D6A5180E458B927E39E26 /* CompanionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionUITests.swift; sourceTree = "<group>"; };
 		96380DCE0A66CB36CFA3AA70 /* AccountDeletionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionUITests.swift; sourceTree = "<group>"; };
 		96BE8F0D1257314F735205AE /* TranscriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptTests.swift; sourceTree = "<group>"; };
@@ -409,6 +415,7 @@
 				979EE57CF1979CC0F0EEF8A0 /* CompanionMessageText.swift */,
 				518A61595A22B8D8873EEEA9 /* ComposerDictation.swift */,
 				CF7D8082C6B31F2C2E959995 /* ConversationAnswer.swift */,
+				94A74A31E77B072E57592975 /* FounderAccountMigration.swift */,
 				D17E4D87884D43F0A7DFDC8D /* LocalAccountErasure.swift */,
 				22C97C3F135EEAFF5858CD5D /* MemorySync.swift */,
 				17299C35871EB9F6BF75A7D7 /* ProactiveConnection.swift */,
@@ -500,6 +507,7 @@
 				FB896610CA7C35AA4B7618D7 /* ComposerDictationTests.swift */,
 				B2CDFE903F387C5D9A9995AB /* ConversationAnswerTests.swift */,
 				A27B0813F66346BF740B28AE /* DictationCallbackTests.swift */,
+				1A9DC40B235A1C4899E765AE /* FounderAccountMigrationTests.swift */,
 				1376EF4FAA6873F1D5D3BDDE /* GoogleAccountGrantTests.swift */,
 				91AC2A636ABED7261B92DF00 /* LiveAskTests.swift */,
 				A918307E479F9BA8A830B982 /* MemoryTests.swift */,
@@ -760,6 +768,7 @@
 				F5CA30DA92BCB130D6EE51BC /* ExperienceAccountView.swift in Sources */,
 				2868919084B83CBB122C6893 /* ExperienceStyle.swift in Sources */,
 				DDD5F98F2DCA4D054E5EA2C5 /* ExperienceSymbol.swift in Sources */,
+				8D33537F823EA9791383D5B8 /* FounderAccountMigration.swift in Sources */,
 				EF0F0C6E10B828E4B5E41230 /* GoogleAccountGrant.swift in Sources */,
 				5C621C4D956EDB529BA68431 /* GoogleAccountProvider.swift in Sources */,
 				E64A2E54175D0F2712013043 /* LiveTranscriber.swift in Sources */,
@@ -812,6 +821,8 @@
 				F9B6B6930B11FA2766490C9D /* ConversationAnswerTests.swift in Sources */,
 				C708ABB34A1C309F2EF1D040 /* DictationCallbackTests.swift in Sources */,
 				5156B4BA3496FC0F5762C29E /* DictationRecognizer.swift in Sources */,
+				82B4C3E6C024624ADCD8DFCF /* FounderAccountMigration.swift in Sources */,
+				0415394FA3D551279BB84D41 /* FounderAccountMigrationTests.swift in Sources */,
 				E8D98F8874753E1076F12A64 /* GoogleAccountGrant.swift in Sources */,
 				D7AA1B3B8C9EFE45531D1E65 /* GoogleAccountGrantTests.swift in Sources */,
 				03FBD8055C7542F1C44E9E3E /* LiveAskTests.swift in Sources */,
@@ -868,6 +879,7 @@
 				30F7F902CD878EF2CB1ECDE0 /* ExperienceAccountView.swift in Sources */,
 				46B4EFC25395B55EEE20F581 /* ExperienceStyle.swift in Sources */,
 				7D960CB1DA7FECD6B87040D7 /* ExperienceSymbol.swift in Sources */,
+				2F7D7063755D4A28B4B7F88F /* FounderAccountMigration.swift in Sources */,
 				A68595054EE39C928936769B /* GoogleAccountGrant.swift in Sources */,
 				F82DFBA92B5AC14CEF464DB5 /* GoogleAccountProvider.swift in Sources */,
 				AA863954E4E818D4E149270B /* LiveTranscriber.swift in Sources */,
