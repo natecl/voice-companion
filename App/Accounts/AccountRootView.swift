@@ -44,7 +44,7 @@ final class AccountRuntime {
             manager = AccountSessionManager.shared
             if let pending = try AccountCredentialStore.pendingDeletion() {
                 pendingDeletion = pending
-                message = pending.serverDeleted ? "Your account was deleted. Finish removing its data from this device." : "Account deletion is pending. Retry when you’re connected."
+                message = pending.serverDeleted ? "Your account content was deleted. Finish the remaining deletion steps." : "Account deletion is pending. Retry when you’re connected."
                 return
             }
             let account = try AccountCredentialStore.load()
@@ -66,9 +66,8 @@ final class AccountRuntime {
         do {
             if let pending = pendingDeletion, provider != pending.provider { throw AccountFailure.noDeletionPending }
             let config = try AccountConfiguration()
-            let revocationOnly = recoveringDeletion && pendingDeletion?.serverDeleted == true
-            let challenge = revocationOnly ? nil : try await config.transport.challenge(for: provider)
-            let nonce = challenge?.nonce ?? UUID().uuidString
+            let challenge = try await config.transport.challenge(for: provider)
+            let nonce = challenge.nonce
             let authorization: ProviderAuthorization
             #if os(iOS)
             guard let window = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene })
@@ -84,17 +83,6 @@ final class AccountRuntime {
                 clientID: config.googleClientID, serverClientID: config.googleServerClientID)
             }
             if recoveringDeletion {
-                if let original = pendingDeletion, original.serverDeleted {
-                    guard provider == .google, let fresh = authorization.googleGrant else { throw AccountFailure.noDeletionPending }
-                    // Server erasure is already complete. Revoke only the same
-                    // previously verified Google identity; do not enroll again.
-                    let pending = try original.replacingGoogleGrant(fresh)
-                    try AccountCredentialStore.saveDeletion(pending)
-                    pendingDeletion = pending
-                    try await finishDeletion(pending)
-                    return
-                }
-                guard let challenge else { throw AccountFailure.invalidResponse }
                 let receipt = try await config.transport.recoverDeletion(provider: provider, challenge: challenge.challenge,
                     identityToken: authorization.identityToken, authorizationCode: authorization.authorizationCode, expectedOwner: pendingDeletion?.owner)
                 let pending = PendingAccountDeletion(endpoint: config.transport.endpoint, provider: provider, receipt: receipt, googleGrant: authorization.googleGrant)
@@ -104,7 +92,6 @@ final class AccountRuntime {
                 try await finishDeletion(pending)
                 return
             }
-            guard let challenge else { throw AccountFailure.invalidResponse }
             let session = try await config.transport.exchange(provider: provider, challenge: challenge.challenge,
                                                               identityToken: authorization.identityToken, authorizationCode: authorization.authorizationCode)
             let account = StoredAccount(endpoint: config.transport.endpoint, provider: provider, session: session, googleGrant: authorization.googleGrant)

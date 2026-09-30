@@ -55,16 +55,21 @@ import XCTest
         }
     }
 
-    func testRealGoogleInvalidGrantThroughNativeTransport() throws {
-        guard ProcessInfo.processInfo.environment["ELLIS_GOOGLE_NEGATIVE_QA"] == "1" else {
-            throw XCTSkip("Explicit opt-in required for one live, fabricated-token request")
-        }
+    func testNativeDeletionAgainstLocalTLSBackend() throws {
+        continueAfterFailure = false
+        guard let config = ProcessInfo.processInfo.environment["ELLIS_ACCOUNT_QA_NETWORK"] else { throw XCTSkip("Local TLS fixture required") }
+        let object = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(config.utf8)) as? [String: Any])
+        let session = try XCTUnwrap(object["session"] as? [String: Any])
         let app = XCUIApplication()
-        app.launchArguments = ["--account-keychain-fixture", "--google-negative-qa"]
-        app.launchEnvironment["ELLIS_ACCOUNT_QA_ID"] = UUID().uuidString
-        app.launchEnvironment["ELLIS_ACCOUNT_QA_PHASE"] = "invalid-google"
-        app.launch(); defer { app.terminate() }
-        XCTAssertTrue(app.staticTexts["Invalid grant requests sign-in"].waitForExistence(timeout: 20), app.debugDescription)
+        app.launchArguments = ["--account-keychain-fixture"]
+        app.launchEnvironment["ELLIS_ACCOUNT_QA_ID"] = try XCTUnwrap(session["owner"] as? String)
+        app.launchEnvironment["ELLIS_ACCOUNT_QA_NETWORK"] = config
+        for (phase, expected) in [("prepare", "Pending erasure saved"), ("finish", "Erased and signed out"), ("verify", "Signed out after relaunch")] {
+            app.launchEnvironment["ELLIS_ACCOUNT_QA_PHASE"] = phase
+            app.launch()
+            XCTAssertTrue(app.staticTexts[expected].waitForExistence(timeout: 15), app.debugDescription)
+            app.terminate()
+        }
     }
 
     private func shot(_ app: XCUIApplication, _ name: String) {

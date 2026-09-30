@@ -2,6 +2,10 @@
 
 September 30, 2026. Dependent draft candidate based on PR162 `aa435b6`; deletion remains disabled and nothing is deployed. Existing UI components/order/styles are unchanged.
 
+## Superseding candidate
+
+The [server finalization checkpoint](../deletion-finalization/README.md) replaces the native HTTP revoker with server-observed revocation, retaining the identity reservation until completion. It also records native-to-backend TLS/Keychain retry evidence. This document and its test commands describe the historical PR163 implementation.
+
 ## Contract
 
 Successful Google enrollment captures the SDK user's refresh grant and subject together with the identity token. Only after the backend accepts that sign-in are the grant and account saved together in the device-local Keychain item. App-session rotation preserves that grant. Deletion carries it into its durable pending receipt; it never revokes whichever user the Google SDK happens to hold after a later failed login.

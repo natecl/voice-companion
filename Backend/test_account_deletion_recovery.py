@@ -23,6 +23,7 @@ from test_memory import source
 class DeletionRecoveryTests(unittest.IsolatedAsyncioTestCase):
     setUp = deletion_fixtures.AccountDeletionTests.setUp
     enroll = deletion_fixtures.AccountDeletionTests.enroll
+    finish = deletion_fixtures.AccountDeletionTests.finish
 
     def proof(self, subject='fictional-a', provider='google'):
         self.sequence += 1
@@ -44,12 +45,12 @@ class DeletionRecoveryTests(unittest.IsolatedAsyncioTestCase):
         for operation in (lambda: self.admission.authorized(second['deletion_token']),
                           lambda: self.sessions.refresh(second['deletion_token'])):
             with self.assertRaises(Rejected): operation()
-        with self.assertRaises(Rejected): await self.deletion.delete(first['deletion_token'], recovery=True)
+        with self.assertRaises(Rejected): await self.finish(first['deletion_token'], recovery=True)
         raw = (self.path / 'usage.sqlite').read_bytes()
         self.assertNotIn(second['deletion_token'].encode(), raw)
         # Original accepted receipt remains usable after recovery rotation.
-        self.assertEqual(await self.deletion.delete(account['refresh_token']), {'status': 'deleted'})
-        self.assertEqual(await self.deletion.delete(second['deletion_token'], recovery=True), {'status': 'deleted'})
+        self.assertEqual(await self.finish(account['refresh_token']), {'status': 'deleted'})
+        self.assertEqual(await self.finish(second['deletion_token'], recovery=True), {'status': 'deleted'})
 
     async def test_other_identity_active_account_expired_and_replayed_proofs_fail(self):
         account = self.enroll()
@@ -69,22 +70,22 @@ class DeletionRecoveryTests(unittest.IsolatedAsyncioTestCase):
         fresh_challenge = self.sessions.challenge(provider)['challenge']
         with self.assertRaisesRegex(Rejected, 'identity_token_replayed'):
             self.deletion.recover(fresh_challenge, provider, identity, token)
-        await self.deletion.delete(result['deletion_token'], recovery=True)
+        await self.finish(result['deletion_token'], recovery=True)
 
     async def test_recovery_survives_restart_and_cannot_delete_a_new_account(self):
         original = self.enroll()
         self.deletion.begin(original['refresh_token'])
         self.sessions = AccountSessions(self.admission, MemoryStore(self.memory.path))
-        self.deletion = AccountDeletion(self.sessions, self.grants, self.apple)
+        self.deletion = AccountDeletion(self.sessions, self.grants, self.apple, self.google)
         from unittest.mock import AsyncMock
         self.deletion.quiesce = AsyncMock()
         recovered = self.deletion.recover(*self.proof())
-        await self.deletion.delete(recovered['deletion_token'], recovery=True)
+        await self.finish(recovered['deletion_token'], recovery=True)
         fresh = self.enroll()
         self.memory.put_source(fresh['owner'], source())
         with self.assertRaisesRegex(Rejected, 'no_account_deletion_pending'):
             self.deletion.recover(*self.proof())
-        await self.deletion.delete(recovered['deletion_token'], recovery=True)
+        await self.finish(recovered['deletion_token'], recovery=True)
         self.assertEqual(self.memory.source(fresh['owner'], 'session-a'), source())
         self.admission.authorized(fresh['token'])
 
@@ -104,7 +105,7 @@ class DeletionRecoveryTests(unittest.IsolatedAsyncioTestCase):
         recovered = self.deletion.recover(*proof, expected_owner=original['owner'])
         self.assertEqual(recovered['owner'], original['owner'])
         with self.assertRaises(Rejected): self.admission.authorized(original['token'])
-        await self.deletion.delete(recovered['deletion_token'], recovery=True)
+        await self.finish(recovered['deletion_token'], recovery=True)
         fresh = self.enroll()
         with self.assertRaisesRegex(Rejected, 'no_account_deletion_pending'):
             self.deletion.recover(*self.proof(), expected_owner=original['owner'])
@@ -131,7 +132,7 @@ class DeletionRecoveryTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.admission.db.execute('SELECT count(*) FROM deletion_recovery').fetchone()[0], 0)
         self.sessions.nonce(proof[0], 'apple')  # proof consumption rolled back too
         recovered = self.deletion.recover(*proof, grant={'refresh_token': 'new-grant'})
-        await self.deletion.delete(recovered['deletion_token'], recovery=True)
+        await self.finish(recovered['deletion_token'], recovery=True)
         self.apple.revoke.assert_called_once_with('phone', 'new-grant')
 
     async def test_signed_google_and_apple_recovery_over_real_sockets(self):
@@ -174,6 +175,10 @@ class DeletionRecoveryTests(unittest.IsolatedAsyncioTestCase):
                 self.assertNotIn('token', proof)
                 self.assertEqual((await request(**fields))['message'], 'invalid_account_challenge')
                 deleted = await request(operation='resume_deletion', deletion_token=proof['deletion_token'])
+                if provider == 'google':
+                    self.assertEqual(deleted['status'], 'awaiting_google_revocation')
+                    deleted = await request(operation='finish_google_deletion', credential=proof['deletion_token'],
+                                            credential_kind='recovery', google_refresh_token='fictional-google-grant')
                 self.assertEqual(deleted['status'], 'deleted')
                 self.assertIsNone(self.memory.source(account['owner'], 'session-a'))
                 self.assertEqual((await request(operation='resume_deletion', deletion_token=proof['deletion_token']))['status'], 'deleted')

@@ -26,15 +26,6 @@ struct PendingAccountDeletion: Codable, Sendable, Equatable {
         self.googleGrant = googleGrant; googleRevoked = false
     }
 
-    func replacingGoogleGrant(_ fresh: GoogleAccountGrant) throws -> PendingAccountDeletion {
-        guard serverDeleted, provider == .google, googleRevoked != true,
-              let original = googleGrant, original.subject == fresh.subject else { throw AccountFailure.noDeletionPending }
-        try fresh.validate()
-        var next = self
-        next.googleGrant = fresh
-        return next
-    }
-
     func validate() throws {
         _ = try AccountTransport(endpoint: endpoint)
         try googleGrant?.validate()
@@ -50,9 +41,15 @@ struct AccountDeletionReceipt: Decodable, Sendable {
     enum CodingKeys: String, CodingKey { case status, owner; case deletionToken = "deletion_token" }
 }
 
+enum AccountDeletionStatus: String, Decodable, Sendable {
+    case deleted
+    case awaitingGoogleRevocation = "awaiting_google_revocation"
+}
+
 protocol AccountDeleting: Sendable {
-    func deleteAccount(_ refreshToken: String) async throws
-    func resumeDeletion(_ deletionToken: String) async throws
+    func deleteAccount(_ refreshToken: String) async throws -> AccountDeletionStatus
+    func resumeDeletion(_ deletionToken: String) async throws -> AccountDeletionStatus
+    func finishGoogleDeletion(_ credential: String, kind: PendingAccountDeletion.Credential, grant: String) async throws
 }
 extension AccountTransport: AccountDeleting {}
 
@@ -66,17 +63,15 @@ final class AccountDeletionController {
     private let save: (PendingAccountDeletion) throws -> Void
     private let complete: (UUID) throws -> Void
     private let erase: @MainActor (String) throws -> Void
-    private let revokeGoogle: @Sendable (String) async throws -> Void
     private let transport: (URL) throws -> any AccountDeleting
 
     init(load: @escaping () throws -> PendingAccountDeletion? = AccountCredentialStore.pendingDeletion,
          save: @escaping (PendingAccountDeletion) throws -> Void = AccountCredentialStore.saveDeletion,
          complete: @escaping (UUID) throws -> Void = AccountCredentialStore.completeDeletion,
          erase: @escaping @MainActor (String) throws -> Void = LocalAccountErasure.erase,
-         revokeGoogle: @escaping @Sendable (String) async throws -> Void = { try await GoogleGrantRevoker().revoke($0) },
          transport: @escaping (URL) throws -> any AccountDeleting = { try AccountTransport(endpoint: $0) }) {
         self.load = load; self.save = save; self.complete = complete
-        self.erase = erase; self.transport = transport; self.revokeGoogle = revokeGoogle
+        self.erase = erase; self.transport = transport
     }
 
     func finish(_ original: PendingAccountDeletion) async throws {
@@ -85,17 +80,15 @@ final class AccountDeletionController {
         defer { busy = false }
         try original.validate()
         guard var pending = try load(), pending.id == original.id else { throw AccountFailure.cancelled }
-        // Older enrollments must establish a verified owner-bound Google grant
-        // before deleting the server identity needed for that proof.
-        if pending.provider == .google, pending.googleRevoked != true, pending.googleGrant == nil {
-            throw AccountFailure.signInRequired
-        }
         if !pending.serverDeleted {
             let service = try transport(pending.endpoint)
+            let status: AccountDeletionStatus
             switch pending.credential {
-            case .session: try await service.deleteAccount(pending.token)
-            case .recovery: try await service.resumeDeletion(pending.token)
+            case .session: status = try await service.deleteAccount(pending.token)
+            case .recovery: status = try await service.resumeDeletion(pending.token)
             }
+            if status == .awaitingGoogleRevocation, pending.provider != .google { throw AccountFailure.invalidResponse }
+            if status == .deleted { pending.googleRevoked = true; pending.googleGrant = nil }
             guard try load()?.id == pending.id else { throw AccountFailure.cancelled }
             pending.serverDeleted = true
             try save(pending)
@@ -104,7 +97,7 @@ final class AccountDeletionController {
         try erase(pending.owner)
         if pending.provider == .google, pending.googleRevoked != true {
             guard let token = pending.googleGrant else { throw AccountFailure.signInRequired }
-            try await revokeGoogle(token.token)
+            try await transport(pending.endpoint).finishGoogleDeletion(pending.token, kind: pending.credential, grant: token.token)
             guard try load()?.id == pending.id else { throw AccountFailure.cancelled }
             pending.googleRevoked = true
             pending.googleGrant = nil
