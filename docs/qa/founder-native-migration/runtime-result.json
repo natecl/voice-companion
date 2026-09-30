@@ -1,0 +1,19 @@
+{
+  "result": "passed",
+  "simulator": "9F0F6623-E33A-4E84-A1EB-B9D7C1530AE7",
+  "launches": 4,
+  "actual_runtime": true,
+  "actual_keychain": true,
+  "actual_filesystem": true,
+  "provider_proofs": "synthetic; no provider calls",
+  "wrong_provider_and_owner_blocked": true,
+  "pending_move_survived_restart": true,
+  "saved_account_completed_migration": true,
+  "account_persisted_after_relaunch": true,
+  "remaining_owner_scoped_sessions": 1,
+  "original_completion_flag_preserved": true,
+  "pending_manifest_removed": true,
+  "legacy_session_directory_absent": true,
+  "physical_device_changed": false,
+  "paid_calls": 0
+}

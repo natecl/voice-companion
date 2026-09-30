@@ -61,10 +61,37 @@ TEST_RUNNER_ELLIS_MIGRATION_SNAPSHOT=/private/path/to/VoiceCompanion \
  -only-testing:CoreTests/AccountSessionTests CODE_SIGNING_ALLOWED=NO
 ```
 
+## Actual runtime / Keychain interruption run
+
+`runtime-tests.txt` and `runtime-result.json`: the isolated iPhone 17 Pro simulator
+ran four separate app launches through the actual AccountRuntime.restore method,
+device Keychain and filesystem. A DEBUG-only driver supplies synthetic accounts
+and a separate migration root/Keychain service; it cannot run in Release. Wrong
+Apple and wrong Google owners were rejected before moving any files. The correct
+owner's move was then interrupted before saving credentials. Relaunch stayed
+closed with the plan intact; a synthetic accepted account was saved, and the next
+launch completed the pending migration through runtime startup. A fourth launch
+restored the persisted account without a migration plan. The original interrupted
+recording remained owner-scoped with its completion flag unchanged. Post-run
+container inspection independently confirmed the session location, absent legacy
+directory and removed manifest. No real provider or network request was needed.
+
+The app runtime now accepts an explicit migration root for this driver; its normal
+root is unchanged. The build with DEBUG drivers excluded passed again after this
+integration. This proves the bounded startup/Keychain recovery sequence, not the
+Google provider prompt, server cutover, notes UI or physical Release migration.
+
+```sh
+xcodebuild test -project VoiceCompanion.xcodeproj -scheme Phone \
+ -destination 'platform=iOS Simulator,id=9F0F6623-E33A-4E84-A1EB-B9D7C1530AE7' \
+ -derivedDataPath /tmp/ellis-founder-migration-runtime \
+ -only-testing:PhoneUITests/FounderMigrationUITests/testRuntimeKeychainMigrationAcrossFourLaunches
+```
+
 ## Remaining acceptance
 
-Runtime/keychain interruption behavior and sign-in presentation need actual app
-QA, including wrong Google selection, real sign-in, restart and reopened notes.
+Real sign-in presentation and provider selection still need app QA, including
+wrong Google selection, real sign-in and reopened notes.
 Physical Release migration must use fresh source/destination proof and a stopped
 app/server cutover. This candidate is not merged or ready to run against the
 founder's live installation. Operator orchestration and final acceptance remain

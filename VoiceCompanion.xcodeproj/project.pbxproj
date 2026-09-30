@@ -62,6 +62,7 @@
 		52A8E8107BDE78C3673B60C0 /* MicrophoneCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BE8C55AFCE2A84D18222B0 /* MicrophoneCapture.swift */; };
 		53310A770E4BFFE5496267F2 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FC567691D4C18C5E45FD1B /* SessionStore.swift */; };
 		534B2FEA798FBEBD45B8AE78 /* CompanionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958D6A5180E458B927E39E26 /* CompanionUITests.swift */; };
+		53C73EDFDBBBED37C3441E58 /* FounderMigrationKeychainFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D625B9DB4724524A7B7E9E66 /* FounderMigrationKeychainFixture.swift */; };
 		558EB261DBCDF0E764856D27 /* ProactiveConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17299C35871EB9F6BF75A7D7 /* ProactiveConnection.swift */; };
 		55EC88DB822DCBAAB3210FCC /* ConversationAskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BF1AC516A3299E1DFBF855 /* ConversationAskView.swift */; };
 		5771D16D4240B36A69921A24 /* ProactiveConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17299C35871EB9F6BF75A7D7 /* ProactiveConnection.swift */; };
@@ -90,6 +91,7 @@
 		777B22E0271AEF80B05980A4 /* transcript-events.json in Resources */ = {isa = PBXBuildFile; fileRef = F68208B8B28B93C1AEA78F78 /* transcript-events.json */; };
 		7881AFA69F55C6016F54849C /* CompanionMessageText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979EE57CF1979CC0F0EEF8A0 /* CompanionMessageText.swift */; };
 		7911F5804A05B3A6601398CB /* VoiceCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13C8BFBF47FC8C61FBB5C5B /* VoiceCompanionApp.swift */; };
+		79AB55D5000B7C38E3F4A625 /* FounderMigrationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B97B1D1B4D97D9C1A97B45B /* FounderMigrationUITests.swift */; };
 		79B473756E8877E09AB18E11 /* ProactiveCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB7B641BD6C1CA47F4F9B4 /* ProactiveCoordinatorTests.swift */; };
 		7D960CB1DA7FECD6B87040D7 /* ExperienceSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131DA977EC343A02A8A2BAB1 /* ExperienceSymbol.swift */; };
 		7E26AEABAF030A58C7F6FC99 /* SessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07AC85400C84CD8C0027 /* SessionController.swift */; };
@@ -99,6 +101,7 @@
 		822939BAFB8BA3E279430B34 /* ConversationAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7D8082C6B31F2C2E959995 /* ConversationAnswer.swift */; };
 		82B4C3E6C024624ADCD8DFCF /* FounderAccountMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A74A31E77B072E57592975 /* FounderAccountMigration.swift */; };
 		85F6A547F11EC86BA0C572E0 /* AccountEnrollmentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A3C2B7CFAD362CD4D19CE9 /* AccountEnrollmentUITests.swift */; };
+		87030110BE29BA5D82C613E6 /* FounderMigrationKeychainFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D625B9DB4724524A7B7E9E66 /* FounderMigrationKeychainFixture.swift */; };
 		87663E33968A85359DFDF085 /* RecordingNotesPhoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179D3083C0FA6C3B0BE5F141 /* RecordingNotesPhoneUITests.swift */; };
 		87DE99911791527E482049DE /* AccountSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FC749D5FA026FF28B68480 /* AccountSessionManager.swift */; };
 		88017917CA8A32CF752B8142 /* AccountCredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D3042667256FE4BEF7A1CF /* AccountCredentialStore.swift */; };
@@ -119,6 +122,7 @@
 		93B191BE382CDD95F0602F1A /* RecordingConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82134446B9A07E479203081 /* RecordingConnection.swift */; };
 		953786CBFDF701A69F732EE8 /* transcript-events.json in Resources */ = {isa = PBXBuildFile; fileRef = F68208B8B28B93C1AEA78F78 /* transcript-events.json */; };
 		96A1D7506C6172D690F2E072 /* SessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67E07AC85400C84CD8C0027 /* SessionController.swift */; };
+		9718EEED1CF6D9B031C0C02B /* FounderMigrationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B97B1D1B4D97D9C1A97B45B /* FounderMigrationUITests.swift */; };
 		98EE32E5173EC8E4734D02D5 /* AccountCredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D3042667256FE4BEF7A1CF /* AccountCredentialStore.swift */; };
 		9AE646A250BEA5E009FC6DA9 /* AccountDeletionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96380DCE0A66CB36CFA3AA70 /* AccountDeletionUITests.swift */; };
 		9B6F2E215CA52CD15089676D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC14791FCF725C447B490BB1 /* Assets.xcassets */; };
@@ -257,6 +261,7 @@
 		5CEF2A9848F83EF8AA0A4F9B /* AccountDeletionKeychainFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionKeychainFixture.swift; sourceTree = "<group>"; };
 		66C627D1B94769284B53CA87 /* RelayConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelayConfiguration.swift; sourceTree = "<group>"; };
 		6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationUITests.swift; sourceTree = "<group>"; };
+		6B97B1D1B4D97D9C1A97B45B /* FounderMigrationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FounderMigrationUITests.swift; sourceTree = "<group>"; };
 		7CC2DF1C5B4E402B8AE04DE3 /* AccountTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTransport.swift; sourceTree = "<group>"; };
 		82F50B55D6A5FB2D2625D075 /* SharedRoomPhoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedRoomPhoneUITests.swift; sourceTree = "<group>"; };
 		8329C8BB764901C562FF590B /* Phone-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Phone-Info.plist"; sourceTree = "<group>"; };
@@ -303,6 +308,7 @@
 		D41C90D7A71AD128D64B3958 /* ProactiveUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProactiveUITests.swift; sourceTree = "<group>"; };
 		D49FE797E23357C5FA4D3D04 /* RecordingNotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingNotesView.swift; sourceTree = "<group>"; };
 		D6172DF9BAB6444CEE3A4A1B /* DictationRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictationRecognizer.swift; sourceTree = "<group>"; };
+		D625B9DB4724524A7B7E9E66 /* FounderMigrationKeychainFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FounderMigrationKeychainFixture.swift; sourceTree = "<group>"; };
 		D820E88D807B0651015E9212 /* SavedRecordingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedRecordingUITests.swift; sourceTree = "<group>"; };
 		DE1722767CA347C5B2A2A522 /* TransportFailureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportFailureTests.swift; sourceTree = "<group>"; };
 		E4A3C2B7CFAD362CD4D19CE9 /* AccountEnrollmentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEnrollmentUITests.swift; sourceTree = "<group>"; };
@@ -350,6 +356,7 @@
 				38DFC1DF2388662FC8CE4B36 /* CompanionPhoneUITests.swift */,
 				958D6A5180E458B927E39E26 /* CompanionUITests.swift */,
 				6B45DA6DE90C05B17FCA8386 /* FoundationUITests.swift */,
+				6B97B1D1B4D97D9C1A97B45B /* FounderMigrationUITests.swift */,
 				1A0D140F53F36D3A6C7A9F8C /* LiveAskUITests.swift */,
 				46DC5370B42C28B61BE40D0D /* MacUITests.entitlements */,
 				D3A7E394791C84DF944DF808 /* MemoryUITests.swift */,
@@ -463,6 +470,7 @@
 				9AF99E9A8800AFB62665823C /* AccountDeletionUIFixture.swift */,
 				B43B929AF9B9795972DD99F9 /* AccountRootView.swift */,
 				CA00A14DB084536CC1A18BB6 /* AppleAccountProvider.swift */,
+				D625B9DB4724524A7B7E9E66 /* FounderMigrationKeychainFixture.swift */,
 				A2BD39CC584AE1ABB9BEDDAC /* GoogleAccountProvider.swift */,
 				BC7CF481EFCB5F5BE1D00D2D /* Mac.entitlements */,
 				86064A3EA4B4A5373DAD85A0 /* Phone.entitlements */,
@@ -729,6 +737,7 @@
 				714B4D535B445B4526D07732 /* CompanionPhoneUITests.swift in Sources */,
 				534B2FEA798FBEBD45B8AE78 /* CompanionUITests.swift in Sources */,
 				09C3FEC872A11562F65FECB0 /* FoundationUITests.swift in Sources */,
+				9718EEED1CF6D9B031C0C02B /* FounderMigrationUITests.swift in Sources */,
 				B66FE09C8BB89570FBBAC0AA /* LiveAskUITests.swift in Sources */,
 				FF9791DA9B94382EB848AA8C /* MemoryUITests.swift in Sources */,
 				2C2E3A5C5EE0583DC3EFA2C5 /* MicrophoneUITests.swift in Sources */,
@@ -769,6 +778,7 @@
 				2868919084B83CBB122C6893 /* ExperienceStyle.swift in Sources */,
 				DDD5F98F2DCA4D054E5EA2C5 /* ExperienceSymbol.swift in Sources */,
 				8D33537F823EA9791383D5B8 /* FounderAccountMigration.swift in Sources */,
+				87030110BE29BA5D82C613E6 /* FounderMigrationKeychainFixture.swift in Sources */,
 				EF0F0C6E10B828E4B5E41230 /* GoogleAccountGrant.swift in Sources */,
 				5C621C4D956EDB529BA68431 /* GoogleAccountProvider.swift in Sources */,
 				E64A2E54175D0F2712013043 /* LiveTranscriber.swift in Sources */,
@@ -880,6 +890,7 @@
 				46B4EFC25395B55EEE20F581 /* ExperienceStyle.swift in Sources */,
 				7D960CB1DA7FECD6B87040D7 /* ExperienceSymbol.swift in Sources */,
 				2F7D7063755D4A28B4B7F88F /* FounderAccountMigration.swift in Sources */,
+				53C73EDFDBBBED37C3441E58 /* FounderMigrationKeychainFixture.swift in Sources */,
 				A68595054EE39C928936769B /* GoogleAccountGrant.swift in Sources */,
 				F82DFBA92B5AC14CEF464DB5 /* GoogleAccountProvider.swift in Sources */,
 				AA863954E4E818D4E149270B /* LiveTranscriber.swift in Sources */,
@@ -918,6 +929,7 @@
 				A7746E9756D73D619C384FE7 /* CompanionPhoneUITests.swift in Sources */,
 				F4DDD59F3F6BD74BA6EA92D3 /* CompanionUITests.swift in Sources */,
 				2A78082185EA9D9B00BD1443 /* FoundationUITests.swift in Sources */,
+				79AB55D5000B7C38E3F4A625 /* FounderMigrationUITests.swift in Sources */,
 				1D6EF96453393998382EFCD5 /* LiveAskUITests.swift in Sources */,
 				EDF341C8C485377AC886C9BE /* MemoryUITests.swift in Sources */,
 				1AEE96BC35A02CA6C540EA30 /* MicrophoneUITests.swift in Sources */,
