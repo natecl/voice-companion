@@ -12,7 +12,9 @@
   "backend_unrevoked_account_session_count": 1,
   "encrypted_apple_grant_count": 1,
   "google_enrollment_verified": false,
-  "sign_out_verified": false,
+  "sign_out_verified": true,
   "physical_device_verified": false,
-  "provider_spend": 0
+  "provider_spend": 0,
+  "unrevoked_sessions_after_signout": 0,
+  "relaunch_remains_signed_out": true
 }
