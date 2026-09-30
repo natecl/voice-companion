@@ -143,3 +143,23 @@ owner/session mappings for inspecting the existing run and must not be committed
 The executed preparation was subsequently parameterized for these three paths
 and formatted; the fixture actions and assertions are unchanged. Python
 compilation and diff checks pass.
+
+## Fixture correction during native Notes inspection
+
+The first manual Apple note open correctly showed an unsynced source and no
+cached summary (`fixture-timestamp-mismatch.png`). The fixture used the current
+time locally but timestamp 100 on the server. Aligning the timestamps alone
+was insufficient: Python fixture floats (`100.0`, `0.0`, `2.0`) and Swift integer
+JSON representations produced different canonical payload hashes at the same
+revision. This was cross-language fixture construction, not observed production
+source corruption. The preparation helper now uses identical timestamp and
+number representations for both sides.
+
+For the existing run, both fictional server sources/notes were advanced to
+revision 2 with matching native payloads. Local outboxes were staged with
+`acknowledged=false`; no acknowledgment was fabricated. After relaunch, Apple's
+actual native transport received a successful sync response and persisted
+`acknowledged=true` for revision 2. Google remains to sync on its next login.
+The earlier backend-isolation receipt describes revision 1 before this fixture
+repair. Native Notes rendering/cache and switching still require inspection.
+No production app code or UI was changed; no paid calls occurred.

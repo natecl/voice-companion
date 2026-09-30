@@ -6,7 +6,7 @@ or personal data. Temporary request credentials are revoked in finally.
 """
 
 import argparse
-import asyncio, json, ssl, sys, time, uuid, subprocess
+import asyncio, json, ssl, sys, uuid, subprocess
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -16,7 +16,20 @@ from admission import Admission
 from memory_store import MemoryStore
 from companion_chat import CompanionChat
 from recording_notes import RecordingNotes
-from test_memory import source
+
+
+def source(session, text):
+    # Match Swift JSONEncoder: whole-number Doubles are encoded as integers.
+    return dict(
+        session_id=session,
+        revision=1,
+        captured_at=100,
+        timezone="UTC",
+        completed=True,
+        passages=[dict(id="p1", start=0, duration=2, text=text, speakers=[])],
+    )
+
+
 from websockets.asyncio.client import connect
 
 parser = argparse.ArgumentParser()
@@ -101,7 +114,7 @@ for f in fixtures.values():
     folder.mkdir(parents=True, exist_ok=True)
     session = dict(
         id=f["session"],
-        createdAt=time.time() - 978307200,
+        createdAt=100 - 978307200,
         completed=True,
         memoryOwnerID=f["owner"],
         memoryTerminal=True,
