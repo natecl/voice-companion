@@ -16,5 +16,9 @@
   "physical_device_verified": false,
   "provider_spend": 0,
   "unrevoked_sessions_after_signout": 0,
-  "relaunch_remains_signed_out": true
+  "relaunch_remains_signed_out": true,
+  "reauthentication_preserved_original_owner": true,
+  "apple_sessions_after_reauthentication": 2,
+  "apple_distinct_session_owners": 1,
+  "apple_unrevoked_sessions_after_reauthentication": 1
 }

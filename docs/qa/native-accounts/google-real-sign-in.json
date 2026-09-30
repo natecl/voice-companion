@@ -11,5 +11,7 @@
   "distinct_owner_count": 2,
   "data_isolation_with_populated_accounts_verified": false,
   "physical_device_verified": false,
-  "provider_spend": 0
+  "provider_spend": 0,
+  "sign_out_verified": true,
+  "google_unrevoked_sessions_after_signout": 0
 }
