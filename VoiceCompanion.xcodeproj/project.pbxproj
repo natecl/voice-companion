@@ -600,20 +600,25 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					27713824169427F33376B791 = {
+						DevelopmentTeam = 7HF6VDCZF7;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 9768E529F357D558E48A341F;
 					};
 					4AD0E96F79F792F8F63DCABD = {
+						DevelopmentTeam = 7HF6VDCZF7;
 						ProvisioningStyle = Automatic;
 					};
 					4AD5DD33F1FD1FF28470C125 = {
+						DevelopmentTeam = 7HF6VDCZF7;
 						ProvisioningStyle = Automatic;
 						TestTargetID = B6D33AEB9FD71AC7F7EBD434;
 					};
 					9768E529F357D558E48A341F = {
+						DevelopmentTeam = 7HF6VDCZF7;
 						ProvisioningStyle = Automatic;
 					};
 					B6D33AEB9FD71AC7F7EBD434 = {
+						DevelopmentTeam = 7HF6VDCZF7;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -963,7 +968,9 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7HF6VDCZF7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -979,6 +986,7 @@
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Turn your speech into an editable companion message when you tap Dictate.";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1097,7 +1105,9 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7HF6VDCZF7;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1119,6 +1129,7 @@
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Turn your speech into an editable companion message when you tap Dictate.";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

@@ -9,6 +9,9 @@ settings:
     SWIFT_VERSION: '6.0'
     GENERATE_INFOPLIST_FILE: YES
     CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: 7HF6VDCZF7
+    MARKETING_VERSION: 0.1.0
+    CURRENT_PROJECT_VERSION: 1
     INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: "Turn your speech into an editable companion message when you tap Dictate."
     INFOPLIST_KEY_NSMicrophoneUsageDescription: "Capture speech when you record a conversation or dictate a message."
 packages:
@@ -28,6 +31,8 @@ targets:
     info:
       path: App/Mac-Info.plist
       properties:
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         GIDClientID: 774278865935-2142r4ndqoruu9jcug5s8uk44q2aj7bq.apps.googleusercontent.com
         GIDServerClientID: 774278865935-gjppp5pd2i4hpatuf8nctteb9m0adf9c.apps.googleusercontent.com
         EllisAccountEndpoint: wss://voice-companion-sdbr.onrender.com/account
@@ -69,6 +74,8 @@ targets:
     info:
       path: App/Phone-Info.plist
       properties:
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         UIBackgroundModes: [audio]
         GIDClientID: 774278865935-knco8v1bf8u8qudkj3fn7bab73am87d6.apps.googleusercontent.com
         GIDServerClientID: 774278865935-gjppp5pd2i4hpatuf8nctteb9m0adf9c.apps.googleusercontent.com
