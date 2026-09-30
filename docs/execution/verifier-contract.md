@@ -19,7 +19,7 @@ Required verifier self-checks: failing child command returns failure; missing re
   "base": "<base SHA>",
   "environment": "<OS/build/destination>",
   "checks": [
-    {"name": "<behavior>", "command": "<reproducible command>", "result": "pass|fail|not_run", "evidence_kind": "fixture|live_provider|simulator|physical_device|review", "artifacts": ["<path>"], "limitations": []}
+    {"name": "<behavior>", "command": "<reproducible command>", "result": "pass|fail|not_run", "evidence_kind": "fixture|live_provider|live_identity_provider|simulator|physical_device|review", "artifacts": ["<path>"], "limitations": []}
   ],
   "paid_calls": 0,
   "reserved_microusd": 0,
@@ -79,6 +79,16 @@ Only reviewed commands in the Python `REGISTRY` execute. The initial registry in
 
 Each manifest declares all three evidence categories with checks or explicit not-applicable reasons. External receipts include `commit`, `kind`, `result`, `procedure`, `observed` and underlying checkout-relative `artifacts`. Live-provider receipts also include `request_sha256`, `model`, `ledger`, `pipeline_layer`, `paid_calls` and `reserved_microusd`. Use one accounting receipt per paid run to avoid counting a shared run twice. Receipt declarations are subject to orchestrator inspection; metadata cannot establish that a call actually happened. Artifacts are hashed and rechecked during review.
 
+Real Google/Apple authorization uses `kind: live_identity_provider`, separately
+from model-provider evidence. Its check declares `provider: google|apple` in
+`live_behavior_checks`; its external receipt must match that provider and contain
+positive integer `provider_calls`, nonempty final `configuration` and
+`pipeline_layer`, plus the common exact-commit/result/procedure/observed/artifact
+fields. Never invent a model name for OAuth or relabel signed synthetic-token
+fixtures as actual authorization. This metadata is validated, not independently
+authenticated: the primary still inspects underlying evidence. No provider call
+is executed automatically by the verifier.
+
 After inspecting the exact code and artifacts, the orchestrator records a decision:
 
 ```sh
@@ -94,3 +104,20 @@ Start with [the product feature verification map](../features/verification-map.m
 `--checks-only` explicitly collects mechanical evidence only and cannot release dependent packets. Planned features with no automated suite report blocked rather than fake success. Full runs remain incomplete until their declared external evidence exists for the exact commit. The normal orchestrator review command can accept a full-feature receipt after inspection. No feature is marked verified at collection time.
 
 Before assigning any worker, select its feature IDs and update their manifests to the bounded acceptance criteria of the job. Preserve required failure cases and actual pipeline/UI/device checks. The map is a verification contract, not a claim that all listed features work or have been deployed. Deferred connectors and subscription previews retain explicit limitations.
+
+## September 30 catalog reconciliation
+
+Catalog loading validates implementation/context/manifest paths, external native
+test-source paths, unique reviewed backend modules and matching feature runners.
+Removing a suite removes its dynamic runner registration. Full feature contracts
+must retain live-behavior and inspection gates; a fixture-only exemption cannot
+turn a full feature into an accepted release. `external_test_sources` locates
+native/UI tests but does not execute them or imply they passed.
+
+Account contracts now map migration, provider grants, isolation and managed
+backup/restore suites, along with explicit native lifecycle, provider failure,
+physical/independent-person and operational backup evidence requirements. Real
+receipts linked from knowledge documents remain dated evidence; they are not
+silently copied into current-commit acceptance slots. A documentation change
+does not require repeating paid tests; reuse decisions need an explicit review
+of unchanged implementation/configuration and the original evidence limits.

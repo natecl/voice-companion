@@ -1,5 +1,7 @@
 # Real Google and Apple account lifecycle
 
+> Recorded September 30 follow-ups supersede pending statements in this historical run: [Google recovery](automated-google-recovery.json), [Google automatic refresh](native-automatic-refresh.json), [Apple automatic refresh](native-apple-automatic-refresh.json), and [Apple fresh-proof recovery/re-enrollment](apple-fresh-proof-recovery.json) passed within their stated scope. Physical deletion, independent-human isolation and full Phase 1 acceptance remain open. See the [current handoff](../../execution/testflight-release-handoff.md).
+
 September 30, 2026. Bounded Release simulator acceptance on source
 `7f715477a15b92f65a4e0a31dbf3885baf17a20d`, dependent on draft PR164.
 No production deployment or app UI changes in this checkpoint.
@@ -248,3 +250,19 @@ This closes the populated Google deletion/re-enrollment check in this local
 real-provider environment; it does not establish fresh-proof failure recovery or
 physical-device acceptance. Hosted founder data and the phone remain unchanged.
 No model/paid calls. The simulator is now signed into the new empty Google account.
+
+## Native automatic Google session rotation
+
+The unchanged signed Release simulator binary from source `7f71547` reached its
+normal ten-minute pre-expiry renewal threshold while signed into the current
+real Google QA identity. The existing isolated service remained live. No clocks,
+credential lifetimes, native Keychain values or service code were modified.
+Read-only before/after database inspection showed exactly one new session in the
+same family and owner, the old refresh consumed and the access expiry extended.
+After terminate/relaunch, the agent inspected signed-in Home in Device Hub;
+no additional rotation occurred. This exercises native timer → TLS endpoint →
+rotation → Keychain save → restored app behavior. Binary hash was rechecked.
+See `native-automatic-refresh.json`; private row snapshots stay outside Git.
+No generation or paid calls. Apple native automatic rotation and real fresh-proof
+recovery remain separate gaps; the earlier backend Apple refresh evidence is
+not relabeled as native automatic evidence.

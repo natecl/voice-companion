@@ -38,14 +38,15 @@ def respond(connection, request):
     return response
 
 
-async def run(directory, port):
-    # Share the service singleton lock, but never acquire/open any database.
+async def run(directory, port, *, expiry_interval=None):
+    from backup_retention import running
+    # Share the service singleton lock; never acquire/open active databases.
     # The offline operator may hold database_lease while this health server runs.
     with (Path(directory) / 'service.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         async def reject(socket):
             await socket.close(1013, 'maintenance')
-        async with serve(reject, '0.0.0.0', port, process_request=respond,
+        async with running(directory, expiry_interval), serve(reject, '0.0.0.0', port, process_request=respond,
                          max_size=64000, max_queue=8, close_timeout=2, server_header=None):
-            print('Maintenance service ready; databases unopened; workers stopped', flush=True)
+            print('Maintenance service ready; active databases unopened; application workers stopped', flush=True)
             await asyncio.Future()

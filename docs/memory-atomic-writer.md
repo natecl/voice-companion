@@ -1,5 +1,7 @@
 # Bounded evidence writer and source-time applicability
 
+> Historical writer checkpoint. “Not deployed,” model roles and then-pending integrations describe this earlier implementation, before subsequent unified-memory rollout. Its case outcomes and failures remain evidence, not current stack selection or an unused allowance. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 Status: bounded backend acceptance passed; not deployed. This is a bounded checkpoint within 3C, not completion of the memory rework. The hosted service still uses the old writer. Long-source chunk integration, duplicate consolidation, relative-date validity/expiry, semantic retrieval, main chat, and physical acceptance remain separate gates.
 
 ## Behavior and user experience

@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 from service_policy import open_ledger
 import maintenance
+import backup_retention
 from ask import AskService, Luna
 from relay import Relay
 from memory_store import MemoryStore
@@ -90,8 +91,10 @@ def validate_rework_allocations(admission, *, rollout=False, verification=False)
 
 async def main():
     os.umask(0o077)
+    expiry_interval = backup_retention.settings(os.environ)
     if maintenance.enabled(os.environ):
-        await maintenance.run(Path(os.environ['VOICE_DATA_DIR']), int(os.environ.get('PORT', '10000')))
+        await maintenance.run(Path(os.environ['VOICE_DATA_DIR']), int(os.environ.get('PORT', '10000')),
+                              expiry_interval=expiry_interval)
         return
     notes_enabled=notes_setting(os.environ)
     notes_recall_enabled=notes_recall_setting(os.environ)
@@ -219,7 +222,7 @@ async def main():
                           indexing_status=indexing_worker.status if indexing_worker else None, notes=notes,
                           notes_status=notes_worker.status if notes_worker else None,proactive=proactive)
             if notes_worker:notes_worker.busy=lambda: relay.active
-            async with serve(relay.handle, '0.0.0.0', int(os.environ.get('PORT', '10000')),
+            async with backup_retention.running(directory, expiry_interval), serve(relay.handle, '0.0.0.0', int(os.environ.get('PORT', '10000')),
                              process_request=relay.authorize, max_size=64000, max_queue=8,
                              close_timeout=2, server_header=None):
                 if notes_worker:notes_task=asyncio.create_task(notes_worker.run())

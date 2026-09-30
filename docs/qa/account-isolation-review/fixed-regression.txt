@@ -1,0 +1,16 @@
+{"category": "companion", "request_id": "0fa8c266-2a29-45bd-bf38-58769494b2e9", "completed": false, "first_text_seconds": 0.0059505830286070704, "elapsed_seconds": 0.007901625009253621}
+{"category": "companion", "request_id": "6094db45-2330-46ce-a47a-2cd8e9ecb018", "completed": false, "first_text_seconds": 0.004641917010303587, "elapsed_seconds": 0.01408687501680106}
+{"category": "companion", "request_id": "676f7e3b-930c-4e8c-9319-ac755b501e1c", "completed": false, "first_text_seconds": 0.0051593329990282655, "elapsed_seconds": 0.2632111659622751}
+{"category": "companion", "request_id": "8a8aac62-ac64-460a-8127-16b721777371", "completed": false, "first_text_seconds": 0.007940249983221292, "elapsed_seconds": 0.2661920409882441}
+{"category": "companion", "request_id": "bee7300c-8265-49c8-b010-ca734fe8e3a6", "completed": true, "first_text_seconds": 0.006043082976248115, "elapsed_seconds": 0.008724416955374181, "input_tokens": null, "output_tokens": null}
+{"category": "companion", "request_id": "d2d4048b-cb3d-41ba-87d9-6427dea1d057", "completed": false, "first_text_seconds": 0.006144832994323224, "elapsed_seconds": 0.009697375004179776}
+{"category": "companion", "request_id": "5d493c2f-a4ce-4c68-921c-4c87be38f0b5", "completed": true, "first_text_seconds": 0.004214457992929965, "elapsed_seconds": 0.006240124988835305, "input_tokens": null, "output_tokens": null}
+{"category": "companion", "request_id": "76469679-9306-4ba0-b5af-43a967fe2cca", "completed": false, "first_text_seconds": 0.003872666973620653, "elapsed_seconds": 0.005115082953125238}
+{"category": "companion", "request_id": "8a81bcee-f19e-4895-ae19-f01676a0fb67", "completed": true, "first_text_seconds": 0.0048929169424809515, "elapsed_seconds": 0.007635749992914498, "input_tokens": null, "output_tokens": null}
+{"category": "companion", "request_id": "8019ffb0-aa7a-43f9-9521-628060ef10d0", "completed": true, "first_text_seconds": 0.003878000017721206, "elapsed_seconds": 0.005810916016343981, "input_tokens": null, "output_tokens": null}
+{"category": "companion", "request_id": "6a7abaab-a7dc-4d6e-949a-7adfa656fa72", "completed": true, "first_text_seconds": 0.005326332990080118, "elapsed_seconds": 0.007858541037421674, "input_tokens": null, "output_tokens": null}
+Executing <Task pending name='Task-305' coro=<AccountSocketTests.test_signed_exchange_refresh_replay_and_signout_over_real_sockets() running at /Users/n.chinlue/.codex/worktrees/account-sign-in/voice-companion/Backend/test_account_service.py:40> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py:765> cb=[_run_until_complete_cb() at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py:181] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py:100> took 0.243 seconds
+----------------------------------------------------------------------
+Ran 38 tests in 1.744s
+
+OK
