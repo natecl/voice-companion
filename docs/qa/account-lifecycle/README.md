@@ -196,3 +196,31 @@ or independent second person's account was exercised. Do not treat this as
 full `access` verifier acceptance or hosted rollout approval. Native automatic
 refresh, provider recovery, populated account erasure, migration and remaining
 release gates still require their own evidence.
+
+
+## Populated Apple deletion and Google preservation
+
+September 30 follow-up, same isolated real-provider server and unchanged signed
+Release simulator binary. Founder confirmed readiness and used the native profile
+Delete account action while Apple owned its fictional lantern source/note/chat.
+The service completed deletion and its real Apple revocation call returned success
+(counter advanced from one to two). All inventoried Apple owner rows were absent,
+including the owner and provider grant; native account sessions/outbox contained
+only deletion tombstones. Google rows in every inventoried memory owner table
+matched their pre-deletion hashes. Budget, policy and request rows also matched.
+The app showed deletion success and stayed signed out after terminate/relaunch.
+
+Founder then signed into the same Google account and opened Fictional Google
+compass. The server returned the original Google owner; all Google content hashes
+still matched (new credential mapping expected). The note visibly retained its
+summary. Another terminate/relaunch returned directly to signed-in home showing
+Google's original fictional chat. See `populated-apple-deletion-result.json` and
+`populated-apple-deleted.png`, `populated-apple-deleted-relaunch.png`,
+`google-note-after-apple-deletion.png`, `google-preserved-relaunch.png`.
+
+This proves populated Apple deletion with another real provider identity's local
+QA data preserved. It does not prove populated Google deletion, real fresh-proof
+deletion recovery, independent-human isolation, physical Release acceptance or
+founder migration. Hosted data and the physical phone were unchanged; no paid
+provider/model calls occurred. The Google account remains signed in in the local
+QA simulator. Only seeded fictional data was erased.

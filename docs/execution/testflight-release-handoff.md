@@ -66,3 +66,22 @@ The 15 verifier self-tests pass, including catalog/manifest schema and context-m
 ## Founder constraint: preserve the established design system
 
 September 29 clarification supersedes the earlier blanket UI-code freeze: functional frontend wiring for Google/Apple sign-in and necessary account/privacy pages are authorized. The current UI design system is the source of truth. Reuse existing components, styling, typography, colors, spacing and motion; preserve established screens and interactions. Do not redesign, restyle or reinterpret the app's visual character while preparing TestFlight. Google remains above Apple. Verify functional additions in the actual app against the existing design system.
+
+
+### September 30 lifecycle and migration evidence update
+
+The [real-provider local QA](../qa/account-lifecycle/README.md) now covers populated
+provider switching, backend refresh rotation/replay rejection, and populated Apple
+deletion while preserving Google's notes/chat and all spending rows. Google then
+reauthenticated to the same owner and stayed signed in after relaunch. Native
+automatic timed refresh, populated Google deletion, real fresh-proof recovery,
+independent-human isolation and physical acceptance remain open.
+
+[Server migration](../qa/founder-migration/README.md) passed a coordinated private
+hosted-copy rehearsal. [Native migration](../qa/founder-native-migration/README.md)
+preserved four copied phone sessions and 20 outbox records, and passed an isolated
+four-launch actual runtime/Keychain interruption sequence with synthetic sessions.
+Draft PR166 and PR167 remain undeployed/unmerged; no live founder migration occurred.
+Fresh Google proof, coordinated operator cutover and physical migration remain
+required. These additions supersede older pending-status wording above only for
+the specific tested scopes; Phase 1 and TestFlight readiness are still incomplete.
