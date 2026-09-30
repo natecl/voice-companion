@@ -113,3 +113,33 @@ Reproduce only against the isolated running QA server with both identities:
 The script refuses non-local endpoints and uses the local certificate. It never
 prints session secrets or reads native Keychain; assertions inspect the real
 responses without logging their token payloads.
+
+## Populated backend isolation and native preparation
+
+`populated-backend-isolation.json` records actual TLS requests bound to the two
+real enrolled QA owners, using separate synthetic request credentials revoked
+after the check. Each owner has a unique fictional transcript, generated-note
+fixture and completed-chat fixture. These are explicit seeded records, not
+recorded speech or real model outputs. Both owners read their own note and chat;
+foreign note IDs return `source_unavailable`; an attempted source deletion with
+the other owner ID returns `memory_owner_mismatch`. Each foreign source remains
+present. No generation worker or paid call runs.
+
+Matching fictional local session files were seeded only in the dedicated
+simulator's owner-scoped storage. The unchanged Release app was relaunched while
+signed into Apple: `ellis-populated-apple-home.png` shows Apple's fictional
+lantern answer and no Google compass answer. This is one-sided native history
+evidence, not completed native switching or notes-cache acceptance. Both
+providers' fictional content remains for the next explicitly ready manual QA:
+open Apple's note, switch to Google, inspect its chat/library/note, then switch
+back and verify Apple's content and owner cache clearing.
+
+Reproduction helper: `scripts/qa/populated-account-isolation.py --directory
+<private-QA-directory> --simulator <dedicated-simulator-id> --output
+<sanitized-receipt-path>`. Requires the running real-account localhost server
+and both real enrolled identities. It refuses an existing fixture manifest; do
+not delete that guard to repeat a run. Private `isolation-fixtures.json` holds
+owner/session mappings for inspecting the existing run and must not be committed.
+The executed preparation was subsequently parameterized for these three paths
+and formatted; the fixture actions and assertions are unchanged. Python
+compilation and diff checks pass.
