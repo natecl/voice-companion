@@ -36,6 +36,15 @@ class AccountSessionTests(unittest.TestCase):
         self.now += REFRESH_SECONDS
         with self.assertRaises(Rejected): self.sessions.refresh(second['refresh_token'])
 
+    def test_rotation_preserves_inflight_access_only_until_original_expiry(self):
+        first = self.enroll()
+        self.now += ACCESS_SECONDS - 600
+        second = self.sessions.refresh(first['refresh_token'])
+        self.admission.authorized(first['token'])
+        self.now += 600
+        with self.assertRaises(Rejected): self.admission.authorized(first['token'])
+        self.admission.authorized(second['token'])
+
     def test_refresh_replay_revokes_entire_family_but_not_other_login(self):
         first = self.enroll()
         separate = self.enroll(token='signed-fixture-b')
@@ -50,6 +59,7 @@ class AccountSessionTests(unittest.TestCase):
         first = self.enroll()
         second = self.sessions.refresh(first['refresh_token'])
         for _ in range(2): self.sessions.sign_out(first['refresh_token'])
+        with self.assertRaises(Rejected): self.admission.authorized(first['token'])
         with self.assertRaises(Rejected): self.admission.authorized(second['token'])
         with self.assertRaises(Rejected): self.sessions.refresh(second['refresh_token'])
 

@@ -202,7 +202,7 @@ final class CompanionSocketConnection: CompanionConnection {
         defer { running = false }
         let data = try JSONEncoder().encode(command)
         guard data.count <= 64000 else { throw AskFailure.contextTooLarge }
-        let config = try configuration()
+        let config = try await configuration().forRequest()
         guard var parts = URLComponents(url: config.url, resolvingAgainstBaseURL: false) else { throw CompanionFailure.invalidRequest }
         parts.path = "/companion"
         guard let url = parts.url else { throw CompanionFailure.invalidRequest }

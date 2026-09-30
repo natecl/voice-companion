@@ -102,7 +102,7 @@ final class LunaAnswerConnection: AnswerConnection {
     }
     func run(_ question: ConversationQuestion, onEvent: (AnswerEvent) throws -> Void) async throws {
         defer { cancel() }
-        let config = try configuration()
+        let config = try await configuration().forRequest()
         var parts = URLComponents(url: config.url, resolvingAgainstBaseURL: false)!
         parts.path = "/ask"
         var request = URLRequest(url: parts.url!)

@@ -40,6 +40,20 @@ final class AccountSessionTests: XCTestCase {
         XCTAssertEqual(count, 1)
     }
 
+    func testRefreshStartsBeforeFiveMinuteCaptureCouldOutliveAccess() async throws {
+        let owner = UUID().uuidString
+        let initial = session(owner: owner)
+        let fixture = RefreshFixture(session(owner: owner))
+        let manager = AccountSessionManager(account: stored(initial), save: { _ in }, clear: {},
+                                            makeTransport: { _ in fixture })
+        let request = Task { try await manager.current(now: Date(timeIntervalSince1970: initial.expires - 599)) }
+        await fixture.waitForRequest()
+        await fixture.complete()
+        _ = try await request.value
+        let calls = await fixture.calls
+        XCTAssertEqual(calls, 1)
+    }
+
     func testLateRefreshCannotRestoreSignedOutAccount() async throws {
         let owner = UUID().uuidString
         let fixture = RefreshFixture(session(owner: owner))
@@ -52,6 +66,42 @@ final class AccountSessionTests: XCTestCase {
         await fixture.complete()
         do { _ = try await request.value; XCTFail("Stale refresh succeeded") } catch {}
         do { _ = try await manager.current(); XCTFail("Account restored") } catch {}
+    }
+
+    func testExpiredRefreshClearsSessionBeforeAnotherOwnerCanSignIn() async throws {
+        let first = session(owner: UUID().uuidString)
+        let manager = AccountSessionManager(account: stored(first), save: { _ in }, clear: {})
+        do {
+            _ = try await manager.current(now: Date(timeIntervalSince1970: first.refreshExpires + 1))
+            XCTFail("Expired session returned")
+        } catch {}
+        let next = stored(session(owner: UUID().uuidString))
+        try await manager.install(next)
+        let actual = try await manager.current()
+        XCTAssertEqual(actual.session.owner, next.session.owner)
+    }
+
+    func testRestoredExpiredAccessRefreshesBeforeSaving() async throws {
+        let owner = UUID().uuidString
+        let fixture = RefreshFixture(session(owner: owner))
+        let manager = AccountSessionManager(account: nil, save: { value in
+            XCTAssertGreaterThan(value.session.expires, Date.now.timeIntervalSince1970)
+        }, clear: {}, makeTransport: { _ in fixture })
+        try await manager.install(stored(session(owner: owner, expired: true)), restoring: true)
+        let request = Task { try await manager.current() }
+        await fixture.waitForRequest()
+        await fixture.complete()
+        _ = try await request.value
+    }
+
+    func testRequestRefreshRejectsChangedOwnerOrBackend() throws {
+        let owner = UUID().uuidString
+        let config = RelayConfiguration(url: URL(string: "wss://example.com/stt")!, token: "old", rootCertificate: nil, memoryOwnerID: owner)
+        let fresh = stored(session(owner: owner))
+        XCTAssertEqual(try config.refreshed(using: fresh).token, fresh.session.token)
+        XCTAssertThrowsError(try config.refreshed(using: stored(session(owner: UUID().uuidString))))
+        let other = StoredAccount(endpoint: URL(string: "wss://other.example/account")!, provider: .google, session: fresh.session)
+        XCTAssertThrowsError(try config.refreshed(using: other))
     }
 
     func testOwnerSwitchRequiresTeardownAndSignOut() async throws {

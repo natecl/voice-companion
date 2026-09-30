@@ -32,8 +32,11 @@ final class AccountRuntime {
         defer { ready = true }
         do {
             let account = try AccountCredentialStore.load()
-            manager = AccountSessionManager(account: account)
-            if account != nil { active = try await manager?.current() }
+            manager = AccountSessionManager.shared
+            if let account {
+                try await manager?.install(account, restoring: true)
+                active = try await manager?.current()
+            }
             else if try !AccountCredentialStore.hasEnrollmentState() {
                 legacy = try RelayCredentialStore.load() != nil
             }
@@ -64,7 +67,7 @@ final class AccountRuntime {
             let session = try await config.transport.exchange(provider: provider, challenge: challenge.challenge,
                                                               identityToken: authorization.identityToken, authorizationCode: authorization.authorizationCode)
             let account = StoredAccount(endpoint: config.transport.endpoint, provider: provider, session: session)
-            if manager == nil { manager = AccountSessionManager(account: nil) }
+            if manager == nil { manager = AccountSessionManager.shared }
             try await manager?.install(account)
             generation = UUID()
             legacy = false

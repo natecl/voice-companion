@@ -116,7 +116,9 @@ class AccountSessions:
                 raise Rejected('unauthorized')
             else:
                 self.db.execute('UPDATE account_session SET consumed=1 WHERE credential=?', (credential,))
-                self.admission.revoke(credential)
+                # Rotation consumes the refresh secret, not an in-flight request's
+                # access token. Its original expiry is unchanged. Explicit sign-out,
+                # provider revocation and replay still revoke every family token.
                 fresh, access = self.admission.enroll(lifetime_seconds=ACCESS_SECONDS)
                 self.memory.owner_for(fresh, existing_owner=owner)
                 result = self._session(fresh, access, owner, family, expiry)

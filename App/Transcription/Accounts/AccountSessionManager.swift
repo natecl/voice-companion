@@ -8,6 +8,9 @@ extension AccountTransport: AccountRefreshing {}
 /// Serializes refresh across capture/chat/sync. Generation checks discard responses
 /// arriving after local sign-out or another completed login.
 actor AccountSessionManager {
+    static let shared = AccountSessionManager(account: nil)
+    // Covers the five-minute capture cap plus connection/finalization headroom.
+    private static let refreshLeadSeconds: TimeInterval = 600
     private var account: StoredAccount?
     private var generation = UUID()
     private var refreshTask: Task<StoredAccount, Error>?
@@ -25,12 +28,12 @@ actor AccountSessionManager {
         self.makeTransport = makeTransport
     }
 
-    func install(_ value: StoredAccount) throws {
-        try value.session.validate()
+    func install(_ value: StoredAccount, restoring: Bool = false) throws {
+        try value.session.validate(now: restoring ? .distantPast : .now)
         _ = try AccountTransport(endpoint: value.endpoint)
         // Owner changes require the UI/controller teardown and explicit sign-out.
         if let account, account.session.owner != value.session.owner { throw AccountFailure.signInRequired }
-        try save(value)
+        if !restoring { try save(value) }
         generation = UUID()
         refreshTask?.cancel()
         refreshTask = nil
@@ -39,9 +42,12 @@ actor AccountSessionManager {
 
     func current(now: Date = .now) async throws -> StoredAccount {
         guard let account else { throw AccountFailure.signInRequired }
-        if account.session.expires > now.timeIntervalSince1970 + 60 { return account }
+        guard account.session.refreshExpires > now.timeIntervalSince1970 else {
+            _ = try removeLocalAccount()
+            throw AccountFailure.signInRequired
+        }
+        if account.session.expires > now.timeIntervalSince1970 + Self.refreshLeadSeconds { return account }
         if let refreshTask { return try await refreshTask.value }
-        guard account.session.refreshExpires > now.timeIntervalSince1970 else { throw AccountFailure.signInRequired }
         let expected = generation
         let task = Task { try await self.rotate(account, generation: expected) }
         refreshTask = task

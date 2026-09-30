@@ -21,7 +21,7 @@ final class ProactiveSocketConnection: ProactiveConnection {
     private var session: URLSession?
     init(configuration: @escaping () throws -> RelayConfiguration) { self.configuration = configuration }
     func run(capture: String, onEvent: (ProactiveEvent) throws -> Void) async throws {
-        let config = try configuration()
+        let config = try await configuration().forRequest()
         guard var parts = URLComponents(url: config.url, resolvingAgainstBaseURL: false) else { throw CompanionFailure.invalidRequest }
         parts.path = "/proactive"
         guard let url = parts.url else { throw CompanionFailure.invalidRequest }

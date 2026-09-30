@@ -10,7 +10,7 @@ struct RelayConfiguration: Codable {
     static func load() throws -> Self {
         if !ProcessInfo.processInfo.arguments.contains("--ui-testing"), try AccountCredentialStore.hasEnrollmentState() {
             guard let account = try AccountCredentialStore.load() else { throw CaptureFailure.noRelay }
-            try account.session.validate()
+            try account.session.validate(now: .distantPast)
             var parts = URLComponents(url: account.endpoint, resolvingAgainstBaseURL: false)!
             parts.path = "/stt"
             guard let url = parts.url else { throw CaptureFailure.noRelay }
@@ -45,6 +45,23 @@ struct RelayConfiguration: Codable {
         try stored.validateHosted()
         return stored
         #endif
+    }
+
+    /// Resolve managed credentials immediately before opening each socket. This
+    /// shares rotation with the app runtime, including after background suspension.
+    func forRequest() async throws -> Self {
+        guard !ProcessInfo.processInfo.arguments.contains("--ui-testing"),
+              try AccountCredentialStore.hasEnrollmentState() else { return self }
+        let account = try await AccountSessionManager.shared.current()
+        return try refreshed(using: account)
+    }
+
+    func refreshed(using account: StoredAccount) throws -> Self {
+        try account.session.validate()
+        guard memoryOwnerID == account.session.owner,
+              url.host == account.endpoint.host, url.port == account.endpoint.port,
+              url.scheme == "wss" else { throw AccountFailure.signInRequired }
+        return Self(url: url, token: account.session.token, rootCertificate: nil, memoryOwnerID: memoryOwnerID)
     }
 
     /// Paired-device provisioning is internal-only. Delete the transfer file only after secure storage succeeds.

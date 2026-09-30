@@ -132,7 +132,7 @@ struct MemorySocketTransport: MemoryTransport {
         self.configuration = configuration
     }
     func send(_ operation: MemoryOperation) async throws {
-        let config = try configuration()
+        let config = try await configuration().forRequest()
         guard config.memoryOwnerID == operation.owner else { throw MemorySyncFailure.ownerMismatch }
         var parts = URLComponents(url: config.url, resolvingAgainstBaseURL: false)!
         parts.path = "/memory"
