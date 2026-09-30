@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-30",
+  "scope": "isolated real Apple account; unchanged signed Release simulator app",
+  "native_source": "ebcfbd2",
+  "binary_sha256": "f90fe5e8e733782b934e5aec707d2b845d36248ff030f431e49b424407d839ad",
+  "normal_access_lifetime_seconds": 3600,
+  "native_refresh_lead_seconds": 600,
+  "clock_or_credential_expiry_modified": false,
+  "rotation_observed_at": "2026-09-30T09:11:39.064634+00:00",
+  "new_session_count": 1,
+  "same_owner": true,
+  "same_family": true,
+  "previous_refresh_consumed": true,
+  "new_access_expiry_extended": true,
+  "real_apple_refresh_validation_success_delta": 1,
+  "post_rotation_restart_executed_tests": 1,
+  "post_rotation_restart_signed_in_home_inspected": true,
+  "post_restart_extra_rotation": false,
+  "paid_calls": 0,
+  "limitations": "Apple automatic app-session rotation and persisted restart only. Real fresh-proof recovery, revoked-provider/network-failure handling and physical timer behavior remain separate. Subsequent capture-callback fix is not in this tested binary."
+}

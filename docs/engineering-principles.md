@@ -1,6 +1,6 @@
 # Engineering direction and agent feedback loop
 
-Status: Canonical engineering source of truth, explicitly designated by the founder September 24, 2026. Swift/SwiftUI is the accepted working direction, subject to validating the development workflow. The native foundation workflow has been exercised; no provider benchmark has been completed. See development.md for the bounded verification evidence.
+Status: Canonical engineering source of truth, explicitly designated by the founder September 24, 2026. Swift/native controllers and the approved shared WKWebView iPhone interface are implemented; the dated foundation sections below record how this direction was established. See development.md and current-state.md for bounded verification and current delivery identities. A functioning provider integration does not imply a universal quality benchmark.
 
 ## Authority and application
 
@@ -11,6 +11,8 @@ All implementation plans and changes must follow these principles. Supporting re
 Concrete technology choices below retain their stated provisional status. Canonical principles do not turn an untested stack or provider into a validated decision.
 
 ## Shared native codebase
+
+The September 29 shared-prototype revision below supersedes independent SwiftUI recreation of the iPhone companion room. Native capture, dictation, storage/security and Mac support retain their boundaries. Historical technology-evaluation statements below do not mean the current stack is unimplemented.
 
 Use Swift and SwiftUI for native Mac and iPhone apps in one repository. Share product logic and suitable views; keep platform-specific audio permissions, audio lifecycle, interruptions, and window behavior behind clear boundaries. One codebase produces two app builds; it does not automatically provide cross-device data synchronization.
 
@@ -434,3 +436,10 @@ in order. Finish Phase 1 account/data-lifecycle acceptance before beginning
 Phase 2 pricing/limits, then Phase 3 paywall/subscriptions, Phase 4 release
 preparation and Phase 5 pilot. Preserve already completed Apple setup, but do
 not use a pending account check as a reason to advance to a later phase.
+
+Founder orchestration instruction, September 30: the primary agent coordinates
+parallel execution by GPT-6 Astra workers at low reasoning effort, owns shared
+contracts and device/deployment control, and independently reviews and verifies
+the results. Optimize speed and efficiency through bounded file ownership and
+parallel work within the current phase; retain its acceptance gates before
+advancing. Workers do not self-approve, deploy or merge their own output.

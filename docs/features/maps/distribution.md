@@ -1,12 +1,12 @@
 # TestFlight install and update
 
-> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+> September 30 delivery context: [release handoff](../../execution/testflight-release-handoff.md). This map distinguishes source implementation from recorded deployment, installation and bounded verification; historical receipts do not attest current runtime state.
 
 Feature ID: `distribution` · Context reviewed September 30, 2026; see the handoff for exact source/configuration pairing.
 
 ## Purpose and user outcome
 
-Correct signed release configuration and independently usable beta. Product direction: **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
+Correct signed release configuration and independently usable beta. Product direction is an invited AI social presence with personal continuity; the retained agreed one-liner is **AI notes that proactively contribute to discussions**. Canonical [product](../../product-source-of-truth.md) and [engineering](../../engineering-principles.md) guidance govern this map.
 
 ## Current implementation
 
@@ -52,7 +52,7 @@ Release feature remains incomplete. [Verifier](../verification/distribution.json
 
 ## Next bounded work
 
-Resolve Release enrollment, activation and assets; review backend backup/deploy/rollback and version pairing; then archive/upload and test independent install/update.
+Finish Phase 1 accounts/data lifecycle, then Phase 2 plans and Phase 3 paywall before Phase 4 release preparation. Preserve completed Apple setup. Distribution still requires permitted artwork/icon, metadata, signing and intended app/backend pairing before upload and independent install/update; no TestFlight build is established.
 
 ## Supporting context and evidence
 
