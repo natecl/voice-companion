@@ -49,6 +49,24 @@ import XCTest
         capture(app, name: "Current account screen")
     }
 
+    func testPreservedNetworkRecoveryTranscript() throws {
+        let app = try application()
+        app.terminate()
+        app.launch()
+        let notes = app.webViews.buttons["Open notes"]
+        XCTAssertTrue(notes.waitForExistence(timeout: 15))
+        notes.tap()
+        let marker = "Fictional network recovery marker: violet lighthouse."
+        let recording = app.webViews.buttons.matching(NSPredicate(format: "label CONTAINS %@", marker)).firstMatch
+        XCTAssertTrue(recording.waitForExistence(timeout: 10))
+        recording.tap()
+        let transcript = app.webViews.switches["Transcript"]
+        XCTAssertTrue(transcript.waitForExistence(timeout: 10))
+        transcript.tap()
+        XCTAssertTrue(app.webViews.staticTexts[marker].waitForExistence(timeout: 10))
+        capture(app, name: "Preserved fictional transcript after network recovery")
+    }
+
     func testRequestAppleFromSignedOutScreen() throws {
         let app = try application()
         app.activate()
