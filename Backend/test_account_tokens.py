@@ -49,18 +49,27 @@ class AccountTokenTests(unittest.TestCase):
             with self.subTest(missing=field), self.assertRaises(Rejected):
                 self.verifier.verify('google', self.token(claims))
 
+    def test_google_exchange_nonce_is_bound_to_server_challenge(self):
+        token = self.token(self.claims | {'nonce': 'a'*64})
+        self.assertEqual(self.verifier.verify('google', token, expected_nonce='a'*64).subject, 'synthetic-user')
+        for supplied in ('b'*64, ''):
+            with self.assertRaises(Rejected):
+                self.verifier.verify('google', token, expected_nonce=supplied)
+        with self.assertRaises(Rejected):
+            self.verifier.verify('google', self.token(), expected_nonce='a'*64)
+
     def test_apple_requires_matching_server_nonce_and_native_audience(self):
         nonce = 'a' * 64
         for audience in ('ai.voicecompanion.phone', 'ai.voicecompanion.mac'):
             claims = self.claims | dict(iss=APPLE, aud=audience, nonce=nonce)
-            identity = self.verifier.verify('apple', self.token(claims), apple_nonce=nonce)
+            identity = self.verifier.verify('apple', self.token(claims), expected_nonce=nonce)
             self.assertEqual(identity.issuer, APPLE)
             for expected in (None, 'b'*64):
                 with self.assertRaisesRegex(Rejected, '^invalid_identity_token$'):
-                    self.verifier.verify('apple', self.token(claims), apple_nonce=expected)
+                    self.verifier.verify('apple', self.token(claims), expected_nonce=expected)
             del claims['nonce']
             with self.assertRaises(Rejected):
-                self.verifier.verify('apple', self.token(claims), apple_nonce=nonce)
+                self.verifier.verify('apple', self.token(claims), expected_nonce=nonce)
 
     def test_malformed_and_algorithm_confusion_fail_before_key_fetch(self):
         for token in ('', 'bad', 'x'*16385, jwt.encode(self.claims, 'synthetic-secret'*4, algorithm='HS256', headers={'kid':'fixture'})):

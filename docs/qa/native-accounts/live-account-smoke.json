@@ -1,0 +1,13 @@
+{
+  "commit": "c897dec55af9707f74d298772bc3318af6372831",
+  "deploy": "dep-dau6gsdg1s2s73bl89e0",
+  "provider_challenges": {
+    "google": "challenge issued; malformed identity rejected before JWKS/provider call",
+    "apple": "challenge issued; malformed identity rejected before JWKS/provider call"
+  },
+  "unknown_refresh": "rejected",
+  "browser_origin": "rejected",
+  "unauthenticated_memory": "rejected",
+  "real_provider_enrollment": false,
+  "provider_spend": 0
+}

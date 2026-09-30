@@ -64,6 +64,19 @@ final class MemoryTests: XCTestCase {
         XCTAssertFalse(try XCTUnwrap(box.entry(session.id.uuidString)).acknowledged)
         XCTAssertThrowsError(try MemoryOutbox(directory: directory, owner: "other").entries())
     }
+    func testAccountShutdownKeepsOutboxButStopsNetworkWork() async throws {
+        let directory = try temporaryDirectory()
+        let box = MemoryOutbox(directory: directory, owner: "owner")
+        let transport = OfflineMemory()
+        let sync = MemorySync(outbox: box, transport: transport)
+        sync.shutdown()
+        sync.stage(tracked("owner"))
+        sync.kick()
+        await Task.yield()
+        XCTAssertEqual(transport.calls, 0)
+        XCTAssertEqual(try box.entries().count, 1)
+    }
+
     func testOfflineRecoveryExcludesLegacyAndKeepsLocalTranscript() async throws {
         let directory = try temporaryDirectory()
         let store = SessionStore(directory: directory.appendingPathComponent("sessions"))

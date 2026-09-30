@@ -1,0 +1,74 @@
+Test Suite 'Selected tests' started at 2026-09-30 00:59:22.350.
+Test Suite 'CoreTests.xctest' started at 2026-09-30 00:59:22.350.
+Test Suite 'AccountDeletionTests' started at 2026-09-30 00:59:22.351.
+Test Case '-[CoreTests.AccountDeletionTests testConfirmedGoogleRevocationSurvivesFinalKeychainFailure]' started.
+Test Case '-[CoreTests.AccountDeletionTests testConfirmedGoogleRevocationSurvivesFinalKeychainFailure]' passed (0.002 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testGoogleRevocationFailureRetainsExactGrantAndRetriesWithoutServer]' started.
+Test Case '-[CoreTests.AccountDeletionTests testGoogleRevocationFailureRetainsExactGrantAndRetriesWithoutServer]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testInvalidOwnerAndOwnerSymlinkCannotDeleteOtherFiles]' started.
+Test Case '-[CoreTests.AccountDeletionTests testInvalidOwnerAndOwnerSymlinkCannotDeleteOtherFiles]' passed (0.003 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testLateCompletionCannotClearReplacementReceipt]' started.
+Test Case '-[CoreTests.AccountDeletionTests testLateCompletionCannotClearReplacementReceipt]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testLocalErasurePreservesOtherOwnerAndLegacyAndBlocksLateWrites]' started.
+2026-09-30 00:59:22.365318-0400 xctest[27510:6915966] [Metadata] unable to get a dev_t for store 1795162192.
+Test Case '-[CoreTests.AccountDeletionTests testLocalErasurePreservesOtherOwnerAndLegacyAndBlocksLateWrites]' passed (0.016 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testLocalFailureRetriesAfterRelaunchWithoutAnotherServerCall]' started.
+Test Case '-[CoreTests.AccountDeletionTests testLocalFailureRetriesAfterRelaunchWithoutAnotherServerCall]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testMissingGoogleGrantRequiresProofBeforeServerDeletion]' started.
+Test Case '-[CoreTests.AccountDeletionTests testMissingGoogleGrantRequiresProofBeforeServerDeletion]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testPreparationSavesPendingBeforeDroppingAccess]' started.
+Test Case '-[CoreTests.AccountDeletionTests testPreparationSavesPendingBeforeDroppingAccess]' passed (0.002 seconds).
+Test Case '-[CoreTests.AccountDeletionTests testServerFailurePreservesPendingAndNeverErasesLocalData]' started.
+Test Case '-[CoreTests.AccountDeletionTests testServerFailurePreservesPendingAndNeverErasesLocalData]' passed (0.001 seconds).
+Test Suite 'AccountDeletionTests' passed at 2026-09-30 00:59:22.379.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.026 (0.029) seconds
+Test Suite 'AccountSessionTests' started at 2026-09-30 00:59:22.379.
+Test Case '-[CoreTests.AccountSessionTests testAccountStoreRejectsOtherOwnerAndUnownedLegacyRecording]' started.
+Test Case '-[CoreTests.AccountSessionTests testAccountStoreRejectsOtherOwnerAndUnownedLegacyRecording]' passed (0.003 seconds).
+Test Case '-[CoreTests.AccountSessionTests testConcurrentRequestsShareOneRefresh]' started.
+Test Case '-[CoreTests.AccountSessionTests testConcurrentRequestsShareOneRefresh]' passed (0.002 seconds).
+Test Case '-[CoreTests.AccountSessionTests testExpiredRefreshClearsSessionBeforeAnotherOwnerCanSignIn]' started.
+Test Case '-[CoreTests.AccountSessionTests testExpiredRefreshClearsSessionBeforeAnotherOwnerCanSignIn]' passed (0.002 seconds).
+Test Case '-[CoreTests.AccountSessionTests testLateRefreshCannotRestoreSignedOutAccount]' started.
+Test Case '-[CoreTests.AccountSessionTests testLateRefreshCannotRestoreSignedOutAccount]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testOwnerSwitchRequiresTeardownAndSignOut]' started.
+Test Case '-[CoreTests.AccountSessionTests testOwnerSwitchRequiresTeardownAndSignOut]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRefreshStartsBeforeFiveMinuteCaptureCouldOutliveAccess]' started.
+Test Case '-[CoreTests.AccountSessionTests testRefreshStartsBeforeFiveMinuteCaptureCouldOutliveAccess]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRequestRefreshRejectsChangedOwnerOrBackend]' started.
+Test Case '-[CoreTests.AccountSessionTests testRequestRefreshRejectsChangedOwnerOrBackend]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRestoredExpiredAccessRefreshesBeforeSaving]' started.
+Test Case '-[CoreTests.AccountSessionTests testRestoredExpiredAccessRefreshesBeforeSaving]' passed (0.002 seconds).
+Test Case '-[CoreTests.AccountSessionTests testTransportRejectsUnencryptedOrCredentialBearingEndpoints]' started.
+Test Case '-[CoreTests.AccountSessionTests testTransportRejectsUnencryptedOrCredentialBearingEndpoints]' passed (0.000 seconds).
+Test Suite 'AccountSessionTests' passed at 2026-09-30 00:59:22.394.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.012 (0.015) seconds
+Test Suite 'GoogleGrantRevokerTests' started at 2026-09-30 00:59:22.394.
+Test Case '-[CoreTests.GoogleGrantRevokerTests testExistingCredentialEncodingRemainsReadable]' started.
+Test Case '-[CoreTests.GoogleGrantRevokerTests testExistingCredentialEncodingRemainsReadable]' passed (0.001 seconds).
+Test Case '-[CoreTests.GoogleGrantRevokerTests testFreshGrantAfterErasureCannotTargetAnotherIdentityOrReopenServerPhase]' started.
+Test Case '-[CoreTests.GoogleGrantRevokerTests testFreshGrantAfterErasureCannotTargetAnotherIdentityOrReopenServerPhase]' passed (0.000 seconds).
+Test Case '-[CoreTests.GoogleGrantRevokerTests testInvalidGrantRequestsReauthenticationInsteadOfClaimingSuccess]' started.
+Test Case '-[CoreTests.GoogleGrantRevokerTests testInvalidGrantRequestsReauthenticationInsteadOfClaimingSuccess]' passed (0.002 seconds).
+Test Case '-[CoreTests.GoogleGrantRevokerTests testInvalidTokensNeverReachNetwork]' started.
+Test Case '-[CoreTests.GoogleGrantRevokerTests testInvalidTokensNeverReachNetwork]' passed (0.001 seconds).
+Test Case '-[CoreTests.GoogleGrantRevokerTests testProviderFailuresNeverClaimRevocationOrExposeBody]' started.
+Test Case '-[CoreTests.GoogleGrantRevokerTests testProviderFailuresNeverClaimRevocationOrExposeBody]' passed (0.001 seconds).
+Test Case '-[CoreTests.GoogleGrantRevokerTests testRevocationUsesFixedHTTPSPostAndEncodedBody]' started.
+Test Case '-[CoreTests.GoogleGrantRevokerTests testRevocationUsesFixedHTTPSPostAndEncodedBody]' passed (0.000 seconds).
+Test Suite 'GoogleGrantRevokerTests' passed at 2026-09-30 00:59:22.402.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.007 (0.008) seconds
+Test Suite 'CoreTests.xctest' passed at 2026-09-30 00:59:22.402.
+	 Executed 24 tests, with 0 failures (0 unexpected) in 0.045 (0.052) seconds
+Test Suite 'Selected tests' passed at 2026-09-30 00:59:22.402.
+	 Executed 24 tests, with 0 failures (0 unexpected) in 0.045 (0.052) seconds
+2026-09-30 00:59:22.685 xcodebuild[27360:6915068] [MT] IDETestOperationsObserverDebug: 0.652 elapsed -- Testing started completed.
+2026-09-30 00:59:22.685 xcodebuild[27360:6915068] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-30 00:59:22.685 xcodebuild[27360:6915068] [MT] IDETestOperationsObserverDebug: 0.652 sec, +0.652 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/ellis-native-accounts-build/Logs/Test/Test-Mac-2026.09.30_00-59-18--0400.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started

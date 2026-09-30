@@ -18,6 +18,7 @@ class VerifiedIdentity:
     issuer: str
     subject: str
     expires: int
+    audience: str = ""
 
 
 class AccountTokenVerifier:
@@ -39,11 +40,11 @@ class AccountTokenVerifier:
                                      timeout=5, lifespan=300),
         }
 
-    def verify(self, provider, token, *, apple_nonce=None):
+    def verify(self, provider, token, *, expected_nonce=None):
         if not isinstance(provider, str) or provider not in self.keys or not isinstance(token, str) or not 1 <= len(token) <= 16384:
             raise Rejected('invalid_identity_token')
-        if provider == 'apple' and (not isinstance(apple_nonce, str) or
-                                    not 32 <= len(apple_nonce) <= 256):
+        if provider == 'apple' and (not isinstance(expected_nonce, str) or
+                                    not 32 <= len(expected_nonce) <= 256):
             raise Rejected('invalid_identity_token')
         try:
             header = jwt.get_unverified_header(token)
@@ -64,14 +65,18 @@ class AccountTokenVerifier:
                     ord(c) < 33 or ord(c) > 126 for c in subject):
                 raise Rejected('invalid_identity_token')
             if provider == 'google':
+                if expected_nonce is not None:
+                    nonce = claims.get('nonce')
+                    if not isinstance(nonce, str) or not hmac.compare_digest(nonce.encode(), expected_nonce.encode()):
+                        raise Rejected('invalid_identity_token')
                 # If Google supplies an authorized presenter, it must be ours.
                 if 'azp' in claims and claims['azp'] not in (*self.google_presenters, self.google_audience):
                     raise Rejected('invalid_identity_token')
             else:
                 nonce = claims.get('nonce')
-                if not isinstance(nonce, str) or not hmac.compare_digest(nonce.encode(), apple_nonce.encode()):
+                if not isinstance(nonce, str) or not hmac.compare_digest(nonce.encode(), expected_nonce.encode()):
                     raise Rejected('invalid_identity_token')
-            return VerifiedIdentity(GOOGLE if provider == 'google' else APPLE, subject, claims['exp'])
+            return VerifiedIdentity(GOOGLE if provider == 'google' else APPLE, subject, claims['exp'], claims['aud'])
         except jwt.PyJWKClientConnectionError:
             raise Rejected('identity_provider_unavailable') from None
         except (jwt.PyJWTError, ValueError, TypeError, KeyError):

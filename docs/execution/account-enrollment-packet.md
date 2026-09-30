@@ -1,5 +1,11 @@
 # ACCOUNT-1: Google and Apple enrollment
 
+## Recorded continuation — September 30, 2026
+
+This packet preserves enrollment preparation and setup history. Real Google and Apple enrollment, populated local switching/deletion, both native automatic-refresh paths and local fresh-proof recovery now have bounded evidence. Recorded hosted candidate `208ca34b` runs schema 21 with accounts/deletion enabled; physical founder Google migration and provider switching passed. See [release handoff](testflight-release-handoff.md), [lifecycle evidence](../qa/account-lifecycle/README.md), [Apple recovery receipt](../qa/account-lifecycle/apple-fresh-proof-recovery.json) and [migration outcome](founder-account-migration.md). None is a fresh runtime check by this documentation pass.
+
+PR159–177 remain candidate/unmerged checkpoints. Phase 1 is incomplete; independent-human isolation, capture/sign-out and revoked-provider/failure paths, physical deletion and retention/restore acceptance remain distinct gates. The Apple agreement was accepted and App Store record `6817680460` created; no TestFlight upload or working paywall is established. Earlier preview-only, schema-20 and “No Apps” observations below describe their dated checkpoints, not current implementation. Preserve the shared UI design system and complete Phase 1 before pricing, paywall, release preparation and pilot.
+
 Prepared September 29, 2026 against main `6af767d`. Implementation packet, not delivered authentication.
 
 ## Decision and bounded outcome
@@ -36,7 +42,7 @@ Open a focused PR with exact source/configuration, reproducible checks, sanitize
 - [Google backend token verification](https://developers.google.com/identity/sign-in/ios/backend-auth)
 - [Apple capability setup](https://developer.apple.com/help/account/capabilities/about-sign-in-with-apple)
 
-The native sign-up preview already orders Google before Apple. Neither preview button currently authenticates. The current backend's `Admission.enroll` issues developer credentials; production provider enrollment and refresh are absent.
+The native sign-up preview already orders Google before Apple. At this initial inspection neither preview button authenticated. The then-current backend's `Admission.enroll` issues developer credentials; production provider enrollment and refresh are absent.
 
 
 ## Provider setup progress — September 29
@@ -70,10 +76,18 @@ After the founder accepted the updated agreement, a fresh App Store Connect relo
 
 Schema 20 adds `(issuer, subject)` → owner mapping in the existing memory database. The server-only `owner_for_identity` operation atomically binds a fresh credential to the returning identity's owner, or creates an isolated owner for a new identity. Existing founder credentials cannot be adopted or reassigned. No email linking, enrollment endpoint, token verification, refresh service or native login is delivered by this storage checkpoint.
 
-[Account identity QA](../qa/account-identity/README.md) records synthetic identity, migration, concurrency and actual local WebSocket isolation evidence. Hosted deployment remains unchanged. Do not roll schema 20 back to schema 19 binaries against the upgraded database; use the predeployment backup if a future deployment needs rollback.
+[Account identity QA](../qa/account-identity/README.md) records synthetic identity, migration, concurrency and actual local WebSocket isolation evidence. Hosted deployment remains unchanged. Do not run schema-19 binaries on an upgraded database or restore a historical backup over newer ledgers/deletions. At this checkpoint rollback targeted an accounts-disabled schema-20-compatible build and schema 21 was undeployed. The later recorded schema-21 deployment requires a compatible rollback; never use that historical schema-20 rollback against it.
 
 ## Founder constraint: preserve the established design system
 
 September 29 clarification supersedes the earlier blanket UI-code freeze: functional frontend wiring for Google/Apple sign-in and necessary account/privacy pages are authorized. The current UI design system is the source of truth. Reuse existing components, styling, typography, colors, spacing and motion; preserve established screens and interactions. Do not redesign, restyle or reinterpret the app's visual character while preparing TestFlight. Google remains above Apple. Verify functional additions in the actual app against the existing design system.
 
 Functional frontend work must reuse the existing components, animations, transitions, press feedback and haptics. Treat the established UI/UX system as the source of truth; no new visual or interaction system is authorized. Founder explicitly reaffirms proactive verified checkpoint merging. Founder authorizes $5 total for provider/API tests toward TestFlight readiness, without automatic paid retries. Preserve earlier ledgers; this does not cover hosting upgrades, subscriptions or other purchases. Record each run in the TestFlight provider-testing ledger before spending.
+
+### Apple server key registered
+
+September 29: founder explicitly approved the action-time key request. Registered `Ellis Sign in with Apple`, key ID `6JCPHWJT4A`, with only Sign in with Apple enabled, scoped to primary `ai.voicecompanion.phone` and its grouped Mac app. Registration initially encountered an expired portal session; the refreshed inventory confirmed no key existed before retrying. The final portal showed the registered key and completed download. The download event observer timed out, but the actual file was present in Downloads; it was validated as P-256 and moved to owner-only local credential storage outside all repositories. No private material appears in source, logs or screenshots. This does not establish deployed secret configuration or real Apple authentication.
+
+### Historical configuration staging, superseded by enabled rollout
+
+The registered Apple key and locally generated Fernet encryption key are configured on the existing Render voice-companion service with the selected Google/Apple client IDs. Per-variable API writes preserved every pre-existing setting, verified by readback; values are never recorded here. At that staging checkpoint `VOICE_ENABLE_ACCOUNTS=0` was set. Subsequently the backend was deployed with accounts enabled and both real providers passed basic Release-simulator enrollment; see [current native account QA](../qa/native-accounts/README.md). The signing key registration receipt is not account acceptance.

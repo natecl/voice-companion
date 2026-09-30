@@ -17,6 +17,7 @@ struct CaptureSession: Codable, Identifiable {
 
 struct SessionStore {
     let directory: URL
+    var expectedOwner: String? = nil
 
     func load() throws -> [CaptureSession] {
         guard FileManager.default.fileExists(atPath: directory.path) else { return [] }
@@ -24,6 +25,7 @@ struct SessionStore {
             .filter { $0.pathExtension == "json" }
             .map {
                 var session = try JSONDecoder().decode(CaptureSession.self, from: Data(contentsOf: $0))
+                if let expectedOwner, session.memoryOwnerID != expectedOwner { throw AccountFailure.signInRequired }
                 session.answers = session.answers?.map { item in
                     var answer = item
                     if answer.state == .streaming {
@@ -38,6 +40,10 @@ struct SessionStore {
     }
 
     func save(_ session: CaptureSession) throws {
+        if expectedOwner != nil, FileManager.default.fileExists(atPath: directory.deletingLastPathComponent().appendingPathComponent(LocalAccountErasure.marker).path) {
+            throw AccountFailure.signInRequired
+        }
+        if let expectedOwner, session.memoryOwnerID != expectedOwner { throw AccountFailure.signInRequired }
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         #if os(iOS)
         // Sessions must remain writable after locking a device that has already been unlocked.

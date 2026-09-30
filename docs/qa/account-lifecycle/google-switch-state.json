@@ -1,0 +1,12 @@
+{
+  "google": {
+    "cached_json_files": 0,
+    "sync_acknowledged": true,
+    "active_sessions": 1
+  },
+  "apple": {
+    "cached_json_files": 0,
+    "sync_acknowledged": true,
+    "active_sessions": 0
+  }
+}

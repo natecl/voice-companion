@@ -76,6 +76,10 @@ extension SessionController {
             let outbox = MemoryOutbox(directory: base.appendingPathComponent("memory-outbox").appendingPathComponent(owner), owner: owner)
             let sync = MemorySync(outbox: outbox, transport: MemorySocketTransport())
             sync.observeNetwork()
+            if (try? AccountCredentialStore.load()) != nil {
+                let isolated = SessionStore(directory: base.appendingPathComponent("accounts").appendingPathComponent(owner).appendingPathComponent("sessions"), expectedOwner: owner)
+                return SessionController(store: isolated, memorySync: sync)
+            }
             return SessionController(memorySync: sync)
         }
         return SessionController()

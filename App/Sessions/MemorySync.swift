@@ -74,6 +74,7 @@ struct MemoryOutbox {
 
     private func file(_ id: String) -> URL { directory.appendingPathComponent(id + ".json") }
     private func save(_ entry: MemoryOutboxEntry) throws {
+        guard !FileManager.default.fileExists(atPath: directory.appendingPathComponent(LocalAccountErasure.marker).path) else { throw AccountFailure.signInRequired }
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         #if os(iOS)
         let options: Data.WritingOptions = [.atomic, .completeFileProtectionUntilFirstUserAuthentication]
@@ -132,7 +133,7 @@ struct MemorySocketTransport: MemoryTransport {
         self.configuration = configuration
     }
     func send(_ operation: MemoryOperation) async throws {
-        let config = try configuration()
+        let config = try await configuration().forRequest()
         guard config.memoryOwnerID == operation.owner else { throw MemorySyncFailure.ownerMismatch }
         var parts = URLComponents(url: config.url, resolvingAgainstBaseURL: false)!
         parts.path = "/memory"
@@ -184,6 +185,7 @@ final class MemorySync {
     let outbox: MemoryOutbox
     private let transport: any MemoryTransport
     private var task: Task<Void, Never>?
+    private var stopped = false
     @ObservationIgnored private var monitor: NWPathMonitor?
     private(set) var acknowledgmentCount = 0
     private(set) var lastError: String?
@@ -226,8 +228,14 @@ final class MemorySync {
     }
     deinit { monitor?.cancel() }
 
+    func shutdown() {
+        stopped = true
+        monitor?.cancel(); monitor = nil
+        task?.cancel()
+    }
+
     func kick() {
-        guard task == nil else { return }
+        guard !stopped, task == nil else { return }
         task = Task {
             defer { task = nil }
             do {
@@ -236,6 +244,8 @@ final class MemorySync {
                     guard let entry = try outbox.entries().first(where: { !$0.acknowledged }) else { break }
                     try Task.checkCancellation()
                     try await transport.send(entry.operation)
+                    try Task.checkCancellation()
+                    guard !stopped else { return }
                     try outbox.acknowledge(entry.operation)
                     acknowledgmentCount += 1
                     lastError = nil

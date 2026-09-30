@@ -29,7 +29,7 @@ final class RecordingNotesConnection {
     private let configuration: () throws -> RelayConfiguration
     init(configuration: @escaping () throws -> RelayConfiguration) { self.configuration = configuration }
     func read(_ attachment: CompanionAttachment, retry: Bool = false) async throws -> RecordingNotesResult? {
-        let config = try configuration()
+        let config = try await configuration().forRequest()
         guard var parts = URLComponents(url: config.url, resolvingAgainstBaseURL: false) else { throw CompanionFailure.invalidRequest }
         parts.path = "/notes"
         guard let url = parts.url else { throw CompanionFailure.invalidRequest }

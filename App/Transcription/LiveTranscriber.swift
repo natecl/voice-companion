@@ -33,7 +33,7 @@ final class LiveTranscriber: RecordingConnection {
     func run(onReady: (Duration) -> Void, onFinishing: @escaping (RecordingStopReason) -> Void, onEvent: (GrokEvent) throws -> Void) async throws {
         self.onFinishing = onFinishing
         defer { cleanup() }
-        let config = try configuration()
+        let config = try await configuration().forRequest()
         var request = URLRequest(url: config.url)
         request.setValue("Bearer " + config.token, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = 10

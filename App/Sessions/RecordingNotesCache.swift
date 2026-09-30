@@ -35,6 +35,7 @@ final class RecordingNotesCache {
 
     /// Persist the highest known transcript revision, so an old view/late request cannot revive it.
     private func acceptRevision(_ key: Key) throws -> Bool {
+        try requireAvailable(key.owner)
         let folder = sourceDirectory(key)
         if deletedSources.contains(folder) || FileManager.default.fileExists(atPath: folder.appendingPathComponent("deleted").path) { return false }
         let marker = folder.appendingPathComponent("revision")
@@ -150,6 +151,7 @@ final class RecordingNotesCache {
     }
 
     func invalidate(owner: String, sessionID: String) throws {
+        try requireAvailable(owner)
         for (key, flight) in flights where key.owner == owner && key.sessionID == sessionID {
             flight.task.cancel(); flights[key] = nil
         }
@@ -160,6 +162,19 @@ final class RecordingNotesCache {
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         try Data().write(to: folder.appendingPathComponent("deleted"), options: .atomic)
         try removeSource(key)
+    }
+
+    private func erasedMarker(_ owner: String) -> URL { directory.appendingPathComponent("deleted-owners").appendingPathComponent(digest(owner)) }
+
+    private func requireAvailable(_ owner: String) throws {
+        guard !FileManager.default.fileExists(atPath: erasedMarker(owner).path) else { throw AccountFailure.signInRequired }
+    }
+
+    func erase(owner: String) throws {
+        let marker = erasedMarker(owner)
+        try FileManager.default.createDirectory(at: marker.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try Data().write(to: marker, options: .atomic)
+        try clear(owner: owner)
     }
 
     func clear(owner: String) throws {
@@ -173,6 +188,9 @@ final class RecordingNotesCache {
 
     func clearAll() throws {
         flights.values.forEach { $0.task.cancel() }; flights.removeAll(); values.removeAll(); deletedSources.removeAll(); invalidated.removeAll()
-        if FileManager.default.fileExists(atPath: directory.path) { try FileManager.default.removeItem(at: directory) }
+        if FileManager.default.fileExists(atPath: directory.path) {
+            for item in try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
+                where item.lastPathComponent != "deleted-owners" { try FileManager.default.removeItem(at: item) }
+        }
     }
 }

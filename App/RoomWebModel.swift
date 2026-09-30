@@ -7,6 +7,8 @@ import Observation
 final class RoomWebModel {
     let recording = SessionController.forApp()
     let dictation = ComposerDictation.forApp()
+    var canSignOut = false
+    var canDeleteAccount = false
     var chat: CompanionController?
     var proactive: ProactiveCoordinator?
     var appearance = ProcessInfo.processInfo.arguments.contains("--ui-testing") ? "light" : UserDefaults.standard.string(forKey: "companionAppearance") ?? "system"
@@ -42,6 +44,17 @@ final class RoomWebModel {
         #endif
         return try RelayConfiguration.load()
     }
+    func endAccountSession() {
+        recording.endAccountSession()
+        dictation.interrupt()
+        proactive?.suspend()
+        chat?.cancel(); chat?.draft = ""
+        libraryTask?.cancel()
+        notesTasks.values.forEach { $0.task.cancel() }; notesTasks.removeAll()
+        notes.removeAll(); notesErrors.removeAll()
+        selectedID = nil; share = nil
+    }
+
     func start() {
         guard chat == nil else { return }
         do {
@@ -272,7 +285,7 @@ final class RoomWebModel {
     }
     var snapshot: [String: Any] {
         var state: [String: Any] = ["ready": chat != nil, "busy": chat?.isBusy ?? false, "deleting": recording.pendingMemoryDeletion,
-            "draft": chat?.draft ?? "", "draftVersion": draftVersion, "appearance": appearance, "useMemory": chat?.useMemory ?? true,
+            "canSignOut": canSignOut, "canDeleteAccount": canDeleteAccount, "draft": chat?.draft ?? "", "draftVersion": draftVersion, "appearance": appearance, "useMemory": chat?.useMemory ?? true,
             "messages": messages, "hasEarlier": chat?.nextBefore != nil, "showWelcome": chat?.nextBefore == nil,
             "uncertain": chat?.response?.state == .uncertain, "notice": notice ?? "", "noticeSequence": noticeSequence, "persistentNotice": persistentNotice]
         state["notes"] = sessions.map { session -> [String: Any] in
@@ -321,15 +334,22 @@ struct SharedRoomRootView: View {
     @State private var interfaceFailure: String?
     @State private var interfaceVersion = 0
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.accountSignOut) private var signOut
+    @Environment(\.accountDelete) private var deleteAccount
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { _ in
-            RoomWebView(state: model.snapshot, onAction: model.action, onFailure: { interfaceFailure = $0 })
+            RoomWebView(state: model.snapshot, onAction: { command in
+                if command["action"] as? String == "sign-out" { signOut?() }
+                else if command["action"] as? String == "delete-account" { deleteAccount?() }
+                else { model.action(command) }
+            }, onFailure: { interfaceFailure = $0 })
                 .id(interfaceVersion)
         }.background(Color(UIColor { traits in
             traits.userInterfaceStyle == .dark ? UIColor(red: 21/255, green: 24/255, blue: 25/255, alpha: 1) : .white
         }))
             .preferredColorScheme(model.appearance == "system" ? nil : model.appearance == "dark" ? .dark : .light)
-            .task { model.start() }
+            .task { model.canSignOut = signOut != nil; model.canDeleteAccount = deleteAccount != nil; model.start() }
+            .onReceive(NotificationCenter.default.publisher(for: .accountWillChange)) { _ in model.endAccountSession() }
             .onChange(of: model.chat?.notice) { _, text in if let text { model.notify(text) } }
             .onChange(of: model.recording.errorMessage) { _, text in if let text { model.notify(text) } }
             .onChange(of: model.dictation.notice) { _, text in if let text { model.notify(text) } }

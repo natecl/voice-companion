@@ -1,0 +1,56 @@
+{
+  "packet": "CONTRACTS-access",
+  "commit": "e3172e731566dd4540befd0ad57c6937c4b5935b",
+  "base": "5a04ea30d05dcf78537340e66da9e695465249ee",
+  "manifest": {
+    "path": "work/verification/a3c5e9b41e8e4392b053645008115653-manifest.json",
+    "sha256": "5e5de171e8f134592e245cabf44c8c8be8650f585638e569c0d2feeb5ee8baa1"
+  },
+  "environment": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "acceptance": [
+    "Automated contracts only; full feature remains unverified"
+  ],
+  "not_applicable": {
+    "live_behavior_checks": "Checks-only run; full feature evidence still required",
+    "inspection": "Checks-only run; full feature evidence still required"
+  },
+  "checks": [
+    {
+      "id": "access-contracts",
+      "group": "mechanical_checks",
+      "evidence_kind": "fixture",
+      "result": "pass",
+      "artifacts": [],
+      "command": [
+        "/private/tmp/ellis-auth-venv/bin/python",
+        "-m",
+        "unittest",
+        "Backend.test_admission",
+        "Backend.test_admin",
+        "Backend.test_hosted_startup",
+        "Backend.test_account_identity",
+        "Backend.test_account_tokens",
+        "Backend.test_account_sessions",
+        "Backend.test_account_service",
+        "Backend.test_account_erasure",
+        "Backend.test_account_deletion",
+        "Backend.test_account_deletion_recovery"
+      ],
+      "exit_code": 0,
+      "seconds": 2.531
+    }
+  ],
+  "paid_calls": 0,
+  "reserved_microusd": 0,
+  "unresolved": [],
+  "review": {
+    "status": "pending",
+    "reviewed_commit": null,
+    "released_packets": []
+  },
+  "status": "needs_review",
+  "feature": "access",
+  "feature_status": "internal foundations only; release implementation and real-path acceptance pending",
+  "verification_scope": "mechanical_only",
+  "feature_verified": false
+}

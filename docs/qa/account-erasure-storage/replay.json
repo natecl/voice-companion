@@ -1,0 +1,26 @@
+{
+  "scope": "local SQLite and WebSocket replay; synthetic identities and content",
+  "sqlite_version": "3.50.4",
+  "results": {
+    "populated_cross_owner_write_rejected": true,
+    "both_revoked_sessions_rejected_http_401_and_refresh": true,
+    "other_account_transcript_notes_and_chat_unchanged": true,
+    "content_and_provider_identity_absent_after_reopen": true,
+    "reservation_rows_unchanged": true,
+    "fresh_provider_enrollment_has_new_empty_owner": true
+  },
+  "provider_calls": 0,
+  "source_sha256": {
+    "Backend/account_erasure.py": "665b32c99c9dae5acf3d6f12b17f31702019785ecff40c7624095d60afe98ef2",
+    "Backend/memory_store.py": "5da344559b1320dcb4ed2c4af63b5e041bd1b64e2e799e8ce3ba662f3be136ea",
+    "scripts/qa/account-erasure.py": "3ff9790463597b626275eadfa5d917fc42796b39051d42e43f7a365e4c38b25a"
+  },
+  "not_proven": [
+    "deletion endpoint",
+    "provider revocation",
+    "native local erasure",
+    "operational backup retention",
+    "physical device",
+    "founder migration"
+  ]
+}

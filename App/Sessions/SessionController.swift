@@ -193,11 +193,17 @@ final class SessionController {
                 let connection = makeConnection()
                 live = connection
                 try await connection.run(onReady: { limit in
+                    guard self.task?.isCancelled == false,
+                          self.current?.id == recordingSessionID,
+                          self.current?.endReason == nil else { return }
                     self.recordingLimit = limit
                     self.recordingStarted = .now
                     self.liveStatus = "Recording"
                     self.logger.info("microphone_recording_started")
                 }, onFinishing: { reason in
+                    guard self.task?.isCancelled == false,
+                          self.current?.id == recordingSessionID,
+                          self.current?.endReason == nil else { return }
                     self.beginFinalizationAllowance()
                     self.freezeRecordingTime()
                     if reason == .developmentLimit {
@@ -205,11 +211,17 @@ final class SessionController {
                     }
                     self.liveStatus = "Finishing…"
                 }, onEvent: { event in
+                    try Task.checkCancellation()
+                    guard self.task?.isCancelled == false,
+                          self.current?.id == recordingSessionID,
+                          self.current?.endReason == nil else { throw CancellationError() }
                     if let segment = event.segment {
                         self.current?.transcript.apply(segment)
                         try self.persist()
                     }
                 })
+                try Task.checkCancellation()
+                guard current?.id == recordingSessionID else { throw CancellationError() }
                 let completed = current?.endReason == nil
                 current?.completed = completed
                 current?.memoryTerminal = true
@@ -257,6 +269,12 @@ final class SessionController {
         } else if isActive {
             interrupt(reason: "Recording stopped because the app left the foreground before background capture was active. Received text is saved; the transcript may be incomplete.")
         }
+    }
+
+    func endAccountSession() {
+        memorySync?.shutdown()
+        cancelAnswer()
+        interrupt(reason: "Recording stopped because you signed out. Received text is saved.")
     }
 
     func stop() {

@@ -49,6 +49,28 @@ class HostedRelayTests(unittest.IsolatedAsyncioTestCase):
             finally:
                 store.close()
 
+    async def test_account_refresh_does_not_interrupt_active_capture(self):
+        from account_sessions import AccountSessions
+        from account_tokens import VerifiedIdentity, GOOGLE
+        from memory_store import MemoryStore
+        import time
+        with tempfile.TemporaryDirectory() as directory:
+            async with self.service() as (store, _, _, url):
+                sessions = AccountSessions(store, MemoryStore(Path(directory)/'memory.sqlite'))
+                challenge = sessions.challenge('google')
+                account = sessions.exchange(challenge['challenge'], 'google',
+                    VerifiedIdentity(GOOGLE, 'synthetic-account', time.time()+300), 'synthetic-id-token')
+                async with connect(url, additional_headers={'Authorization': 'Bearer '+account['token']}) as ws:
+                    self.assertEqual(json.loads(await ws.recv())['type'], 'transcript.created')
+                    sessions.refresh(account['refresh_token'])
+                    # Cross the relay's real periodic authorization check while open.
+                    await asyncio.sleep(1.1)
+                    await ws.send(bytes(3200))
+                    await ws.send('{"type":"audio.done"}')
+                    self.assertEqual(json.loads(await ws.recv())['type'], 'transcript.done')
+                    await ws.wait_closed()
+                self.assertEqual(self.audio_frames, 1)
+
     async def test_repeated_sessions_then_budget_rejection_before_upstream(self):
         async with self.service() as (store, owner, token, url):
             with self.assertRaises(InvalidStatus):

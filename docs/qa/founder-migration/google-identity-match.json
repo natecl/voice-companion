@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-09-30T07:03:49.962091+00:00",
+  "verified_local_google_identity_matches_hosted_destination": true,
+  "proof_provenance": "latest founder-driven real Google enrollment into isolated local configured_accounts service",
+  "comparison": "SHA256 of exact issuer and subject; no email inference",
+  "hosted_destination_matches_rehearsed_owner": true,
+  "hosted_schema": 20,
+  "hosted_destination_content_counts": {
+    "source": 0,
+    "recording_notes": 0,
+    "companion_turn": 0
+  },
+  "hosted_changes": false,
+  "limitations": "Identity comparison only; complete content inventory and service quiescence must be rechecked at cutover. No tokens/subjects copied into evidence."
+}

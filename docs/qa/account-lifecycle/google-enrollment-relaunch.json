@@ -1,0 +1,19 @@
+{
+  "scope": "isolated local real-provider QA",
+  "identity_counts": {
+    "google": 1
+  },
+  "schema": 21,
+  "sessions": 1,
+  "unrevoked_sessions": 1,
+  "deletions": {},
+  "provider_calls": {},
+  "model_spending_enabled": false,
+  "observations": [
+    "Real Google enrollment: one identity and active session; home screen inspected.",
+    "App terminated and relaunched: home screen retained; no second enrollment observed."
+  ],
+  "limitations": [
+    "Does not establish refresh-token rotation, deletion, populated isolation or physical-device acceptance."
+  ]
+}

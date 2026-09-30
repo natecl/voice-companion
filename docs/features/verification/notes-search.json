@@ -10,14 +10,15 @@
       "id": "notes-search-contracts",
       "group": "mechanical_checks",
       "kind": "fixture",
-      "runner": "feature:notes-search"
+      "runner": "feature:notes-search",
+      "claim": "Backend indexed note-search contracts; these do not establish that the current shared-room UI uses ranked retrieval"
     },
     {
       "id": "notes-search-behavior-1",
       "group": "live_behavior_checks",
       "kind": "simulator",
       "evidence": "work/feature-evidence/notes-search/behavior-1.json",
-      "claim": "Search results, empty/error state and opening the correct note"
+      "claim": "Actual shared-room local note filtering, empty state and opening the correct source; inspect the implemented UI path separately from backend retrieval"
     },
     {
       "id": "notes-search-inspection",
