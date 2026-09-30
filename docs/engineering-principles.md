@@ -408,3 +408,15 @@ existing pre-authentication development data. Verify the exact legacy source and
 Google identity, preserve unrelated owners and all budget history, and rehearse
 the coordinated server/local migration before cutover. This does not authorize
 moving Apple account data into Google or inferring identity from email.
+
+Founder QA workflow revision, September 30: automate live simulator interaction
+and inspection instead of repeatedly asking the founder to tap routine controls
+or report screenshots. Use native UI tests and real backend/state evidence for
+sign-in navigation, sign-out, relaunch, account switching and recovery where the
+available tooling supports them. This does not change the UI design system.
+Request founder input only for an actual access/credential/security challenge,
+required decision or judgment, or physical behavior that automation cannot prove
+(such as microphone quality and haptics). The readiness rule applies when the
+check needs founder participation; it is not a new permission gate for each
+agent-operated simulator action. Keep live-provider evidence distinct from
+fixtures and preserve private result bundles containing account identifiers.

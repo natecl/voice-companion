@@ -34,8 +34,9 @@ See [cutover evidence](../../qa/founder-migration/live-cutover.json) and the
 
 Google native automatic expiry/Keychain rotation and signed-in restart now pass
 in the isolated Release simulator; see [receipt](../../qa/account-lifecycle/native-automatic-refresh.json).
-Remaining gates: Apple native automatic rotation, real fresh-proof
-failure recovery, physical deletion lifecycle, independent
+Real Google fresh-proof deletion recovery also passed through agent-operated
+XCTest and the real provider, with no content session issued.
+Remaining gates: Apple native automatic rotation and fresh-proof recovery, physical deletion lifecycle, independent
 second-person isolation, and implemented backup retention/restore handling.
 Google and Apple remain separate accounts. Google stays above Apple; no account
 linking or email-derived identity merge is included. The physical founder Google

@@ -1,6 +1,8 @@
 # Real fresh-proof recovery check
 
-Prepared September 30; not executed. Use only the existing isolated localhost
+Executed September 30 through agent-operated XCTest. See
+[receipt](automated-google-recovery.json) and [automation](live-ui-automation.md).
+The following preserves the test sequence and setup limits. Use only the existing isolated localhost
 service and Ellis Real Account Lifecycle simulator, whose current Google account
 has zero sources, notes and chat turns. The physical phone stays on hosted Google.
 
@@ -9,7 +11,7 @@ normal enrollment remains blocked; fresh Google proof recovers only deletion
 authority, finishes real grant revocation, and leaves the app signed out. It must
 not create a new content session or restore erased data.
 
-Obtain founder readiness before beginning. Explain that the simulator uses real
+Founder confirmed readiness and authorized agent-operated simulator tests. The simulator uses real
 Google authorization and final revocation may require Google reauthorization in
 other Ellis installations; hosted content is not part of this erasure.
 
@@ -25,7 +27,7 @@ other Ellis installations; hosted content is not part of this erasure.
 3. Confirm pending identity reservation, erased content, revoked old sessions and
    unchanged budget/policy/request history. No Google revocation is requested by
    this preparation. Inspect uncertain results before any retry.
-4. Founder signs out in the simulator and uses the same Google account. Normal
+4. The agent signs out in the simulator and uses the observed saved Google account. Normal
    enrollment should show the finish-deletion recovery instruction. A second
    provider sign-in supplies fresh proof to the actual recovery endpoint.
 5. Inspect the actual Google revocation outcome, complete deletion state, released

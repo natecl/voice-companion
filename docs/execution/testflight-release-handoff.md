@@ -122,3 +122,16 @@ The founder confirmed Google content hidden in Apple, Apple signed-in relaunch,
 and original notes/chat/note opening after returning to Google. The note cache
 was empty after Google sign-out. This uses one person's two provider identities,
 not two independent humans. [Receipt](../qa/founder-migration/physical-account-switch.json).
+
+### Simulator automation and real recovery — September 30
+
+Founder requests agent-operated live simulator QA instead of repeated manual
+taps. Native XCTest now drives the actual Release app and saved Google OAuth
+flow. The isolated Google fresh-proof recovery check passed: normal enrollment
+was blocked by pending deletion, fresh proof completed real revocation, no new
+content session was issued, local erasure markers remained and restart stayed
+signed out. Ledger rows were unchanged. See [receipt](../qa/account-lifecycle/automated-google-recovery.json)
+and [runner instructions](../qa/account-lifecycle/live-ui-automation.md).
+No founder clicks were required. Desktop coordinate input failed on Device Hub;
+XCTest worked. Password/security challenges and physical-only judgments still
+require founder input. The remaining account gates are not waived.
