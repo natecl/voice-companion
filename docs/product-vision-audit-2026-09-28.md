@@ -1,5 +1,7 @@
 # Product vision implementation audit — September 28, 2026
 
+> Historical audit at the source/configuration named below. The September 29 [social-presence direction](product-source-of-truth.md#invited-social-presence--september-29-2026) supersedes its note-taking-led positioning. Its “missing” proactive, offline-note-cache and account findings describe September 28, not current code: bounded proactive delivery and the shared UI/cache baseline were subsequently implemented, and real accounts/lifecycle are in a partly deployed, unmerged candidate stack. See [current state](current-state.md), [feature contexts](features/context-map.md) and [release handoff](execution/testflight-release-handoff.md) for current gaps. Preserve this audit as the rationale and evidence boundary of its original checkpoint; it is not a fresh runtime inspection.
+
 ## Target and audit boundary
 
 **Agreed positioning:** AI notes that proactively contribute to discussions.

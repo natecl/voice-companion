@@ -11,7 +11,8 @@
       "id": "chat-contracts",
       "group": "mechanical_checks",
       "kind": "fixture",
-      "runner": "feature:chat"
+      "runner": "feature:chat",
+      "claim": "Companion storage/context/service contracts plus actual local WebSocket rejection of revoked sessions during history, existing-answer and streamed reads"
     },
     {
       "id": "chat-behavior-1",

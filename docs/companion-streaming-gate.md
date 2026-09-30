@@ -1,5 +1,7 @@
 # Frozen persistent-chat provider gate
 
+> Historical paid QA gate. Frozen cases and budget figures below preserve their original evidence and are not permission to rerun calls or an available balance. See [current state](current-state.md) for selected behavior and current evidence boundaries.
+
 September 26, 2026. Before live execution: use at most six paid calls (five GPT-6 Luna answers and one Jev retrieval judgment), at the existing conservative $0.01 reservation each. Canonical total before this gate is $2.28/$2.40; read it again before execution. No automatic retry; preserve a failed sequence and diagnose before another version. No new STT calls.
 
 Exercise the actual persistent-chat socket handler, canonical context constructor, storage and unchanged Luna SDK transport:

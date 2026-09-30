@@ -1,5 +1,11 @@
 # ACCOUNT-1: Google and Apple enrollment
 
+## Recorded continuation — September 30, 2026
+
+This packet preserves enrollment preparation and setup history. Real Google and Apple enrollment, populated local switching/deletion, both native automatic-refresh paths and local fresh-proof recovery now have bounded evidence. Recorded hosted candidate `208ca34b` runs schema 21 with accounts/deletion enabled; physical founder Google migration and provider switching passed. See [release handoff](testflight-release-handoff.md), [lifecycle evidence](../qa/account-lifecycle/README.md), [Apple recovery receipt](../qa/account-lifecycle/apple-fresh-proof-recovery.json) and [migration outcome](founder-account-migration.md). None is a fresh runtime check by this documentation pass.
+
+PR159–177 remain candidate/unmerged checkpoints. Phase 1 is incomplete; independent-human isolation, capture/sign-out and revoked-provider/failure paths, physical deletion and retention/restore acceptance remain distinct gates. The Apple agreement was accepted and App Store record `6817680460` created; no TestFlight upload or working paywall is established. Earlier preview-only, schema-20 and “No Apps” observations below describe their dated checkpoints, not current implementation. Preserve the shared UI design system and complete Phase 1 before pricing, paywall, release preparation and pilot.
+
 Prepared September 29, 2026 against main `6af767d`. Implementation packet, not delivered authentication.
 
 ## Decision and bounded outcome
@@ -36,7 +42,7 @@ Open a focused PR with exact source/configuration, reproducible checks, sanitize
 - [Google backend token verification](https://developers.google.com/identity/sign-in/ios/backend-auth)
 - [Apple capability setup](https://developer.apple.com/help/account/capabilities/about-sign-in-with-apple)
 
-The native sign-up preview already orders Google before Apple. Neither preview button currently authenticates. The current backend's `Admission.enroll` issues developer credentials; production provider enrollment and refresh are absent.
+The native sign-up preview already orders Google before Apple. At this initial inspection neither preview button authenticated. The then-current backend's `Admission.enroll` issues developer credentials; production provider enrollment and refresh are absent.
 
 
 ## Provider setup progress — September 29
@@ -70,7 +76,7 @@ After the founder accepted the updated agreement, a fresh App Store Connect relo
 
 Schema 20 adds `(issuer, subject)` → owner mapping in the existing memory database. The server-only `owner_for_identity` operation atomically binds a fresh credential to the returning identity's owner, or creates an isolated owner for a new identity. Existing founder credentials cannot be adopted or reassigned. No email linking, enrollment endpoint, token verification, refresh service or native login is delivered by this storage checkpoint.
 
-[Account identity QA](../qa/account-identity/README.md) records synthetic identity, migration, concurrency and actual local WebSocket isolation evidence. Hosted deployment remains unchanged. Do not run schema-19 binaries on an upgraded database or restore a historical backup over newer ledgers/deletions. Current live rollback uses an accounts-disabled schema-20-compatible build; schema 21 is an undeployed dependent candidate and needs its own compatible rollback plan.
+[Account identity QA](../qa/account-identity/README.md) records synthetic identity, migration, concurrency and actual local WebSocket isolation evidence. Hosted deployment remains unchanged. Do not run schema-19 binaries on an upgraded database or restore a historical backup over newer ledgers/deletions. At this checkpoint rollback targeted an accounts-disabled schema-20-compatible build and schema 21 was undeployed. The later recorded schema-21 deployment requires a compatible rollback; never use that historical schema-20 rollback against it.
 
 ## Founder constraint: preserve the established design system
 

@@ -1,8 +1,8 @@
 # Shared companion-room interface
 
-> Release planning reference: [September 29 handoff](../../execution/testflight-release-handoff.md). This link does not expand the feature’s existing verification claims.
+> September 30 delivery context: [release handoff](../../execution/testflight-release-handoff.md). This map distinguishes source implementation from recorded deployment, installation and bounded verification; historical receipts do not attest current runtime state.
 
-Status: internal candidate installed on the founder’s iPhone; physical acceptance remains in progress. Depends on PR 154's native baseline. Founder revision: approved prototype UI is the source of truth, now shared literally instead of translated into SwiftUI.
+Status: UI PR154 and integration PR155 are merged; a later account Release candidate is recorded as installed on the founder’s iPhone. Remaining physical/release acceptance stays explicit in the handoff. Founder revision: approved prototype UI is the source of truth, now shared literally instead of translated into SwiftUI.
 
 ## Owned boundary
 
@@ -19,12 +19,12 @@ Browser preview: `python3 -m http.server 61715 --bind 127.0.0.1 --directory App/
 
 `python3 scripts/check-experience-ui.py --simulator <id> --derived-data /tmp/CompanionRoomSharedNative --results /tmp/CompanionRoomSharedQA --test SharedRoomPhoneUITests/testSharedRoomNativePipeline` exercises the real local native controllers with synthetic recording/dictation and local provider fixtures. No paid calls; not real microphone evidence.
 
-Remaining gates: screenshot inspection, gesture and error/recovery checks, physical iPhone keyboard/viewport/motion and native capture/dictation acceptance. Do not merge or declare physical acceptance while these are unverified. The preceding native room remains available as a rollback. Temporary companion artwork and unavailable invitations remain internal-preview limitations. iOS/system share sheets and permission prompts remain system UI.
+Remaining gates: screenshot inspection, gesture and error/recovery checks, physical iPhone keyboard/viewport/motion and native capture/dictation acceptance. The bounded UI/integration baseline is merged; do not call its remaining physical or release gates complete from that merge. The preceding native room remains available as a rollback. Temporary companion artwork and unavailable invitations remain internal-preview limitations. iOS/system share sheets and permission prompts remain system UI.
 
 Evidence and installation status: [shared interface checkpoint](../../shared-room-ui.md).
 
 Latest motion slice: `scripts/qa/room-motion.html` provides the isolated browser motion/gesture verifier. Shared calm motion tokens, finger-tracked note actions, and chat left-swipe navigation are implemented; native fixture pipeline passed. Haptic bridge now prepares a retained impact generator, and capture enables optional recording-time haptics. Physical feel and capture/haptic coexistence remain unverified; see checkpoint evidence above before advancing acceptance.
 
-Accessory parity follow-up: search focus/filter regression fixed; note tab indicator persists across content switches; attachment/note entry is slower; Talk about this remains visible with explicit readiness state. See [component audit](../../shared-room-component-audit.md). Preserve later-added behavior when comparing with the original prototype. Current follow-up is simulator-only until separately installed.
+Accessory parity follow-up: search focus/filter regression fixed; note tab indicator persists across content switches; attachment/note entry is slower; Talk about this remains visible with explicit readiness state. See [component audit](../../shared-room-component-audit.md). Preserve later-added behavior when comparing with the original prototype. That follow-up receipt was simulator-only; consult the handoff for later installation evidence instead of inferring physical acceptance.
 
 Latest UI refinement (2026-09-29): content-sized saved-note sheets (64–94%), explicit multiline-title leading, and immediate dictation-send acknowledgement are implemented in the shared runtime. Local layout verifier: scripts/qa/room-note-layout.html. Native pipeline evidence and remaining physical timing limitation: docs/shared-room-ui.md.
