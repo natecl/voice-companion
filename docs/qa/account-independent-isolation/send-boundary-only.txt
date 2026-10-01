@@ -1,0 +1,48 @@
+test_provider_revocation_between_deltas_stops_next_delta (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_provider_revocation_between_deltas_stops_next_delta) ... {"category": "ask", "request_id": "db90e2a5-34c1-4c3b-a2b2-f4799e3a6a1c", "completed": false, "first_text_seconds": 0.0025847090291790664, "elapsed_seconds": 0.004727084015030414}
+{"category": "ask", "request_id": "8739033e-c1f1-4a76-a64a-c3ec230bfa63", "completed": true, "first_text_seconds": 0.003028750012163073, "elapsed_seconds": 0.00432416598778218, "input_tokens": null, "output_tokens": null}
+ok
+test_signout_during_recall_validation_skips_paid_answer (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_signout_during_recall_validation_skips_paid_answer) ... {"category": "ask", "request_id": "a456aa69-d826-477a-8816-c037a756d499", "completed": false, "first_text_seconds": 0.004091540991794318, "elapsed_seconds": 0.005392541002947837}
+FAIL
+test_signout_during_recall_withholds_owner_context (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_signout_during_recall_withholds_owner_context) ... {"category": "ask", "request_id": "c36911f5-8fad-483c-8f16-cc57e096573d", "completed": false, "first_text_seconds": null, "elapsed_seconds": 0.0044600419932976365}
+{"category": "ask", "request_id": "f234462e-7817-4891-a0b0-0fba30dbc41c", "completed": true, "first_text_seconds": 0.0026244999608024955, "elapsed_seconds": 0.0036458749673329294, "input_tokens": null, "output_tokens": null}
+ok
+test_revoked_turn_stays_failed_and_owners_stay_separate (Backend.test_account_independent_isolation.IndependentPeopleCompanionTests.test_revoked_turn_stays_failed_and_owners_stay_separate) ... {"category": "companion", "request_id": "6504c35b-d4d3-49a0-9cd6-0f296368a478", "completed": false, "first_text_seconds": 0.00546383298933506, "elapsed_seconds": 0.007989207981154323}
+{"category": "companion", "request_id": "fc7d5a13-ebf0-48b5-b164-f5e137d14245", "completed": true, "first_text_seconds": 0.0054565410246141255, "elapsed_seconds": 0.007748541014734656, "input_tokens": null, "output_tokens": null}
+ok
+test_revoked_audio_is_not_forwarded_upstream (Backend.test_account_independent_isolation.IndependentPeopleTranscriptionTests.test_revoked_audio_is_not_forwarded_upstream) ... {"status": "Rejected", "audio_seconds": 0.1, "elapsed_seconds": 0.007, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "960644ac-2649-4b08-9aa7-e1151f083cfc"}
+{"status": "completed", "audio_seconds": 0.1, "elapsed_seconds": 0.007, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "08560b3c-2aa0-41df-93b7-3626b69fc810"}
+ok
+test_signout_before_upstream_event_withholds_transcript (Backend.test_account_independent_isolation.IndependentPeopleTranscriptionTests.test_signout_before_upstream_event_withholds_transcript) ... {"status": "Rejected", "audio_seconds": 0.1, "elapsed_seconds": 0.007, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "938c4897-bba9-4ee7-a069-a3948094aebe"}
+{"status": "completed", "audio_seconds": 0.1, "elapsed_seconds": 0.007, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "74b0d85c-80d5-4850-ac97-bc48ddca87b5"}
+ok
+
+======================================================================
+FAIL: test_signout_during_recall_validation_skips_paid_answer (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_signout_during_recall_validation_skips_paid_answer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/private/tmp/voice-companion-account-safety-20260930/Backend/test_account_independent_isolation.py", line 180, in test_signout_during_recall_validation_skips_paid_answer
+    self.assertEqual(ask.provider.calls, [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['{"question": "What changed for Avery?", [253 chars]}]}'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'{"question": "What changed for Avery?", "passages": [{"id": "p1", "start": 0, "text": "Current conversation."}], "memory": true, "session_id": "live-session", "memory_status": "available", "past_sources": [{"id": "m1", "start": 0, "text": "Avery private: the cello audition moved to Thursday."}]}'
+
++ []
+- ['{"question": "What changed for Avery?", "passages": [{"id": "p1", "start": '
+-  '0, "text": "Current conversation."}], "memory": true, "session_id": '
+-  '"live-session", "memory_status": "available", "past_sources": [{"id": "m1", '
+-  '"start": 0, "text": "Avery private: the cello audition moved to '
+-  'Thursday."}]}']
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.302s
+
+FAILED (failures=1)

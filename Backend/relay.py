@@ -144,18 +144,24 @@ class Relay:
                 async with connect(URL, additional_headers={'Authorization': 'Bearer ' + self.key},
                                    open_timeout=2 if self.admission is not None else 10,
                                    close_timeout=2, max_size=2**20) as upstream:
-                    if self.admission is not None:
-                        self.admission.authorized(token)
+                    def authorize():
+                        # Each paid frame and each transcript is a revocation boundary;
+                        # the periodic monitor only detects idle revoked sessions.
+                        if self.admission is not None:
+                            self.admission.authorized(token)
+                    authorize()
                     async def send_audio():
                         nonlocal sent
                         async for packet in client:
                             if isinstance(packet, bytes):
                                 if len(packet) % 2 or sent + len(packet) > MAX_BYTES or (self.admission is None and self.total_bytes + len(packet) > MAX_BYTES):
                                     raise ValueError('Audio limit or format error')
+                                authorize()
                                 sent += len(packet)
                                 self.total_bytes += len(packet)
                                 await upstream.send(packet)
                             elif json.loads(packet) == {'type': 'audio.done'}:
+                                authorize()
                                 await upstream.send(packet)
                                 return
                             else:
@@ -164,6 +170,7 @@ class Relay:
 
                     async def receive_events():
                         async for event in upstream:
+                            authorize()
                             await client.send(event)
                             kind = json.loads(event).get('type')
                             if kind == 'transcript.done':

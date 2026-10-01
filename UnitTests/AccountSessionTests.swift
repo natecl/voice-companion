@@ -11,6 +11,14 @@ private actor RefreshFixture: AccountRefreshing {
     }
     func waitForRequest() async { while calls == 0 { await Task.yield() } }
     func complete() { continuation?.resume(returning: response); continuation = nil }
+    func fail() { continuation?.resume(throwing: AccountFailure.unavailable); continuation = nil }
+}
+
+private final class CredentialWrites: @unchecked Sendable {
+    private let lock = NSLock()
+    private var values: [String] = []
+    func record(_ value: String) { lock.lock(); values.append(value); lock.unlock() }
+    var all: [String] { lock.lock(); defer { lock.unlock() }; return values }
 }
 
 @MainActor
@@ -67,6 +75,28 @@ final class AccountSessionTests: XCTestCase {
         await fixture.complete()
         do { _ = try await request.value; XCTFail("Stale refresh succeeded") } catch {}
         do { _ = try await manager.current(); XCTFail("Account restored") } catch {}
+    }
+
+    func testPreviousPersonsLateRefreshCannotReplaceOrClearNextPerson() async throws {
+        for succeeds in [true, false] {
+            let avery = session(owner: UUID().uuidString, expired: true)
+            let blake = stored(session(owner: UUID().uuidString))
+            let fixture = RefreshFixture(session(owner: avery.owner))
+            let writes = CredentialWrites()
+            let manager = AccountSessionManager(account: stored(avery),
+                                                save: { writes.record("save " + $0.session.owner) },
+                                                clear: { writes.record("clear") },
+                                                makeTransport: { _ in fixture })
+            let request = Task { try await manager.current() }
+            await fixture.waitForRequest()
+            _ = try await manager.removeLocalAccount()
+            try await manager.install(blake)
+            if succeeds { await fixture.complete() } else { await fixture.fail() }
+            do { _ = try await request.value; XCTFail("Previous person's refresh was returned") } catch {}
+            let actual = try await manager.current()
+            XCTAssertEqual(actual.session.owner, blake.session.owner)
+            XCTAssertEqual(writes.all, ["clear", "save " + blake.session.owner])
+        }
     }
 
     func testExpiredRefreshClearsSessionBeforeAnotherOwnerCanSignIn() async throws {

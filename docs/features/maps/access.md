@@ -37,6 +37,21 @@ fail against the prior source; the primary independently reran all 38 targeted
 account/companion checks successfully. Actual loopback WebSockets and fictional
 SQLite data establish this backend fix; it has not been deployed.
 
+A local [independent-person revocation checkpoint](../../qa/account-independent-isolation/README.md)
+closes the same class of gap on `/ask` (recall context, deltas and paid
+generation after revocation) and `/stt` (paid audio and transcript events for
+up to one second after revocation). Five of six two-person tests fail against
+the prior source (the sixth characterizes the existing PR171 companion fix) and
+all pass after the fix; 143 targeted backend tests
+pass. Coordinator-run Mac `CoreTests` passed the seven access-native contract
+suites (55 reported, 54 passed, 1 private-snapshot test skipped), including a
+new late-refresh handoff test. This is Mac synthetic evidence only, after an
+earlier disk-space failure was resolved by two separately approved build-cache
+removals (task-local build output, then Xcode DerivedData). It is
+uncommitted and not deployed, and it does not satisfy the independent
+second-person, physical, final provider-revocation, iPhone/TestFlight or
+Phase 1 gates.
+
 Managed snapshots, planned expiry and a disabled-by-default automatic expiry worker are implemented locally. [Managed backup evidence](../../qa/managed-backups/README.md) and [automatic expiry](../../qa/managed-backups/automatic-expiry.md) record disposable SQLite/CLI/hosted-process checks, including expiry while the service retains its database lease. Production duration, enablement and coverage of historical/off-host/provider copies remain open.
 
 [Restore preparation](../../qa/backup-restore/README.md) creates and validates an offline quarantined candidate against independently established current memory/usage authority. It replays completed account erasures, preserves current spending/authentication state, and refuses other canonical content changes. It cannot activate a restore or recover arbitrary historical content. Backup/restore changes are merged and locally tested, not deployed. The [capture teardown fence](../../qa/account-isolation-review/capture-teardown.md) is installed on the founder phone and passed physical capture/sign-out. Phase 1 remains incomplete.

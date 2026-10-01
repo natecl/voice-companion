@@ -131,6 +131,10 @@ class AskService:
         manifest = None
         token = socket.request.headers.get('Authorization', '').removeprefix('Bearer ')
         async def send(event):
+            # Recall and provider awaits can outlive sign-out or provider revocation.
+            # Errors stay sendable so a revoked client still learns why it stopped.
+            if event['type'] != 'error':
+                self.store.authorized(token)
             await socket.send(json.dumps(event))
         try:
             async with asyncio.timeout(5):
@@ -156,6 +160,7 @@ class AskService:
                     await send({'type':'context', 'sources':data['past_sources'], 'memory_status':status})
                 if manifest and manifest['sources']:
                     await self.recall.validate(manifest)
+                self.store.authorized(token)
                 answer = ''
                 async with aclosing(self.provider.stream(data)) as events:
                     async for event in events:
