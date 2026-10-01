@@ -1,0 +1,46 @@
+{
+  "provenance": "Sanitized controller transcription of read-only Render CLI, SSH allowlisted configuration/aggregate files and device app metadata; no database content or tokens inspected",
+  "observed_utc_window": "2026-10-01 approximately 06:45–06:50 UTC",
+  "source_main": "bd71cc2d579232218209d8faf5e213a1a8d65b58",
+  "render": {
+    "live_commit": "482394e23dd081cc4a9a1e67ef79f7f4aa3b676e",
+    "live_deploy": "dep-daukpurtqb8s73boufmg",
+    "automatic_deployment": false,
+    "health_response": "ready",
+    "hosted_process_accounts_enabled": true,
+    "hosted_process_account_deletion_enabled": true,
+    "managed_expiry_enabled_setting": "unset",
+    "managed_scan_seconds_setting": "unset",
+    "managed_backup_root_present": false,
+    "managed_retention_status_present": false,
+    "managed_backups_module_present": false,
+    "backup_retention_module_present": false,
+    "backup_restore_module_present": false,
+    "runtime_hashes": {
+      "account_sessions.py": "8d51ae315be1be906fbca3697fea6ecae3fc044cb5005cf9d2e5db2e1ab5761a",
+      "ask.py": "a2f880a163fa3ab77bfbe4231cf7dd64ece154ba85648804204104e7e9e6a34f",
+      "relay.py": "b0046641576463eee9a08a570f50e0642dc049a59248738246cec6144f46f6aa"
+    }
+  },
+  "aggregate_copy_inventory": {
+    "top_level_sqlite_files": 24,
+    "nested_database_archive_files": 488,
+    "database_archive_bytes": 43241472,
+    "directory_name_heuristic_only": {"backup": 187, "qa": 82, "other": 219},
+    "copy_removed_or_reconfigured": false,
+    "crontab_binary_available": false,
+    "external_schedules_offhost_and_provider_copies_verified": false
+  },
+  "installed_phone_app_metadata": {
+    "bundle_id": "ai.voicecompanion.phone",
+    "version": "0.1.0",
+    "build": "1",
+    "built_by_developer": true,
+    "source_commit_or_binary_hash_established": false,
+    "app_launched_or_data_accessed": false
+  },
+  "tooling_limits": [
+    "Default sandbox CoreDevice enumeration timed out; elevated read-only enumeration succeeded",
+    "SSH connection succeeded with strict checking retained but emitted a host-key-update signature warning"
+  ]
+}

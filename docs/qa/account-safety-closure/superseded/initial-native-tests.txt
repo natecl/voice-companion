@@ -1,0 +1,48 @@
+Raw XCTest output excerpt; full build log remains /tmp/account-safety-native-focused-1.log
+
+Test Suite 'Selected tests' started at 2026-10-01 03:35:59.045.
+Test Suite 'CoreTests.xctest' started at 2026-10-01 03:35:59.046.
+Test Suite 'AccountSessionTests' started at 2026-10-01 03:35:59.046.
+Test Case '-[CoreTests.AccountSessionTests testAccountStoreRejectsOtherOwnerAndUnownedLegacyRecording]' started.
+Test Case '-[CoreTests.AccountSessionTests testAccountStoreRejectsOtherOwnerAndUnownedLegacyRecording]' passed (0.004 seconds).
+Test Case '-[CoreTests.AccountSessionTests testConcurrentRequestsShareOneRefresh]' started.
+Test Case '-[CoreTests.AccountSessionTests testConcurrentRequestsShareOneRefresh]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testExpiredRefreshClearsSessionBeforeAnotherOwnerCanSignIn]' started.
+Test Case '-[CoreTests.AccountSessionTests testExpiredRefreshClearsSessionBeforeAnotherOwnerCanSignIn]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testLateRefreshCannotRestoreSignedOutAccount]' started.
+Test Case '-[CoreTests.AccountSessionTests testLateRefreshCannotRestoreSignedOutAccount]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testOwnerSwitchRequiresTeardownAndSignOut]' started.
+Test Case '-[CoreTests.AccountSessionTests testOwnerSwitchRequiresTeardownAndSignOut]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testPreviousPersonsLateRefreshCannotReplaceOrClearNextPerson]' started.
+Test Case '-[CoreTests.AccountSessionTests testPreviousPersonsLateRefreshCannotReplaceOrClearNextPerson]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRefreshStartsBeforeFiveMinuteCaptureCouldOutliveAccess]' started.
+Test Case '-[CoreTests.AccountSessionTests testRefreshStartsBeforeFiveMinuteCaptureCouldOutliveAccess]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRequestRefreshRejectsChangedOwnerOrBackend]' started.
+Test Case '-[CoreTests.AccountSessionTests testRequestRefreshRejectsChangedOwnerOrBackend]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testRestoredExpiredAccessRefreshesBeforeSaving]' started.
+Test Case '-[CoreTests.AccountSessionTests testRestoredExpiredAccessRefreshesBeforeSaving]' passed (0.001 seconds).
+Test Case '-[CoreTests.AccountSessionTests testTransportRejectsUnencryptedOrCredentialBearingEndpoints]' started.
+Test Case '-[CoreTests.AccountSessionTests testTransportRejectsUnencryptedOrCredentialBearingEndpoints]' passed (0.000 seconds).
+Test Suite 'AccountSessionTests' passed at 2026-10-01 03:35:59.058.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.010 (0.012) seconds
+Test Suite 'GoogleNativeFailureRecoveryTests' started at 2026-10-01 03:35:59.058.
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testExpiredRefreshResponseCannotPersistOrExposeAnAccount]' started.
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testExpiredRefreshResponseCannotPersistOrExposeAnAccount]' passed (0.003 seconds).
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testFailedSecureClearDropsInMemoryAccessButDoesNotProveDurableSignOut]' started.
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testFailedSecureClearDropsInMemoryAccessButDoesNotProveDurableSignOut]' passed (0.003 seconds).
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testGoogleFamilyDeadlineClearsWithoutCallingTransport]' started.
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testGoogleFamilyDeadlineClearsWithoutCallingTransport]' passed (0.002 seconds).
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testGoogleNetworkTimeoutPreservesContentAndRecoversAcrossManagerRestart]' started.
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testGoogleNetworkTimeoutPreservesContentAndRecoversAcrossManagerRestart]' passed (0.002 seconds).
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testGoogleRejectedAppSessionClearsPersistenceWithoutRetry]' started.
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testGoogleRejectedAppSessionClearsPersistenceWithoutRetry]' passed (0.002 seconds).
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testOtherOwnerRefreshResponseCannotPersistOrExposeAnAccount]' started.
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testOtherOwnerRefreshResponseCannotPersistOrExposeAnAccount]' passed (0.002 seconds).
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testUncertainRotationSaveFailureClearsAccessWithoutRetry]' started.
+Test Case '-[CoreTests.GoogleNativeFailureRecoveryTests testUncertainRotationSaveFailureClearsAccessWithoutRetry]' passed (0.002 seconds).
+Test Suite 'GoogleNativeFailureRecoveryTests' passed at 2026-10-01 03:35:59.076.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.017 (0.018) seconds
+Test Suite 'CoreTests.xctest' passed at 2026-10-01 03:35:59.077.
+	 Executed 17 tests, with 0 failures (0 unexpected) in 0.027 (0.031) seconds
+Test Suite 'Selected tests' passed at 2026-10-01 03:35:59.077.
+	 Executed 17 tests, with 0 failures (0 unexpected) in 0.027 (0.032) seconds
