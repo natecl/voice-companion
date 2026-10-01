@@ -1,0 +1,36 @@
+{
+  "provenance": "Disposable fictional SQLite; local deletion workflow; mocked provider revocation; actual operator subprocesses",
+  "python": "3.13.7",
+  "calls": [
+    {
+      "command": "prepare",
+      "result": {
+        "status": "quarantined",
+        "replayed_deletions": 1,
+        "manifest_sha256": "b15f3af1b6dc82b9df03b9b9dce655d550d979e3396e65a8ec0c33349c6ecd90",
+        "activation_supported": false
+      }
+    },
+    {
+      "command": "validate",
+      "result": {
+        "status": "validated_quarantine",
+        "activation_supported": false
+      }
+    }
+  ],
+  "assertions_passed": [
+    "Every populated erased-owner content table empty",
+    "Unrelated owner content and child graph preserved",
+    "Authoritative current usage byte-identical in candidate",
+    "All original input file hashes unchanged",
+    "Old access, refresh and owner-rebinding credentials denied",
+    "Quarantine private permissions and manifest validation passed"
+  ],
+  "limitation": "Canonical surviving content must equal authoritative current state; no general reconciliation or activation",
+  "source_hashes": {
+    "backup_restore.py": "058e3af2ebcaa2b80c0948e28753eb3c18b282d1767f6242f9868f7a21c9e065",
+    "test_backup_restore.py": "45370de04f1efb5a55f48e520080cd4207cde62502feabf080185d37bdb7834d"
+  },
+  "post_snapshot_source_deletion_cli": "refused; no manifest; original hashes unchanged"
+}

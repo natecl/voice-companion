@@ -1,0 +1,25 @@
+Source root: /private/tmp/voice-companion-account-safety-closure-20261001
+Base HEAD: bd71cc2d579232218209d8faf5e213a1a8d65b58
+Uncommitted additions only: UnitTests/GoogleNativeFailureRecoveryTests.swift and docs/qa/account-safety-closure/
+New test SHA-256: c7123babb8b9a6c9274b3da25977b47345035b9dd246a3cbf522cfaa45179667
+AccountSessionManager SHA-256: 7c88f0b788c3890520b13725083eeaece66feaef3fafcea016ad1c4ac57d7717
+Environment: macOS 26.6.2 (25G83), arm64; Xcode 27.0 (27A266a)
+Provenance: actual Mac XCTest; injected Google transport and file persistence; actual temporary SessionStore; no Keychain, provider, UI or physical device action
+
+Preparation (scratch specification copied in scratch-project.json):
+/opt/homebrew/bin/xcodegen generate --spec /private/tmp/account-safety-native-project-p36i_p31/project.json --project /private/tmp/account-safety-native-project-p36i_p31 --no-env
+
+Executed test command:
+xcodebuild -project /private/tmp/account-safety-native-project-p36i_p31/AccountSafetyClosure.xcodeproj -scheme AccountSafetyClosure -destination 'platform=macOS' -derivedDataPath /private/tmp/account-safety-native-project-p36i_p31/derived -resultBundlePath /private/tmp/account-safety-native-project-p36i_p31/focused-1.xcresult -disableAutomaticPackageResolution -parallel-testing-enabled NO -jobs 2 -only-testing:CoreTests/GoogleNativeFailureRecoveryTests -only-testing:CoreTests/AccountSessionTests CODE_SIGNING_ALLOWED=NO test > /tmp/account-safety-native-focused-1.log 2>&1
+
+Inspection:
+xcrun xcresulttool get test-results summary --path /private/tmp/account-safety-native-project-p36i_p31/focused-1.xcresult
+git diff --exit-code
+shasum -a 256 UnitTests/GoogleNativeFailureRecoveryTests.swift App/Transcription/Accounts/AccountSessionManager.swift
+
+Exit status: 0; TEST SUCCEEDED.
+Counts from raw output: GoogleNativeFailureRecoveryTests 7 executed, AccountSessionTests 10 executed; total17 passed, zero failed, zero skipped.
+xcresult summary: Passed, total17, passed17, failed0, skipped0, runtimeWarnings[].
+Single build warning: AppIntents metadata extraction skipped because the target has no AppIntents.framework dependency.
+Before/after headroom:46Gi available; no active xcodebuild/swift-frontend/clang process at slot acquisition/release.
+Full raw log and result bundle remain outside git at the paths above; repository native-tests.txt is an unchanged XCTest-output excerpt, native-summary.json removes device identifiers.
