@@ -1,0 +1,24 @@
+# FINAL AFTER-FIX AGGREGATE: same tree (diff sha256 b4664e8d01b5c3fa); 2026-10-01T05:55:01Z
+# cwd=/private/tmp/voice-companion-google-refresh-20261001 env: PYTHONDONTWRITEBYTECODE=1; final test file sha256 7a1e21fb620c03a3 (includes reviewer-driven changes)
+$ PYTHONPATH=Backend /tmp/ellis-auth-venv/bin/python -m unittest test_google_refresh_contract test_account_deletion test_account_deletion_finalization test_account_deletion_recovery test_account_erasure test_account_identity test_account_independent_isolation test_account_isolation_regression test_account_migration test_account_service test_account_sessions test_account_tokens test_provider_grants test_google_oauth test_apple_oauth
+................................Executing <Task pending name='Task-288' coro=<DeletionRecoveryTests.test_signed_google_and_apple_recovery_over_real_sockets() running at /private/tmp/voice-companion-google-refresh-20261001/Backend/test_account_deletion_recovery.py:147> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py:765> cb=[_run_until_complete_cb() at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py:181] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py:100> took 0.169 seconds
+..................{"category": "ask", "request_id": "f40632b2-532f-4c27-9338-df99407abfa9", "completed": false, "first_text_seconds": 0.002718582982197404, "elapsed_seconds": 0.004231041006278247}
+{"category": "ask", "request_id": "63b67805-1eb8-45e2-a4de-d9a67d6bdac4", "completed": true, "first_text_seconds": 0.002071583003271371, "elapsed_seconds": 0.0032336669974029064, "input_tokens": null, "output_tokens": null}
+.{"category": "ask", "request_id": "04f1a421-eee0-4a6e-ac8c-a705af58883a", "completed": false, "first_text_seconds": null, "elapsed_seconds": 0.005201624997425824}
+{"category": "ask", "request_id": "70599946-3673-4e09-8e5e-f80d40dbee7c", "completed": true, "first_text_seconds": 0.0033323329989798367, "elapsed_seconds": 0.0045882080448791385, "input_tokens": null, "output_tokens": null}
+.{"category": "ask", "request_id": "da8caee1-8bc7-4758-b512-e822d11cdc3b", "completed": false, "first_text_seconds": null, "elapsed_seconds": 0.009037084004376084}
+{"category": "ask", "request_id": "cd88098b-ab9b-40e8-8aff-8c9b7faf6e36", "completed": true, "first_text_seconds": 0.003385292016901076, "elapsed_seconds": 0.004283124988432974, "input_tokens": null, "output_tokens": null}
+.{"category": "companion", "request_id": "9a6e471f-6c66-49e0-9325-25b2b439ce4b", "completed": false, "first_text_seconds": 0.006552250008098781, "elapsed_seconds": 0.009396540990564972}
+{"category": "companion", "request_id": "5414142e-7cb7-404a-aed8-4a511b2bf476", "completed": true, "first_text_seconds": 0.006913333025295287, "elapsed_seconds": 0.009554749995004386, "input_tokens": null, "output_tokens": null}
+.{"status": "Rejected", "audio_seconds": 0.1, "elapsed_seconds": 0.014, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "9c7c9997-17b6-4576-b505-64bf22e22170"}
+{"status": "completed", "audio_seconds": 0.1, "elapsed_seconds": 0.008, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "51d48ab6-09c9-49fc-9e0e-fa68113aca25"}
+.{"status": "Rejected", "audio_seconds": 0.1, "elapsed_seconds": 0.008, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "3468f6f4-f20f-4bbf-9b1a-7563daf56baa"}
+{"status": "completed", "audio_seconds": 0.1, "elapsed_seconds": 0.008, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "3fe6a2c6-e6b5-4661-a81a-35323e6948ef"}
+.{"category": "companion", "request_id": "c58b1864-e119-4666-9c34-a652856a6e3d", "completed": false, "first_text_seconds": 0.010524458019062877, "elapsed_seconds": 0.013155166991055012}
+...Executing <Task pending name='Task-609' coro=<AccountIsolationRegressionTests.test_signed_out_open_socket_cannot_replay_saved_answer() running at /private/tmp/voice-companion-google-refresh-20261001/Backend/test_account_isolation_regression.py:33> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py:765> cb=[_run_until_complete_cb() at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py:181] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py:100> took 0.135 seconds
+........................................
+----------------------------------------------------------------------
+Ran 99 tests in 4.608s
+
+OK
+exit=0

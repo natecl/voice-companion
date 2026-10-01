@@ -102,12 +102,12 @@ class AccountSessions:
         row = self.db.execute('SELECT s.owner,s.refresh_expires,s.consumed,c.revoked '
                               'FROM account_session s JOIN credential c ON c.id=s.credential '
                               'WHERE s.refresh_digest=?', (self.admission.digest(token),)).fetchone()
-        if row is None or row[1] <= self.admission.clock():
+        if row is None:
             raise Rejected('unauthorized')
         if row[2]:
             # Preserve the committed replay-revocation behavior before any API call.
             self.refresh(token)
-        if row[3]:
+        if row[3] or row[1] <= self.admission.clock():
             raise Rejected("unauthorized")
         return row[0]
 
@@ -118,14 +118,15 @@ class AccountSessions:
             row = self.db.execute('SELECT s.credential,s.family,s.owner,s.refresh_expires,s.consumed,c.revoked '
                                   'FROM account_session s JOIN credential c ON c.id=s.credential '
                                   'WHERE s.refresh_digest=?', (digest,)).fetchone()
-            if row is None or row[3] <= self.admission.clock():
+            if row is None:
                 raise Rejected('unauthorized')
             credential, family, owner, expiry, consumed, revoked = row
             if consumed:
-                # Commit family revocation before reporting a replay failure.
+                # Commit family revocation before reporting a replay failure, even
+                # after the family deadline: the latest access token can outlive it.
                 self._revoke_family(family)
                 replayed = True
-            elif revoked:
+            elif revoked or expiry <= self.admission.clock():
                 raise Rejected('unauthorized')
             else:
                 self.db.execute('UPDATE account_session SET consumed=1 WHERE credential=?', (credential,))

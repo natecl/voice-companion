@@ -1,0 +1,8 @@
+# FINAL REPEAT STABILITY: same tree (diff sha256 b4664e8d01b5c3fa); 2026-10-01T05:55:06Z
+# cwd=/private/tmp/voice-companion-google-refresh-20261001 env: PYTHONDONTWRITEBYTECODE=1; final test file sha256 7a1e21fb620c03a3 (includes reviewer-driven changes)
+$ for i in 1..5: PYTHONPATH=Backend /tmp/ellis-auth-venv/bin/python -m unittest test_google_refresh_contract
+run 1: OK
+run 2: OK
+run 3: OK
+run 4: OK
+run 5: OK
