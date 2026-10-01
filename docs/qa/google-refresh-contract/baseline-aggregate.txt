@@ -1,0 +1,22 @@
+# base 9c824acc0014eeedb1413f0646b0f7f0b2d3dcbd 2026-10-01T05:20:17Z
+$ /tmp/ellis-auth-venv/bin/python -m unittest test_account_deletion test_account_deletion_finalization test_account_deletion_recovery test_account_erasure test_account_identity test_account_independent_isolation test_account_isolation_regression test_account_migration test_account_service test_account_sessions test_account_tokens test_provider_grants test_google_oauth test_apple_oauth
+...................................{"category": "ask", "request_id": "48319df4-c2a5-45bd-af07-135e9181c314", "completed": false, "first_text_seconds": 0.002085625019390136, "elapsed_seconds": 0.004565209033899009}
+{"category": "ask", "request_id": "10b0ebfa-2713-4cad-ba8b-db6a46fac3ad", "completed": true, "first_text_seconds": 0.002782625029794872, "elapsed_seconds": 0.0046255000052042305, "input_tokens": null, "output_tokens": null}
+.{"category": "ask", "request_id": "3d84d1a3-9f87-4bf2-a925-21ae07201d1a", "completed": false, "first_text_seconds": null, "elapsed_seconds": 0.006210624997038394}
+{"category": "ask", "request_id": "93c1d89a-2867-4a2b-9d80-06fd472c8244", "completed": true, "first_text_seconds": 0.003489541995804757, "elapsed_seconds": 0.00482329202350229, "input_tokens": null, "output_tokens": null}
+.{"category": "ask", "request_id": "3f3d8c75-4994-4bd1-8f2a-2f24f75302ce", "completed": false, "first_text_seconds": null, "elapsed_seconds": 0.005014249996747822}
+{"category": "ask", "request_id": "a8639de2-a298-4dc8-8bb4-76f9ac268f47", "completed": true, "first_text_seconds": 0.0030277089681476355, "elapsed_seconds": 0.0046836669789627194, "input_tokens": null, "output_tokens": null}
+.{"category": "companion", "request_id": "3972b22e-5bc4-4dae-86fc-a91a42a7daf5", "completed": false, "first_text_seconds": 0.006510875013191253, "elapsed_seconds": 0.009143833012785763}
+{"category": "companion", "request_id": "2a1262f7-6de3-4c91-bc8f-ec94745f1519", "completed": true, "first_text_seconds": 0.00678616703953594, "elapsed_seconds": 0.009495667007286102, "input_tokens": null, "output_tokens": null}
+.{"status": "Rejected", "audio_seconds": 0.1, "elapsed_seconds": 0.009, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "ba8ac86e-51d6-4670-92e1-e8831f24cf96"}
+{"status": "completed", "audio_seconds": 0.1, "elapsed_seconds": 0.008, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "d601a77f-d5b6-461a-832a-670f0dd90203"}
+.{"status": "Rejected", "audio_seconds": 0.1, "elapsed_seconds": 0.008, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "86134a1c-b493-47cb-afd3-3db49d2d09a7"}
+{"status": "completed", "audio_seconds": 0.1, "elapsed_seconds": 0.008, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "b0ff825f-fb4e-43f2-ac87-d04b1f993c35"}
+.{"category": "companion", "request_id": "622a4998-601a-4aca-a0d0-466281d5c74b", "completed": false, "first_text_seconds": 0.0066969579784199595, "elapsed_seconds": 0.009041249984875321}
+.................Executing <Task pending name='Task-485' coro=<AccountSocketTests.test_signed_exchange_refresh_replay_and_signout_over_real_sockets() running at /private/tmp/voice-companion-google-refresh-20261001/Backend/test_account_service.py:40> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py:765> cb=[_run_until_complete_cb() at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py:181] created at /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py:100> took 0.119 seconds
+..........................
+----------------------------------------------------------------------
+Ran 84 tests in 3.828s
+
+OK
+exit=0

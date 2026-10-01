@@ -1,0 +1,60 @@
+# failing-before: production files unmodified at 9c824acc0014eeedb1413f0646b0f7f0b2d3dcbd 2026-10-01T05:25:00Z
+$ /tmp/ellis-auth-venv/bin/python -m unittest -v test_google_refresh_contract
+test_concurrent_refresh_and_local_owner_revocation_never_leave_live_credential (test_google_refresh_contract.GoogleRefreshContractTests.test_concurrent_refresh_and_local_owner_revocation_never_leave_live_credential) ... ok
+test_concurrent_refresh_and_sign_out_never_leave_a_live_family_credential (test_google_refresh_contract.GoogleRefreshContractTests.test_concurrent_refresh_and_sign_out_never_leave_a_live_family_credential) ... ok
+test_family_deadline_boundary_is_exclusive_and_issues_nothing_after (test_google_refresh_contract.GoogleRefreshContractTests.test_family_deadline_boundary_is_exclusive_and_issues_nothing_after) ... ok
+test_google_refresh_is_local_while_apple_validates_its_stored_grant (test_google_refresh_contract.GoogleRefreshContractTests.test_google_refresh_is_local_while_apple_validates_its_stored_grant) ... ok
+test_invalid_malformed_and_unknown_secrets_never_issue_or_mutate (test_google_refresh_contract.GoogleRefreshContractTests.test_invalid_malformed_and_unknown_secrets_never_issue_or_mutate) ... ok
+test_local_owner_revocation_covers_all_google_families_and_preserves_other_owner (test_google_refresh_contract.GoogleRefreshContractTests.test_local_owner_revocation_covers_all_google_families_and_preserves_other_owner) ... ok
+test_refresh_after_sign_out_fails_for_every_family_secret (test_google_refresh_contract.GoogleRefreshContractTests.test_refresh_after_sign_out_fails_for_every_family_secret) ... ok
+test_refresh_during_held_google_revocation_cannot_issue_or_complete_early (test_google_refresh_contract.GoogleRefreshContractTests.test_refresh_during_held_google_revocation_cannot_issue_or_complete_early) ... ok
+test_replay_after_family_deadline_still_revokes_latest_access (test_google_refresh_contract.GoogleRefreshContractTests.test_replay_after_family_deadline_still_revokes_latest_access) ... FAIL
+test_replay_revokes_only_its_family_and_stays_terminal_across_restart (test_google_refresh_contract.GoogleRefreshContractTests.test_replay_revokes_only_its_family_and_stays_terminal_across_restart) ... ok
+test_service_rejects_malformed_refresh_requests_without_session_or_provider_call (test_google_refresh_contract.GoogleRefreshContractTests.test_service_rejects_malformed_refresh_requests_without_session_or_provider_call) ... ok
+test_service_replay_after_family_deadline_revokes_through_refresh_owner (test_google_refresh_contract.GoogleRefreshContractTests.test_service_replay_after_family_deadline_revokes_through_refresh_owner) ... FAIL
+test_unavailable_google_revocation_stays_pending_without_retry_or_session (test_google_refresh_contract.GoogleRefreshContractTests.test_unavailable_google_revocation_stays_pending_without_retry_or_session) ... ok
+
+======================================================================
+FAIL: test_replay_after_family_deadline_still_revokes_latest_access (test_google_refresh_contract.GoogleRefreshContractTests.test_replay_after_family_deadline_still_revokes_latest_access)
+----------------------------------------------------------------------
+admission.Rejected: unauthorized
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/voice-companion-google-refresh-20261001/Backend/test_google_refresh_contract.py", line 161, in test_replay_after_family_deadline_still_revokes_latest_access
+    with self.assertRaisesRegex(Rejected, '^refresh_replayed$'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "^refresh_replayed$" does not match "unauthorized"
+
+======================================================================
+FAIL: test_service_replay_after_family_deadline_revokes_through_refresh_owner (test_google_refresh_contract.GoogleRefreshContractTests.test_service_replay_after_family_deadline_revokes_through_refresh_owner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/private/tmp/voice-companion-google-refresh-20261001/Backend/test_google_refresh_contract.py", line 173, in test_service_replay_after_family_deadline_revokes_through_refresh_owner
+    self.assertEqual(response, dict(type='error', message='refresh_replayed'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'type': 'error', 'message': 'unauthorized'} != {'type': 'error', 'message': 'refresh_replayed'}
+- {'message': 'unauthorized', 'type': 'error'}
+?              ^^ ^^^^^^^
+
++ {'message': 'refresh_replayed', 'type': 'error'}
+?              ^^^^^^^^^^^^ ^
+
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.354s
+
+FAILED (failures=2)
+exit=1
+
+# probe: replay after family deadline on base (fictional subject, fake clock, temp SQLite)
+latest access expires after family deadline by seconds: 3540
+replay of consumed secret after deadline -> unauthorized
+latest access still authorized after replay: True
