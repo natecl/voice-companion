@@ -1,0 +1,50 @@
+# Extracted from coordinator-run Mac xcodebuild logs (work/ is gitignored scratch; full logs not committed).
+# Filter: rg -n "^    /Applications/.*xcodebuild |^Test Suite '(Account|Recording|Google|Founder|Memory|CoreTests|Selected)[^']*' (passed|failed)|Executed [0-9]+ tests?|testPreviousPersonsLateRefresh|skipped|\.xcresult$|\*\* TEST" <log> | rg -v appintentsmetadataprocessor
+# The second stage omits 3 unrelated work/native-retry.log build warnings (lines 4395, 5324, 5359: appintentsmetadataprocessor "Metadata extraction skipped").
+
+## work/native-retry.log (1677519 bytes, sha256 d654a87c1fc217cb0d20aaf150f459dee82605cf1b5cbc40297c7877334fa427)
+2:    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project VoiceCompanion.xcodeproj -scheme Mac -destination platform=macOS -derivedDataPath work/native-derived CODE_SIGNING_ALLOWED=NO -jobs 2 "-only-testing:CoreTests/AccountSessionTests" "-only-testing:CoreTests/AccountDeletionTests" "-only-testing:CoreTests/RecordingNotesCacheTests" test
+5419:Test Suite 'AccountDeletionTests' passed at 2026-09-30 22:27:18.781.
+5420:	 Executed 9 tests, with 0 failures (0 unexpected) in 0.022 (0.024) seconds
+5432:Test Case '-[CoreTests.AccountSessionTests testPreviousPersonsLateRefreshCannotReplaceOrClearNextPerson]' started.
+5433:Test Case '-[CoreTests.AccountSessionTests testPreviousPersonsLateRefreshCannotReplaceOrClearNextPerson]' passed (0.001 seconds).
+5442:Test Suite 'AccountSessionTests' passed at 2026-09-30 22:27:18.791.
+5443:	 Executed 10 tests, with 0 failures (0 unexpected) in 0.008 (0.009) seconds
+5470:Test Suite 'RecordingNotesCacheTests' passed at 2026-09-30 22:27:18.920.
+5471:	 Executed 11 tests, with 0 failures (0 unexpected) in 0.127 (0.129) seconds
+5472:Test Suite 'CoreTests.xctest' passed at 2026-09-30 22:27:18.920.
+5473:	 Executed 30 tests, with 0 failures (0 unexpected) in 0.156 (0.163) seconds
+5474:Test Suite 'Selected tests' passed at 2026-09-30 22:27:18.920.
+5475:	 Executed 30 tests, with 0 failures (0 unexpected) in 0.156 (0.164) seconds
+5481:	/tmp/voice-companion-account-safety-20260930/work/native-derived/Logs/Test/Test-Mac-2026.09.30_22-26-44--0400.xcresult
+5483:** TEST SUCCEEDED **
+
+## work/native-contracts-final.log (40328 bytes, sha256 3a313d18d848b24a86a1dd1521003ffbd31288f8dea18591e0864ffb3b6159f6)
+2:    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project VoiceCompanion.xcodeproj -scheme Mac -destination platform=macOS -derivedDataPath work/native-derived CODE_SIGNING_ALLOWED=NO -jobs 2 "-only-testing:CoreTests/AccountSessionTests" "-only-testing:CoreTests/AccountDeletionTests" "-only-testing:CoreTests/RecordingNotesCacheTests" "-only-testing:CoreTests/GoogleAccountGrantTests" "-only-testing:CoreTests/FounderAccountMigrationTests" "-only-testing:CoreTests/RecordingLifecycleTests" "-only-testing:CoreTests/MemoryTests" test
+219:Test Suite 'AccountDeletionTests' passed at 2026-09-30 22:30:57.311.
+220:	 Executed 9 tests, with 0 failures (0 unexpected) in 0.021 (0.024) seconds
+232:Test Case '-[CoreTests.AccountSessionTests testPreviousPersonsLateRefreshCannotReplaceOrClearNextPerson]' started.
+233:Test Case '-[CoreTests.AccountSessionTests testPreviousPersonsLateRefreshCannotReplaceOrClearNextPerson]' passed (0.001 seconds).
+242:Test Suite 'AccountSessionTests' passed at 2026-09-30 22:30:57.321.
+243:	 Executed 10 tests, with 0 failures (0 unexpected) in 0.008 (0.009) seconds
+250:/tmp/voice-companion-account-safety-20260930/UnitTests/FounderAccountMigrationTests.swift:94: -[CoreTests.FounderAccountMigrationTests testPrivatePhysicalSnapshotWhenExplicitlyProvided] : Test skipped - Private physical snapshot supplied only for explicit rehearsal
+251:Test Case '-[CoreTests.FounderAccountMigrationTests testPrivatePhysicalSnapshotWhenExplicitlyProvided]' skipped (0.002 seconds).
+258:Test Suite 'FounderAccountMigrationTests' passed at 2026-09-30 22:30:57.346.
+259:	 Executed 6 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.024 (0.025) seconds
+263:Test Suite 'GoogleAccountGrantTests' passed at 2026-09-30 22:30:57.347.
+264:	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+299:Test Suite 'MemoryTests' passed at 2026-09-30 22:30:57.861.
+300:	 Executed 8 tests, with 0 failures (0 unexpected) in 0.513 (0.514) seconds
+329:Test Suite 'RecordingLifecycleTests' passed at 2026-09-30 22:30:58.009.
+330:	 Executed 10 tests, with 0 failures (0 unexpected) in 0.145 (0.148) seconds
+356:Test Suite 'RecordingNotesCacheTests' passed at 2026-09-30 22:30:58.148.
+357:	 Executed 11 tests, with 0 failures (0 unexpected) in 0.136 (0.139) seconds
+358:Test Suite 'CoreTests.xctest' passed at 2026-09-30 22:30:58.148.
+359:	 Executed 55 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.848 (0.861) seconds
+360:Test Suite 'Selected tests' passed at 2026-09-30 22:30:58.148.
+361:	 Executed 55 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.848 (0.861) seconds
+367:	/tmp/voice-companion-account-safety-20260930/work/native-derived/Logs/Test/Test-Mac-2026.09.30_22-30-55--0400.xcresult
+369:** TEST SUCCEEDED **
+
+## Selected fields (device identifier omitted), read by the authoring agent from the coordinator's final bundle: xcrun xcresulttool get test-results summary --path work/native-derived/Logs/Test/Test-Mac-2026.09.30_22-30-55--0400.xcresult --compact
+{"result":"Passed","totalTestCount":55,"passedTests":54,"skippedTests":1,"failedTests":0,"expectedFailures":0,"platform":"macOS","osVersion":"26.6.2","modelName":"MacBook Pro","title":"Test - Mac"}

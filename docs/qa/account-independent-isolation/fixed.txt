@@ -1,0 +1,23 @@
+test_provider_revocation_between_deltas_stops_next_delta (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_provider_revocation_between_deltas_stops_next_delta) ... {"category": "ask", "request_id": "a60d0a96-c6f6-4a72-b7c7-bfcdaa8a032d", "completed": false, "first_text_seconds": 0.002394124981947243, "elapsed_seconds": 0.0039261250058189034}
+{"category": "ask", "request_id": "b2d012c6-53fb-403f-8955-b8c5c07fa66e", "completed": true, "first_text_seconds": 0.001734499994199723, "elapsed_seconds": 0.002912707976065576, "input_tokens": null, "output_tokens": null}
+ok
+test_signout_during_recall_validation_skips_paid_answer (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_signout_during_recall_validation_skips_paid_answer) ... {"category": "ask", "request_id": "217b2559-764f-40af-b846-7a7992124bde", "completed": false, "first_text_seconds": null, "elapsed_seconds": 0.0054644590127281845}
+{"category": "ask", "request_id": "40eec077-6e50-4984-bff3-c4c1f3933401", "completed": true, "first_text_seconds": 0.003381082962732762, "elapsed_seconds": 0.004402291961014271, "input_tokens": null, "output_tokens": null}
+ok
+test_signout_during_recall_withholds_owner_context (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_signout_during_recall_withholds_owner_context) ... {"category": "ask", "request_id": "759c8004-438d-474a-9a21-38e5f88931c1", "completed": false, "first_text_seconds": null, "elapsed_seconds": 0.0038282499881461263}
+{"category": "ask", "request_id": "5d7c6aa1-fa39-46bc-9971-56de876bd2c9", "completed": true, "first_text_seconds": 0.002673166978638619, "elapsed_seconds": 0.0035234580282121897, "input_tokens": null, "output_tokens": null}
+ok
+test_revoked_turn_stays_failed_and_owners_stay_separate (Backend.test_account_independent_isolation.IndependentPeopleCompanionTests.test_revoked_turn_stays_failed_and_owners_stay_separate) ... {"category": "companion", "request_id": "1e6cc04f-6e46-4dc3-a9c7-a136bce57376", "completed": false, "first_text_seconds": 0.006342041015159339, "elapsed_seconds": 0.008531875035259873}
+{"category": "companion", "request_id": "79ec160d-0606-47ad-92d1-c01dc150eb85", "completed": true, "first_text_seconds": 0.005523208994418383, "elapsed_seconds": 0.008810541999991983, "input_tokens": null, "output_tokens": null}
+ok
+test_revoked_audio_is_not_forwarded_upstream (Backend.test_account_independent_isolation.IndependentPeopleTranscriptionTests.test_revoked_audio_is_not_forwarded_upstream) ... {"status": "Rejected", "audio_seconds": 0.1, "elapsed_seconds": 0.007, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "dc74e5c4-7ebd-4284-9e54-d4c6104ed9c2"}
+{"status": "completed", "audio_seconds": 0.1, "elapsed_seconds": 0.008, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "523d4135-adc8-4933-83fd-20f75b49d0cf"}
+ok
+test_signout_before_upstream_event_withholds_transcript (Backend.test_account_independent_isolation.IndependentPeopleTranscriptionTests.test_signout_before_upstream_event_withholds_transcript) ... {"status": "Rejected", "audio_seconds": 0.1, "elapsed_seconds": 0.009, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "b9e4f084-c401-4da9-858e-7250524fd7c3"}
+{"status": "completed", "audio_seconds": 0.1, "elapsed_seconds": 0.008, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "08abf767-ee40-42eb-a8cd-5383c017de63"}
+ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.320s
+
+OK

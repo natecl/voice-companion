@@ -1,0 +1,139 @@
+test_provider_revocation_between_deltas_stops_next_delta (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_provider_revocation_between_deltas_stops_next_delta) ... {"category": "ask", "request_id": "ba6f40ef-8572-4d3c-b6f1-6eb3709406a2", "completed": true, "first_text_seconds": 0.0030607079970650375, "elapsed_seconds": 0.0047176669468171895, "input_tokens": null, "output_tokens": null}
+FAIL
+test_signout_during_recall_validation_skips_paid_answer (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_signout_during_recall_validation_skips_paid_answer) ... {"category": "ask", "request_id": "1d88e3ff-e578-4f4c-9055-cb29feb121f3", "completed": true, "first_text_seconds": 0.005250541027635336, "elapsed_seconds": 0.0061927500064484775, "input_tokens": null, "output_tokens": null}
+FAIL
+test_signout_during_recall_withholds_owner_context (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_signout_during_recall_withholds_owner_context) ... {"category": "ask", "request_id": "b5b9d8c4-9d7c-4c74-9720-9bdaf98033d5", "completed": true, "first_text_seconds": 0.003721000044606626, "elapsed_seconds": 0.004960375023074448, "input_tokens": null, "output_tokens": null}
+FAIL
+test_revoked_turn_stays_failed_and_owners_stay_separate (Backend.test_account_independent_isolation.IndependentPeopleCompanionTests.test_revoked_turn_stays_failed_and_owners_stay_separate) ... {"category": "companion", "request_id": "68beb7e0-986f-416b-b5ae-4e2a5fc47ac1", "completed": false, "first_text_seconds": 0.00606404198333621, "elapsed_seconds": 0.009679416951257735}
+{"category": "companion", "request_id": "77d9c333-1cbf-40d5-b02d-83202314b6be", "completed": true, "first_text_seconds": 0.005234750045929104, "elapsed_seconds": 0.007715459039900452, "input_tokens": null, "output_tokens": null}
+ok
+test_revoked_audio_is_not_forwarded_upstream (Backend.test_account_independent_isolation.IndependentPeopleTranscriptionTests.test_revoked_audio_is_not_forwarded_upstream) ... {"status": "Rejected", "audio_seconds": 0.2, "elapsed_seconds": 1.009, "estimated_audio_cost_usd": 1.1111111111111113e-05, "billing_verified": false, "request_id": "48ca0b7a-668c-4c8f-8c74-515e1b93942e"}
+FAIL
+test_signout_before_upstream_event_withholds_transcript (Backend.test_account_independent_isolation.IndependentPeopleTranscriptionTests.test_signout_before_upstream_event_withholds_transcript) ... {"status": "Rejected", "audio_seconds": 0.1, "elapsed_seconds": 1.01, "estimated_audio_cost_usd": 5.555555555555557e-06, "billing_verified": false, "request_id": "643b8318-fbe2-4f1e-a075-77c1b032f2cc"}
+FAIL
+
+======================================================================
+FAIL: test_provider_revocation_between_deltas_stops_next_delta (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_provider_revocation_between_deltas_stops_next_delta)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/private/tmp/voice-companion-account-safety-20260930/Backend/test_account_independent_isolation.py", line 205, in test_provider_revocation_between_deltas_stops_next_delta
+    self.assertEqual([e['text'] for e in avery if e['type'] == 'delta'], ['Avery first.'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['Avery first.', 'Avery private: the cello audition moved to Thursday.'] != ['Avery first.']
+
+First list contains 1 additional elements.
+First extra element 1:
+'Avery private: the cello audition moved to Thursday.'
+
+- ['Avery first.', 'Avery private: the cello audition moved to Thursday.']
++ ['Avery first.']
+
+======================================================================
+FAIL: test_signout_during_recall_validation_skips_paid_answer (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_signout_during_recall_validation_skips_paid_answer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/private/tmp/voice-companion-account-safety-20260930/Backend/test_account_independent_isolation.py", line 178, in test_signout_during_recall_validation_skips_paid_answer
+    self.assertEqual([e['type'] for e in avery], ['accepted', 'context', 'error'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['accepted', 'context', 'delta', 'done'] != ['accepted', 'context', 'error']
+
+First differing element 2:
+'delta'
+'error'
+
+First list contains 1 additional elements.
+First extra element 3:
+'done'
+
+- ['accepted', 'context', 'delta', 'done']
+?                          - ^^^^^^^^ ^^
+
++ ['accepted', 'context', 'error']
+?                           ^^ ^
+
+
+======================================================================
+FAIL: test_signout_during_recall_withholds_owner_context (Backend.test_account_independent_isolation.IndependentPeopleAskTests.test_signout_during_recall_withholds_owner_context)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/private/tmp/voice-companion-account-safety-20260930/Backend/test_account_independent_isolation.py", line 152, in test_signout_during_recall_withholds_owner_context
+    self.assertEqual(avery, [dict(type='error', message='unauthorized')])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'type': 'context', 'sources': [{'id': 'm1', 'start[192 chars] []}] != [{'type': 'error', 'message': 'unauthorized'}]
+
+First differing element 0:
+{'type': 'context', 'sources': [{'id': 'm1', 'start[96 chars]ble'}
+{'type': 'error', 'message': 'unauthorized'}
+
+First list contains 2 additional elements.
+First extra element 1:
+{'type': 'delta', 'text': 'Avery answer after sign-out.'}
+
++ [{'message': 'unauthorized', 'type': 'error'}]
+- [{'memory_status': 'available',
+-   'sources': [{'id': 'm1',
+-                'start': 0,
+-                'text': 'Avery private: the cello audition moved to Thursday.'}],
+-   'type': 'context'},
+-  {'text': 'Avery answer after sign-out.', 'type': 'delta'},
+-  {'references': [], 'type': 'done'}]
+
+======================================================================
+FAIL: test_revoked_audio_is_not_forwarded_upstream (Backend.test_account_independent_isolation.IndependentPeopleTranscriptionTests.test_revoked_audio_is_not_forwarded_upstream)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/private/tmp/voice-companion-account-safety-20260930/Backend/test_account_independent_isolation.py", line 297, in test_revoked_audio_is_not_forwarded_upstream
+    self.assertEqual([len(frames) for frames in upstream.frames], [1])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [2] != [1]
+
+First differing element 0:
+2
+1
+
+- [2]
++ [1]
+
+======================================================================
+FAIL: test_signout_before_upstream_event_withholds_transcript (Backend.test_account_independent_isolation.IndependentPeopleTranscriptionTests.test_signout_before_upstream_event_withholds_transcript)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/private/tmp/voice-companion-account-safety-20260930/Backend/test_account_independent_isolation.py", line 279, in test_signout_before_upstream_event_withholds_transcript
+    self.assertNotIn(AVERY_SPEECH, json.dumps(avery))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Avery speech after revocation.' unexpectedly found in '[{"type": "transcript.partial", "text": "Avery speech after revocation."}, {"type": "error", "message": "Transcription connection ended. Received text is preserved."}]'
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.263s
+
+FAILED (failures=5)
